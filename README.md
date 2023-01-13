@@ -20,7 +20,7 @@ Since the retroload packages are not yet published to the npm registry, they cur
     npm install # install dependencies
     sudo npm link retroload-cli/
 
-Now, the retroload CLI interface should be avaiable in your path:
+Now, the retroload CLI interface should be available in your path:
 
     retroload --help
 
