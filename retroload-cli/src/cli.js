@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {WaveRecorder, AdapterManager} from 'retroload-common';
+import {WaveRecorder, AdapterManager, Exception} from 'retroload-common';
 
 import fs from 'fs';
 import stream from 'stream';
@@ -39,9 +39,18 @@ async function main() {
 
   console.debug(`Processing ${infile}...`);
 
-  if (!AdapterManager.encode(recorder, infile, arrayBuffer, options)) {
-    console.error(`Unable to decode ${infile}`);
-    process.exit(1);
+  try {
+    if (!AdapterManager.encode(recorder, infile, arrayBuffer, options)) {
+      console.error(`Unable to decode ${infile}`);
+      process.exit(1);
+    }
+  } catch (e) {
+    if (e instanceof Exception.UsageError) {
+      console.error(e.message);
+      process.exit(1);
+    } else {
+      throw e;
+    }
   }
 
   if (playback) {
