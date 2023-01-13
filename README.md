@@ -10,3 +10,34 @@ This repository contains
 
 **Project state:** Right now everything is work in progress. Only some of the formats are currently considered as working.
 
+
+## Installation from Git repository (development environment)
+
+    git clone https://github.com/stefanschramm/retroload.git
+    cd retroload
+    npm install # install dependencies
+    sudo npm link retroload-cli/
+
+Now, the retroload CLI interface should be avaiable in your path:
+
+    retroload --help
+
+Later you can remove the symlinks by
+
+    sudo npm unlink retroload-cli -g
+
+## Using retroload-cli
+
+A list of available command line options can be shown using `retroload --help`.
+
+### Creating WAVE files
+
+Convert an MSX tape archive into an audio file named example.wav:
+
+    retroload retroload-examples/formats/msx_cas_binary/rl.cas -o example.wav
+
+retroload will try to automatically determine the input format by its content and file extension. For formats that are not automatically detected, the `--format` and/or `--machine` options need to be specified.
+
+### Playing tape archives directly
+
+When the `-o` option is omitted, retroload automatically tries to play the generated audio data using the [speaker library](https://www.npmjs.com/package/speaker).
