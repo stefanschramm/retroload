@@ -1,7 +1,7 @@
 {
   "name": "retroload-common",
-  "version": "1.0.0",
-  "description": "RetroLoad common library",
+  "version": "0.0.1",
+  "description": "RetroLoad.com common library",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
   "license": "UNLICENSED",

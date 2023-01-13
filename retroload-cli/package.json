@@ -1,7 +1,7 @@
 {
   "name": "retroload-cli",
-  "version": "1.0.0",
-  "description": "Command line interface for RetroLoad",
+  "version": "0.0.1",
+  "description": "RetroLoad.com command line interface",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
   "license": "UNLICENSED",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "commander": "^9.4.1",
-    "retroload-common": "*"
+    "retroload-common": "^0.0.1"
   },
   "devDependencies": {
     "eslint": "^8.31.0",
