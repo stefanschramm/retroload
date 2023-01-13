@@ -13,6 +13,8 @@ This repository contains
 
 ## Installation from Git repository (development environment)
 
+Since the retroload packages are not yet published to the npm registry, they currently need to be installed from the code repository:
+
     git clone https://github.com/stefanschramm/retroload.git
     cd retroload
     npm install # install dependencies
@@ -41,3 +43,7 @@ retroload will try to automatically determine the input format by its content an
 ### Playing tape archives directly
 
 When the `-o` option is omitted, retroload automatically tries to play the generated audio data using the [speaker library](https://www.npmjs.com/package/speaker).
+
+## The example collection
+
+[./retroload-examples/formats](./retroload-examples/formats) contains minimal example tape archives of different formats for different machines. They have successfully been loaded to real machines and can be used for testing. If the example files won't load on your machine, it's unlikely that any other tape archive will successfully load using retroload.
