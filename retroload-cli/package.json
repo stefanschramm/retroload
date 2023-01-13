@@ -1,0 +1,25 @@
+{
+  "name": "retroload-cli",
+  "version": "1.0.0",
+  "description": "Command line interface for RetroLoad",
+  "author": "Stefan Schramm",
+  "email": "mail@stefanschramm.net",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "main": "src/cli.js",
+  "scripts": {
+    "lint": "eslint src/"
+  },
+  "bin": {
+    "retroload": "./src/cli.js"
+  },
+  "dependencies": {
+    "commander": "^9.4.1",
+    "retroload-common": "*"
+  },
+  "devDependencies": {
+    "eslint": "^8.31.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}

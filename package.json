@@ -1,0 +1,8 @@
+{
+  "name": "retroload",
+  "workspaces": [
+    "retroload-common",
+    "retroload-cli",
+    "retroload-examples"
+  ]
+}
