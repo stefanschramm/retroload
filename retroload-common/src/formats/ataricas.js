@@ -1,6 +1,7 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/atari.js';
 import {containsDataAt} from '../utils.js';
+import {InternalError} from '../exception.js';
 
 const fileHeader = 'FUJI';
 
@@ -30,7 +31,7 @@ class Adapter extends AbstractAdapter {
 
   static encode(recorder, dataView, options) {
     const e = new Encoder(recorder);
-    let baudRate = 600;
+    e.setDefaultBaudrate();
     let i = 0;
     while (i < dataView.byteLength) {
       // determine block type
@@ -38,19 +39,23 @@ class Adapter extends AbstractAdapter {
 
       if (containsDataAt(chunkDv, 0, 'FUJI')) {
         const chunkLength = chunkDv.getUint16(4, true);
+        const tapeDescriptionDv = chunkDv.referencedSlice(8, chunkLength);
+        console.debug(`Tape description: ${tapeDescriptionDv.asAsciiString()}`);
         i += 8 + chunkLength;
       } else if (containsDataAt(chunkDv, 0, 'baud')) {
         const chunkLength = chunkDv.getUint16(4, true);
-        baudRate = chunkDv.getUint16(6, true);
+        e.setBaudrate(chunkDv.getUint16(6, true));
         i += 8 + chunkLength;
       } else if (containsDataAt(chunkDv, 0, 'data')) {
         const chunkLength = chunkDv.getUint16(4, true);
         const irgLength = chunkDv.getUint16(6, true);
+        console.debug(`Type: data, chunkLength: ${chunkLength}, irgLength: ${irgLength}`);
         const data = chunkDv.referencedSlice(8, chunkLength);
-        e.recordData(baudRate, irgLength, data);
+        e.recordData(irgLength, data);
         i += 8 + chunkLength;
       } else {
-        throw new Error('Block type not implemented.');
+        throw new InternalError('Block type not implemented.');
+        // TODO: Implement other block types: fsk, pwms, pwmc, pwmd, pwml
       }
     }
   }

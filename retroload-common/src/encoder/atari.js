@@ -1,5 +1,7 @@
 import {BaseEncoder} from './base.js';
-import {dumpDv} from '../utils.js';
+
+const fSpace = 3995;
+const fMark = 5327;
 
 /**
  * Work in progress
@@ -11,16 +13,18 @@ export class Encoder extends BaseEncoder {
     return 'atari';
   }
 
-  recordData(baudrate, irgLength, data) {
-    dumpDv(data);
-    // TODO: baudrate + irgLength
-    for (let i = 0; i < 1000; i++) {
-      this.recordByte(0x55);
-    }
+  setDefaultBaudrate() {
+    this.baudrate = 600;
+  }
+
+  setBaudrate(baudrate) {
+    this.baudrate = baudrate;
+  }
+
+  recordData(irgLength, data) {
+    console.log(this.recorder.sampleRate);
+    this.recordSeconds(fMark, irgLength / 1000);
     this.recordBytes(data);
-    for (let i = 0; i < 100; i++) {
-      this.recordByte(0x55);
-    }
   }
 
   recordByte(byte) {
@@ -30,10 +34,11 @@ export class Encoder extends BaseEncoder {
   }
 
   recordBit(value) {
+    // TODO: Probably the harmonics of the square waves are causing problems here. Try so switch to sine? - Requires change in recording classes and might break working examples.
     if (value) {
-      this.recordHalfOscillation(5327);
+      this.recordSeconds(fMark, 1 / this.baudrate);
     } else {
-      this.recordHalfOscillation(3995);
+      this.recordSeconds(fSpace, 1 / this.baudrate);
     }
   }
 }

@@ -58,6 +58,10 @@ export class ExtDataView extends DataView {
     return new Uint8Array(this.buffer, this.byteOffset, this.byteLength);
   }
 
+  asAsciiString() {
+    return (new TextDecoder()).decode(this.asUint8ArrayCopy());
+  }
+
   setString(offset, string) {
     for (let i = 0; i < string.length; i++) {
       this.setUint8(offset + i, string.charCodeAt(i));
