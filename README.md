@@ -52,7 +52,19 @@ When the `-o` option is omitted, retroload automatically tries to play the gener
 
 There is a Dockerfile that prepares an environment in which the examples can be (re)built. The container has to be started with the formats directory as bind mount to /formats.
 
+Rebuilding all examples:
+
     cd retroload-examples
     docker build -t retroload-examples .
     docker run -v "$(pwd)/formats:/formats" retroload-examples
+
+Or enter the container to build individual examples:
+
+    docker run -itv "$(pwd)/formats:/formats" retroload-examples /bin/bash
+    cd /formats/msx_cas_binary
+    make clean
+    make
+    exit
+
+If you want to build the examples without Docker, you can look up the Dockerfile for the required tools to be installed in your environment (assemblers, tape format converters).
 
