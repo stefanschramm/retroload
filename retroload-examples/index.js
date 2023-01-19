@@ -1,6 +1,8 @@
 // Default option values are not automatically used when running outside CLI and have to be specified explicitly.
 export function getExamples() {
   return [
+    // Atari 800 XL
+    new Example('atari_cas', 'rl.cas', {}, '8d36a2a696c7e27807c4d1f058fdec34', 'START+POWERON\nPLAY\nANYKEY'), // 2023-01-19 OK (Atari 800 XL)
     // C64, VIC-20
     new Example('c64', 'rl.tap', {}, 'ecba52a4a6a2e894c3473590b77890dc', 'LOAD\n<space>\nSYS 4352'), // 2022-11-16 OK (C64 C)
     new Example('c64', 'rl.prg', {}, '1233722ffe4f62310c6777aaf606b5c2', 'LOAD\n<space>\nSYS 4352'), // 2022-11-16 OK (C64 C)

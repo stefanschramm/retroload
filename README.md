@@ -46,7 +46,7 @@ When the `-o` option is omitted, retroload automatically tries to play the gener
 
 ## Example collection
 
-[./retroload-examples/formats](./retroload-examples/formats) contains minimal example tape archives of different formats for different machines. They have successfully been loaded to real machines and can be used for testing. If the example files won't load on your machine, it's unlikely that any other tape archive will successfully load using retroload.
+[./retroload-examples/formats](./retroload-examples/formats) contains minimal example tape archives of different formats for different machines. Some of them, listed in [index.js](./retroload-examples/index.js), have successfully been loaded to real machines and can be used for testing. If the example files won't load on your machine, it's unlikely that any other tape archive will successfully load using retroload.
 
 ### Rebuilding examples
 
