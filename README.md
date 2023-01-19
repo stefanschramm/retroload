@@ -44,6 +44,15 @@ retroload will try to automatically determine the input format by its content an
 
 When the `-o` option is omitted, retroload automatically tries to play the generated audio data using the [speaker library](https://www.npmjs.com/package/speaker).
 
-## The example collection
+## Example collection
 
 [./retroload-examples/formats](./retroload-examples/formats) contains minimal example tape archives of different formats for different machines. They have successfully been loaded to real machines and can be used for testing. If the example files won't load on your machine, it's unlikely that any other tape archive will successfully load using retroload.
+
+### Rebuilding examples
+
+There is a Dockerfile that prepares an environment in which the examples can be (re)built. The container has to be started with the formats directory as bind mount to /formats.
+
+    cd retroload-examples
+    docker build -t retroload-examples .
+    docker run -v "$(pwd)/formats:/formats" retroload-examples
+

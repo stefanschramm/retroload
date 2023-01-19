@@ -18,4 +18,6 @@ RUN wget https://www.luigidifraia.com/hosted/software/prg2tap-1.8-linux-x86_64-w
 RUN git clone https://github.com/farique1/MSX-Basic-Tokenizer.git && \
         chmod +x /opt/MSX-Basic-Tokenizer/msxbatoken.py && \
         ln -s /opt/MSX-Basic-Tokenizer/msxbatoken.py /usr/local/bin/msxbatoken.py
-CMD [ "sh", "." ]
+COPY /rebuild_all.sh /
+CMD [ "/rebuild_all.sh" ]
+
