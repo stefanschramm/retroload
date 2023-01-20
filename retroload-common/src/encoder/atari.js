@@ -4,7 +4,7 @@ const fSpace = 3995;
 const fMark = 5327;
 
 /**
- * Work in progress
+ * Encoder for Atari 800 (might work on Atari 400 as well)
  *
  * https://www.atariarchives.org/dere/chaptC.php
  */
@@ -22,7 +22,6 @@ export class Encoder extends BaseEncoder {
   }
 
   recordData(irgLength, data) {
-    console.log(this.recorder.sampleRate);
     this.recordSeconds(fMark, irgLength / 1000);
     this.recordBytes(data);
   }
@@ -34,7 +33,6 @@ export class Encoder extends BaseEncoder {
   }
 
   recordBit(value) {
-    // TODO: Probably the harmonics of the square waves are causing problems here. Try so switch to sine? - Requires change in recording classes and might break working examples.
     if (value) {
       this.recordSeconds(fMark, 1 / this.baudrate);
     } else {
