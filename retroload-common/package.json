@@ -10,7 +10,8 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src/",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "devDependencies": {
     "eslint": "^8.31.0",
