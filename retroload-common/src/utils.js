@@ -1,3 +1,12 @@
+/**
+ * Checks whether dataView contains needle at specified offset
+ *
+ * @param {DataView} dataView
+ * @param {number} offset
+ * @param {string} needle
+ *
+ * @return {boolean}
+ */
 export function containsDataAt(dataView, offset, needle) {
   const isString = typeof needle === 'string';
   for (let i = 0; i < needle.length; i++) {
@@ -12,6 +21,11 @@ export function containsDataAt(dataView, offset, needle) {
   return true;
 }
 
+/**
+ * Output hexdump of DataView to console
+ *
+ * @param {DataView} dataView
+ */
 export function dumpDv(dataView) {
   const printableCharsRegexp = /[^ -~]+$/g;
   const bytesPerRow = 16;
@@ -39,6 +53,9 @@ export function dumpDv(dataView) {
   };
 }
 
+/**
+ * Extension of DataView supporting easy creation of referenced slices
+ */
 export class ExtDataView extends DataView {
   referencedSlice(offset, length) {
     if (offset >= this.byteLength) {
@@ -65,6 +82,40 @@ export class ExtDataView extends DataView {
   setString(offset, string) {
     for (let i = 0; i < string.length; i++) {
       this.setUint8(offset + i, string.charCodeAt(i));
+    }
+  }
+}
+
+/**
+ * Helper for writing differently typed values into an ArrayBuffer
+ *
+ * @param {ArrayBuffer} buffer
+ */
+export class ArrayBufferWriter {
+  constructor(buffer) {
+    this.view = new DataView(buffer);
+    this.offset = 0;
+  }
+
+  writeUInt8(i) {
+    this.view.setInt8(this.offset, i);
+    this.offset += 1;
+  }
+
+  writeUInt16LE(i) {
+    this.view.setInt16(this.offset, i, true);
+    this.offset += 2;
+  }
+
+  writeUInt32LE(i) {
+    this.view.setInt32(this.offset, i, true);
+    this.offset += 4;
+  }
+
+  write(str) {
+    // TODO: check for only ASCII chars
+    for (let i = 0; i < str.length; i += 1) {
+      this.writeUInt8(str.charCodeAt(i));
     }
   }
 }

@@ -1,4 +1,4 @@
-import {ArrayBufferWriter} from '../utils/array_buffer_writer.js';
+import {ArrayBufferWriter} from '../utils.js';
 
 const dataMap = {
   true: 0xfe,
