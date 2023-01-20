@@ -1,9 +1,9 @@
 import * as ataricas from './formats/ataricas.js';
-import * as bin from './formats/bin.js';
 import * as c64prg from './formats/c64prg.js';
 import * as c64tap from './formats/c64tap.js';
 import * as c64t64 from './formats/c64t64.js';
 import * as cpccdt from './formats/cpccdt.js';
+import * as generic from './formats/generic.js';
 import * as kckcc from './formats/kckcc.js';
 import * as kcsss from './formats/kcsss.js';
 import * as kctap from './formats/kctap.js';
@@ -25,11 +25,11 @@ import {
 
 const formats = [
   ataricas,
-  bin,
   c64prg,
   c64tap,
   c64t64,
   cpccdt,
+  generic,
   kckcc,
   kcsss,
   kctap,

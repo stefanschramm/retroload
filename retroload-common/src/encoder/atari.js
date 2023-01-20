@@ -21,8 +21,12 @@ export class Encoder extends BaseEncoder {
     this.baudrate = baudrate;
   }
 
+  recordIrg(length) {
+    this.recordSeconds(fMark, length / 1000);
+  }
+
   recordData(irgLength, data) {
-    this.recordSeconds(fMark, irgLength / 1000);
+    this.recordIrg(irgLength);
     this.recordBytes(data);
   }
 
