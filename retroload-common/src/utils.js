@@ -31,7 +31,7 @@ export function dumpDv(dataView) {
   const bytesPerRow = 16;
   const rows = Math.ceil(dataView.byteLength / bytesPerRow);
   for (let row = 0; row < rows; row++) {
-    const remaining = (row === rows - 1) ? (dataView.byteLength % bytesPerRow) : 16;
+    const remaining = (row === rows - 1 && dataView.byteLength % bytesPerRow !== 0) ? (dataView.byteLength % bytesPerRow) : 16;
     const offset = (row * bytesPerRow).toString(16).padStart(8, '0');
     let firstOctet = '';
     for (let i = 0; i < 8 && i < remaining; i++) {
