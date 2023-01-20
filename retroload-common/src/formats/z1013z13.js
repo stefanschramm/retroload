@@ -1,5 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
-import {Encoder} from '../encoder/z1013.js';
+import {Z1013Adapter} from './generic/z1013.js';
 
 export function getName() {
   return 'Z1013 .Z13-File';
@@ -17,18 +16,5 @@ export function identify(filename, dataView) {
 }
 
 export function getAdapters() {
-  return [Adapter];
-}
-
-class Adapter extends AbstractAdapter {
-  static getTargetName() {
-    return Encoder.getTargetName();
-  }
-
-  static encode(recorder, dataView, options) {
-    const e = new Encoder(recorder);
-    e.begin();
-    e.recordData(dataView);
-    e.end();
-  }
+  return [Z1013Adapter];
 }
