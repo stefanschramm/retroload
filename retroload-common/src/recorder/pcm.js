@@ -15,7 +15,7 @@ export class PcmRecorder {
   }
 
   pushSample(value) {
-    this.data.push(value);
+    this.data.push(dataMap[value]);
   }
 
   getAudioContextBuffer() {
@@ -25,12 +25,8 @@ export class PcmRecorder {
     }
 
     const buffer = this.audioContext.createBuffer(1, this.data.length, this.sampleRate);
-    const channelData = buffer.getChannelData(0);
+    buffer.copyToChannel(new Float32Array(this.data), 0, 0);
 
-    let offset = 0;
-    for (const value of this.data) {
-      channelData[offset += 1] = dataMap[value];
-    }
     return buffer;
   }
 }
