@@ -7,6 +7,8 @@ export function getExamples() {
     // C64, VIC-20
     new Example('c64', 'rl.tap', {}, 'ecba52a4a6a2e894c3473590b77890dc', 'LOAD\n<space>\nSYS 4352'), // 2022-11-16 OK (C64 C)
     new Example('c64', 'rl.prg', {}, '1233722ffe4f62310c6777aaf606b5c2', 'LOAD\n<space>\nSYS 4352'), // 2022-11-16 OK (C64 C)
+    // CPC 464
+    new Example('cpc', 'rl.cdt', {}, 'befb57fcb5e0e6b7ccd20dde0a7a4841', 'MEMORY &2000\nLOAD "", &2000\nCALL &2000'), // 2023-01-21 OK (CPC 464)
     // KC 85/1
     new Example('kc851_tap', 'rl.tap', {}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2022-11-16 OK (KC 85/1)
     // KC 85/4
