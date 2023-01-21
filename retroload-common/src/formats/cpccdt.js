@@ -1,6 +1,7 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/cpctzx.js';
 import {containsDataAt} from '../utils.js';
+import {TzxProcessor} from './tzx.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
@@ -30,6 +31,7 @@ export class Adapter extends AbstractAdapter {
 
   static encode(recorder, dataView, options) {
     const e = new Encoder(recorder);
-    e.recordTzx(dataView);
+    const tzxProcessor = new TzxProcessor(e);
+    tzxProcessor.processTzx(dataView);
   }
 }
