@@ -20,4 +20,13 @@ export class Option {
 
 // Some common options used by several Adapters/Encoders
 
-export const ShortpilotOption = new Option('shortpilot', 'Short pilot', 'Use short pilot tone for faster start of loading', false, true, false);
+export const ShortpilotOption = new Option(
+    'shortpilot',
+    'Short pilot',
+    'Use short pilot tone for faster start of loading',
+    {
+      defaultValue: false,
+      common: true,
+      required: false,
+    },
+);

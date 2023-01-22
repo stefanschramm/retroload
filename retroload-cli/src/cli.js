@@ -19,8 +19,9 @@ async function main() {
       .option('-m, --machine <machine type>', 'Machine type to load data onto (required for some formats that can be used for several machines)')
   ;
   // Options defined in adapters/encoders
-  // TODO: Put common options first
-  for (const option of AdapterManager.getAllOptions()) {
+  const allOptions = AdapterManager.getAllOptions();
+  allOptions.sort((a, b) => a.common && !b.common ? -1 : 0);
+  for (const option of allOptions) {
     program.option(option.getCommanderFlagsString(), option.description, option.defaultValue);
   }
   program.parse();
