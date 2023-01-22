@@ -15,11 +15,11 @@
     "retroload": "./src/cli.js"
   },
   "dependencies": {
-    "commander": "^9.4.1",
+    "commander": "^10.0.0",
     "retroload-common": "^0.0.1"
   },
   "devDependencies": {
-    "eslint": "^8.31.0",
+    "eslint": "^8.32.0",
     "eslint-config-google": "^0.14.0"
   }
 }
