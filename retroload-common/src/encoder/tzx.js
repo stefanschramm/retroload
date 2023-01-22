@@ -36,14 +36,18 @@ export class TzxEncoder extends BaseEncoder {
 
   recordDataBlock(blockDataDv, options) {
     const pilotSamples = this.tzxCyclesToSamples(options.pilotPulseLength);
-    const zeroBitSamples = this.tzxCyclesToSamples(options.zeroBitPulseLength);
-    const oneBitSamples = this.tzxCyclesToSamples(options.oneBitPulseLength);
-
     for (let i = 0; i < options.pilotPulses; i++) {
       this.recordHalfOscillationSamples(pilotSamples);
     }
-    this.recordHalfOscillationSamples(this.tzxCyclesToSamples(options.syncFirstPulseLength));
-    this.recordHalfOscillationSamples(this.tzxCyclesToSamples(options.syncSecondPulseLength));
+    this.recordPulse(options.syncFirstPulseLength);
+    this.recordPulse(options.syncSecondPulseLength);
+    this.recordPureDataBlock(blockDataDv, options);
+  }
+
+  recordPureDataBlock(blockDataDv, options) {
+    const zeroBitSamples = this.tzxCyclesToSamples(options.zeroBitPulseLength);
+    const oneBitSamples = this.tzxCyclesToSamples(options.oneBitPulseLength);
+
     for (let i = 0; i < blockDataDv.byteLength; i++) {
       let byte = blockDataDv.getUint8(i);
       let bits = (i === blockDataDv.byteLength - 1) ? options.lastByteUsedBits : 8;
@@ -57,6 +61,10 @@ export class TzxEncoder extends BaseEncoder {
     }
 
     this.recordSilenceMs(options.pauseLengthMs);
+  }
+
+  recordPulse(length) {
+    this.recordHalfOscillationSamples(this.tzxCyclesToSamples(length));
   }
 
   recordBit(value) {

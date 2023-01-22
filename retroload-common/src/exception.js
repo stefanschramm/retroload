@@ -10,6 +10,9 @@ export class UsageError extends Error {
 export class InternalError extends Error {
 }
 
+export class InputDataError extends UsageError {
+}
+
 export class FormatAutodetectionFailedError extends UsageError {
   constructor() {
     super('Unable to autodetect input file format. Please select format manually.');
