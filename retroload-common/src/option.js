@@ -30,3 +30,37 @@ export const ShortpilotOption = new Option(
       required: false,
     },
 );
+
+export const NameOption = new Option(
+    'name',
+    'File name',
+    'File name for tape record. Different machines have different constraints for file names.',
+    {
+      argument: 'name',
+      common: true,
+      required: false,
+      defaultValue: '',
+    },
+);
+
+export const LoadOption = new Option(
+    'load',
+    'Load address',
+    'Address (hexadecimal 16-bit number) where to load the program to',
+    {
+      argument: 'address',
+      common: true,
+      required: false,
+    },
+);
+
+export const EntryOption = new Option(
+    'entry',
+    'Entry address',
+    'Address (hexadecimal 16-bit number) of entry point of program (in memory)',
+    {
+      argument: 'address',
+      common: true,
+      required: false,
+    },
+);

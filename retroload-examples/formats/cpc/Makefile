@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.cdt
+all: rl.cdt rl.bin
 
 # https://www.cpcwiki.eu/forum/applications/2cdt/
 # https://github.com/lronaldo/cpctelera/tree/master/cpctelera/tools/2cdt

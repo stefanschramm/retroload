@@ -101,8 +101,7 @@ export class BaseEncoder {
   }
 
   recordUint16Le(value) {
-    const buffer = new ArrayBuffer(2);
-    const view = new DataView(buffer);
+    const view = new DataView(new ArrayBuffer(2));
     view.setUint16(0, value, true);
     this.recordBytes(view);
   }

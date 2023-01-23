@@ -30,7 +30,7 @@ export class TzxEncoder extends BaseEncoder {
   recordStandardSpeedDataBlock(blockDataDv) {
     this.recordDataBlock(blockDataDv, {
       ...standardSpeedRecordOptions,
-      pilotPulses: blockDataDv.getUint8(0) < 128 ? 8063 : 3223,
+      pilotPulses: blockDataDv.getUint8(0) < 128 ? 8063 : 3223, // TODO: why?
     });
   }
 
@@ -65,14 +65,6 @@ export class TzxEncoder extends BaseEncoder {
 
   recordPulse(length) {
     this.recordHalfOscillationSamples(this.tzxCyclesToSamples(length));
-  }
-
-  recordBit(value) {
-    if (value) {
-      this.recordHalfOscillationSamples(this.parameters.oneBitSamples);
-    } else {
-      this.recordHalfOscillationSamples(this.parameters.zeroBitSamples);
-    }
   }
 
   tzxCyclesToSamples(cycles) {

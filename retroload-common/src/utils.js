@@ -71,18 +71,38 @@ export class ExtDataView extends DataView {
     );
   }
 
+  // TODO: rename; won't actually copy it
   asUint8ArrayCopy() {
     return new Uint8Array(this.buffer, this.byteOffset, this.byteLength);
+  }
+
+  asPaddedCopy(length) {
+    if (this.byteLength > length || length === undefined) {
+      throw new Error('Illegal length.');
+    }
+    const destination = new ExtDataView(new ArrayBuffer(length));
+    for (let i = 0; i < this.byteLength; i++) {
+      destination.setUint8(i, this.getUint8(i));
+    }
+
+    return destination;
   }
 
   asAsciiString() {
     return (new TextDecoder()).decode(this.asUint8ArrayCopy());
   }
 
-  setString(offset, string) {
+  setString(offset, string, paddingLength = 0, paddingCharCode = 0) {
     for (let i = 0; i < string.length; i++) {
       this.setUint8(offset + i, string.charCodeAt(i));
     }
+    for (let i = 0; i < paddingLength - string.length; i++) {
+      this.setUint8(offset + string.length, paddingCharCode);
+    }
+  }
+
+  setUint8Array(offset, source) {
+    this.asUint8ArrayCopy().set(source, offset);
   }
 }
 
