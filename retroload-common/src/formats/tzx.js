@@ -72,7 +72,7 @@ export class TzxProcessor {
         // I've seen these block types in .cdt files, but they're not implemented yet.
         throw new InputDataError(`Unimplemented TZX/CDT block type: 0x${blockId.toString(16)}. This file is currently not supported.`);
       default:
-        throw new InputDataError(`Unknown TZX/CDT block type: 0x${blsockId.toString(16)}`);
+        throw new InputDataError(`Unknown TZX/CDT block type: 0x${blockId.toString(16)}`);
         // TODO: General Extension Rule: ALL custom blocks that will be added after version 1.10 will have the length of the block in first 4 bytes (long word) after the ID (this length does not include these 4 length bytes). This should enable programs that can only handle older versions to skip that block.
     }
   }
