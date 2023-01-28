@@ -1,4 +1,5 @@
 import {AbstractAdapter} from './adapter.js';
+import {ShortpilotOption} from '../option.js';
 import {Encoder} from '../encoder/c64.js';
 // import {C64TapWriter as Encoder} from '../debug/c64_tap_writer.js';
 
@@ -26,13 +27,19 @@ class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
+  static getOptions() {
+    return [
+      ShortpilotOption, // (not available for .tap)
+    ];
+  }
+
   static encode(recorder, dataView, options) {
     const header = dataView.referencedSlice(0, 2);
     const loadAddress = header.getUint16(0, true);
     const data = dataView.referencedSlice(2);
-    const e = new Encoder(recorder);
+    const e = new Encoder(recorder, options);
     e.begin();
-    e.recordPrg(loadAddress, '                ', data);
+    e.recordPrg(loadAddress, '                ', data, options.shortpilot);
     e.end();
   }
 }

@@ -98,7 +98,7 @@ export class Encoder extends BaseEncoder {
     this.recordByte(checkByte);
   }
 
-  recordPrg(startAddress, filenameBuffer, dataDv) {
+  recordPrg(startAddress, filenameBuffer, dataDv, shortpilot) {
     const headerBuffer = new ArrayBuffer(192);
     const headerDv = new ExtDataView(headerBuffer);
     headerDv.setUint8(0, fileTypePrg); // 1 byte: file type: prg file
@@ -108,7 +108,7 @@ export class Encoder extends BaseEncoder {
     headerDv.setString(21, ' '.repeat(171)); // 171 bytes: padding with spaces
 
     // header
-    this.recordPilot(0x6a00);
+    this.recordPilot(shortpilot ? 0x100 : 0x6a00);
     this.recordSyncChain();
     this.recordDataWithCheckByte(headerDv);
     this.recordEndOfDataMarker();
