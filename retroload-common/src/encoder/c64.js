@@ -1,11 +1,12 @@
 import {BaseEncoder} from './base.js';
 import {ExtDataView} from '../utils.js';
+import {InternalError} from '../exception.js';
 
 // https://www.c64-wiki.com/wiki/Datassette_Encoding
 
 const palClockCycles = 985248;
 
-// const fileTypeBasic = 0x01;
+const fileTypeBasic = 0x01;
 // const fileTypeSeqFileDataBlock = 0x02;
 const fileTypePrg = 0x03;
 // const fileTypeSeqFileHeader = 0x04;
@@ -98,17 +99,31 @@ export class Encoder extends BaseEncoder {
     this.recordByte(checkByte);
   }
 
+  recordBasic(startAddress, filenameBuffer, dataDv, shortpilot) {
+    // TODO: test
+    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataDv, shortpilot);
+  }
+
   recordPrg(startAddress, filenameBuffer, dataDv, shortpilot) {
+    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataDv, shortpilot);
+  }
+
+  recordData() {
+    // TODO: implement + test
+    throw new InternalError('recordData not implemented yet');
+  }
+
+  recordBasicOrPrg(fileType, startAddress, filenameBuffer, dataDv, shortpilot) {
     const headerBuffer = new ArrayBuffer(192);
     const headerDv = new ExtDataView(headerBuffer);
-    headerDv.setUint8(0, fileTypePrg); // 1 byte: file type: prg file
+    headerDv.setUint8(0, fileType); // 1 byte: file type: prg or basic file
     headerDv.setUint16(1, startAddress, true); // 2 bytes: start address
     headerDv.setUint16(3, startAddress + dataDv.byteLength, true); // 2 bytes: end address
     headerDv.setString(5, filenameBuffer); // 16 bytes: filename
     headerDv.setString(21, ' '.repeat(171)); // 171 bytes: padding with spaces
 
     // header
-    this.recordPilot(shortpilot ? 0x100 : 0x6a00);
+    this.recordPilot(shortpilot ? 0x1a00 : 0x6a00);
     this.recordSyncChain();
     this.recordDataWithCheckByte(headerDv);
     this.recordEndOfDataMarker();

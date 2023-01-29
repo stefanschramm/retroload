@@ -1,4 +1,5 @@
 import {AtariAdapter} from './generic/atari.js';
+import {C64Adapter} from './generic/c64.js';
 import {Lc80Adapter} from './generic/lc80.js';
 import {Z1013Adapter} from './generic/z1013.js';
 
@@ -20,6 +21,7 @@ export function identify(filename, dataView) {
 export function getAdapters() {
   return [
     AtariAdapter,
+    C64Adapter,
     Lc80Adapter,
     Z1013Adapter,
   ];

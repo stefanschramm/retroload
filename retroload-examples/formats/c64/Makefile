@@ -29,6 +29,9 @@ emuprgc64: rl.prg
 %.prg: %.asm
 	xa -DMAKE_PRG=1 $< -o $@
 
+%.bin: %.asm
+	xa $< -o $@
+
 clean:
 	rm -f *.prg *.tap *.wav
 
