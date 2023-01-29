@@ -1,10 +1,12 @@
+include ../Makefile.inc
+
 all: rl.kcc
 
 %.wav: %.kcc
 	retroload -o $@ $<
 
 %.kcc: %.asm
-	z80asm $< -o $@
+	$(Z80_ASM) $< -o $@
 
 clean:
 	rm -f *.kcc *.wav

@@ -1,3 +1,5 @@
+include ../Makefile.inc
+
 all: rl.tap rl.prg
 
 # Emulator:
@@ -27,10 +29,10 @@ emuprgc64: rl.prg
 	prg2tap $< $@
 
 %.prg: %.asm
-	xa -DMAKE_PRG=1 $< -o $@
+	$(65XX_ASM) -DMAKE_PRG=1 $< -o $@
 
 %.bin: %.asm
-	xa $< -o $@
+	$(65XX_ASM) $< -o $@
 
 clean:
 	rm -f *.prg *.tap *.wav

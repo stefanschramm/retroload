@@ -2,6 +2,8 @@
 # Load:
 # ENTER "C:"
 
+include ../Makefile.inc
+
 all: rl.atascii
 
 %.wav: %.atascii

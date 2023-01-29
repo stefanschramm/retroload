@@ -9,5 +9,7 @@ if [ ! -d "$FORMATS_DIR" ] ; then
 fi
 
 for FORMAT in "$(dirname $(realpath $0))/formats/"* ; do
-  make -C "${FORMAT}" clean all
+	if [ -d "${FORMAT}" ] ; then
+		make -C "${FORMAT}" clean all
+	fi
 done

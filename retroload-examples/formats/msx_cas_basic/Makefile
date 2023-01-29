@@ -1,3 +1,5 @@
+include ../Makefile.inc
+
 all: rl.cas
 
 # https://openmsx.org/
@@ -5,7 +7,7 @@ run: rl.cas
 	openmsx -machine "Philips_VG_8020-20" rl.cas
 
 rl.cas: rl.asm rl.bas
-	z80asm $< -o $@
+	$(Z80_ASM) $< -o $@
 
 # https://github.com/farique1/MSX-Basic-Tokenizer
 %.bas: %.txt

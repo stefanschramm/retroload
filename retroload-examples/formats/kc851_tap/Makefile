@@ -1,3 +1,5 @@
+include ../Makefile.inc
+
 all: rl.tap
 
 %.wav: %.tap
@@ -7,7 +9,7 @@ all: rl.tap
 	./utils/kc851com2tap.py --recordname RL --outputfilename "$@" "$<"
 
 %.com: %.asm
-	z80asm "$<" -o "$@"
+	$(Z80_ASM) "$<" -o "$@"
 
 clean:
 	rm -f *.com *.tap *.wav

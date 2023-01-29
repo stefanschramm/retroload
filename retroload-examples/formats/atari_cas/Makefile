@@ -1,3 +1,5 @@
+include ../Makefile.inc
+
 all: rl.cas
 
 # https://atari800.github.io/
@@ -12,7 +14,7 @@ run: rl.cas
 	a8cas-convert -f c -r $< $@
 
 %.img: %.asm
-	xa $< -o $@
+	$(65XX_ASM) $< -o $@
 
 clean:
 	rm -f *.wav *.cas *.img

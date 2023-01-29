@@ -1,3 +1,5 @@
+include ../Makefile.inc
+
 all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx
 
 # https://github.com/weiju/zxtaputils
@@ -13,7 +15,7 @@ all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx
 	tapify --objtype code --filename RL --startaddr 32768 $< $@
 
 %.bin: %.asm
-	z80asm $< -o $@
+	$(Z80_ASM) $< -o $@
 
 %.tap.wav: %.tap
 	retroload -f zxspectrumtap -o $@ $<

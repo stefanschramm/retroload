@@ -1,7 +1,9 @@
+include ../Makefile.inc
+
 all: rl.z13
 
 %.z13: %.asm
-	z80asm "$<" -o "$@"
+	$(Z80_ASM) "$<" -o "$@"
 
 %.wav: %.z13
 	retroload -o $@ $<
