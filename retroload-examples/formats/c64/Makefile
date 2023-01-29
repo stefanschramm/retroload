@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.tap rl.prg
+all: rl.tap rl.prg rl.bin
 
 # Emulator:
 # https://vice-emu.sourceforge.io/

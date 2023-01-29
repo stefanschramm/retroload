@@ -46,22 +46,15 @@ WRITE_STRING_END:
 
 
 GREETING:
-	.byt	$0d
-	.asc	"----------------------"
-	.byt	$0d
-	.byt	$0d
-	.asc	"RETROLOAD.COM"
-	.byt	$0d
-	.byt	$0d
-	.asc	"EXAMPLE FOR C64 AND"
-	.byt	$0d
-	.asc	"VIC20"
-	.byt	$0d
-	.byt	$0d
-	.asc	"LOADED AND EXECUTED!"
-	.byt	$0d
-	.byt	$0d
-	.asc	"----------------------"
-	.byt	$0d
-	.byt	$0d
-	.byt	$00
+	.asc	$0d
+	.asc	"----------------------", $0d
+	.asc	$0d
+	.asc	"RETROLOAD.COM", $0d
+	.asc	$0d
+	.asc	"EXAMPLE FOR C64 AND", $0d
+	.asc	"VIC20", $0d
+	.asc	$0d
+	.asc	"LOADED AND EXECUTED!", $0d
+	.asc	$0d
+	.asc	"----------------------", $0d
+	.asc	$0d, $00
