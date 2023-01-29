@@ -1,9 +1,10 @@
 import * as utils from '../utils.js';
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/c64.js';
-// import {C64TapWriter as Encoder} from '../debug/c64_tap_writer.js';
+import {ShortpilotOption} from '../option.js';
 
-const fileHeader = 'C64 tape image file';
+// Usually 'C64 tape image file' but might be different
+const fileHeader = 'C64';
 
 export function getName() {
   return 'C64 .T64-File';
@@ -29,10 +30,17 @@ export class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, arrayBuffer, options) {
+  static getOptions() {
+    return [
+      ShortpilotOption, // (not available for .tap)
+    ];
+  }
+
+  // http://unusedino.de/ec64/technical/formats/t64.html
+  static encode(recorder, dataView, options) {
     const e = new Encoder(recorder);
 
-    const header = new DataView(arrayBuffer, 0, 0x40);
+    const header = dataView.referencedSlice(0, 0x40);
     const entries = header.getUint16(0x24, true);
 
     e.begin();
@@ -40,7 +48,7 @@ export class Adapter extends AbstractAdapter {
     for (let entry = 0; entry < entries; entry++) {
       const entryLength = 0x20;
       const entryOffset = header.byteLength + (entry * entryLength);
-      const entryInfo = new DataView(arrayBuffer, entryOffset, entryLength);
+      const entryInfo = dataView.referencedSlice(entryOffset, entryLength);
       const type = entryInfo.getUint8(0x00); // 0 = free, 1 = tape file, 2 = memory snapshot
       if (0 === type) {
         continue; // not interesting
@@ -49,9 +57,9 @@ export class Adapter extends AbstractAdapter {
       const endAddress = entryInfo.getUint16(0x04, true);
       const dataLength = endAddress - loadAddress;
       const containerOffset = entryInfo.getUint16(0x08, true);
-      const filename = new Uint8Array(arrayBuffer, entryOffset + 0x10, 0x10);
-      const entryData = new Uint8Array(arrayBuffer, containerOffset, dataLength);
-      e.recordPrg(loadAddress, filename, entryData);
+      const filename = dataView.referencedSlice(entryOffset + 0x10, 0x10);
+      const entryData = dataView.referencedSlice(containerOffset, dataLength);
+      e.recordPrg(loadAddress, filename.asAsciiString(), entryData);
     }
 
     e.end();
