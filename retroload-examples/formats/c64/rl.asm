@@ -12,6 +12,16 @@ TMP_STRING_PTR = $0035 ; and next byte
 
 	* = OFFSET
 
+#ifdef MAKE_P00
+	; http://unusedino.de/ec64/technical/formats/pc64.html
+	.asc	"C64File", $00
+	.asc	"RL", $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	.asc	$00
+	.asc	$00
+	* = OFFSET
+	.word	*
+	* = OFFSET
+#endif
 #ifdef MAKE_PRG
 	; a .prg file has the offset address as first 2 bytes
 	.word	*

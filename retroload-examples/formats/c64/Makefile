@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.tap rl.prg rl.bin
+all: rl.tap rl.prg rl.bin rl.p00
 
 # Emulator:
 # https://vice-emu.sourceforge.io/
@@ -27,6 +27,9 @@ emuprgc64: rl.prg
 # https://www.luigidifraia.com/hosted/software/prg2tap-1.8-linux-x86_64-with-examples.tar.gz
 %.tap: %.prg
 	prg2tap $< $@
+
+%.p00: %.asm
+	$(65XX_ASM) -DMAKE_P00=1 $< -o $@
 
 %.prg: %.asm
 	$(65XX_ASM) -DMAKE_PRG=1 $< -o $@

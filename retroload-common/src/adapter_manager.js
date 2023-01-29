@@ -1,4 +1,5 @@
 import * as ataricas from './formats/ataricas.js';
+import * as c64p00 from './formats/c64p00.js';
 import * as c64prg from './formats/c64prg.js';
 import * as c64tap from './formats/c64tap.js';
 import * as c64t64 from './formats/c64t64.js';
@@ -25,6 +26,7 @@ import {
 
 const formats = [
   ataricas,
+  c64p00,
   c64prg,
   c64tap,
   c64t64,
