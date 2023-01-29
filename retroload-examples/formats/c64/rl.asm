@@ -10,7 +10,7 @@ OFFSET	= $1100 ; start the program using SYS 4352
 
 TMP_STRING_PTR = $0035 ; and next byte
 
-	* = OFFSET
+* = $0000
 
 #ifdef MAKE_P00
 	; http://unusedino.de/ec64/technical/formats/pc64.html
@@ -18,15 +18,39 @@ TMP_STRING_PTR = $0035 ; and next byte
 	.asc	"RL", $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 	.asc	$00
 	.asc	$00
-	* = OFFSET
-	.word	*
-	* = OFFSET
+	.word	OFFSET
 #endif
+
+#ifdef MAKE_T64
+	; http://unusedino.de/ec64/technical/formats/t64.html
+	; tape archive header
+	.asc	"C64 tape image file", $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+	.word	$0100 ; version
+	.word	1 ; maximum number of entries
+	.word	1 ; total number of used entries
+	.word	0 ; unused
+	.asc	"RL                      " ; tape container name
+	; entries
+	.byte	1 ; type: normal tape file
+	.byte	$82 ; type: prg
+	.word	OFFSET ; load address
+	.word	OFFSET + END - START ; end address
+	.word	0 ; unused
+	.word	T64_CONTAINER_START ; offset in container file
+	.word	0 ; offset in container file (H)
+	.asc	0, 0, 0, 0 ; unused
+	.asc	"RL              " ; file name
+T64_CONTAINER_START:
+#endif
+
 #ifdef MAKE_PRG
-	; a .prg file has the offset address as first 2 bytes
-	.word	*
-	* = OFFSET
+	; a .prg file has just the offset address as first 2 bytes
+	.word	OFFSET
 #endif
+
+	* = OFFSET
+
+START:
 
 ; actual program
 
@@ -68,3 +92,5 @@ GREETING:
 	.asc	$0d
 	.asc	"----------------------", $0d
 	.asc	$0d, $00
+
+END:

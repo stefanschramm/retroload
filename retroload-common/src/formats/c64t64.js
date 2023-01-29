@@ -56,7 +56,7 @@ export class Adapter extends AbstractAdapter {
       const loadAddress = entryInfo.getUint16(0x02, true);
       const endAddress = entryInfo.getUint16(0x04, true);
       const dataLength = endAddress - loadAddress;
-      const containerOffset = entryInfo.getUint16(0x08, true);
+      const containerOffset = entryInfo.getUint32(0x08, true);
       const filename = dataView.referencedSlice(entryOffset + 0x10, 0x10);
       const entryData = dataView.referencedSlice(containerOffset, dataLength);
       e.recordPrg(loadAddress, filename.asAsciiString(), entryData);

@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.tap rl.prg rl.bin rl.p00
+all: rl.tap rl.prg rl.bin rl.p00 rl.t64
 
 # Emulator:
 # https://vice-emu.sourceforge.io/
@@ -34,9 +34,12 @@ emuprgc64: rl.prg
 %.prg: %.asm
 	$(65XX_ASM) -DMAKE_PRG=1 $< -o $@
 
+%.t64: %.asm
+	$(65XX_ASM) -DMAKE_T64=1 $< -o $@
+
 %.bin: %.asm
 	$(65XX_ASM) $< -o $@
 
 clean:
-	rm -f *.prg *.tap *.wav
+	rm -f *.prg *.tap *.wav *.bin
 
