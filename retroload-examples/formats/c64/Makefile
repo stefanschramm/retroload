@@ -41,5 +41,4 @@ emuprgc64: rl.prg
 	$(65XX_ASM) $< -o $@
 
 clean:
-	rm -f *.prg *.tap *.wav *.bin
-
+	rm -f *.prg *.tap *.wav *.bin *.t64
