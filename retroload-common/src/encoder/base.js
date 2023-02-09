@@ -35,9 +35,9 @@ export class BaseEncoder {
     }
   }
 
-  recordBytes(data) {
-    for (let i = 0; i < data.byteLength; i++) {
-      this.recordByte(data.getUint8(i));
+  recordBytes(dataBa) {
+    for (let i = 0; i < dataBa.length(); i++) {
+      this.recordByte(dataBa.getUint8(i));
     }
   }
 

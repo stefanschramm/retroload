@@ -1,4 +1,4 @@
-import {ArrayBufferWriter} from '../utils.js';
+import {BufferAccess} from '../utils.js';
 
 const dataMap = {
   true: 0xfe,
@@ -26,32 +26,30 @@ export class WaveRecorder {
     const byteRate = this.sampleRate * channels * Math.floor(bitsPerSample / 8);
     const blockAlign = channels * Math.floor(bitsPerSample / 8);
 
-    const buffer = new ArrayBuffer(chunkSize + 8);
-    const bufferWriter = new ArrayBufferWriter(buffer);
+    const ba = BufferAccess.create(chunkSize + 8);
 
     // RIFF section
-    bufferWriter.write('RIFF');
-    bufferWriter.writeUInt32LE(chunkSize);
-    bufferWriter.write('WAVE');
+    ba.writeAsciiString('RIFF');
+    ba.writeUInt32LE(chunkSize);
+    ba.writeAsciiString('WAVE');
 
     // Format section
-    bufferWriter.write('fmt ');
-    bufferWriter.writeUInt32LE(formatChunkSize);
-    bufferWriter.writeUInt16LE(format);
-    bufferWriter.writeUInt16LE(channels);
-    bufferWriter.writeUInt32LE(this.sampleRate);
-    bufferWriter.writeUInt32LE(byteRate);
-    bufferWriter.writeUInt16LE(blockAlign);
-    bufferWriter.writeUInt16LE(bitsPerSample);
+    ba.writeAsciiString('fmt ');
+    ba.writeUInt32LE(formatChunkSize);
+    ba.writeUInt16LE(format);
+    ba.writeUInt16LE(channels);
+    ba.writeUInt32LE(this.sampleRate);
+    ba.writeUInt32LE(byteRate);
+    ba.writeUInt16LE(blockAlign);
+    ba.writeUInt16LE(bitsPerSample);
 
     // Data section
-    bufferWriter.write('data');
-    bufferWriter.writeUInt32LE(this.data.length);
+    ba.writeAsciiString('data');
+    ba.writeUInt32LE(this.data.length);
 
-    const uint8Array = new Uint8Array(buffer);
-    uint8Array.set(this.getRawBuffer(), bufferWriter.offset);
+    ba.writeBa(BufferAccess.createFromUint8Array(this.getRawBuffer()));
 
-    return uint8Array;
+    return ba.asUint8Array();
   }
   getRawBuffer() {
     return new Uint8Array(this.data);

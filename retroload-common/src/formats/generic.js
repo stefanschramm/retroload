@@ -12,7 +12,7 @@ export function getInternalName() {
   return 'generic';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.(bin|raw|txt|asc|atascii)$/i) !== null,
     header: false,

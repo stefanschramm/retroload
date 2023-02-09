@@ -14,7 +14,6 @@ import * as z1013z80 from './formats/z1013z80.js';
 import * as zx81p from './formats/zx81p.js';
 import * as zxspectrumtap from './formats/zxspectrumtap.js';
 import * as zxspectrumtzx from './formats/zxspectrumtzx.js';
-import {ExtDataView} from './utils.js';
 import {
   FormatAutodetectionFailedError,
   FormatNotFoundError,
@@ -23,6 +22,7 @@ import {
   InternalError,
   MissingOptionsError,
 } from './exception.js';
+import {BufferAccess} from './utils.js';
 
 const formats = [
   ataricas,
@@ -51,9 +51,9 @@ const formats = [
  * @return {boolean} true on success
  */
 export function encode(recorder, filename, data, options={}) {
-  const dataView = new ExtDataView(data);
+  const ba = new BufferAccess(data);
   const format = (options.format === undefined) ?
-    autodetectFormat(filename, dataView) :
+    autodetectFormat(filename, ba) :
     getFormatByInternalName(options.format)
   ;
   const adapter = determineAdapterToUse(format, options.machine);
@@ -65,7 +65,7 @@ export function encode(recorder, filename, data, options={}) {
 
   console.debug('Format: ' + format.getName() + ', Target: ' + adapter.getTargetName());
 
-  adapter.encode(recorder, dataView, options);
+  adapter.encode(recorder, ba, options);
 
   return true;
 }
@@ -91,8 +91,8 @@ export function getAllOptions() {
   return options;
 }
 
-function autodetectFormat(filename, dataView) {
-  const rankedFormats = getRankedFormatIdentifications(filename, dataView);
+function autodetectFormat(filename, ba) {
+  const rankedFormats = getRankedFormatIdentifications(filename, ba);
 
   if (rankedFormats.length > 1 && rankedFormats[0].score === rankedFormats[1].score) {
     throw new FormatAutodetectionFailedError();
@@ -111,9 +111,9 @@ function getFormatByInternalName(name) {
   throw new FormatNotFoundError(name);
 }
 
-function getRankedFormatIdentifications(filename, dataView) {
+function getRankedFormatIdentifications(filename, ba) {
   const formatIdentifications = formats.map(function(format) {
-    const identifiation = format.identify(filename, dataView);
+    const identifiation = format.identify(filename, ba);
     const score =
       ((identifiation.header === true) ? 20 : 0) +
       ((identifiation.filename === true) ? 10 : 0)
