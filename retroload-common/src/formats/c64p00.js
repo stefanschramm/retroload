@@ -1,4 +1,3 @@
-import * as utils from '../utils.js';
 import {AbstractAdapter} from './adapter.js';
 import {ShortpilotOption} from '../option.js';
 import {Encoder} from '../encoder/c64.js';
@@ -14,10 +13,10 @@ export function getInternalName() {
 }
 
 // We support p00 only, not multiple parts (p01, ...)
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.p00$/i) !== null,
-    header: utils.containsDataAt(dataView, 0, fileHeader),
+    header: ba.containsDataAt(0, fileHeader),
   };
 }
 
@@ -37,10 +36,10 @@ class Adapter extends AbstractAdapter {
   }
 
   // http://unusedino.de/ec64/technical/formats/pc64.html
-  static encode(recorder, dataView, options) {
-    const fileName = dataView.referencedSlice(8, 0x17);
-    const loadAddress = dataView.getUint16(0x1a, true);
-    const data = dataView.referencedSlice(0x1c);
+  static encode(recorder, ba, options) {
+    const fileName = ba.slice(8, 0x10);
+    const loadAddress = ba.getUint16LE(0x1a);
+    const data = ba.slice(0x1c);
     const e = new Encoder(recorder, options);
     e.begin();
     e.recordPrg(loadAddress, fileName.asAsciiString(), data, options.shortpilot);

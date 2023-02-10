@@ -1,6 +1,6 @@
 import {AbstractAdapter} from '../adapter.js';
 import {Encoder} from '../../encoder/atari.js';
-import {ExtDataView} from '../../utils.js';
+import {BufferAccess} from '../../utils.js';
 
 const markerByte = 0x55;
 const blockTypeFull = 0xfc;
@@ -16,30 +16,35 @@ export class AtariAdapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
+  /**
+   * @param {WaveRecorder|PcmRecorder} recorder
+   * @param {BufferAccess} ba
+   * @param {object} options
+   */
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder);
     e.setDefaultBaudrate();
-    const blocks = Math.ceil(dataView.byteLength / dataBytesPerBlock);
+    const blocks = Math.ceil(ba.length() / dataBytesPerBlock);
     console.debug(`Data block count: ${blocks}`);
     for (let blockId = 0; blockId < blocks; blockId++) {
-      const remainingBytes = dataView.byteLength - (blockId * dataBytesPerBlock);
+      const remainingBytes = ba.length() - (blockId * dataBytesPerBlock);
       const partialBlock = remainingBytes < dataBytesPerBlock;
       const dataBytesInCurrentBlock = partialBlock ? remainingBytes : dataBytesPerBlock;
       const blockType = partialBlock ? blockTypePartial : blockTypeFull;
-      const dataDv = dataView.referencedSlice(blockId * dataBytesPerBlock, dataBytesInCurrentBlock);
+      const dataBa = ba.slice(blockId * dataBytesPerBlock, dataBytesInCurrentBlock);
       // actual block length will be 132 bytes: 2 markers, 1 block type byte, 128 actual data bytes, 1 checksum byte
       e.recordIrg((blockId === 0) ? pilotIrgLength : defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
       e.recordByte(markerByte);
       e.recordByte(markerByte);
       e.recordByte(blockType);
-      e.recordBytes(dataDv);
+      e.recordBytes(dataBa);
       if (partialBlock) {
         for (let i = 0; i < dataBytesPerBlock - dataBytesInCurrentBlock - 1; i++) {
           e.recordByte(0);
         }
         e.recordByte(dataBytesInCurrentBlock);
       }
-      e.recordByte(calculateChecksum(blockType, dataDv, partialBlock ? dataBytesInCurrentBlock : 0));
+      e.recordByte(calculateChecksum(blockType, dataBa, partialBlock ? dataBytesInCurrentBlock : 0));
     }
 
     // End of file block
@@ -47,17 +52,17 @@ export class AtariAdapter extends AbstractAdapter {
     e.recordByte(markerByte);
     e.recordByte(markerByte);
     e.recordByte(blockTypeEndOfFile);
-    e.recordBytes(new ExtDataView(new ArrayBuffer(dataBytesPerBlock)));
+    e.recordBytes(BufferAccess.create(dataBytesPerBlock));
     e.recordByte(0xa9); // precalculated checksum
   }
 }
 
-function calculateChecksum(blockType, dataDv, partialBlockByteCount) {
+function calculateChecksum(blockType, dataBa, partialBlockByteCount) {
   // 8 bit checksum with carry being added
   let sum = ((0x55 + 0x55 + blockType) & 0xff) + 1; // + 1 because block type values will make it always overflow
 
-  for (let i = 0; i < dataDv.byteLength; i++) {
-    sum += dataDv.getUint8(i);
+  for (let i = 0; i < dataBa.length(); i++) {
+    sum += dataBa.getUint8(i);
     if (sum > 255) {
       sum = (sum & 0xff) + 1;
     }

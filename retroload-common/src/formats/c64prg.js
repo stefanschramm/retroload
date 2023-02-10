@@ -11,7 +11,7 @@ export function getInternalName() {
   return 'c64prg';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.prg$/i) !== null,
     header: undefined, // no specific header
@@ -33,13 +33,13 @@ class Adapter extends AbstractAdapter {
     ];
   }
 
-  static encode(recorder, dataView, options) {
-    const header = dataView.referencedSlice(0, 2);
-    const loadAddress = header.getUint16(0, true);
-    const data = dataView.referencedSlice(2);
+  static encode(recorder, ba, options) {
+    const header = ba.slice(0, 2);
+    const loadAddress = header.getUint16LE(0);
+    const data = ba.slice(2);
     const e = new Encoder(recorder, options);
     e.begin();
-    e.recordPrg(loadAddress, '                ', data, options.shortpilot);
+    e.recordPrg(loadAddress, ' '.repeat(16), data, options.shortpilot);
     e.end();
   }
 }

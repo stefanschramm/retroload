@@ -1,4 +1,5 @@
 import {InternalError} from '../exception.js';
+import {BufferAccess} from '../utils.js';
 
 /**
  * Base class for all encoders. Provides many methods commonly used.
@@ -30,7 +31,7 @@ export class BaseEncoder {
 
   recordAscii(str) {
     const isString = typeof str === 'string';
-    for (let i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length(); i++) {
       this.recordByte(isString ? str.charCodeAt(i) : str[i]);
     }
   }
@@ -101,8 +102,8 @@ export class BaseEncoder {
   }
 
   recordUint16Le(value) {
-    const view = new DataView(new ArrayBuffer(2));
-    view.setUint16(0, value, true);
-    this.recordBytes(view);
+    const ba = BufferAccess.create(2);
+    ba.writeUintLE(0, value);
+    this.recordBytes(ba);
   }
 }

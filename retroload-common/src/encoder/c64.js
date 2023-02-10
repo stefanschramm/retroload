@@ -1,6 +1,6 @@
 import {BaseEncoder} from './base.js';
-import {ExtDataView} from '../utils.js';
 import {InternalError} from '../exception.js';
+import {BufferAccess} from '../utils.js';
 
 // https://www.c64-wiki.com/wiki/Datassette_Encoding
 
@@ -70,12 +70,12 @@ export class Encoder extends BaseEncoder {
 
   recordSyncChain() {
     const syncChain = new Uint8Array([0x89, 0x88, 0x87, 0x86, 0x85, 0x84, 0x83, 0x82, 0x81]);
-    this.recordBytes(new DataView(syncChain.buffer));
+    this.recordBytes(new BufferAccess(syncChain.buffer));
   }
 
   recordSyncChainRepeated() {
     const syncChain = new Uint8Array([0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01]);
-    this.recordBytes(new DataView(syncChain.buffer));
+    this.recordBytes(new BufferAccess(syncChain.buffer));
   }
 
   recordByte(byte) {
@@ -89,23 +89,23 @@ export class Encoder extends BaseEncoder {
     this.recordBit(checkBit);
   }
 
-  recordDataWithCheckByte(data) {
+  recordDataWithCheckByte(dataBa) {
     let checkByte = 0;
-    for (let i = 0; i < data.byteLength; i++) {
-      const byte = data.getUint8(i);
+    for (let i = 0; i < dataBa.length(); i++) {
+      const byte = dataBa.getUint8(i);
       checkByte = checkByte ^ byte;
       this.recordByte(byte);
     }
     this.recordByte(checkByte);
   }
 
-  recordBasic(startAddress, filenameBuffer, dataDv, shortpilot) {
+  recordBasic(startAddress, filenameBuffer, dataBa, shortpilot) {
     // TODO: test
-    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataDv, shortpilot);
+    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa, shortpilot);
   }
 
-  recordPrg(startAddress, filenameBuffer, dataDv, shortpilot) {
-    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataDv, shortpilot);
+  recordPrg(startAddress, filenameBuffer, dataBa, shortpilot) {
+    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa, shortpilot);
   }
 
   recordData() {
@@ -113,34 +113,33 @@ export class Encoder extends BaseEncoder {
     throw new InternalError('recordData not implemented yet');
   }
 
-  recordBasicOrPrg(fileType, startAddress, filenameBuffer, dataDv, shortpilot) {
-    const headerBuffer = new ArrayBuffer(192);
-    const headerDv = new ExtDataView(headerBuffer);
-    headerDv.setUint8(0, fileType); // 1 byte: file type: prg or basic file
-    headerDv.setUint16(1, startAddress, true); // 2 bytes: start address
-    headerDv.setUint16(3, startAddress + dataDv.byteLength, true); // 2 bytes: end address
-    headerDv.setString(5, filenameBuffer); // 16 bytes: filename
-    headerDv.setString(21, ' '.repeat(171)); // 171 bytes: padding with spaces
+  recordBasicOrPrg(fileType, startAddress, filenameBuffer, dataBa, shortpilot) {
+    const headerBa = BufferAccess.create(192);
+    headerBa.writeUInt8(fileType); // 1 byte: file type: prg or basic file
+    headerBa.writeUInt16LE(startAddress); // 2 bytes: start address
+    headerBa.writeUInt16LE(startAddress + dataBa.length()); // 2 bytes: end address
+    headerBa.writeAsciiString(filenameBuffer); // 16 bytes: filename
+    headerBa.writeAsciiString(' '.repeat(171)); // 171 bytes: padding with spaces
 
     // header
     this.recordPilot(shortpilot ? 0x1a00 : 0x6a00);
     this.recordSyncChain();
-    this.recordDataWithCheckByte(headerDv);
+    this.recordDataWithCheckByte(headerBa);
     this.recordEndOfDataMarker();
     // header repeated
     this.recordPilot(0x4f);
     this.recordSyncChainRepeated();
-    this.recordDataWithCheckByte(headerDv);
+    this.recordDataWithCheckByte(headerBa);
     this.recordEndOfDataMarker();
     // data
     this.recordPilot(0x1a00);
     this.recordSyncChain();
-    this.recordDataWithCheckByte(dataDv); // include end of data marker
+    this.recordDataWithCheckByte(dataBa); // include end of data marker
     this.recordEndOfDataMarker();
     // data repeated
     this.recordPilot(0x4f);
     this.recordSyncChainRepeated();
-    this.recordDataWithCheckByte(dataDv); // include end of data marker
+    this.recordDataWithCheckByte(dataBa); // include end of data marker
     this.recordEndOfDataMarker();
     this.recordPilot(0x4e);
   }

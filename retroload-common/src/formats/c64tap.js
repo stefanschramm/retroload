@@ -1,4 +1,3 @@
-import * as utils from '../utils.js';
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/c64.js';
 
@@ -12,10 +11,10 @@ export function getInternalName() {
   return 'c64tap';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.tap$/i) !== null,
-    header: utils.containsDataAt(dataView, 0, fileHeader),
+    header: ba.containsDataAt(0, fileHeader),
   };
 }
 
@@ -30,14 +29,14 @@ export class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
-    const header = dataView.referencedSlice(0, 0x14);
+  static encode(recorder, ba, options) {
+    const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
-    const dataLength = header.getUint32(0x10, true);
-    const data = dataView.referencedSlice(header.byteLength, dataLength);
+    const dataLength = header.getUint32LE(0x10);
+    const data = ba.slice(header.length(), dataLength);
     const e = new Encoder(recorder);
     e.begin();
-    for (let i = 0; i < data.byteLength; i += 1) {
+    for (let i = 0; i < data.length(); i += 1) {
       const value = data.getUint8(i);
       let pulseLength;
       if (value === 0) {

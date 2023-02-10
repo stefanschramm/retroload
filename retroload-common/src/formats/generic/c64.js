@@ -32,7 +32,7 @@ export class C64Adapter extends AbstractAdapter {
     ];
   }
 
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const type = options.c64type;
     if (!['basic', 'data', 'prg'].includes(type)) {
       throw new InvalidArgumentError('c64type', 'Option c64type is required and expected to be set to "basic", "data" or "prg".');
@@ -48,14 +48,14 @@ export class C64Adapter extends AbstractAdapter {
     switch (type) {
       case 'basic':
         checkLoadAddress(loadAddress);
-        e.recordBasic(loadAddress, name.padEnd(16, ' '), dataView, options.shortpilot);
+        e.recordBasic(loadAddress, name.padEnd(16, ' '), ba, options.shortpilot);
         break;
       case 'prg':
         checkLoadAddress(loadAddress);
-        e.recordPrg(loadAddress, name.padEnd(16, ' '), dataView, options.shortpilot);
+        e.recordPrg(loadAddress, name.padEnd(16, ' '), ba, options.shortpilot);
         break;
       case 'data':
-        e.recordData(name.padEnd(16, ' '), dataView, options.shortpilot);
+        e.recordData(name.padEnd(16, ' '), ba, options.shortpilot);
         break;
     }
     e.end();

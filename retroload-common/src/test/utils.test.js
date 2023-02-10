@@ -114,10 +114,12 @@ test('get functions', () => {
   ba.writeUInt8(0x01);
   ba.writeUInt16LE(0x0302);
   ba.writeUInt16BE(0x0405);
+  ba.writeUInt32LE(0x09080706);
 
   expect(ba.getUint8(0)).toBe(0x01);
   expect(ba.getUint16LE(1)).toBe(0x0302);
   expect(ba.getUint16BE(3)).toBe(0x0405);
+  expect(ba.getUint32LE(5)).toBe(0x09080706);
 });
 
 test('containsDataAt', () => {

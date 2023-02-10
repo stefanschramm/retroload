@@ -170,6 +170,10 @@ export class BufferAccess {
     this.cursor += 4;
   }
 
+  getUint32LE(offset) {
+    return this.view.getUint32(offset, true);
+  }
+
   setUint32BE(offset, i) {
     this.view.setInt32(offset, i, false);
   }
