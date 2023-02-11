@@ -6,10 +6,10 @@ export class Z1013Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder);
     e.begin();
-    e.recordData(dataView);
+    e.recordData(ba);
     e.end();
   }
 }

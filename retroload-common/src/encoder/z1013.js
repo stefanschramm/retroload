@@ -1,4 +1,5 @@
 import {BaseEncoder} from './base.js';
+import {BufferAccess} from '../utils.js';
 
 const blockDataSize = 32;
 
@@ -15,27 +16,25 @@ export class Encoder extends BaseEncoder {
     this.recordFirstIntro();
   }
 
-  recordData(dvData) {
-    const blocks = Math.ceil(dvData.byteLength / blockDataSize);
+  recordData(ba) {
+    const blocks = Math.ceil(ba.length() / blockDataSize);
 
     // blocks
     for (let i = 0; i < blocks; i++) {
       const offset = i * blockDataSize;
-      this.recordBlock(i, dvData.referencedSlice(offset, blockDataSize));
+      this.recordBlock(i, ba.slice(offset, blockDataSize));
     }
   }
 
-  recordBlock(blockNumber, dvBlockData) {
+  recordBlock(blockNumber, blockDataBa) {
+    const blockBa = BufferAccess.create(2 + blockDataBa.length() + 2);
+    blockBa.writeUInt16LE(blockNumber);
+    blockBa.writeBa(blockDataBa);
+    blockBa.writeUInt16LE(calculateChecksum(blockBa.slice(0, blockBa.length() - 2)));
+
     this.recordIntro();
     this.recordDelimiter();
-    let checkSum = blockNumber & 0xffff;
-    this.recordUint16Le(blockNumber); // block number
-    for (let i = 0; i < blockDataSize; i += 2) {
-      const word = dvBlockData.getUint16(i, true);
-      checkSum = (checkSum + word) & 0xffff;
-      this.recordUint16Le(word); // 16 x 16 bit data word
-    }
-    this.recordUint16Le(checkSum);
+    this.recordBytes(blockBa);
   }
 
   recordFirstIntro() {
@@ -57,4 +56,14 @@ export class Encoder extends BaseEncoder {
       this.recordOscillations(2560, 1);
     }
   }
+}
+
+function calculateChecksum(ba) {
+  let checkSum = 0;
+  for (let i = 0; i < ba.length(); i += 2) {
+    const word = ba.getUint16LE(i);
+    checkSum = (checkSum + word) & 0xffff;
+  }
+
+  return checkSum;
 }

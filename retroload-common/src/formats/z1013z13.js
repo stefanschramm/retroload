@@ -8,7 +8,7 @@ export function getInternalName() {
   return 'z1013z13';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.z13$/i) !== null,
     header: undefined, // no specific header
