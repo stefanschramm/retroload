@@ -192,9 +192,9 @@ export class BufferAccess {
     }
   }
 
-  writeAsciiString(string) {
-    this.setAsciiString(this.cursor, string);
-    this.cursor += string.length;
+  writeAsciiString(string, paddingLength = 0, paddingCharCode = 0) {
+    this.setAsciiString(this.cursor, string, paddingLength, paddingCharCode);
+    this.cursor += Math.max(string.length, paddingLength);
   }
 
   /**
