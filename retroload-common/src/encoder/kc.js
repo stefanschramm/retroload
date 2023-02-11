@@ -1,5 +1,5 @@
 import {BaseEncoder} from './base.js';
-import {BufferAccess} from '../utils.js';
+import {BufferAccess} from '../buffer_access.js';
 import {InputDataError} from '../exception.js';
 
 const fZero = 1950; // manual: 2400;

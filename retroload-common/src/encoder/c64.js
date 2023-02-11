@@ -1,6 +1,6 @@
 import {BaseEncoder} from './base.js';
 import {InternalError} from '../exception.js';
-import {BufferAccess} from '../utils.js';
+import {BufferAccess} from '../buffer_access.js';
 
 // https://www.c64-wiki.com/wiki/Datassette_Encoding
 

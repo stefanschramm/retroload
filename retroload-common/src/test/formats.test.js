@@ -8,8 +8,6 @@ import * as fs from 'fs';
 import * as examples from 'retroload-examples';
 
 // Old examples
-// ['testdata/cpc_cdt/RSX Clock (E).cdt', '5aca30f3daf0408f19c41b65acdb5be9'], // tested on CPC 464 on 2022-04-24
-// ['testdata/kc_sss/BERGWERK.SSS', 'dfb1c97cb970791615165b33440afb3c'], // filename "TEST"; tested on KC 85/3 on 2022-03-15
 // ['testdata/lc80_tap/example.tap', '6d852e81b3c8760f454d78ee8609306b'],
 // ['testdata/zx81_p/chessqueen.p', 'ae7289b8ecf596b369af226cc09227e0'], // filename "TEST"
 

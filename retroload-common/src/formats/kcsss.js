@@ -1,6 +1,6 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/kc.js';
-import {BufferAccess} from '../utils.js';
+import {BufferAccess} from '../buffer_access.js';
 import {NameOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';
 

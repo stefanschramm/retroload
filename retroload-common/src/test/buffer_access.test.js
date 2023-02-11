@@ -1,4 +1,4 @@
-import {BufferAccess} from '../utils.js';
+import {BufferAccess} from '../buffer_access.js';
 
 test('length', () => {
   const ba = BufferAccess.create(32);
