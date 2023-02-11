@@ -1,4 +1,3 @@
-import {containsDataAt} from '../utils.js';
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/msx.js';
 
@@ -12,10 +11,10 @@ export function getInternalName() {
   return 'msxcas';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.cas$/i) !== null,
-    header: containsDataAt(dataView, 0, blockHeader),
+    header: ba.containsDataAt(0, blockHeader),
   };
 }
 
@@ -39,26 +38,26 @@ class Adapter extends AbstractAdapter {
     return Encoder.getOptions();
   }
 
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder, options);
     e.begin();
-    for (let i = 0; i < dataView.byteLength; i++) {
-      if (i % 8 === 0 && containsDataAt(dataView, i, blockHeader)) {
+    for (let i = 0; i < ba.length(); i++) {
+      if (i % 8 === 0 && ba.containsDataAt(i, blockHeader)) {
         const blockHeaderPosition = i;
         i += blockHeader.length;
-        const type = this.determineType(dataView, i);
+        const type = this.determineType(ba, i);
         const long = ['binary', 'basic', 'ascii'].indexOf(type) !== -1;
         console.log('Block header at\t0x' + (blockHeaderPosition).toString(16) + '\t type: ' + type);
         e.recordHeader(long);
       }
-      e.recordByte(dataView.getUint8(i));
+      e.recordByte(ba.getUint8(i));
     }
     e.end();
   }
 
-  static determineType(data, offset) {
+  static determineType(dataBa, offset) {
     for (const [type, header] of Object.entries(headerTypes)) {
-      if (containsDataAt(data, offset, header)) {
+      if (dataBa.containsDataAt(offset, header)) {
         return type;
       }
     }
