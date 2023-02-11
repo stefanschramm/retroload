@@ -1,4 +1,4 @@
-import {InternalError} from '../exception';
+import {InternalError} from '../exception.js';
 
 export class AbstractAdapter {
   static getTargetName() {
