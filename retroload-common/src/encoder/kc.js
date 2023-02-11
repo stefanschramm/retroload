@@ -1,5 +1,6 @@
 import {BaseEncoder} from './base.js';
 import {BufferAccess} from '../utils.js';
+import {InputDataError} from '../exception.js';
 
 const fZero = 1950; // manual: 2400;
 const fOne = 1050; // manual: 1200;
@@ -29,7 +30,7 @@ export class Encoder extends BaseEncoder {
 
   recordBlock(blockNumber, blockDataBa) {
     if (blockDataBa.length() > blockSize) {
-      throw new Error('Block data exceeds length of 128 bytes');
+      throw new InputDataError('Block data exceeds length of 128 bytes');
     }
     this.recordBlockIntro();
     this.recordDelimiter();

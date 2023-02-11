@@ -1,5 +1,6 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/kc.js';
+import {InputDataError} from '../exception.js';
 
 export function getName() {
   return 'KC .KCC-File';
@@ -31,10 +32,10 @@ export class Adapter extends AbstractAdapter {
     const blocks = Math.ceil(ba.length() / fileBlockSize);
 
     if (blocks > 255) {
-      throw new Error('KCC file contains too many blocks.');
+      throw new InputDataError('KCC file contains too many blocks.');
     }
     if (ba.length() % fileBlockSize !== 0) {
-      throw new Error('Length of data in KCC file is not a multiple of 128.');
+      throw new InputDataError('Length of data in KCC file is not a multiple of 128.');
     }
 
     const e = new Encoder(recorder);

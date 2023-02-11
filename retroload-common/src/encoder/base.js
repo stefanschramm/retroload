@@ -28,13 +28,6 @@ export class BaseEncoder {
     this.recordSilence(this.recorder.sampleRate);
   }
 
-  recordAscii(str) {
-    const isString = typeof str === 'string';
-    for (let i = 0; i < str.length(); i++) {
-      this.recordByte(isString ? str.charCodeAt(i) : str[i]);
-    }
-  }
-
   recordBytes(dataBa) {
     for (let i = 0; i < dataBa.length(); i++) {
       this.recordByte(dataBa.getUint8(i));

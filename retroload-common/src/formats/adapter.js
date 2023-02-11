@@ -1,6 +1,8 @@
+import {InternalError} from '../exception';
+
 export class AbstractAdapter {
   static getTargetName() {
-    throw new Error('getTargetName() not implemented!');
+    throw new InternalError('getTargetName() not implemented!');
   }
   static getOptions() {
     return [];
