@@ -9,7 +9,7 @@ export function getInternalName() {
   return 'zx81p';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.p$/i) !== null,
     header: undefined, // no specific header
@@ -25,7 +25,7 @@ class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, arrayBuffer, options) {
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder);
     e.begin();
     // Filename in ZX 81 charset - https://en.wikipedia.org/wiki/ZX81_character_set
@@ -34,8 +34,8 @@ class Adapter extends AbstractAdapter {
     e.recordByte(57);
     e.recordByte(42);
     e.recordByte(56);
-    e.recordByte(57 | 0x80); // last char: biz 7 set
-    e.recordData(arrayBuffer);
+    e.recordByte(57 | 0x80); // last char: bit 7 set
+    e.recordData(ba);
     e.end();
   }
 }

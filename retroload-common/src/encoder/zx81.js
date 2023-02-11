@@ -11,10 +11,8 @@ export class Encoder extends BaseEncoder {
     return 'zx81';
   }
 
-  recordData(dataView) {
-    for (let i = 0; i < dataView.byteLength; i++) {
-      this.recordByte(dataView.getUint8(i));
-    }
+  recordData(ba) {
+    this.recordBytes(ba);
   }
 
   recordByte(byte) {
