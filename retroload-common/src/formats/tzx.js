@@ -1,4 +1,5 @@
 import {InputDataError} from '../exception.js';
+import {Logger} from '../logger.js';
 
 const tzxHeaderLength = 0x0a;
 
@@ -41,6 +42,7 @@ export class TzxProcessor {
 
   processBlock(blockId, blockBa) {
     // Block recording methods return the block size in input file (excluding ID byte)
+    Logger.debug(`TZX Block id: 0x${blockId.toString(16)}`);
     switch (blockId) {
       case 0x10:
         return this.processStandardSpeedDataBlock(blockBa);

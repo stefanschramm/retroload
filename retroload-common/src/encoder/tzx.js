@@ -1,5 +1,6 @@
 import {BaseEncoder} from './base.js';
 import {InternalError} from '../exception.js';
+import {Logger} from '../logger.js';
 
 const fCpu = 3500000;
 
@@ -47,6 +48,9 @@ export class TzxEncoder extends BaseEncoder {
   recordPureDataBlock(blockDataBa, options) {
     const zeroBitSamples = this.tzxCyclesToSamples(options.zeroBitPulseLength);
     const oneBitSamples = this.tzxCyclesToSamples(options.oneBitPulseLength);
+
+    Logger.debug('TzxEncoder - recordPureDataBlock');
+    Logger.debug(blockDataBa.asHexDump());
 
     for (let i = 0; i < blockDataBa.length(); i++) {
       let byte = blockDataBa.getUint8(i);

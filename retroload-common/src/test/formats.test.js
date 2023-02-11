@@ -6,6 +6,7 @@ import * as AdapterManager from '../adapter_manager.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as examples from 'retroload-examples';
+import {Logger} from '../logger.js';
 
 // Old examples
 // ['testdata/lc80_tap/example.tap', '6d852e81b3c8760f454d78ee8609306b'],
@@ -29,7 +30,7 @@ function encodeAndHash(file, options) {
       data.byteOffset + data.byteLength,
   );
   if (!AdapterManager.encode(recorder, file, arrayBuffer, options)) {
-    console.error('Unable to decode ' + file);
+    Logger.error('Unable to decode ' + file);
     return false();
   }
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {WaveRecorder, AdapterManager, Exception} from 'retroload-common';
+import {WaveRecorder, AdapterManager, Exception, Logger} from 'retroload-common';
 
 import fs from 'fs';
 import stream from 'stream';
@@ -38,16 +38,16 @@ async function main() {
       data.byteOffset + data.byteLength,
   );
 
-  console.debug(`Processing ${infile}...`);
+  Logger.debug(`Processing ${infile}...`);
 
   try {
     if (!AdapterManager.encode(recorder, infile, arrayBuffer, options)) {
-      console.error(`Unable to decode ${infile}`);
+      Logger.error(`Unable to decode ${infile}`);
       process.exit(1);
     }
   } catch (e) {
     if (e instanceof Exception.UsageError) {
-      console.error(e.message);
+      Logger.error(e.message);
       process.exit(1);
     } else {
       throw e;
@@ -87,7 +87,7 @@ function readInputFile(path) {
   try {
     return fs.readFileSync(path);
   } catch {
-    console.error(`Error: Unable to read ${infile}.`);
+    console.error(`Error: Unable to read ${path}.`);
     process.exit(1);
   }
 }
@@ -103,12 +103,12 @@ function writeOutputFile(path, data) {
 
 async function play(speaker, buffer) {
   return new Promise((resolve) => {
-    console.debug('Playing...');
+    Logger.info('Playing...');
     const s = new stream.PassThrough();
     s.push(buffer);
     s.push(null);
     speaker.on('finish', () => {
-      console.debug('Finished.');
+      Logger.info('Finished.');
       resolve();
     });
     s.pipe(speaker);

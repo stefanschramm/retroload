@@ -17,12 +17,14 @@ export class C64Adapter extends AbstractAdapter {
           'File type (C 64). Possible types: basic, data, prg',
           {argument: 'type', required: true},
       ),
+      // TODO: use common option for name
       new Option(
           'c64name',
           'C64 file name',
           'File name to use for loading (C 64)',
           {argument: 'name', required: false},
       ),
+      // TODO: use common option for load address
       new Option(
           'c64address',
           'C64 load address',

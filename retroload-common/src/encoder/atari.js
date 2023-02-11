@@ -1,3 +1,4 @@
+import {Logger} from '../logger.js';
 import {BaseEncoder} from './base.js';
 
 const fSpace = 3995;
@@ -26,6 +27,8 @@ export class Encoder extends BaseEncoder {
   }
 
   recordData(irgLength, data) {
+    Logger.debug('AtariEncoder - recordData');
+    Logger.debug(data.asHexDump());
     this.recordIrg(irgLength);
     this.recordBytes(data);
   }

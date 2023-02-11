@@ -1,6 +1,7 @@
 import {BaseEncoder} from './base.js';
 import {BufferAccess} from '../buffer_access.js';
 import {InputDataError} from '../exception.js';
+import {Logger} from '../logger.js';
 
 const fZero = 1950; // manual: 2400;
 const fOne = 1050; // manual: 1200;
@@ -35,10 +36,15 @@ export class Encoder extends BaseEncoder {
     this.recordBlockIntro();
     this.recordDelimiter();
 
+    const checksum = this.calculateChecksum(blockDataBa);
+
+    Logger.debug(`KcEncoder - recordBlock: blockNumber: 0x${blockNumber.toString(16).padStart(2, 0)}, checksum: 0x${checksum.toString(16).padStart(2, 0)}`);
+    Logger.debug(blockDataBa.asHexDump());
+
     const blockBa = BufferAccess.create(1 + blockSize + 1);
     blockBa.writeUInt8(blockNumber);
     blockBa.writeBa(blockDataBa);
-    blockBa.setUint8(blockSize + 1, this.calculateChecksum(blockDataBa));
+    blockBa.setUint8(blockSize + 1, checksum);
 
     this.recordBytes(blockBa);
   }

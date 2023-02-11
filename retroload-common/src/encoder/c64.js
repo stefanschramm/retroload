@@ -1,6 +1,7 @@
 import {BaseEncoder} from './base.js';
 import {InternalError} from '../exception.js';
 import {BufferAccess} from '../buffer_access.js';
+import {Logger} from '../logger.js';
 
 // https://www.c64-wiki.com/wiki/Datassette_Encoding
 
@@ -121,6 +122,9 @@ export class Encoder extends BaseEncoder {
     headerBa.writeAsciiString(filenameBuffer); // 16 bytes: filename
     headerBa.writeAsciiString(' '.repeat(171)); // 171 bytes: padding with spaces
 
+    Logger.debug('C64Encoder - recordBasicOrPrg - header:');
+    Logger.debug(headerBa.asHexDump());
+
     // header
     this.recordPilot(shortpilot ? 0x1a00 : 0x6a00);
     this.recordSyncChain();
@@ -131,6 +135,10 @@ export class Encoder extends BaseEncoder {
     this.recordSyncChainRepeated();
     this.recordDataWithCheckByte(headerBa);
     this.recordEndOfDataMarker();
+
+    Logger.debug('C64Encoder - recordBasicOrPrg - data:');
+    Logger.debug(dataBa.asHexDump());
+
     // data
     this.recordPilot(0x1a00);
     this.recordSyncChain();

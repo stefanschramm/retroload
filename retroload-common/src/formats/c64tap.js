@@ -1,5 +1,6 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/c64.js';
+import {Logger} from '../logger.js';
 
 const fileHeader = 'C64-TAPE-RAW';
 
@@ -33,6 +34,9 @@ export class Adapter extends AbstractAdapter {
     const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
     const dataLength = header.getUint32LE(0x10);
+
+    Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, 0)}, dataLength: ${dataLength}`);
+
     const data = ba.slice(header.length(), dataLength);
     const e = new Encoder(recorder);
     e.begin();

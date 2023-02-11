@@ -1,5 +1,6 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/msx.js';
+import {Logger} from '../logger.js';
 
 const blockHeader = [0x1f, 0xa6, 0xde, 0xba, 0xcc, 0x13, 0x7d, 0x74];
 
@@ -47,7 +48,7 @@ class Adapter extends AbstractAdapter {
         i += blockHeader.length;
         const type = this.determineType(ba, i);
         const long = ['binary', 'basic', 'ascii'].indexOf(type) !== -1;
-        console.log('Block header at\t0x' + (blockHeaderPosition).toString(16) + '\t type: ' + type);
+        Logger.debug('MsxCasAdapter - block header at\t0x' + (blockHeaderPosition).toString(16).padStart(4, '0') + '\t type: ' + type);
         e.recordHeader(long);
       }
       e.recordByte(ba.getUint8(i));

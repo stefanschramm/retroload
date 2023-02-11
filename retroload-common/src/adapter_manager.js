@@ -8,6 +8,7 @@ import {
 } from './exception.js';
 import {BufferAccess} from './buffer_access.js';
 import {formats} from './format_provider.js';
+import {Logger} from './logger.js';
 
 /**
  * @param {WaveRecorder|PcmRecorder} recorder
@@ -29,7 +30,7 @@ export function encode(recorder, filename, data, options={}) {
     throw new MissingOptionsError(missingOptions);
   }
 
-  console.debug('Format: ' + format.getName() + ', Target: ' + adapter.getTargetName());
+  Logger.info('Format: ' + format.getName() + ', Target: ' + adapter.getTargetName());
 
   adapter.encode(recorder, ba, options);
 

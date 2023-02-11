@@ -1,3 +1,5 @@
+import {Logger} from '../logger.js';
+
 const dataMap = {
   true: 1.0,
   false: -1.0,
@@ -20,7 +22,7 @@ export class PcmRecorder {
 
   getAudioContextBuffer() {
     if (this.data.length === 0) {
-      console.error('No data recorded!');
+      Logger.error('No data recorded!');
       return;
     }
 

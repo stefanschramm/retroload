@@ -1,5 +1,6 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/z1013.js';
+import {Logger} from '../logger.js';
 
 export function getName() {
   return 'Z1013 .Z80-File (Headersave)';
@@ -35,7 +36,7 @@ class Adapter extends AbstractAdapter {
     const startAddress = header.getUint16LE(0x04);
     const type = header.getUint8(0x0c);
     const name = (new TextDecoder()).decode(new Uint8Array(ba, 0x10, 0x10));
-    console.log(`Filename: "${name.toString(16)}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
+    Logger.log(`Filename: "${name.toString(16)}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
     const e = new Encoder(recorder);
     e.begin();
     e.recordData(data);

@@ -1,6 +1,7 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/atari.js';
 import {InternalError} from '../exception.js';
+import {Logger} from '../logger.js';
 
 const fileHeader = 'FUJI';
 
@@ -49,16 +50,18 @@ class Adapter extends AbstractAdapter {
       if (chunkBa.containsDataAt(0, 'FUJI')) {
         const chunkLength = chunkBa.getUint16LE(4);
         const tapeDescriptionBa = chunkBa.slice(8, chunkLength);
-        console.debug(`Tape description: ${tapeDescriptionBa.asAsciiString()}`);
+        Logger.debug(`AtariCasAdapter - tape description: ${tapeDescriptionBa.asAsciiString()}`);
         i += 8 + chunkLength;
       } else if (chunkBa.containsDataAt(0, 'baud')) {
         const chunkLength = chunkBa.getUint16LE(4);
-        e.setBaudrate(chunkBa.getUint16LE(6));
+        const baudRate = chunkBa.getUint16LE(6);
+        e.setBaudrate(baudRate);
+        Logger.debug(`AtariCasAdapter - type: baud, baudRate: ${baudRate}`);
         i += 8 + chunkLength;
       } else if (chunkBa.containsDataAt(0, 'data')) {
         const chunkLength = chunkBa.getUint16LE(4);
         const irgLength = chunkBa.getUint16LE(6);
-        console.debug(`Type: data, chunkLength: ${chunkLength}, irgLength: ${irgLength}`);
+        Logger.debug(`AtariCasAdapter - type: data, chunkLength: ${chunkLength}, irgLength: ${irgLength}`);
         const data = chunkBa.slice(8, chunkLength);
         e.recordData(irgLength, data);
         i += 8 + chunkLength;
