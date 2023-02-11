@@ -1,4 +1,3 @@
-import {containsDataAt} from '../utils.js';
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/z1013.js';
 
@@ -10,10 +9,10 @@ export function getInternalName() {
   return 'z1013z80';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.z80$/i) !== null,
-    header: containsDataAt(dataView, 0x0d, [0xd3, 0xd3, 0xd3]),
+    header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
   };
 }
 
@@ -28,14 +27,14 @@ class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
-    const header = dataView.referencedSlice(0, headerLength);
-    const data = dataView.referencedSlice(headerLength);
-    const loadAddress = header.getUint16(0x00, true);
-    const endAddress = header.getUint16(0x02, true);
-    const startAddress = header.getUint16(0x04, true);
+  static encode(recorder, ba, options) {
+    const header = ba.slice(0, headerLength);
+    const data = ba.slice(headerLength);
+    const loadAddress = header.getUint16LE(0x00);
+    const endAddress = header.getUint16LE(0x02);
+    const startAddress = header.getUint16LE(0x04);
     const type = header.getUint8(0x0c);
-    const name = (new TextDecoder()).decode(new Uint8Array(dataView, 0x10, 0x10));
+    const name = (new TextDecoder()).decode(new Uint8Array(ba, 0x10, 0x10));
     console.log(`Filename: "${name.toString(16)}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
     const e = new Encoder(recorder);
     e.begin();
