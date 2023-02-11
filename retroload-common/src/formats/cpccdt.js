@@ -1,6 +1,5 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/cpctzx.js';
-import {containsDataAt} from '../utils.js';
 import {TzxProcessor} from './tzx.js';
 
 const fileHeader = 'ZXTape!\x1a';
@@ -13,10 +12,10 @@ export function getInternalName() {
   return 'cpccdt';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.cdt/i) !== null,
-    header: containsDataAt(dataView, 0, fileHeader),
+    header: ba.containsDataAt(0, fileHeader),
   };
 }
 
@@ -29,9 +28,9 @@ export class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder);
     const tzxProcessor = new TzxProcessor(e);
-    tzxProcessor.processTzx(dataView);
+    tzxProcessor.processTzx(ba);
   }
 }

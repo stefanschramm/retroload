@@ -27,43 +27,43 @@ export class TzxProcessor {
     this.e = encoder;
   }
 
-  processTzx(dataView) {
+  processTzx(ba) {
     // TODO: get version offset: 0x08 length: 2
     let i = tzxHeaderLength;
     this.e.begin();
-    while (i < dataView.byteLength) {
-      const blockId = dataView.getUint8(i++);
-      const blockDv = dataView.referencedSlice(i);
-      i += this.processBlock(blockId, blockDv);
+    while (i < ba.length()) {
+      const blockId = ba.getUint8(i++);
+      const blockBa = ba.slice(i);
+      i += this.processBlock(blockId, blockBa);
     }
     this.e.end();
   }
 
-  processBlock(blockId, blockDv) {
+  processBlock(blockId, blockBa) {
     // Block recording methods return the block size in input file (excluding ID byte)
     switch (blockId) {
       case 0x10:
-        return this.processStandardSpeedDataBlock(blockDv);
+        return this.processStandardSpeedDataBlock(blockBa);
       case 0x11:
-        return this.processTurboSpeedDataBlock(blockDv);
+        return this.processTurboSpeedDataBlock(blockBa);
       case 0x12:
-        return this.processPureToneBlock(blockDv);
+        return this.processPureToneBlock(blockBa);
       case 0x13:
-        return this.processPulseSequenceBlock(blockDv);
+        return this.processPulseSequenceBlock(blockBa);
       case 0x14:
-        return this.processPureDataBlock(blockDv);
+        return this.processPureDataBlock(blockBa);
       case 0x20:
-        return this.processPauseBlock(blockDv);
+        return this.processPauseBlock(blockBa);
       case 0x30:
-        return this.processTextDescriptionBlock(blockDv);
+        return this.processTextDescriptionBlock(blockBa);
       case 0x31:
-        return this.processMessageBlock(blockDv);
+        return this.processMessageBlock(blockBa);
       case 0x32:
-        return this.processArchiveInfoBlock(blockDv);
+        return this.processArchiveInfoBlock(blockBa);
       case 0x33:
-        return this.processHardwareTypeBlock(blockDv);
+        return this.processHardwareTypeBlock(blockBa);
       case 0x5a:
-        return this.processGlueBlock(blockDv);
+        return this.processGlueBlock(blockBa);
       case 0x15: // Direct Recording
       case 0x18: // CSW Recording
       case 0x21: // Group start
@@ -77,49 +77,49 @@ export class TzxProcessor {
     }
   }
 
-  processStandardSpeedDataBlock(dv) {
+  processStandardSpeedDataBlock(ba) {
     // ID 0x10
     const blockHeaderLength = 0x04;
-    const dataLength = dv.getUint16(0x02, true);
-    const blockDataDv = dv.referencedSlice(blockHeaderLength, dataLength);
+    const dataLength = ba.getUint16LE(0x02);
+    const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
-    this.e.recordDataBlock(blockDataDv, {
+    this.e.recordDataBlock(blockDataBa, {
       ...standardSpeedRecordOptions,
-      pauseLengthMs: dv.getUint16(0x00, true),
-      pilotPulses: blockDataDv.getUint8(0) < 128 ? 8063 : 3223,
+      pauseLengthMs: ba.getUint16LE(0x00),
+      pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223,
     });
 
     return blockHeaderLength + dataLength;
   }
 
-  processTurboSpeedDataBlock(dv) {
+  processTurboSpeedDataBlock(ba) {
     // ID 0x11
     const blockHeaderLength = 0x12;
     const dataLength =
-      dv.getUint8(0x0f) +
-      dv.getUint8(0x10) * 2 ** 8 +
-      dv.getUint8(0x11) * 2 ** 16
+      ba.getUint8(0x0f) +
+      ba.getUint8(0x10) * 2 ** 8 +
+      ba.getUint8(0x11) * 2 ** 16
     ;
-    const blockDataDv = dv.referencedSlice(blockHeaderLength, dataLength);
+    const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
-    this.e.recordDataBlock(blockDataDv, {
-      pilotPulseLength: dv.getUint16(0x00, true),
-      syncFirstPulseLength: dv.getUint16(0x02, true),
-      syncSecondPulseLength: dv.getUint16(0x04, true),
-      zeroBitPulseLength: dv.getUint16(0x06, true),
-      oneBitPulseLength: dv.getUint16(0x08, true),
-      pilotPulses: dv.getUint16(0x0a, true),
-      lastByteUsedBits: dv.getUint8(0x0c),
-      pauseLengthMs: dv.getUint16(0x0d, true),
+    this.e.recordDataBlock(blockDataBa, {
+      pilotPulseLength: ba.getUint16LE(0x00),
+      syncFirstPulseLength: ba.getUint16LE(0x02),
+      syncSecondPulseLength: ba.getUint16LE(0x04),
+      zeroBitPulseLength: ba.getUint16LE(0x06),
+      oneBitPulseLength: ba.getUint16LE(0x08),
+      pilotPulses: ba.getUint16LE(0x0a),
+      lastByteUsedBits: ba.getUint8(0x0c),
+      pauseLengthMs: ba.getUint16LE(0x0d),
     });
 
     return blockHeaderLength + dataLength;
   }
 
-  processPureToneBlock(dv) {
+  processPureToneBlock(ba) {
     // ID 0x12
-    const pulseLength = dv.getUint16(0, true);
-    const numberOfPulses = dv.getUint16(2, true);
+    const pulseLength = ba.getUint16LE(0);
+    const numberOfPulses = ba.getUint16LE(2);
     for (let i = 0; i < numberOfPulses; i++) {
       this.e.recordPulse(pulseLength);
     }
@@ -127,78 +127,78 @@ export class TzxProcessor {
     return 4;
   }
 
-  processPulseSequenceBlock(dv) {
+  processPulseSequenceBlock(ba) {
     // ID 0x13
-    const numberOfPulses = dv.getUint8(0);
+    const numberOfPulses = ba.getUint8(0);
     for (let i = 0; i < numberOfPulses; i++) {
-      const pulseLength = dv.getUint16(1 + 2 * i, true);
+      const pulseLength = ba.getUint16LE(1 + 2 * i);
       this.e.recordPulse(pulseLength);
     }
 
     return 1 + 2 * numberOfPulses;
   }
 
-  processPureDataBlock(dv) {
+  processPureDataBlock(ba) {
     // ID 0x14
     const blockHeaderLength = 0x0a;
     const dataLength =
-      dv.getUint8(0x07) +
-      dv.getUint8(0x08) * 2 ** 8 +
-      dv.getUint8(0x09) * 2 ** 16
+      ba.getUint8(0x07) +
+      ba.getUint8(0x08) * 2 ** 8 +
+      ba.getUint8(0x09) * 2 ** 16
     ;
-    const blockDataDv = dv.referencedSlice(blockHeaderLength, dataLength);
+    const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
-    this.e.recordPureDataBlock(blockDataDv, {
-      zeroBitPulseLength: dv.getUint16(0x00, true),
-      oneBitPulseLength: dv.getUint16(0x02, true),
-      lastByteUsedBits: dv.getUint8(0x04),
-      pauseLengthMs: dv.getUint16(0x05, true),
+    this.e.recordPureDataBlock(blockDataBa, {
+      zeroBitPulseLength: ba.getUint16LE(0x00),
+      oneBitPulseLength: ba.getUint16LE(0x02),
+      lastByteUsedBits: ba.getUint8(0x04),
+      pauseLengthMs: ba.getUint16LE(0x05),
     });
 
     return blockHeaderLength + dataLength;
   }
 
-  processPauseBlock(dv) {
+  processPauseBlock(ba) {
     // ID 0x20
-    const length = dv.getUint16(0, true);
+    const length = ba.getUint16LE(0);
     this.e.recordSilenceMs(length);
 
     return 2;
   }
 
-  processTextDescriptionBlock(dv) {
+  processTextDescriptionBlock(ba) {
     // ID 0x30
     // For now just ignore block
-    const length = dv.getUint8(0);
+    const length = ba.getUint8(0);
 
     return 1 + length;
   }
 
-  processMessageBlock(dv) {
+  processMessageBlock(ba) {
     // ID 0x31
     // For now just ignore block
-    const messageLength = dv.getUint8(1);
+    const messageLength = ba.getUint8(1);
 
     return 2 + messageLength;
   }
 
-  processArchiveInfoBlock(dv) {
+  processArchiveInfoBlock(ba) {
     // ID 0x32
     // For now just ignore block
-    const length = dv.getUint16(0, true);
+    const length = ba.getUint16LE(0);
 
     return 2 + length;
   }
 
-  processHardwareTypeBlock(dv) {
+  processHardwareTypeBlock(ba) {
     // ID 0x33
     // For now just ignore block
-    const entries = dv.getUint8(0);
+    const entries = ba.getUint8(0);
 
     return 1 + entries * 3;
   }
 
-  processGlueBlock(dv) {
+  processGlueBlock(ba) {
     // ID 0x5a
     // Just ignore
     return 9;

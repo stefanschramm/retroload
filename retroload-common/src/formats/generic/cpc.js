@@ -1,8 +1,8 @@
 import {AbstractAdapter} from '../adapter.js';
 import {Encoder} from '../../encoder/cpctzx.js';
 import {EntryOption, LoadOption, NameOption} from '../../option.js';
-import {ExtDataView} from '../../utils.js';
 import {InternalError, InvalidArgumentError} from '../../exception.js';
+import {BufferAccess} from '../../utils.js';
 
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;
@@ -41,10 +41,10 @@ export class CpcAdapter extends AbstractAdapter {
    * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
    *
    * @param {WaveRecorder|PcmRecorder} recorder
-   * @param {ExtDataView} dataView
+   * @param {BufferAccess} ba
    * @param {*} options
    */
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const filename = options.name !== undefined ? options.name : '';
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
@@ -62,8 +62,8 @@ export class CpcAdapter extends AbstractAdapter {
 
     const e = new Encoder(recorder);
 
-    const dataRecordCount = Math.ceil(dataView.byteLength / dataBytesPerDataBlock);
-    const dataBytesInLastBlock = dataView.byteLength - (dataRecordCount - 1) * dataBytesPerDataBlock;
+    const dataRecordCount = Math.ceil(ba.length() / dataBytesPerDataBlock);
+    const dataBytesInLastBlock = ba.length() - (dataRecordCount - 1) * dataBytesPerDataBlock;
 
     e.begin();
     for (let b = 0; b < dataRecordCount; b++) {
@@ -74,93 +74,93 @@ export class CpcAdapter extends AbstractAdapter {
 
       // header block
 
-      const headerBuffer = new ArrayBuffer(0x100);
-      const headerDv = new ExtDataView(headerBuffer);
-      headerDv.setString(0, filename, maxFileNameLength, 0);
-      headerDv.setUint8(16, b + 1); // block number
-      headerDv.setUint8(17, isLastBlock ? 0xff : 0x00);
-      headerDv.setUint8(18, fileTypeBinary);
-      headerDv.setUint16(19, dataBytesInCurrentBlock, true);
-      headerDv.setUint16(21, blockDataLocation, true);
-      headerDv.setUint8(23, isFirstBlock ? 0xff : 0x00);
+      const headerBa = BufferAccess.create(0x100);
+      headerBa.setAsciiString(0, filename, maxFileNameLength, 0);
+      headerBa.setUint8(16, b + 1); // block number
+      headerBa.setUint8(17, isLastBlock ? 0xff : 0x00);
+      headerBa.setUint8(18, fileTypeBinary);
+      headerBa.setUint16LE(19, dataBytesInCurrentBlock);
+      headerBa.setUint16LE(21, blockDataLocation);
+      headerBa.setUint8(23, isFirstBlock ? 0xff : 0x00);
       // user fields
-      headerDv.setUint16(24, dataView.byteLength, true); // logical length
-      headerDv.setUint16(26, entry, true); // entry address
+      headerBa.setUint16LE(24, ba.length()); // logical length
+      headerBa.setUint16LE(26, entry); // entry address
 
       // Remaining bytes 28..63 stay unallocated. Rest of header segment is padded with zeros.
 
-      const headerRecordDv = createHeaderRecord(headerDv);
-      e.recordDataBlock(headerRecordDv, {...standardRecordOptions, pauseLengthMs: 0x000a});
+      const headerRecordBa = createHeaderRecord(headerBa);
+      e.recordDataBlock(headerRecordBa, {...standardRecordOptions, pauseLengthMs: 0x000a});
 
       // data block
 
-      const dataRecordDv = createDataRecord(dataView.referencedSlice(b * dataBytesPerDataBlock, dataBytesInCurrentBlock));
-      e.recordDataBlock(dataRecordDv, {...standardRecordOptions, pauseLengthMs: 0x09c4});
+      const dataRecordBa = createDataRecord(ba.slice(b * dataBytesPerDataBlock, dataBytesInCurrentBlock));
+      e.recordDataBlock(dataRecordBa, {...standardRecordOptions, pauseLengthMs: 0x09c4});
     }
     e.end();
   }
 }
 
 /**
- * @param {ExtDataView} headerDv
- * @return {ExtDataView}
+ * @param {BufferAccess} headerBa
+ * @return {BufferAccess}
  */
-function createHeaderRecord(headerDv) {
-  if (headerDv.byteLength !== dataBytesPerSegment) {
+function createHeaderRecord(headerBa) {
+  if (headerBa.length() !== dataBytesPerSegment) {
     throw new InternalError(`Header record size must be exactly ${dataBytesPerSegment} bytes (padded with zeros).`);
   }
   const headerRecordSize = 1 + dataBytesPerSegment + 2 + 4; // sync char + data + checksum + trailer
-  const headerRecordDv = new ExtDataView(new ArrayBuffer(headerRecordSize));
-  headerRecordDv.setUint8(0, headerRecordSyncCharacter); // synchronisation character
-  headerRecordDv.setUint8Array(1, headerDv.asUint8ArrayCopy()); // data
-  headerRecordDv.setUint16(1 + dataBytesPerSegment, calculateSegmentCrc(headerDv), false); // crc checksum
-  headerRecordDv.setUint32(1 + dataBytesPerSegment + 2, 0xffffffff); // trailer
+  const headerRecordBa = BufferAccess.create(headerRecordSize);
+  headerRecordBa.setUint8(0, headerRecordSyncCharacter); // synchronisation character
+  headerRecordBa.setBa(1, headerBa); // data
+  headerRecordBa.setUint16BE(1 + dataBytesPerSegment, calculateSegmentCrc(headerBa)); // crc checksum
+  headerRecordBa.setUint32LE(1 + dataBytesPerSegment + 2, 0xffffffff); // trailer
 
-  return headerRecordDv;
+  return headerRecordBa;
 }
 
 /**
- * @param {ExtDataView} dataDv
- * @return {ExtDataView}
+ * @param {BufferAccess} dataBa
+ * @return {BufferAccess}
  */
-function createDataRecord(dataDv) {
-  if (dataDv.byteLength > dataBytesPerDataBlock) {
+function createDataRecord(dataBa) {
+  if (dataBa.length() > dataBytesPerDataBlock) {
     throw new InternalError(`Data record size cannot exceed ${dataBytesPerDataBlock} bytes.`);
   }
 
-  const segmentCount = Math.ceil(dataDv.byteLength / dataBytesPerSegment);
+  const segmentCount = Math.ceil(dataBa.length() / dataBytesPerSegment);
   const dataRecordSize = 1 + segmentCount * (dataBytesPerSegment + 2) + 4;
-  const dataRecordDv = new ExtDataView(new ArrayBuffer(dataRecordSize));
+  const dataRecordBa = BufferAccess.create(dataRecordSize);
 
-  dataRecordDv.setUint8(0, dataRecordSyncCharacter); // synchronisation character
+  dataRecordBa.setUint8(0, dataRecordSyncCharacter); // synchronisation character
   for (let s = 0; s < segmentCount; s++) {
-    const paddingRequired = (s * dataBytesPerSegment + dataBytesPerSegment) > dataDv.byteLength;
+    const paddingRequired = (s * dataBytesPerSegment + dataBytesPerSegment) > dataBa.length();
     const segmentDataOffset = 1 + s * (dataBytesPerSegment + 2);
     if (paddingRequired) {
-      const remainingDataDv = dataDv.referencedSlice(s * dataBytesPerSegment, dataDv.byteLength - s * dataBytesPerSegment);
-      const paddedRemainingDataDv = remainingDataDv.asPaddedCopy(dataBytesPerSegment);
-      dataRecordDv.setUint8Array(segmentDataOffset, paddedRemainingDataDv.asUint8ArrayCopy()); // data
-      dataRecordDv.setUint16(segmentDataOffset + dataBytesPerSegment, calculateSegmentCrc(paddedRemainingDataDv), false); // crc checksum
+      const remainingDataBa = dataBa.slice(s * dataBytesPerSegment, dataBa.length() - s * dataBytesPerSegment);
+      const paddedRemainingDataBa = BufferAccess.create(dataBytesPerSegment);
+      paddedRemainingDataBa.setBa(0, remainingDataBa);
+      dataRecordBa.setBa(segmentDataOffset, paddedRemainingDataBa); // data
+      dataRecordBa.setUint16BE(segmentDataOffset + dataBytesPerSegment, calculateSegmentCrc(paddedRemainingDataBa)); // crc checksum
     } else {
-      dataRecordDv.setUint8Array(segmentDataOffset, dataDv.referencedSlice(s * dataBytesPerSegment, dataBytesPerSegment).asUint8ArrayCopy()); // data
+      dataRecordBa.setBa(segmentDataOffset, dataBa.slice(s * dataBytesPerSegment, dataBytesPerSegment)); // data
     }
   }
-  dataRecordDv.setUint32(dataRecordDv.byteLength - 4, 0xffffffff); // trailer
+  dataRecordBa.setUint32LE(dataRecordBa.length() - 4, 0xffffffff); // trailer
 
-  return dataRecordDv;
+  return dataRecordBa;
 }
 
 /**
  * https://gist.github.com/chitchcock/5112270?permalink_comment_id=3834064#gistcomment-3834064
  *
- * @param {DataView} dv
+ * @param {BufferAccess} ba
  * @return {number}
  */
-function calculateSegmentCrc(dv) {
+function calculateSegmentCrc(ba) {
   const polynomial = 0x1021;
   let crc = 0xffff;
-  for (let n = 0; n < dv.byteLength; n++) {
-    const b = dv.getUint8(n);
+  for (let n = 0; n < ba.length(); n++) {
+    const b = ba.getUint8(n);
     for (let i = 0; i < 8; i++) {
       const bit = (b >> (7 - i) & 1) === 1;
       const c15 = (crc >> 15 & 1) === 1;

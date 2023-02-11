@@ -27,30 +27,30 @@ const standardSpeedRecordOptions = {
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
 export class TzxEncoder extends BaseEncoder {
-  recordStandardSpeedDataBlock(blockDataDv) {
-    this.recordDataBlock(blockDataDv, {
+  recordStandardSpeedDataBlock(blockDataBa) {
+    this.recordDataBlock(blockDataBa, {
       ...standardSpeedRecordOptions,
-      pilotPulses: blockDataDv.getUint8(0) < 128 ? 8063 : 3223, // TODO: why?
+      pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223, // TODO: why?
     });
   }
 
-  recordDataBlock(blockDataDv, options) {
+  recordDataBlock(blockDataBa, options) {
     const pilotSamples = this.tzxCyclesToSamples(options.pilotPulseLength);
     for (let i = 0; i < options.pilotPulses; i++) {
       this.recordHalfOscillationSamples(pilotSamples);
     }
     this.recordPulse(options.syncFirstPulseLength);
     this.recordPulse(options.syncSecondPulseLength);
-    this.recordPureDataBlock(blockDataDv, options);
+    this.recordPureDataBlock(blockDataBa, options);
   }
 
-  recordPureDataBlock(blockDataDv, options) {
+  recordPureDataBlock(blockDataBa, options) {
     const zeroBitSamples = this.tzxCyclesToSamples(options.zeroBitPulseLength);
     const oneBitSamples = this.tzxCyclesToSamples(options.oneBitPulseLength);
 
-    for (let i = 0; i < blockDataDv.byteLength; i++) {
-      let byte = blockDataDv.getUint8(i);
-      let bits = (i === blockDataDv.byteLength - 1) ? options.lastByteUsedBits : 8;
+    for (let i = 0; i < blockDataBa.length(); i++) {
+      let byte = blockDataBa.getUint8(i);
+      let bits = (i === blockDataBa.length() - 1) ? options.lastByteUsedBits : 8;
       while (bits > 0) {
         const samples = ((byte & 0x80) === 0) ? zeroBitSamples : oneBitSamples;
         this.recordHalfOscillationSamples(samples);
