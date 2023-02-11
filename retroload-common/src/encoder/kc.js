@@ -1,4 +1,5 @@
 import {BaseEncoder} from './base.js';
+import {BufferAccess} from '../utils.js';
 
 const fZero = 1950; // manual: 2400;
 const fOne = 1050; // manual: 1200;
@@ -26,21 +27,19 @@ export class Encoder extends BaseEncoder {
     this.recordIntro();
   }
 
-  recordBlock(blockNumber, dvBlockData) {
-    if (dvBlockData.byteLength > blockSize) {
+  recordBlock(blockNumber, blockDataBa) {
+    if (blockDataBa.length() > blockSize) {
       throw new Error('Block data exceeds length of 128 bytes');
     }
     this.recordBlockIntro();
     this.recordDelimiter();
-    this.recordByte(blockNumber);
-    let checkSum = 0;
-    for (let i = 0; i < blockSize; i += 1) {
-      const byte = (i < dvBlockData.byteLength) ? dvBlockData.getUint8(i) : 0; // pad with 0
-      // Checksum does not include block number byte.
-      checkSum = (checkSum + byte) & 0xff;
-      this.recordByte(byte);
-    }
-    this.recordByte(checkSum);
+
+    const blockBa = BufferAccess.create(1 + blockSize + 1);
+    blockBa.writeUInt8(blockNumber);
+    blockBa.writeBa(blockDataBa);
+    blockBa.setUint8(blockSize + 1, this.calculateChecksum(blockDataBa));
+
+    this.recordBytes(blockBa);
   }
 
   recordIntro() {
@@ -66,5 +65,14 @@ export class Encoder extends BaseEncoder {
     } else {
       this.recordOscillations(fZero, 1);
     }
+  }
+
+  calculateChecksum(data) {
+    let sum = 0;
+    for (let i = 0; i < data.length(); i++) {
+      sum += data.getUint8(i);
+    }
+
+    return sum & 0xff;
   }
 }

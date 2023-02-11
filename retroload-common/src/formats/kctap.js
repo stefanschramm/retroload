@@ -1,6 +1,5 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/kc.js';
-import {containsDataAt} from '../utils.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
@@ -12,10 +11,10 @@ export function getInternalName() {
   return 'kctap';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.tap$/i) !== null,
-    header: containsDataAt(dataView, 0, fileHeader),
+    header: ba.containsDataAt(0, fileHeader),
   };
 }
 
@@ -32,8 +31,8 @@ export class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
-    const blocks = Math.ceil((dataView.byteLength - fileHeaderLength) / fileBlockSize);
+  static encode(recorder, ba, options) {
+    const blocks = Math.ceil((ba.length() - fileHeaderLength) / fileBlockSize);
 
     // TODO: Possible warnings when:
     // - (data.length - fileHeaderLength) % fileBlockSize !== 0
@@ -45,9 +44,9 @@ export class Adapter extends AbstractAdapter {
     e.begin();
     for (let i = 0; i < blocks; i++) {
       const fileOffset = fileHeaderLength + i * fileBlockSize;
-      const dvBlock = dataView.referencedSlice(fileOffset, fileBlockSize);
+      const dvBlock = ba.slice(fileOffset, fileBlockSize);
       const blockNumber = dvBlock.getUint8(0);
-      const blockData = dvBlock.referencedSlice(1);
+      const blockData = dvBlock.slice(1);
       e.recordBlock(blockNumber, blockData);
     }
     e.end();
