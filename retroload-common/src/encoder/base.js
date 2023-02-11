@@ -1,5 +1,4 @@
 import {InternalError} from '../exception.js';
-import {BufferAccess} from '../utils.js';
 
 /**
  * Base class for all encoders. Provides many methods commonly used.
@@ -99,11 +98,5 @@ export class BaseEncoder {
 
   recordSilenceMs(lengthMs) {
     this.recordSilence(lengthMs * this.recorder.sampleRate / 1000);
-  }
-
-  recordUint16Le(value) {
-    const ba = BufferAccess.create(2);
-    ba.writeUintLE(0, value);
-    this.recordBytes(ba);
   }
 }

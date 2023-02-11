@@ -25,7 +25,7 @@ export class Lc80Adapter extends AbstractAdapter {
     ];
   }
 
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const fileNumber = parseInt(options.lc80name, 16);
     if (isNaN(fileNumber) || fileNumber < 0 || fileNumber > 0xffff) {
       throw new InvalidArgumentError('lc80name', 'Option lc80name is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 0001');
@@ -38,9 +38,9 @@ export class Lc80Adapter extends AbstractAdapter {
 
     const e = new Lc80Encoder(recorder);
     e.begin();
-    const endAddress = startAddress + dataView.byteLength;
+    const endAddress = startAddress + ba.length();
     e.recordHeader(fileNumber, startAddress, endAddress);
-    e.recordData(dataView);
+    e.recordData(ba);
     e.end();
   }
 }

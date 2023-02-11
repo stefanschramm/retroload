@@ -1,3 +1,4 @@
+import {BufferAccess} from '../utils.js';
 import {BaseEncoder} from './base.js';
 
 const fShort = 2000;
@@ -27,16 +28,18 @@ export class Encoder extends BaseEncoder {
   recordHeader(fileNumber, startAddress, endAddress) {
     // The "file name" gets written to the tape in reverse order.
     // So it's rather a little-endian file number than a name.
-    this.recordUint16Le(fileNumber);
-    this.recordUint16Le(startAddress);
-    this.recordUint16Le(endAddress);
+    const headerBa = BufferAccess.create(6);
+    headerBa.writeUInt16LE(fileNumber);
+    headerBa.writeUInt16LE(startAddress);
+    headerBa.writeUInt16LE(endAddress);
+    this.recordBytes(headerBa);
   }
 
   recordData(data) {
     const checkSum = this.calculateChecksum(data);
     this.recordByte(checkSum);
     this.recordSeconds(fSyncMid, syncMidLength);
-    for (let i = 0; i < data.byteLength; i++) {
+    for (let i = 0; i < data.length(); i++) {
       this.recordByte(data.getUint8(i));
     }
   }
@@ -64,7 +67,7 @@ export class Encoder extends BaseEncoder {
 
   calculateChecksum(data) {
     let sum = 0;
-    for (let i = 0; i < data.byteLength; i++) {
+    for (let i = 0; i < data.length(); i++) {
       sum += data.getUint8(i);
     }
 
