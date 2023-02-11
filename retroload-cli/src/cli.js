@@ -17,6 +17,7 @@ async function main() {
       .option('-o <outfile>', 'Generate WAVE file <outfile> instead of playback')
       .option('-f, --format <format>', 'Format of input file (required when automatic format detection by content and filename fails)')
       .option('-m, --machine <machine type>', 'Machine type to load data onto (required for some formats that can be used for several machines)')
+      .option('-v, --verbosity <verbosity>', 'Verbosity of log output', 1)
   ;
   // Options defined in adapters/encoders
   const allOptions = AdapterManager.getAllOptions();
@@ -29,6 +30,7 @@ async function main() {
   const options = program.opts();
   const infile = program.args[0];
   const outfile = options.o;
+  Logger.setVerbosity(parseInt(options.verbosity));
   const playback = undefined === outfile;
   const speaker = playback ? await initializeSpeaker() : null;
   const data = readInputFile(infile);

@@ -1,6 +1,15 @@
-const verbosity = 1;
+const defaultVerbosity = 1;
+let verbosity = defaultVerbosity;
 
 export class Logger {
+  static setVerbosity(v) {
+    verbosity = v;
+  }
+
+  static resetVebosity() {
+    verbosity = defaultVerbosity;
+  }
+
   static error(...args) {
     console.error(...args);
   }
