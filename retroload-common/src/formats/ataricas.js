@@ -1,6 +1,5 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/atari.js';
-import {containsDataAt} from '../utils.js';
 import {InternalError} from '../exception.js';
 
 const fileHeader = 'FUJI';
@@ -13,10 +12,15 @@ export function getInternalName() {
   return 'ataricas';
 }
 
-export function identify(filename, dataView) {
+/**
+ * @param {string} filename
+ * @param {BufferAccess} ba
+ * @return {object}
+ */
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.cas/i) !== null,
-    header: containsDataAt(dataView, 0, fileHeader),
+    header: ba.containsDataAt(0, fileHeader),
   };
 }
 
@@ -29,28 +33,33 @@ class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
+  /**
+   * @param {PcmRecorder|WaveRecorder} recorder
+   * @param {BufferAccess} ba
+   * @param {object} options
+   */
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder);
     e.setDefaultBaudrate();
     let i = 0;
-    while (i < dataView.byteLength) {
+    while (i < ba.length()) {
       // determine block type
-      const chunkDv = dataView.referencedSlice(i);
+      const chunkBa = ba.slice(i);
 
-      if (containsDataAt(chunkDv, 0, 'FUJI')) {
-        const chunkLength = chunkDv.getUint16(4, true);
-        const tapeDescriptionDv = chunkDv.referencedSlice(8, chunkLength);
-        console.debug(`Tape description: ${tapeDescriptionDv.asAsciiString()}`);
+      if (chunkBa.containsDataAt(0, 'FUJI')) {
+        const chunkLength = chunkBa.getUint16LE(4);
+        const tapeDescriptionBa = chunkBa.slice(8, chunkLength);
+        console.debug(`Tape description: ${tapeDescriptionBa.asAsciiString()}`);
         i += 8 + chunkLength;
-      } else if (containsDataAt(chunkDv, 0, 'baud')) {
-        const chunkLength = chunkDv.getUint16(4, true);
-        e.setBaudrate(chunkDv.getUint16(6, true));
+      } else if (chunkBa.containsDataAt(0, 'baud')) {
+        const chunkLength = chunkBa.getUint16LE(4);
+        e.setBaudrate(chunkBa.getUint16LE(6));
         i += 8 + chunkLength;
-      } else if (containsDataAt(chunkDv, 0, 'data')) {
-        const chunkLength = chunkDv.getUint16(4, true);
-        const irgLength = chunkDv.getUint16(6, true);
+      } else if (chunkBa.containsDataAt(0, 'data')) {
+        const chunkLength = chunkBa.getUint16LE(4);
+        const irgLength = chunkBa.getUint16LE(6);
         console.debug(`Type: data, chunkLength: ${chunkLength}, irgLength: ${irgLength}`);
-        const data = chunkDv.referencedSlice(8, chunkLength);
+        const data = chunkBa.slice(8, chunkLength);
         e.recordData(irgLength, data);
         i += 8 + chunkLength;
       } else {

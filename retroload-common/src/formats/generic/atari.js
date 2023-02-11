@@ -25,7 +25,6 @@ export class AtariAdapter extends AbstractAdapter {
     const e = new Encoder(recorder);
     e.setDefaultBaudrate();
     const blocks = Math.ceil(ba.length() / dataBytesPerBlock);
-    console.debug(`Data block count: ${blocks}`);
     for (let blockId = 0; blockId < blocks; blockId++) {
       const remainingBytes = ba.length() - (blockId * dataBytesPerBlock);
       const partialBlock = remainingBytes < dataBytesPerBlock;
@@ -33,44 +32,38 @@ export class AtariAdapter extends AbstractAdapter {
       const blockType = partialBlock ? blockTypePartial : blockTypeFull;
       const dataBa = ba.slice(blockId * dataBytesPerBlock, dataBytesInCurrentBlock);
       // actual block length will be 132 bytes: 2 markers, 1 block type byte, 128 actual data bytes, 1 checksum byte
-      e.recordIrg((blockId === 0) ? pilotIrgLength : defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
-      e.recordByte(markerByte);
-      e.recordByte(markerByte);
-      e.recordByte(blockType);
-      e.recordBytes(dataBa);
+      const blockBa = BufferAccess.create(132);
+      blockBa.writeUInt8(markerByte);
+      blockBa.writeUInt8(markerByte);
+      blockBa.writeUInt8(blockType);
+      blockBa.writeBa(dataBa); // (not always 128 bytes!)
       if (partialBlock) {
-        for (let i = 0; i < dataBytesPerBlock - dataBytesInCurrentBlock - 1; i++) {
-          e.recordByte(0);
-        }
-        e.recordByte(dataBytesInCurrentBlock);
+        blockBa.setUint8(130, dataBytesInCurrentBlock);
       }
-      e.recordByte(calculateChecksum(blockType, dataBa, partialBlock ? dataBytesInCurrentBlock : 0));
+      blockBa.setUint8(131, calculateChecksum(blockBa));
+      e.recordIrg((blockId === 0) ? pilotIrgLength : defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
+      e.recordBytes(blockBa);
     }
 
     // End of file block
+    const eofBlockBa = BufferAccess.create(132);
+    eofBlockBa.writeUInt8(markerByte);
+    eofBlockBa.writeUInt8(markerByte);
+    eofBlockBa.writeUInt8(blockTypeEndOfFile);
+    eofBlockBa.setUint8(131, calculateChecksum(eofBlockBa));
     e.recordIrg(defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
-    e.recordByte(markerByte);
-    e.recordByte(markerByte);
-    e.recordByte(blockTypeEndOfFile);
-    e.recordBytes(BufferAccess.create(dataBytesPerBlock));
-    e.recordByte(0xa9); // precalculated checksum
+    e.recordBytes(eofBlockBa);
   }
 }
 
-function calculateChecksum(blockType, dataBa, partialBlockByteCount) {
+function calculateChecksum(ba) {
   // 8 bit checksum with carry being added
-  let sum = ((0x55 + 0x55 + blockType) & 0xff) + 1; // + 1 because block type values will make it always overflow
-
-  for (let i = 0; i < dataBa.length(); i++) {
-    sum += dataBa.getUint8(i);
+  let sum = 0;
+  for (let i = 0; i < ba.length(); i++) {
+    sum += ba.getUint8(i);
     if (sum > 255) {
       sum = (sum & 0xff) + 1;
     }
-  }
-
-  sum += partialBlockByteCount;
-  if (sum > 255) {
-    sum = (sum & 0xff) + 1;
   }
 
   return sum;
