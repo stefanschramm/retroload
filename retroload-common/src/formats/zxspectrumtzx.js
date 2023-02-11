@@ -1,7 +1,6 @@
 import {AbstractAdapter} from './adapter.js';
 import {TzxProcessor} from './tzx.js';
 import {Encoder} from '../encoder/zxspectrum.js';
-import {containsDataAt} from '../utils.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
@@ -13,10 +12,10 @@ export function getInternalName() {
   return 'zxspectrumtzx';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.tzx/i) !== null,
-    header: containsDataAt(dataView, 0, fileHeader),
+    header: ba.containsDataAt(0, fileHeader),
   };
 }
 
@@ -29,9 +28,9 @@ export class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder);
     const tzxProcessor = new TzxProcessor(e);
-    tzxProcessor.processTzx(dataView);
+    tzxProcessor.processTzx(ba);
   }
 }

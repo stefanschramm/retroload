@@ -11,7 +11,7 @@ export function getInternalName() {
   return 'zxspectrumtap';
 }
 
-export function identify(filename, dataView) {
+export function identify(filename, ba) {
   return {
     filename: filename.match(/^.*\.tap/i) !== null,
     header: false,
@@ -27,16 +27,15 @@ export class Adapter extends AbstractAdapter {
     return Encoder.getTargetName();
   }
 
-  static encode(recorder, dataView, options) {
+  static encode(recorder, ba, options) {
     const e = new Encoder(recorder);
     e.begin();
     let i = 0;
-    while (i < dataView.byteLength) {
-      const dataLength = dataView.getUint16(i, true);
+    while (i < ba.length()) {
+      const dataLength = ba.getUint16LE(i);
       i += 2;
-      const blockDataDv = dataView.referencedSlice(i, dataLength);
-      e.recordStandardSpeedDataBlock(blockDataDv);
-      i += blockDataDv.byteLength;
+      e.recordStandardSpeedDataBlock(ba.slice(i, dataLength));
+      i += dataLength;
     }
     e.end();
   }
