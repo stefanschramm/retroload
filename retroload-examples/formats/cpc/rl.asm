@@ -9,11 +9,13 @@
 ;  call &2000
 
 TXT_OUTPUT:	equ	0xbb5a
+KM_WAIT_KEY:	equ	0xbb18
 
 	org	0x2000
 
 	ld	bc, GREETING
 	call	PRINTSTRING
+	call	KM_WAIT_KEY
 
 	ret
 
