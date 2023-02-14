@@ -28,7 +28,7 @@ see C64
 
 # CPC 464
 
-Volume: 60 %
+Volume: 60 % (using cassette adapter)
 
 Load from cassette and run:
 
@@ -97,7 +97,9 @@ The load command `L` takes the load and end address (here `0100` and `018F`) . `
 
 # ZX 81
 
-(TODO)
+Volume: 60 % (using line cable)
+
+    LOAD ""
 
 # ZX Spectrum+
 
@@ -112,3 +114,4 @@ Machine language programs can be started by
     PRINT USR 32768
 
 where `32768` is their entry address.
+
