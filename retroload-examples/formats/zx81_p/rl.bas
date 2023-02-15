@@ -1,0 +1,9 @@
+10 PRINT "---------------------------"
+20 PRINT
+30 PRINT "RETROLOAD.COM"
+40 PRINT
+50 PRINT "EXAMPLE FOR ZX 81 (BASIC)"
+60 PRINT
+70 PRINT "LOADED AND EXECUTED"
+80 PRINT
+90 PRINT "----------------------------"

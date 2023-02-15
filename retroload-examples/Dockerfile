@@ -36,5 +36,8 @@ RUN git clone --depth 1 --branch v1.4.2 https://github.com/lronaldo/cpctelera.gi
         cd cpctelera/cpctelera/tools/2cdt && \
         make && \
         ln -s /opt/cpctelera/cpctelera/tools/2cdt/bin/2cdt /usr/local/bin/2cdt
+RUN wget "https://sourceforge.net/p/emuscriptoria/code/HEAD/tree/desprot/ZMakeBas.c?format=raw" -O "ZMakeBas.c" && \
+	gcc ZMakeBas.c -o ZMakeBas && \
+	ln -s /opt/ZMakeBas /usr/local/bin/ZMakeBas
 COPY /rebuild_all.sh /
 CMD [ "/rebuild_all.sh" ]
