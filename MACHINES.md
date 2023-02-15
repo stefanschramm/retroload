@@ -101,6 +101,14 @@ Volume: 60 % (using line cable)
 
     LOAD ""
 
+(`J`, `Shift`+`P`, `Shift`+`P`, `New Line`)
+
+In case the program is not auto-starting:
+
+    RUN
+
+(`R`, `New Line`)
+
 # ZX Spectrum+
 
 Basic programs can be loaded and started by
