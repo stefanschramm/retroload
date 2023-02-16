@@ -2,6 +2,7 @@ import {AtariAdapter} from './generic/atari.js';
 import {C64Adapter} from './generic/c64.js';
 import {CpcAdapter} from './generic/cpc.js';
 import {Lc80Adapter} from './generic/lc80.js';
+import {TaAdapter} from './generic/ta.js';
 import {Z1013Adapter} from './generic/z1013.js';
 
 export function getName() {
@@ -25,6 +26,7 @@ export function getAdapters() {
     C64Adapter,
     CpcAdapter,
     Lc80Adapter,
+    TaAdapter,
     Z1013Adapter,
   ];
 }
