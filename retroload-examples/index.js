@@ -28,6 +28,8 @@ export function getExamples() {
     new Example('msx_cas_ascii', 'rl.cas', {shortpilot: true, msxfast: true}, 'b3f77adb22af24070301010796206ae2', 'run"cas:"'), // 2022-11-29 OK (Philips VG-8020)
     new Example('msx_cas_basic', 'rl.cas', {shortpilot: true, msxfast: true}, 'dc4d7cbcc29679936312ae7eabc27624', 'cload\nrun'), // 2022-11-29 OK (Philips VG-8020)
     new Example('msx_cas_binary', 'rl.cas', {shortpilot: true, msxfast: true}, '1eaa89c87bad3f9a4a900a028db83c64', 'bload"cas:",r'), // 2022-11-29 OK (Philips VG-8020)
+    // TA alphatronic PC
+    new Example('ta_bas', 'rl.bas', {format: 'generic', machine: 'ta'}, '1d084c6b0dfa38930f26ad2cc3166dd0', 'cload\nrun'), // 2023-02-17 OK (TA alphatronic PC)
     // Z 1013
     new Example('z1013_z13', 'rl.z13', {}, '34083eb0e8ee6f631e92a412c8926f71', 'L 0100 018F\nJ 0100'),
     new Example('z1013_z80', 'rl.z80', {}, '779a051a0ed4769462d24aded68a94b3', 'L 0100 0200\nJ 0100'),
