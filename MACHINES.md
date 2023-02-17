@@ -88,6 +88,11 @@ or
 
     bload "cas:",r
 
+# TA alphatronic PC
+
+    cload
+    run
+
 # Z 1013
 
 The load command `L` takes the load and end address (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
