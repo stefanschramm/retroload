@@ -1,34 +1,43 @@
 const defaultVerbosity = 1;
 let verbosity = defaultVerbosity;
+let handler = console;
 
 export class Logger {
   static setVerbosity(v) {
     verbosity = v;
   }
 
+  static setHandler(h) {
+    handler = h;
+  }
+
   static resetVebosity() {
     verbosity = defaultVerbosity;
   }
 
+  static resetHandler() {
+    handler = console;
+  }
+
   static error(...args) {
-    console.error(...args);
+    handler.error(...args);
   }
 
   static info(...args) {
     if (verbosity >= 1) {
-      console.info(...args);
+      handler.info(...args);
     }
   }
 
   static log(...args) {
     if (verbosity >= 2) {
-      console.log(...args);
+      handler.log(...args);
     }
   }
 
   static debug(...args) {
     if (verbosity >= 3) {
-      console.debug(...args);
+      handler.debug(...args);
     }
   }
 }
