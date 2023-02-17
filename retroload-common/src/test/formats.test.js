@@ -10,7 +10,6 @@ import {Logger} from '../logger.js';
 
 // Old examples
 // ['testdata/lc80_tap/example.tap', '6d852e81b3c8760f454d78ee8609306b'],
-// ['testdata/zx81_p/chessqueen.p', 'ae7289b8ecf596b369af226cc09227e0'], // filename "TEST"
 
 describe('Encoding Pipeline', () => {
   it.each(examples.getExamples())(
