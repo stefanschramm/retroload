@@ -8,9 +8,6 @@ import * as fs from 'fs';
 import * as examples from 'retroload-examples';
 import {Logger} from '../logger.js';
 
-// Old examples
-// ['testdata/lc80_tap/example.tap', '6d852e81b3c8760f454d78ee8609306b'],
-
 describe('Encoding Pipeline', () => {
   it.each(examples.getExamples())(
       'returns correct hash (%s)',
