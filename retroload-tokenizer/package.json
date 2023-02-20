@@ -1,0 +1,26 @@
+{
+  "name": "retroload-tokenizer",
+  "version": "0.0.1",
+  "description": "Tokenizer for historic Basic implementations",
+  "author": "Stefan Schramm",
+  "email": "mail@stefanschramm.net",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "main": "src/cli.js",
+  "scripts": {
+    "lint": "eslint src/"
+  },
+  "bin": {
+    "retroload": "./src/cli.js"
+  },
+  "dependencies": {
+    "commander": "^10.0.0",
+    "retroload-common": "^0.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.32.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}
+
