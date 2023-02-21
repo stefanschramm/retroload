@@ -11,6 +11,7 @@ import {KcKccAdapter} from './adapter/KcKccAdapter.js';
 import {KcSssAdapter} from './adapter/KcSssAdapter.js';
 import {KcTapAdapter} from './adapter/KcTapAdapter.js';
 import {Lc80GenericAdapter} from './adapter/Lc80GenericAdapter.js';
+import {Mo5K7Adapter} from './adapter/Mo5K7Adapter.js';
 import {MsxCasAdapter} from './adapter/MsxCasAdapter.js';
 import {TaGenericAdapter} from './adapter/TaGenericAdapter.js';
 import {Z1013GenericAdapter} from './adapter/Z1013GenericAdapter.js';
@@ -34,6 +35,7 @@ export const adapters = [
   KcSssAdapter,
   KcTapAdapter,
   Lc80GenericAdapter,
+  Mo5K7Adapter,
   MsxCasAdapter,
   TaGenericAdapter,
   Z1013GenericAdapter,
