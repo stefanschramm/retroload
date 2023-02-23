@@ -30,7 +30,7 @@ const headerTypes = {
   ascii: Array(typeHeaderLength).fill(0xea),
 };
 
-class MsxCasAdapter extends AbstractAdapter {
+export class MsxCasAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

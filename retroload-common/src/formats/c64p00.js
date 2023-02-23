@@ -24,7 +24,7 @@ export function getAdapters() {
   return [C64P00Adapter];
 }
 
-class C64P00Adapter extends AbstractAdapter {
+export class C64P00Adapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

@@ -29,7 +29,7 @@ export function getAdapters() {
   return [AtariCasAdapter];
 }
 
-class AtariCasAdapter extends AbstractAdapter {
+export class AtariCasAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

@@ -23,7 +23,7 @@ export function getAdapters() {
 
 const headerLength = 0x20;
 
-class Z1013Z80Adapter extends AbstractAdapter {
+export class Z1013Z80Adapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

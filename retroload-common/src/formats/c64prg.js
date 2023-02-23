@@ -22,7 +22,7 @@ export function getAdapters() {
   return [C64PrgAdapter];
 }
 
-class C64PrgAdapter extends AbstractAdapter {
+export class C64PrgAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

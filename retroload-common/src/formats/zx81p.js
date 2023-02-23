@@ -20,7 +20,7 @@ export function getAdapters() {
   return [Zx81PAdapter];
 }
 
-class Zx81PAdapter extends AbstractAdapter {
+export class Zx81PAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }
