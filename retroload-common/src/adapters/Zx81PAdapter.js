@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {Encoder} from '../encoder/zx81.js';
 
 export class Zx81PAdapter extends AbstractAdapter {

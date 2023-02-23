@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {Encoder} from '../encoder/z1013.js';
 import {Logger} from '../logger.js';
 

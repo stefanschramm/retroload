@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {Encoder} from '../encoder/zxspectrum.js';
 
 // https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format

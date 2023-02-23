@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 
 export class AbstractGenericAdapter extends AbstractAdapter {
   static getName() {

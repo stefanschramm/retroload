@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {Encoder} from '../encoder/kc.js';
 import {InputDataError} from '../exception.js';
 

@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {ShortpilotOption} from '../option.js';
 import {Encoder} from '../encoder/c64.js';
 // import {C64TapWriter as Encoder} from '../debug/c64_tap_writer.js';

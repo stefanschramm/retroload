@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {Encoder} from '../encoder/kc.js';
 import {BufferAccess} from '../buffer_access.js';
 import {NameOption} from '../option.js';

@@ -2,7 +2,7 @@ import {Encoder} from '../encoder/cpctzx.js';
 import {EntryOption, LoadOption, NameOption} from '../option.js';
 import {InternalError, InvalidArgumentError} from '../exception.js';
 import {BufferAccess} from '../buffer_access.js';
-import {AbstractGenericAdapter} from './generic.js';
+import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;

@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {Encoder} from '../encoder/atari.js';
 import {InternalError} from '../exception.js';
 import {Logger} from '../logger.js';

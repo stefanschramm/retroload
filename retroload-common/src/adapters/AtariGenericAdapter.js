@@ -1,6 +1,6 @@
 import {Encoder} from '../encoder/atari.js';
 import {BufferAccess} from '../buffer_access.js';
-import {AbstractGenericAdapter} from './generic.js';
+import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 const markerByte = 0x55;
 const blockTypeFull = 0xfc;

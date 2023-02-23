@@ -1,6 +1,6 @@
-import {AbstractAdapter} from './adapter.js';
+import {AbstractAdapter} from './AbstractAdapter.js';
 import {Encoder} from '../encoder/cpctzx.js';
-import {TzxProcessor} from './tzx.js';
+import {TzxProcessor} from './TzxProcessor.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
