@@ -5,28 +5,24 @@ import {ShortpilotOption} from '../option.js';
 // Usually 'C64 tape image file' but might be different
 const fileHeader = 'C64';
 
-export function getName() {
-  return 'C64 .T64-File';
-}
-
-export function getInternalName() {
-  return 'c64t64';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.t64$/i) !== null,
-    header: ba.containsDataAt(0, fileHeader),
-  };
-}
-
-export function getAdapters() {
-  return [C64T64Adapter];
-}
-
 export class C64T64Adapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'C64 .T64-File';
+  }
+
+  static getInternalName() {
+    return 'c64t64';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.t64$/i) !== null,
+      header: ba.containsDataAt(0, fileHeader),
+    };
   }
 
   static getOptions() {

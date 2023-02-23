@@ -4,28 +4,24 @@ import {Encoder} from '../encoder/zxspectrum.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
-export function getName() {
-  return 'ZX Spectrum .TZX-File';
-}
-
-export function getInternalName() {
-  return 'zxspectrumtzx';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.tzx/i) !== null,
-    header: ba.containsDataAt(0, fileHeader),
-  };
-}
-
-export function getAdapters() {
-  return [ZxSpectrumTzxAdapter];
-}
-
 export class ZxSpectrumTzxAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'ZX Spectrum .TZX-File';
+  }
+
+  static getInternalName() {
+    return 'zxspectrumtzx';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.tzx/i) !== null,
+      header: ba.containsDataAt(0, fileHeader),
+    };
   }
 
   static encode(recorder, ba, options) {

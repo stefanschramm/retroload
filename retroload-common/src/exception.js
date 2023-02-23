@@ -15,7 +15,7 @@ export class InputDataError extends UsageError {
 
 export class FormatAutodetectionFailedError extends UsageError {
   constructor() {
-    super('Unable to autodetect input file format. Please select format manually.');
+    super('Unable to autodetect input file format. Please specify machine/format manually.');
   }
 }
 
@@ -25,15 +25,13 @@ export class FormatNotFoundError extends UsageError {
   }
 }
 
-export class TargetMachineNotSpecifiedError extends UsageError {
-  constructor(format) {
-    super(`Format "${format}" allows loading for multiple target machine. Please specify target machine type.`);
-  }
-}
-
 export class TargetMachineNotFoundError extends UsageError {
   constructor(machine, format) {
-    super(`Specified machine type "${machine}" not found for format "${format}".`);
+    if (format === undefined) {
+      super(`Specified machine type "${machine}" not found.`);
+    } else {
+      super(`Specified machine type "${machine}" not found for format "${format}".`);
+    }
   }
 }
 

@@ -4,25 +4,6 @@ import {BufferAccess} from '../buffer_access.js';
 import {NameOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';
 
-export function getName() {
-  return 'KC .SSS-File';
-}
-
-export function getInternalName() {
-  return 'kcsss';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.sss$/i) !== null,
-    header: undefined, // no specific header
-  };
-}
-
-export function getAdapters() {
-  return [KcSssAdapter];
-}
-
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;
 const maxFileNameLength = 8;
@@ -30,6 +11,21 @@ const maxFileNameLength = 8;
 export class KcSssAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'KC .SSS-File';
+  }
+
+  static getInternalName() {
+    return 'kcsss';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.sss$/i) !== null,
+      header: undefined, // no specific header
+    };
   }
 
   static getOptions() {

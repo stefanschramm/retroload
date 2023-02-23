@@ -4,30 +4,26 @@ import {Logger} from '../logger.js';
 
 const fileHeader = 'C64-TAPE-RAW';
 
-export function getName() {
-  return 'C64 .TAP-File';
-}
-
-export function getInternalName() {
-  return 'c64tap';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.tap$/i) !== null,
-    header: ba.containsDataAt(0, fileHeader),
-  };
-}
-
-export function getAdapters() {
-  return [C64TapAdapter];
-}
-
 const defaultLongPulse = 2048;
 
 export class C64TapAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'C64 .TAP-File';
+  }
+
+  static getInternalName() {
+    return 'c64tap';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.tap$/i) !== null,
+      header: ba.containsDataAt(0, fileHeader),
+    };
   }
 
   static encode(recorder, ba, options) {

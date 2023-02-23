@@ -5,7 +5,6 @@ import {
   InvalidArgumentError,
   MissingOptionsError,
   TargetMachineNotFoundError,
-  TargetMachineNotSpecifiedError,
   UsageError,
 } from '../exception.js';
 import {Option} from '../option.js';
@@ -25,10 +24,6 @@ describe('Instantiation of exceptions', () => {
 
   test('FormatNotFoundError', () => {
     new FormatNotFoundError('exampleformat');
-  });
-
-  test('TargetMachineNotSpecifiedError', () => {
-    new TargetMachineNotSpecifiedError('exampleformat');
   });
 
   test('TargetMachineNotFoundError', () => {

@@ -1,28 +1,24 @@
 import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/zx81.js';
 
-export function getName() {
-  return 'ZX81 .P-File';
-}
-
-export function getInternalName() {
-  return 'zx81p';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.p$/i) !== null,
-    header: undefined, // no specific header
-  };
-}
-
-export function getAdapters() {
-  return [Zx81PAdapter];
-}
-
 export class Zx81PAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'ZX81 .P-File';
+  }
+
+  static getInternalName() {
+    return 'zx81p';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.p$/i) !== null,
+      header: undefined, // no specific header
+    };
   }
 
   static encode(recorder, ba, options) {

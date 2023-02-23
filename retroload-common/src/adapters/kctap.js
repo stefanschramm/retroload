@@ -3,25 +3,6 @@ import {Encoder} from '../encoder/kc.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
-export function getName() {
-  return 'KC .TAP-File';
-}
-
-export function getInternalName() {
-  return 'kctap';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.tap$/i) !== null,
-    header: ba.containsDataAt(0, fileHeader),
-  };
-}
-
-export function getAdapters() {
-  return [KcTapAdapter];
-}
-
 const fileHeaderLength = 16;
 const blockSize = 128;
 const fileBlockSize = 1 + blockSize; // 1 byte block number
@@ -29,6 +10,21 @@ const fileBlockSize = 1 + blockSize; // 1 byte block number
 export class KcTapAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'KC .TAP-File';
+  }
+
+  static getInternalName() {
+    return 'kctap';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.tap$/i) !== null,
+      header: ba.containsDataAt(0, fileHeader),
+    };
   }
 
   static encode(recorder, ba, options) {

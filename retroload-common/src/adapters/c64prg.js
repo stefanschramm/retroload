@@ -3,28 +3,24 @@ import {ShortpilotOption} from '../option.js';
 import {Encoder} from '../encoder/c64.js';
 // import {C64TapWriter as Encoder} from '../debug/c64_tap_writer.js';
 
-export function getName() {
-  return 'C64 .PRG-File';
-}
-
-export function getInternalName() {
-  return 'c64prg';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.prg$/i) !== null,
-    header: undefined, // no specific header
-  };
-}
-
-export function getAdapters() {
-  return [C64PrgAdapter];
-}
-
 export class C64PrgAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'C64 .PRG-File';
+  }
+
+  static getInternalName() {
+    return 'c64prg';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.prg$/i) !== null,
+      header: undefined, // no specific header
+    };
   }
 
   static getOptions() {

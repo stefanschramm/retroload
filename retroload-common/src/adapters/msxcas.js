@@ -4,25 +4,6 @@ import {Logger} from '../logger.js';
 
 const blockHeader = [0x1f, 0xa6, 0xde, 0xba, 0xcc, 0x13, 0x7d, 0x74];
 
-export function getName() {
-  return 'MSX .CAS-File';
-}
-
-export function getInternalName() {
-  return 'msxcas';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.cas$/i) !== null,
-    header: ba.containsDataAt(0, blockHeader),
-  };
-}
-
-export function getAdapters() {
-  return [MsxCasAdapter];
-}
-
 const typeHeaderLength = 10;
 const headerTypes = {
   binary: Array(typeHeaderLength).fill(0xd0),
@@ -33,6 +14,21 @@ const headerTypes = {
 export class MsxCasAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'MSX .CAS-File';
+  }
+
+  static getInternalName() {
+    return 'msxcas';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.cas$/i) !== null,
+      header: ba.containsDataAt(0, blockHeader),
+    };
   }
 
   static getOptions() {

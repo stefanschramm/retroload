@@ -1,9 +1,9 @@
-import {AbstractAdapter} from '../adapter.js';
-import {Encoder, maxFileNameLength} from '../../encoder/ta.js';
-import {NameOption} from '../../option.js';
-import {InvalidArgumentError} from '../../exception.js';
+import {Encoder, maxFileNameLength} from '../encoder/ta.js';
+import {NameOption} from '../option.js';
+import {InvalidArgumentError} from '../exception.js';
+import {AbstractGenericAdapter} from './generic.js';
 
-export class TaGenericAdapter extends AbstractAdapter {
+export class TaGenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

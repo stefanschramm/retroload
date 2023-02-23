@@ -1,6 +1,6 @@
-import {AbstractAdapter} from '../adapter.js';
-import {Encoder} from '../../encoder/atari.js';
-import {BufferAccess} from '../../buffer_access.js';
+import {Encoder} from '../encoder/atari.js';
+import {BufferAccess} from '../buffer_access.js';
+import {AbstractGenericAdapter} from './generic.js';
 
 const markerByte = 0x55;
 const blockTypeFull = 0xfc;
@@ -11,7 +11,7 @@ const dataBytesPerBlock = 128;
 const pilotIrgLength = 20000;
 const defaultIrgLength = 3000;
 
-export class AtariGenericAdapter extends AbstractAdapter {
+export class AtariGenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

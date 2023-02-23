@@ -1,23 +1,24 @@
-import {AtariCasAdapter} from './formats/ataricas.js';
-import {AtariGenericAdapter} from './formats/generic/atari.js';
-import {C64GenericAdapter} from './formats/generic/c64.js';
-import {C64P00Adapter} from './formats/c64p00.js';
-import {C64PrgAdapter} from './formats/c64prg.js';
-import {C64T64Adapter} from './formats/c64t64.js';
-import {C64TapAdapter} from './formats/c64tap.js';
-import {CpcCdtAdapter} from './formats/cpccdt.js';
-import {CpcGenericAdapter} from './formats/generic/cpc.js';
-import {KcKccAdapter} from './formats/kckcc.js';
-import {KcSssAdapter} from './formats/kcsss.js';
-import {KcTapAdapter} from './formats/kctap.js';
-import {Lc80GenericAdapter} from './formats/generic/lc80.js';
-import {MsxCasAdapter} from './formats/msxcas.js';
-import {TaGenericAdapter} from './formats/generic/ta.js';
-import {Z1013GenericAdapter} from './formats/generic/z1013.js';
-import {Z1013Z80Adapter} from './formats/z1013z80.js';
-import {Zx81PAdapter} from './formats/zx81p.js';
-import {ZxSpectrumTapAdapter} from './formats/zxspectrumtap.js';
-import {ZxSpectrumTzxAdapter} from './formats/zxspectrumtzx.js';
+import {AtariCasAdapter} from './adapters/ataricas.js';
+import {AtariGenericAdapter} from './adapters/atarigeneric.js';
+import {C64GenericAdapter} from './adapters/c64generic.js';
+import {C64P00Adapter} from './adapters/c64p00.js';
+import {C64PrgAdapter} from './adapters/c64prg.js';
+import {C64T64Adapter} from './adapters/c64t64.js';
+import {C64TapAdapter} from './adapters/c64tap.js';
+import {CpcCdtAdapter} from './adapters/cpccdt.js';
+import {CpcGenericAdapter} from './adapters/cpcgeneric.js';
+import {KcKccAdapter} from './adapters/kckcc.js';
+import {KcSssAdapter} from './adapters/kcsss.js';
+import {KcTapAdapter} from './adapters/kctap.js';
+import {Lc80GenericAdapter} from './adapters/lc80generic.js';
+import {MsxCasAdapter} from './adapters/msxcas.js';
+import {TaGenericAdapter} from './adapters/tageneric.js';
+import {Z1013GenericAdapter} from './adapters/z1013generic.js';
+import {Z1013Z13Adapter} from './adapters/z1013z13.js';
+import {Z1013Z80Adapter} from './adapters/z1013z80.js';
+import {Zx81PAdapter} from './adapters/zx81p.js';
+import {ZxSpectrumTapAdapter} from './adapters/zxspectrumtap.js';
+import {ZxSpectrumTzxAdapter} from './adapters/zxspectrumtzx.js';
 
 export const adapters = [
   AtariCasAdapter,
@@ -36,6 +37,7 @@ export const adapters = [
   MsxCasAdapter,
   TaGenericAdapter,
   Z1013GenericAdapter,
+  Z1013Z13Adapter,
   Z1013Z80Adapter,
   Zx81PAdapter,
   ZxSpectrumTapAdapter,

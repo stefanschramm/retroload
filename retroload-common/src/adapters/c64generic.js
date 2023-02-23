@@ -1,9 +1,9 @@
-import {AbstractAdapter} from '../adapter.js';
-import {Encoder} from '../../encoder/c64.js';
-import {LoadOption, NameOption, Option, ShortpilotOption} from '../../option.js';
-import {InvalidArgumentError} from '../../exception.js';
+import {Encoder} from '../encoder/c64.js';
+import {LoadOption, NameOption, Option, ShortpilotOption} from '../option.js';
+import {InvalidArgumentError} from '../exception.js';
+import {AbstractGenericAdapter} from './generic.js';
 
-export class C64GenericAdapter extends AbstractAdapter {
+export class C64GenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

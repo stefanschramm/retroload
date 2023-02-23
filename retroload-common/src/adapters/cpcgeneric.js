@@ -1,8 +1,8 @@
-import {AbstractAdapter} from '../adapter.js';
-import {Encoder} from '../../encoder/cpctzx.js';
-import {EntryOption, LoadOption, NameOption} from '../../option.js';
-import {InternalError, InvalidArgumentError} from '../../exception.js';
-import {BufferAccess} from '../../buffer_access.js';
+import {Encoder} from '../encoder/cpctzx.js';
+import {EntryOption, LoadOption, NameOption} from '../option.js';
+import {InternalError, InvalidArgumentError} from '../exception.js';
+import {BufferAccess} from '../buffer_access.js';
+import {AbstractGenericAdapter} from './generic.js';
 
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;
@@ -24,7 +24,7 @@ const standardRecordOptions = {
   pauseLengthMs: 0x000a,
 };
 
-export class CpcGenericAdapter extends AbstractAdapter {
+export class CpcGenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

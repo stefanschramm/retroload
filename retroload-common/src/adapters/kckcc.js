@@ -2,30 +2,26 @@ import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/kc.js';
 import {InputDataError} from '../exception.js';
 
-export function getName() {
-  return 'KC .KCC-File';
-}
-
-export function getInternalName() {
-  return 'kckcc';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.kcc$/i) !== null,
-    header: undefined, // no specific header
-  };
-}
-
-export function getAdapters() {
-  return [KcKccAdapter];
-}
-
 const fileBlockSize = 128;
 
 export class KcKccAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'KC .KCC-File';
+  }
+
+  static getInternalName() {
+    return 'kckcc';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.kcc$/i) !== null,
+      header: undefined, // no specific header
+    };
   }
 
   static encode(recorder, ba, options) {

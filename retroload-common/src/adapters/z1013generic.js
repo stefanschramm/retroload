@@ -1,7 +1,7 @@
-import {AbstractAdapter} from '../adapter.js';
-import {Encoder} from '../../encoder/z1013.js';
+import {Encoder} from '../encoder/z1013.js';
+import {AbstractGenericAdapter} from './generic.js';
 
-export class Z1013GenericAdapter extends AbstractAdapter {
+export class Z1013GenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

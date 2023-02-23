@@ -2,30 +2,26 @@ import {AbstractAdapter} from './adapter.js';
 import {Encoder} from '../encoder/z1013.js';
 import {Logger} from '../logger.js';
 
-export function getName() {
-  return 'Z1013 .Z80-File (Headersave)';
-}
-
-export function getInternalName() {
-  return 'z1013z80';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.z80$/i) !== null,
-    header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
-  };
-}
-
-export function getAdapters() {
-  return [Z1013Z80Adapter];
-}
-
 const headerLength = 0x20;
 
 export class Z1013Z80Adapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'Z1013 .Z80-File (Headersave)';
+  }
+
+  static getInternalName() {
+    return 'z1013z80';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.z80$/i) !== null,
+      header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
+    };
   }
 
   static encode(recorder, ba, options) {

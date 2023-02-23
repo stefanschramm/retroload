@@ -5,33 +5,29 @@ import {Logger} from '../logger.js';
 
 const fileHeader = 'FUJI';
 
-export function getName() {
-  return 'Atari .CAS-File';
-}
-
-export function getInternalName() {
-  return 'ataricas';
-}
-
-/**
- * @param {string} filename
- * @param {BufferAccess} ba
- * @return {object}
- */
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.cas/i) !== null,
-    header: ba.containsDataAt(0, fileHeader),
-  };
-}
-
-export function getAdapters() {
-  return [AtariCasAdapter];
-}
-
 export class AtariCasAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getInternalName() {
+    return 'ataricas';
+  }
+
+  static getName() {
+    return 'Atari .CAS-File';
+  }
+
+  /**
+   * @param {string} filename
+   * @param {BufferAccess} ba
+   * @return {object}
+   */
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.cas/i) !== null,
+      header: ba.containsDataAt(0, fileHeader),
+    };
   }
 
   /**

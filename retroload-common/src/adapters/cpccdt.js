@@ -4,28 +4,24 @@ import {TzxProcessor} from './tzx.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
-export function getName() {
-  return 'CPC .CDT-File';
-}
-
-export function getInternalName() {
-  return 'cpccdt';
-}
-
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.cdt/i) !== null,
-    header: ba.containsDataAt(0, fileHeader),
-  };
-}
-
-export function getAdapters() {
-  return [CpcCdtAdapter];
-}
-
 export class CpcCdtAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'CPC .CDT-File';
+  }
+
+  static getInternalName() {
+    return 'cpccdt';
+  }
+
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.cdt/i) !== null,
+      header: ba.containsDataAt(0, fileHeader),
+    };
   }
 
   static encode(recorder, ba, options) {

@@ -4,29 +4,25 @@ import {Encoder} from '../encoder/c64.js';
 
 const fileHeader = 'C64File';
 
-export function getName() {
-  return 'C64 .P00-File';
-}
-
-export function getInternalName() {
-  return 'c64p00';
-}
-
-// We support p00 only, not multiple parts (p01, ...)
-export function identify(filename, ba) {
-  return {
-    filename: filename.match(/^.*\.p00$/i) !== null,
-    header: ba.containsDataAt(0, fileHeader),
-  };
-}
-
-export function getAdapters() {
-  return [C64P00Adapter];
-}
-
 export class C64P00Adapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
+  }
+
+  static getName() {
+    return 'C64 .P00-File';
+  }
+
+  static getInternalName() {
+    return 'c64p00';
+  }
+
+  // We support p00 only, not multiple parts (p01, ...)
+  static identify(filename, ba) {
+    return {
+      filename: filename.match(/^.*\.p00$/i) !== null,
+      header: ba.containsDataAt(0, fileHeader),
+    };
   }
 
   static getOptions() {

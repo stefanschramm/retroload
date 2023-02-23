@@ -2,12 +2,11 @@ import {
   FormatAutodetectionFailedError,
   FormatNotFoundError,
   TargetMachineNotFoundError,
-  TargetMachineNotSpecifiedError,
   InternalError,
   MissingOptionsError,
 } from './exception.js';
 import {BufferAccess} from './buffer_access.js';
-import {formats} from './format_provider.js';
+import {adapters as providedAdapters} from './adapter_provider.js';
 import {Logger} from './logger.js';
 
 /**
@@ -19,18 +18,33 @@ import {Logger} from './logger.js';
  */
 export function encode(recorder, filename, data, options={}) {
   const ba = new BufferAccess(data);
-  const format = (options.format === undefined) ?
-    autodetectFormat(filename, ba) :
-    getFormatByInternalName(options.format)
+
+  let filteredAdapters = providedAdapters;
+  if (options.format !== undefined) {
+    filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === options.format);
+    if (filteredAdapters.length === 0) {
+      throw new FormatNotFoundError(options.format);
+    }
+  }
+  if (options.machine !== undefined) {
+    filteredAdapters = filteredAdapters.filter((a) => a.getTargetName() === options.machine);
+    if (filteredAdapters.length === 0) {
+      throw new TargetMachineNotFoundError(options.machine, options.format);
+    }
+  }
+  const adapter =
+    filteredAdapters.length === 1 ?
+    filteredAdapters[0] :
+    autodetectAdapter(filteredAdapters, filename, ba)
   ;
-  const adapter = determineAdapterToUse(format, options.machine);
+
   const requiredOptions = adapter.getOptions().filter((o) => o.required);
   const missingOptions = requiredOptions.filter((o) => options[o.key] === undefined);
   if (missingOptions.length > 0) {
     throw new MissingOptionsError(missingOptions);
   }
 
-  Logger.info('Format: ' + format.getName() + ', Target: ' + adapter.getTargetName());
+  Logger.info('Format: ' + adapter.getName() + ', Target: ' + adapter.getTargetName());
 
   adapter.encode(recorder, ba, options);
 
@@ -40,56 +54,52 @@ export function encode(recorder, filename, data, options={}) {
 export function getAllOptions() {
   const options = [];
   const optionKeys = [];
-  for (const format of formats) {
-    for (const adapter of format.getAdapters()) {
-      for (const option of adapter.getOptions()) {
-        if (optionKeys.indexOf(option.key) !== -1) {
-          if (option.common) {
-            continue;
-          }
-          throw new InternalError(`Non-common option "${option.key}" defined multiple times.`);
+  for (const adapter of providedAdapters) {
+    for (const option of adapter.getOptions()) {
+      if (optionKeys.indexOf(option.key) !== -1) {
+        if (option.common) {
+          continue;
         }
-        optionKeys.push(option.key);
-        options.push(option);
+        throw new InternalError(`Non-common option "${option.key}" defined multiple times.`);
       }
+      optionKeys.push(option.key);
+      options.push(option);
     }
   }
 
   return options;
 }
 
-function autodetectFormat(filename, ba) {
-  const rankedFormats = getRankedFormatIdentifications(filename, ba);
+function autodetectAdapter(adapters, filename, ba) {
+  const rankedAdapters = getRankedAdapters(adapters, filename, ba);
 
-  if (rankedFormats.length > 1 && rankedFormats[0].score === rankedFormats[1].score) {
-    throw new FormatAutodetectionFailedError();
+  if (rankedAdapters.length > 1 && rankedAdapters[0].score > rankedAdapters[1].score) {
+    return rankedAdapters[0].adapter;
   }
 
-  return rankedFormats[0].format;
+  throw new FormatAutodetectionFailedError();
 }
 
-function getFormatByInternalName(name) {
-  for (const format of formats) {
-    if (format.getInternalName() === name) {
-      return format;
-    }
+function mapBoolishToScore(value, score) {
+  if (value === true) {
+    return score;
+  }
+  if (value === false) {
+    return -score;
   }
 
-  throw new FormatNotFoundError(name);
+  return 0;
 }
 
-function getRankedFormatIdentifications(filename, ba) {
-  const formatIdentifications = formats.map(function(format) {
-    const identifiation = format.identify(filename, ba);
-    const score =
-      ((identifiation.header === true) ? 20 : 0) +
-      ((identifiation.filename === true) ? 10 : 0)
-    ;
+function getRankedAdapters(adapters, filename, ba) {
+  const adapterIdentifications = adapters.map(function(adapter) {
+    const identifiation = adapter.identify(filename, ba);
+    const score = mapBoolishToScore(identifiation.header, 20) + mapBoolishToScore(identifiation.filename, 10);
 
-    return {format, score};
+    return {adapter: adapter, score};
   });
 
-  const formatIdentificationsRanked = formatIdentifications.sort(function(a, b) {
+  const adapterIdentificationsRanked = adapterIdentifications.sort(function(a, b) {
     if (a.score > b.score) {
       return -1;
     }
@@ -102,24 +112,5 @@ function getRankedFormatIdentifications(filename, ba) {
     throw new InternalError('Should not happen.');
   });
 
-  return formatIdentificationsRanked;
-}
-
-function determineAdapterToUse(format, requestedMachine) {
-  const adapters = format.getAdapters();
-  if (requestedMachine === undefined) {
-    if (adapters.length > 1) {
-      throw new TargetMachineNotSpecifiedError(format.getInternalName());
-    }
-    if (adapters.length === 1) {
-      return adapters[0];
-    }
-  }
-  for (const adapter of adapters) {
-    if (adapter.getTargetName() === requestedMachine) {
-      return adapter;
-    }
-  }
-
-  throw new TargetMachineNotFoundError(requestedMachine, format.getInternalName());
+  return adapterIdentificationsRanked;
 }
