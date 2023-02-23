@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/msx.js';
+import {MsxEncoder} from '../encoder/msx.js';
 import {Logger} from '../logger.js';
 
 const blockHeader = [0x1f, 0xa6, 0xde, 0xba, 0xcc, 0x13, 0x7d, 0x74];
@@ -13,7 +13,7 @@ const headerTypes = {
 
 export class MsxCasAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return MsxEncoder.getTargetName();
   }
 
   static getName() {
@@ -32,11 +32,11 @@ export class MsxCasAdapter extends AbstractAdapter {
   }
 
   static getOptions() {
-    return Encoder.getOptions();
+    return MsxEncoder.getOptions();
   }
 
   static encode(recorder, ba, options) {
-    const e = new Encoder(recorder, options);
+    const e = new MsxEncoder(recorder, options);
     e.begin();
     for (let i = 0; i < ba.length(); i++) {
       if (i % 8 === 0 && ba.containsDataAt(i, blockHeader)) {

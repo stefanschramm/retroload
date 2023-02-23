@@ -6,7 +6,7 @@ const bitPause = 0.0013; // s
 /**
  * Encoder for Sinclair ZX81
  */
-export class Encoder extends BaseEncoder {
+export class Zx81Encoder extends BaseEncoder {
   static getTargetName() {
     return 'zx81';
   }

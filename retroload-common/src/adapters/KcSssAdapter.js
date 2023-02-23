@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/kc.js';
+import {KcEncoder} from '../encoder/kc.js';
 import {BufferAccess} from '../buffer_access.js';
 import {NameOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';
@@ -10,7 +10,7 @@ const maxFileNameLength = 8;
 
 export class KcSssAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return KcEncoder.getTargetName();
   }
 
   static getName() {
@@ -58,7 +58,7 @@ export class KcSssAdapter extends AbstractAdapter {
     const remainingDataBa = ba.slice(blockSize - headerSize);
     const remainingBlocks = Math.ceil(remainingDataBa.length() / blockSize);
 
-    const e = new Encoder(recorder);
+    const e = new KcEncoder(recorder);
 
     e.begin();
     e.recordBlock(1, firstBlockBa);

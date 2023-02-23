@@ -1,11 +1,11 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/zxspectrum.js';
+import {ZxSpectrumEncoder} from '../encoder/zxspectrum.js';
 
 // https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
 
 export class ZxSpectrumTapAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return ZxSpectrumEncoder.getTargetName();
   }
 
   static getName() {
@@ -24,7 +24,7 @@ export class ZxSpectrumTapAdapter extends AbstractAdapter {
   }
 
   static encode(recorder, ba, options) {
-    const e = new Encoder(recorder);
+    const e = new ZxSpectrumEncoder(recorder);
     e.begin();
     let i = 0;
     while (i < ba.length()) {

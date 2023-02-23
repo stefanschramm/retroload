@@ -27,7 +27,7 @@ const standardSpeedRecordOptions = {
  * https://github.com/mamedev/mame/blob/master/src/lib/formats/tzx_cas.cpp
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
-export class TzxEncoder extends BaseEncoder {
+export class AbstractTzxEncoder extends BaseEncoder {
   recordStandardSpeedDataBlock(blockDataBa) {
     this.recordDataBlock(blockDataBa, {
       ...standardSpeedRecordOptions,

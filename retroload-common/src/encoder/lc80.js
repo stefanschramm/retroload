@@ -15,7 +15,7 @@ const syncEndLength = 2; // s
  *
  * Format description: Bedienungsanleitung LC 80, p. 24-25
  */
-export class Encoder extends BaseEncoder {
+export class Lc80Encoder extends BaseEncoder {
   static getTargetName() {
     return 'lc80';
   }

@@ -1,4 +1,4 @@
-import {Encoder} from '../encoder/atari.js';
+import {AtariEncoder} from '../encoder/atari.js';
 import {BufferAccess} from '../buffer_access.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
@@ -13,7 +13,7 @@ const defaultIrgLength = 3000;
 
 export class AtariGenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return AtariEncoder.getTargetName();
   }
 
   /**
@@ -22,7 +22,7 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
    * @param {object} options
    */
   static encode(recorder, ba, options) {
-    const e = new Encoder(recorder);
+    const e = new AtariEncoder(recorder);
     e.setDefaultBaudrate();
     const blocks = Math.ceil(ba.length() / dataBytesPerBlock);
     for (let blockId = 0; blockId < blocks; blockId++) {

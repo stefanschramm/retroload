@@ -6,7 +6,7 @@ const blockDataSize = 32;
 /**
  * Encoder for Robotron Z 1013
  */
-export class Encoder extends BaseEncoder {
+export class Z1013Encoder extends BaseEncoder {
   static getTargetName() {
     return 'z1013';
   }

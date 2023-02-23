@@ -12,7 +12,7 @@ export const maxFileNameLength = 6;
  *
  * TODO: Generalize? Is the way of writing the header with file name the same on all KCS compatible systems?
  */
-export class Encoder extends BaseEncoder {
+export class TaEncoder extends BaseEncoder {
   static getTargetName() {
     return 'ta';
   }

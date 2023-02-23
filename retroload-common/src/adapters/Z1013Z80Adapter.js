@@ -1,12 +1,12 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/z1013.js';
+import {Z1013Encoder} from '../encoder/z1013.js';
 import {Logger} from '../logger.js';
 
 const headerLength = 0x20;
 
 export class Z1013Z80Adapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return Z1013Encoder.getTargetName();
   }
 
   static getName() {
@@ -33,7 +33,7 @@ export class Z1013Z80Adapter extends AbstractAdapter {
     const type = header.getUint8(0x0c);
     const name = (new TextDecoder()).decode(new Uint8Array(ba, 0x10, 0x10));
     Logger.log(`Filename: "${name.toString(16)}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
-    const e = new Encoder(recorder);
+    const e = new Z1013Encoder(recorder);
     e.begin();
     e.recordData(data);
     e.end();

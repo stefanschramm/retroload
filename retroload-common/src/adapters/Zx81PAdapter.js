@@ -1,9 +1,9 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/zx81.js';
+import {Zx81Encoder} from '../encoder/zx81.js';
 
 export class Zx81PAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return Zx81Encoder.getTargetName();
   }
 
   static getName() {
@@ -22,7 +22,7 @@ export class Zx81PAdapter extends AbstractAdapter {
   }
 
   static encode(recorder, ba, options) {
-    const e = new Encoder(recorder);
+    const e = new Zx81Encoder(recorder);
     e.begin();
     // Filename in ZX 81 charset - https://en.wikipedia.org/wiki/ZX81_character_set
     // "TEST"

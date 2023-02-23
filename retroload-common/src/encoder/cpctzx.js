@@ -1,9 +1,9 @@
-import {TzxEncoder} from './tzx.js';
+import {AbstractTzxEncoder} from './tzx.js';
 
 /**
  * Amstrad CPC-specific variant of the TzxEncoder (.cdt files)
  */
-export class Encoder extends TzxEncoder {
+export class CpcTzxEncoder extends AbstractTzxEncoder {
   static getTargetName() {
     return 'cpc';
   }

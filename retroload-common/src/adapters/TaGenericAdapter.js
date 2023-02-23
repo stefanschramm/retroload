@@ -1,11 +1,11 @@
-import {Encoder, maxFileNameLength} from '../encoder/ta.js';
+import {TaEncoder, maxFileNameLength} from '../encoder/ta.js';
 import {NameOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 export class TaGenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return TaEncoder.getTargetName();
   }
 
   static getOptions() {
@@ -20,7 +20,7 @@ export class TaGenericAdapter extends AbstractGenericAdapter {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
 
-    const e = new Encoder(recorder);
+    const e = new TaEncoder(recorder);
     e.begin();
     e.recordFile(filename, ba);
     e.end();

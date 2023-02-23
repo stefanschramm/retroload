@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/c64.js';
 import {Logger} from '../logger.js';
 
 const fileHeader = 'C64-TAPE-RAW';
@@ -8,7 +8,7 @@ const defaultLongPulse = 2048;
 
 export class C64TapAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return C64Encoder.getTargetName();
   }
 
   static getName() {
@@ -34,7 +34,7 @@ export class C64TapAdapter extends AbstractAdapter {
     Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, 0)}, dataLength: ${dataLength}`);
 
     const data = ba.slice(header.length(), dataLength);
-    const e = new Encoder(recorder);
+    const e = new C64Encoder(recorder);
     e.begin();
     for (let i = 0; i < data.length(); i += 1) {
       const value = data.getUint8(i);

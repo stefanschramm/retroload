@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/kc.js';
+import {KcEncoder} from '../encoder/kc.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
@@ -9,7 +9,7 @@ const fileBlockSize = 1 + blockSize; // 1 byte block number
 
 export class KcTapAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return KcEncoder.getTargetName();
   }
 
   static getName() {
@@ -35,7 +35,7 @@ export class KcTapAdapter extends AbstractAdapter {
     // - more than 255 blocks
     // - last block number not 0xff
 
-    const e = new Encoder(recorder);
+    const e = new KcEncoder(recorder);
 
     e.begin();
     for (let i = 0; i < blocks; i++) {

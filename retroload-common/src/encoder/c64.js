@@ -16,7 +16,7 @@ const fileTypePrg = 0x03;
 /**
  * Encoder for C64 and VIC-20. Used for encoding .prg and .tap files.
  */
-export class Encoder extends BaseEncoder {
+export class C64Encoder extends BaseEncoder {
   static getTargetName() {
     return 'c64';
   }

@@ -19,7 +19,7 @@ const oscillationsBlockIntro = 200; // as in kcemu save_WAV.c; manual: 160
 /**
  * Encoder for KC 85/1 (and similar) and KC 85/4 (and similar)
  */
-export class Encoder extends BaseEncoder {
+export class KcEncoder extends BaseEncoder {
   static getTargetName() {
     return 'kc';
   }

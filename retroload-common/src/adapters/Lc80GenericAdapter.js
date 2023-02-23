@@ -1,4 +1,4 @@
-import {Encoder as Lc80Encoder} from '../encoder/lc80.js';
+import {Lc80Encoder} from '../encoder/lc80.js';
 import {LoadOption, NameOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';

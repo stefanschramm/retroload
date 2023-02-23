@@ -1,4 +1,4 @@
-import {Encoder} from '../encoder/cpctzx.js';
+import {CpcTzxEncoder} from '../encoder/cpctzx.js';
 import {EntryOption, LoadOption, NameOption} from '../option.js';
 import {InternalError, InvalidArgumentError} from '../exception.js';
 import {BufferAccess} from '../buffer_access.js';
@@ -26,7 +26,7 @@ const standardRecordOptions = {
 
 export class CpcGenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return CpcTzxEncoder.getTargetName();
   }
 
   static getOptions() {
@@ -60,7 +60,7 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
       throw new InvalidArgumentError('entry', 'Option entry is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
-    const e = new Encoder(recorder);
+    const e = new CpcTzxEncoder(recorder);
 
     const dataRecordCount = Math.ceil(ba.length() / dataBytesPerDataBlock);
     const dataBytesInLastBlock = ba.length() - (dataRecordCount - 1) * dataBytesPerDataBlock;

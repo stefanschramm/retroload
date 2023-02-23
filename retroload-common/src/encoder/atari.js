@@ -9,7 +9,7 @@ const fMark = 5327;
  *
  * https://www.atariarchives.org/dere/chaptC.php
  */
-export class Encoder extends BaseEncoder {
+export class AtariEncoder extends BaseEncoder {
   static getTargetName() {
     return 'atari';
   }

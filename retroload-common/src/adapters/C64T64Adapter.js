@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/c64.js';
 import {ShortpilotOption} from '../option.js';
 
 // Usually 'C64 tape image file' but might be different
@@ -7,7 +7,7 @@ const fileHeader = 'C64';
 
 export class C64T64Adapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return C64Encoder.getTargetName();
   }
 
   static getName() {
@@ -33,7 +33,7 @@ export class C64T64Adapter extends AbstractAdapter {
 
   // http://unusedino.de/ec64/technical/formats/t64.html
   static encode(recorder, ba, options) {
-    const e = new Encoder(recorder);
+    const e = new C64Encoder(recorder);
 
     const header = ba.slice(0, 0x40);
     const entries = header.getUint16LE(0x24);

@@ -1,12 +1,12 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/cpctzx.js';
+import {CpcTzxEncoder} from '../encoder/cpctzx.js';
 import {TzxProcessor} from './TzxProcessor.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
 export class CpcCdtAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return CpcTzxEncoder.getTargetName();
   }
 
   static getName() {
@@ -25,7 +25,7 @@ export class CpcCdtAdapter extends AbstractAdapter {
   }
 
   static encode(recorder, ba, options) {
-    const e = new Encoder(recorder);
+    const e = new CpcTzxEncoder(recorder);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);
   }

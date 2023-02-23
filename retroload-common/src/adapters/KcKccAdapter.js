@@ -1,12 +1,12 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/kc.js';
+import {KcEncoder} from '../encoder/kc.js';
 import {InputDataError} from '../exception.js';
 
 const fileBlockSize = 128;
 
 export class KcKccAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return KcEncoder.getTargetName();
   }
 
   static getName() {
@@ -34,7 +34,7 @@ export class KcKccAdapter extends AbstractAdapter {
       throw new InputDataError('Length of data in KCC file is not a multiple of 128.');
     }
 
-    const e = new Encoder(recorder);
+    const e = new KcEncoder(recorder);
 
     e.begin();
     for (let i = 0; i < blocks; i++) {

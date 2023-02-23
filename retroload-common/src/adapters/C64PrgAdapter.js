@@ -1,11 +1,11 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {ShortpilotOption} from '../option.js';
-import {Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/c64.js';
 // import {C64TapWriter as Encoder} from '../debug/c64_tap_writer.js';
 
 export class C64PrgAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return C64Encoder.getTargetName();
   }
 
   static getName() {
@@ -33,7 +33,7 @@ export class C64PrgAdapter extends AbstractAdapter {
     const header = ba.slice(0, 2);
     const loadAddress = header.getUint16LE(0);
     const data = ba.slice(2);
-    const e = new Encoder(recorder, options);
+    const e = new C64Encoder(recorder, options);
     e.begin();
     e.recordPrg(loadAddress, ' '.repeat(16), data, options.shortpilot);
     e.end();

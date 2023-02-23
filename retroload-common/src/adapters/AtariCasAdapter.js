@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Encoder} from '../encoder/atari.js';
+import {AtariEncoder} from '../encoder/atari.js';
 import {InternalError} from '../exception.js';
 import {Logger} from '../logger.js';
 
@@ -7,7 +7,7 @@ const fileHeader = 'FUJI';
 
 export class AtariCasAdapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return AtariEncoder.getTargetName();
   }
 
   static getInternalName() {
@@ -36,7 +36,7 @@ export class AtariCasAdapter extends AbstractAdapter {
    * @param {object} options
    */
   static encode(recorder, ba, options) {
-    const e = new Encoder(recorder);
+    const e = new AtariEncoder(recorder);
     e.setDefaultBaudrate();
     let i = 0;
     while (i < ba.length()) {

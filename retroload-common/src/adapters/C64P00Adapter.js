@@ -1,12 +1,12 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {ShortpilotOption} from '../option.js';
-import {Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/c64.js';
 
 const fileHeader = 'C64File';
 
 export class C64P00Adapter extends AbstractAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return C64Encoder.getTargetName();
   }
 
   static getName() {
@@ -36,7 +36,7 @@ export class C64P00Adapter extends AbstractAdapter {
     const fileName = ba.slice(8, 0x10);
     const loadAddress = ba.getUint16LE(0x1a);
     const data = ba.slice(0x1c);
-    const e = new Encoder(recorder, options);
+    const e = new C64Encoder(recorder, options);
     e.begin();
     e.recordPrg(loadAddress, fileName.asAsciiString(), data, options.shortpilot);
     e.end();

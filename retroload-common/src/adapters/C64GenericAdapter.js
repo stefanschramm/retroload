@@ -1,11 +1,11 @@
-import {Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/c64.js';
 import {LoadOption, NameOption, Option, ShortpilotOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 export class C64GenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
-    return Encoder.getTargetName();
+    return C64Encoder.getTargetName();
   }
 
   static getOptions() {
@@ -33,7 +33,7 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
       throw new InvalidArgumentError('name', 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
     }
 
-    const e = new Encoder(recorder, options);
+    const e = new C64Encoder(recorder, options);
     e.begin();
     switch (type) {
       case 'basic':

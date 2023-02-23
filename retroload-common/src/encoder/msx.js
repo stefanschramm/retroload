@@ -15,7 +15,7 @@ const pulsesShortHeader = 4000;
  * https://www.msx.org/forum/semi-msx-talk/emulation/how-do-exactly-works-cas-format
  * https://github.com/joyrex2001/castools/blob/master/cas2wav.c
  */
-export class Encoder extends BaseEncoder {
+export class MsxEncoder extends BaseEncoder {
   static getTargetName() {
     return 'msx';
   }
