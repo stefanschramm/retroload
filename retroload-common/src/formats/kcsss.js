@@ -20,14 +20,14 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [KcSssAdapter];
 }
 
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;
 const maxFileNameLength = 8;
 
-export class Adapter extends AbstractAdapter {
+export class KcSssAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

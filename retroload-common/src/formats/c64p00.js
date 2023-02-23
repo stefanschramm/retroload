@@ -21,10 +21,10 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [C64P00Adapter];
 }
 
-class Adapter extends AbstractAdapter {
+class C64P00Adapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

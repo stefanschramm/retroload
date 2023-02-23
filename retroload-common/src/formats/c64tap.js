@@ -20,12 +20,12 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [C64TapAdapter];
 }
 
 const defaultLongPulse = 2048;
 
-export class Adapter extends AbstractAdapter {
+export class C64TapAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

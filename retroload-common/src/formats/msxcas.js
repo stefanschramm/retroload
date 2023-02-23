@@ -20,7 +20,7 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [MsxCasAdapter];
 }
 
 const typeHeaderLength = 10;
@@ -30,7 +30,7 @@ const headerTypes = {
   ascii: Array(typeHeaderLength).fill(0xea),
 };
 
-class Adapter extends AbstractAdapter {
+class MsxCasAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

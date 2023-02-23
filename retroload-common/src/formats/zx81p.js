@@ -17,10 +17,10 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [Zx81PAdapter];
 }
 
-class Adapter extends AbstractAdapter {
+class Zx81PAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

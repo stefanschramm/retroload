@@ -19,10 +19,10 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [ZxSpectrumTapAdapter];
 }
 
-export class Adapter extends AbstractAdapter {
+export class ZxSpectrumTapAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

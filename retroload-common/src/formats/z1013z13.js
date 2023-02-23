@@ -1,4 +1,4 @@
-import {Z1013Adapter} from './generic/z1013.js';
+import {Z1013GenericAdapter} from './generic/z1013.js';
 
 export function getName() {
   return 'Z1013 .Z13-File';
@@ -16,5 +16,5 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Z1013Adapter];
+  return [Z1013GenericAdapter];
 }

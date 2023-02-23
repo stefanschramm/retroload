@@ -20,10 +20,10 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [CpcCdtAdapter];
 }
 
-export class Adapter extends AbstractAdapter {
+export class CpcCdtAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

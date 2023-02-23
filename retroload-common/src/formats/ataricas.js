@@ -26,10 +26,10 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [AtariCasAdapter];
 }
 
-class Adapter extends AbstractAdapter {
+class AtariCasAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

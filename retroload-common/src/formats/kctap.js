@@ -19,14 +19,14 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [KcTapAdapter];
 }
 
 const fileHeaderLength = 16;
 const blockSize = 128;
 const fileBlockSize = 1 + blockSize; // 1 byte block number
 
-export class Adapter extends AbstractAdapter {
+export class KcTapAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

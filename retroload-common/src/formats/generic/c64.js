@@ -3,7 +3,7 @@ import {Encoder} from '../../encoder/c64.js';
 import {LoadOption, NameOption, Option, ShortpilotOption} from '../../option.js';
 import {InvalidArgumentError} from '../../exception.js';
 
-export class C64Adapter extends AbstractAdapter {
+export class C64GenericAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

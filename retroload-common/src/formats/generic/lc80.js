@@ -3,7 +3,7 @@ import {Encoder as Lc80Encoder} from '../../encoder/lc80.js';
 import {LoadOption, NameOption} from '../../option.js';
 import {InvalidArgumentError} from '../../exception.js';
 
-export class Lc80Adapter extends AbstractAdapter {
+export class Lc80GenericAdapter extends AbstractAdapter {
   static getTargetName() {
     return Lc80Encoder.getTargetName();
   }

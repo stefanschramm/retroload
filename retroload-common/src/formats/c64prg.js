@@ -19,10 +19,10 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [C64PrgAdapter];
 }
 
-class Adapter extends AbstractAdapter {
+class C64PrgAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

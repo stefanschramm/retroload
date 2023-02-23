@@ -11,7 +11,7 @@ const dataBytesPerBlock = 128;
 const pilotIrgLength = 20000;
 const defaultIrgLength = 3000;
 
-export class AtariAdapter extends AbstractAdapter {
+export class AtariGenericAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

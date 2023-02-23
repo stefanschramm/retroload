@@ -18,12 +18,12 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [Z1013Z80Adapter];
 }
 
 const headerLength = 0x20;
 
-class Adapter extends AbstractAdapter {
+class Z1013Z80Adapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

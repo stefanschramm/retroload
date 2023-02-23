@@ -18,12 +18,12 @@ export function identify(filename, ba) {
 }
 
 export function getAdapters() {
-  return [Adapter];
+  return [KcKccAdapter];
 }
 
 const fileBlockSize = 128;
 
-export class Adapter extends AbstractAdapter {
+export class KcKccAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }

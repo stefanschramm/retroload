@@ -24,7 +24,7 @@ const standardRecordOptions = {
   pauseLengthMs: 0x000a,
 };
 
-export class CpcAdapter extends AbstractAdapter {
+export class CpcGenericAdapter extends AbstractAdapter {
   static getTargetName() {
     return Encoder.getTargetName();
   }
