@@ -2,7 +2,8 @@
 
 import fs from 'fs';
 import {Command} from 'commander';
-import {DIALECTS} from './tokenizer.js';
+import {InternalError} from 'retroload-common/src/Exceptions.js';
+import {BasicTokenizers, Logger} from 'retroload-common';
 
 function main() {
   const program = (new Command())
@@ -17,14 +18,27 @@ function main() {
   const infile = program.args[0];
   const dialect = options.dialect || 'kc';
 
-  if (DIALECTS[dialect] === undefined) {
-    throw new Error(`Unknown dialect: "${dialect}"`);
+  const tokenizer = getTokenizerByDialectName(dialect);
+
+  const outfile = options.outfile || `${infile}.${tokenizer.getExtension()}`;
+
+  const destinationBa = tokenizer.tokenize(fs.readFileSync(infile).toString());
+  fs.writeFileSync(outfile, destinationBa.asUint8Array());
+}
+
+function getTokenizerByDialectName(name) {
+  const result = BasicTokenizers.filter((t) => t.getName() === name);
+
+  if (result.length === 0) {
+    const avaliableDialectNames = BasicTokenizers.map((t) => t.getName());
+    Logger.error(`Tokenizer for BASIC dialect "${name}" not found. Available dialects: ${avaliableDialectNames.join(', ')}`);
+    process.exit(1);
+  }
+  if (result.length > 1) {
+    throw new InternalError(`Found multiple BASIC tokenizers with name "${name}".`);
   }
 
-  const outfile = options.outfile || `${infile}.${DIALECTS[dialect].extension}`;
-
-  const destinationBa = DIALECTS[dialect].tokenize(fs.readFileSync(infile).toString());
-  fs.writeFileSync(outfile, destinationBa.asUint8Array());
+  return result[0];
 }
 
 main();
