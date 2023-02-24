@@ -4,18 +4,6 @@ import {Logger} from '../Logger.js';
 
 const fCpu = 3500000;
 
-const standardSpeedRecordOptions = {
-  // ZX Spectrum defaults (for non-turbo-speed-data blocks)
-  // TODO: Put into encoder? - Required by TzxProcessor and TapAdapter!
-  pauseLengthMs: 1000,
-  pilotPulseLength: 2168,
-  syncFirstPulseLength: 667,
-  syncSecondPulseLength: 735,
-  zeroBitPulseLength: 855,
-  oneBitPulseLength: 1710,
-  lastByteUsedBits: 8,
-};
-
 /**
  * Abstract Encoder class for .tzx files. Used for ZX Spectrum and Amstrad CPC (.cdt).
  *
@@ -30,7 +18,7 @@ const standardSpeedRecordOptions = {
 export class AbstractTzxEncoder extends AbstractEncoder {
   recordStandardSpeedDataBlock(blockDataBa) {
     this.recordDataBlock(blockDataBa, {
-      ...standardSpeedRecordOptions,
+      ...this.getStandardSpeedRecordOptions(),
       pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223, // TODO: why?
     });
   }
@@ -77,5 +65,9 @@ export class AbstractTzxEncoder extends AbstractEncoder {
 
   getTzxCycleFactor() {
     throw new InternalError('getTzxCycleFactor() not implemented!');
+  }
+
+  getStandardSpeedRecordOptions() {
+    throw new InternalError('getStandardSpeedRecordOptions() not implemented!');
   }
 }

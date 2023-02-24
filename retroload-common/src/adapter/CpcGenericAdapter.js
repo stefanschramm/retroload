@@ -13,17 +13,6 @@ const maxFileNameLength = 16;
 const headerRecordSyncCharacter = 0x2c;
 const dataRecordSyncCharacter = 0x16;
 
-const standardRecordOptions = {
-  pilotPulseLength: 0x091a,
-  syncFirstPulseLength: 0x048d,
-  syncSecondPulseLength: 0x048d,
-  zeroBitPulseLength: 0x048d,
-  oneBitPulseLength: 0x091a,
-  pilotPulses: 0x1000,
-  lastByteUsedBits: 8,
-  pauseLengthMs: 0x000a,
-};
-
 export class CpcGenericAdapter extends AbstractGenericAdapter {
   static getTargetName() {
     return CpcTzxEncoder.getTargetName();
@@ -89,12 +78,12 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
       // Remaining bytes 28..63 stay unallocated. Rest of header segment is padded with zeros.
 
       const headerRecordBa = createHeaderRecord(headerBa);
-      e.recordDataBlock(headerRecordBa, {...standardRecordOptions, pauseLengthMs: 0x000a});
+      e.recordDataBlock(headerRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x000a});
 
       // data block
 
       const dataRecordBa = createDataRecord(ba.slice(b * dataBytesPerDataBlock, dataBytesInCurrentBlock));
-      e.recordDataBlock(dataRecordBa, {...standardRecordOptions, pauseLengthMs: 0x09c4});
+      e.recordDataBlock(dataRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x09c4});
     }
     e.end();
   }
