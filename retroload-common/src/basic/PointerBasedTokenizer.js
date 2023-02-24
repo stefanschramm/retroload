@@ -126,7 +126,7 @@ function determineTokenByteLength(token) {
     case 'COPY':
       return token.value.length;
     case 'MAP':
-      return 1;
+      return token.mappedValue[0].length;
     default:
       throw new Error(`Unknown action: ${token.action}`);
   }
@@ -138,7 +138,9 @@ function applyAction(token, lineBa) {
       lineBa.writeAsciiString(token.value);
       return;
     case 'MAP':
-      lineBa.writeUInt8(token.mappedValue); // TODO: support multi-byte tokens
+      for (const val of token.mappedValue[0]) {
+        lineBa.writeUInt8(val);
+      }
       return;
     default:
       throw new Error(`Unknown action: ${token.action}`);
