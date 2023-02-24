@@ -35,10 +35,10 @@ export class MsxEncoder extends AbstractEncoder {
   }
 
   recordByte(byte) {
-    this.recordBit(false);
+    this.recordBit(0);
     super.recordByte(byte);
-    this.recordBit(true);
-    this.recordBit(true);
+    this.recordBit(1);
+    this.recordBit(1);
   }
 
   recordBit(value) {
