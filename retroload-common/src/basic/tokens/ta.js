@@ -36,7 +36,7 @@ export const TOKENS = [
   ['<', 0xF0],
   ['=', 0xEF],
   ['>', 0xEE],
-  // [',', 0x2C], // TODO: in some contexts (like in MID$(A$,1,2)) this is tokenized to something else?
+  // [',', 0x2C],
   // ['$', 0xFE],
   ['AND', 0xF6],
   ['ATTR$', 0xE3],
