@@ -1,4 +1,4 @@
-import {Logger} from '../logger.js';
+import {Logger} from '../Logger.js';
 
 const dataMap = {
   true: 1.0,
