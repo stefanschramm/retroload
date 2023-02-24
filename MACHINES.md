@@ -12,7 +12,7 @@ Text (ATASCII) files:
 
 # C64
 
-Load an run a basic program or machine language program with autostart loader:
+Load and run a basic program or machine language program with autostart loader:
 
     RUN ""
 
@@ -21,6 +21,8 @@ Load and run machine language program (prg)
     LOAD
     (any key)
     SYS 4352
+
+4353 (0x1100) is the entry address of the program in memory.
 
 # C64 C
 
@@ -63,7 +65,7 @@ see KC 85/3
 
 # LC 80
 
-The file name consist of 4 hexa-decimal digits (here `FFFF`). After loading, the machine has to be reset and the program can to be run by specifying the entry address (here `2000`).
+The file name consist of 4 hexa-decimal digits (here `FFFF`). After loading, the machine can be reset and the program can be run by specifying the entry address (here `2000`).
 
     (LD)
     FFFF
@@ -95,7 +97,7 @@ or
 
 # Z 1013
 
-The load command `L` takes the load and end address (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
+The load command `L` takes the load and end address as hexadeciman numbers (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
 
     L 0100 018F
     J 0100
