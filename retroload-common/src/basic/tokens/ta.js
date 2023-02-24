@@ -16,6 +16,8 @@
  * 0x7E ~ -> ß
  *
  * Weirdo-tokens are commented-out
+ *
+ * TODO: There are still a lot of tokens missing. Some are identical with MSX tokens, some not.
  */
 export const TOKENS = [
   // ['7', 0xEC],
@@ -34,12 +36,14 @@ export const TOKENS = [
   ['<', 0xF0],
   ['=', 0xEF],
   ['>', 0xEE],
+  // [',', 0x2C], // TODO: in some contexts (like in MID$(A$,1,2)) this is tokenized to something else?
   // ['$', 0xFE],
   ['AND', 0xF6],
   ['ATTR$', 0xE3],
   ['AUTO', 0xAA],
   ['BEEP', 0xB4],
   ['CALL', 0xB3],
+  ['CHR$', 0xFF, 0x96],
   ['CHAIN', 0xB9],
   ['CLEAR', 0x92],
   ['CLOAD', 0x9B],
@@ -82,8 +86,10 @@ export const TOKENS = [
   ['INKEY$', 0xE6],
   ['INPUT', 0x85],
   ['INSTR', 0xDF],
+  ['INT', 0xFF, 0x85],
   ['KEY', 0x9F],
   ['KILL', 0xC7],
+  ['LEFT$', 0xFF, 0x81],
   ['LET', 0x88],
   ['LFILES', 0xCB],
   ['LINE', 0xB0],
@@ -95,19 +101,21 @@ export const TOKENS = [
   ['LSE', 0xA1],
   ['LSET', 0xC8],
   ['MERGE', 0xC4],
+  ['MID$', 0xFF, 0x83],
   ['MOD', 0xFB],
   ['MON', 0xB5],
   ['NAME', 0xC6],
   ['NEW', 0x94],
   ['NEXT', 0x83],
   ['NOT', 0xDA],
-  // ['ö', 0xE8],
-  // ['Ö', 0xFC],
+  ['ö', 0xE8],
+  ['Ö', 0xFC],
   ['ON', 0x95],
   ['OPEN', 0xBD],
   ['OPTION', 0xBA],
   ['OR', 0xF7],
   ['OUT', 0x9C],
+  ['PEEK', 0xFF, 0x97],
   ['POINT', 0xE5],
   ['POKE', 0x98],
   ['PRESET', 0xCD],
@@ -122,6 +130,8 @@ export const TOKENS = [
   ['RESTORE', 0x8C],
   ['RESUME', 0xA8],
   ['RETURN', 0x8E],
+  ['RIGHT$', 0xFF, 0x82],
+  ['RND', 0xFF, 0x88],
   ['RSET', 0xC9],
   ['RUN', 0x8A],
   ['SAVE', 0xCA],
