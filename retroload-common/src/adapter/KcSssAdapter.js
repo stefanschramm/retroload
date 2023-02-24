@@ -1,8 +1,8 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
-import {BufferAccess} from '../buffer_access.js';
-import {NameOption} from '../option.js';
-import {InvalidArgumentError} from '../exception.js';
+import {BufferAccess} from '../BufferAccess.js';
+import {NameOption} from '../Options.js';
+import {InvalidArgumentError} from '../Exceptions.js';
 
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;

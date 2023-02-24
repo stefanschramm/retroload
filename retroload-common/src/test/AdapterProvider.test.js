@@ -1,5 +1,5 @@
-import {adapters} from '../adapter_provider.js';
-import {BufferAccess} from '../buffer_access.js';
+import {adapters} from '../AdapterProvider.js';
+import {BufferAccess} from '../BufferAccess.js';
 
 test('Adapter provider lists adapters', () => {
   expect(adapters.length).toBeGreaterThan(0);

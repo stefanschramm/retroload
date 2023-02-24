@@ -4,10 +4,10 @@ import {
   TargetMachineNotFoundError,
   InternalError,
   MissingOptionsError,
-} from './exception.js';
-import {BufferAccess} from './buffer_access.js';
-import {adapters as providedAdapters} from './adapter_provider.js';
-import {Logger} from './logger.js';
+} from './Exceptions.js';
+import {BufferAccess} from './BufferAccess.js';
+import {adapters as providedAdapters} from './AdapterProvider.js';
+import {Logger} from './Logger.js';
 
 /**
  * @param {WaveRecorder|PcmRecorder} recorder

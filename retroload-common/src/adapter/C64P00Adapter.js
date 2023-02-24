@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {ShortpilotOption} from '../option.js';
+import {ShortpilotOption} from '../Options.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
 
 const fileHeader = 'C64File';

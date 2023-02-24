@@ -1,7 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
-import {InternalError} from '../exception.js';
-import {Logger} from '../logger.js';
+import {InternalError} from '../Exceptions.js';
+import {Logger} from '../Logger.js';
 
 const fileHeader = 'FUJI';
 

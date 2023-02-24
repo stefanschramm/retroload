@@ -1,6 +1,6 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {MsxEncoder} from '../encoder/MsxEncoder.js';
-import {Logger} from '../logger.js';
+import {Logger} from '../Logger.js';
 
 const blockHeader = [0x1f, 0xa6, 0xde, 0xba, 0xcc, 0x13, 0x7d, 0x74];
 

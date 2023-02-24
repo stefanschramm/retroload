@@ -1,12 +1,12 @@
 // run:
 // NODE_OPTIONS=--experimental-vm-modules npx jest
 
-import {WaveRecorder} from '../recorder/wave.js';
-import * as AdapterManager from '../adapter_manager.js';
+import {WaveRecorder} from '../recorder/WaveRecorder.js';
+import * as AdapterManager from '../AdapterManager.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as examples from 'retroload-examples';
-import {Logger} from '../logger.js';
+import {Logger} from '../Logger.js';
 
 describe('Encoding Pipeline', () => {
   it.each(examples.getExamples())(

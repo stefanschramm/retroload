@@ -1,7 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {ShortpilotOption} from '../option.js';
+import {ShortpilotOption} from '../Options.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
-// import {C64TapWriter as Encoder} from '../debug/c64_tap_writer.js';
+// import {C64TapWriter as C64Encoder} from '../debug/C64TapWriter.js';
 
 export class C64PrgAdapter extends AbstractAdapter {
   static getTargetName() {

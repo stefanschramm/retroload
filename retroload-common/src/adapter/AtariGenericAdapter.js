@@ -1,5 +1,5 @@
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
-import {BufferAccess} from '../buffer_access.js';
+import {BufferAccess} from '../BufferAccess.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 const markerByte = 0x55;

@@ -6,8 +6,8 @@ import {
   MissingOptionsError,
   TargetMachineNotFoundError,
   UsageError,
-} from '../exception.js';
-import {Option} from '../option.js';
+} from '../Exceptions.js';
+import {Option} from '../Options.js';
 
 describe('Instantiation of exceptions', () => {
   test('UsageError', () => {

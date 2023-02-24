@@ -1,5 +1,5 @@
-import {InputDataError} from '../exception.js';
-import {Logger} from '../logger.js';
+import {InputDataError} from '../Exceptions.js';
+import {Logger} from '../Logger.js';
 
 const tzxHeaderLength = 0x0a;
 

@@ -1,4 +1,4 @@
-import {BufferAccess} from '../buffer_access.js';
+import {BufferAccess} from '../BufferAccess.js';
 
 const dataMap = {
   true: 0xfe,

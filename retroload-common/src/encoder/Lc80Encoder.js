@@ -1,4 +1,4 @@
-import {BufferAccess} from '../buffer_access.js';
+import {BufferAccess} from '../BufferAccess.js';
 import {BaseEncoder} from './BaseEncoder.js';
 
 const fShort = 2000;

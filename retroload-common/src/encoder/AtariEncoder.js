@@ -1,4 +1,4 @@
-import {Logger} from '../logger.js';
+import {Logger} from '../Logger.js';
 import {BaseEncoder} from './BaseEncoder.js';
 
 const fSpace = 3995;

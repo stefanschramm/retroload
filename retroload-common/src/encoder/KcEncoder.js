@@ -1,7 +1,7 @@
 import {BaseEncoder} from './BaseEncoder.js';
-import {BufferAccess} from '../buffer_access.js';
-import {InputDataError} from '../exception.js';
-import {Logger} from '../logger.js';
+import {BufferAccess} from '../BufferAccess.js';
+import {InputDataError} from '../Exceptions.js';
+import {Logger} from '../Logger.js';
 
 const fZero = 1950; // manual: 2400;
 const fOne = 1050; // manual: 1200;

@@ -1,6 +1,6 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
-import {Logger} from '../logger.js';
+import {Logger} from '../Logger.js';
 
 const fileHeader = 'C64-TAPE-RAW';
 

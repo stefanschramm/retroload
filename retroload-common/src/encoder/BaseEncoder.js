@@ -1,4 +1,4 @@
-import {InternalError} from '../exception.js';
+import {InternalError} from '../Exceptions.js';
 
 /**
  * Base class for all encoders. Provides many methods commonly used.

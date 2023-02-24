@@ -1,6 +1,6 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
-import {InputDataError} from '../exception.js';
+import {InputDataError} from '../Exceptions.js';
 
 const fileBlockSize = 128;
 

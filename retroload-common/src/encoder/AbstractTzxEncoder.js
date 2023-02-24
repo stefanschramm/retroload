@@ -1,6 +1,6 @@
 import {BaseEncoder} from './BaseEncoder.js';
-import {InternalError} from '../exception.js';
-import {Logger} from '../logger.js';
+import {InternalError} from '../Exceptions.js';
+import {Logger} from '../Logger.js';
 
 const fCpu = 3500000;
 

@@ -1,5 +1,5 @@
 import {BaseEncoder} from './BaseEncoder.js';
-import {BufferAccess} from '../buffer_access.js';
+import {BufferAccess} from '../BufferAccess.js';
 
 const blockDataSize = 32;
 

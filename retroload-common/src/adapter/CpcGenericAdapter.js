@@ -1,7 +1,7 @@
 import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
-import {EntryOption, LoadOption, NameOption} from '../option.js';
-import {InternalError, InvalidArgumentError} from '../exception.js';
-import {BufferAccess} from '../buffer_access.js';
+import {EntryOption, LoadOption, NameOption} from '../Options.js';
+import {InternalError, InvalidArgumentError} from '../Exceptions.js';
+import {BufferAccess} from '../BufferAccess.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 const fileTypeBinary = 2;

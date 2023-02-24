@@ -1,5 +1,5 @@
-import {getAllOptions} from '../adapter_manager';
-import {Option} from '../option';
+import {getAllOptions} from '../AdapterManager.js';
+import {Option} from '../Options.js';
 
 test('Adapter manager returns options that have at least key, label and description set', () => {
   const options = getAllOptions();
