@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Zx81Encoder} from '../encoder/zx81.js';
+import {Zx81Encoder} from '../encoder/Zx81Encoder.js';
 
 export class Zx81PAdapter extends AbstractAdapter {
   static getTargetName() {

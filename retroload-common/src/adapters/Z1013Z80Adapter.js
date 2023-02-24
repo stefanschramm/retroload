@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {Z1013Encoder} from '../encoder/z1013.js';
+import {Z1013Encoder} from '../encoder/Z1013Encoder.js';
 import {Logger} from '../logger.js';
 
 const headerLength = 0x20;

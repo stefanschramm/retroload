@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {KcEncoder} from '../encoder/kc.js';
+import {KcEncoder} from '../encoder/KcEncoder.js';
 import {BufferAccess} from '../buffer_access.js';
 import {NameOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';

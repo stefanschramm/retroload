@@ -1,4 +1,4 @@
-import {BaseEncoder} from './base.js';
+import {BaseEncoder} from './BaseEncoder.js';
 import {BufferAccess} from '../buffer_access.js';
 
 const fZero = 1200;

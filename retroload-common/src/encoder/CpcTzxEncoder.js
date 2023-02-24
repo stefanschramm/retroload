@@ -1,4 +1,4 @@
-import {AbstractTzxEncoder} from './tzx.js';
+import {AbstractTzxEncoder} from './AbstractTzxEncoder.js';
 
 /**
  * Amstrad CPC-specific variant of the TzxEncoder (.cdt files)

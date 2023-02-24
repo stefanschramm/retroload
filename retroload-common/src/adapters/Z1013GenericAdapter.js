@@ -1,4 +1,4 @@
-import {Z1013Encoder} from '../encoder/z1013.js';
+import {Z1013Encoder} from '../encoder/Z1013Encoder.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 export class Z1013GenericAdapter extends AbstractGenericAdapter {

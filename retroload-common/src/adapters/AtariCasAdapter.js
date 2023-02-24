@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {AtariEncoder} from '../encoder/atari.js';
+import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {InternalError} from '../exception.js';
 import {Logger} from '../logger.js';
 

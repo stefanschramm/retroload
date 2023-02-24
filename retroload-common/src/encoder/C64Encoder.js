@@ -1,4 +1,4 @@
-import {BaseEncoder} from './base.js';
+import {BaseEncoder} from './BaseEncoder.js';
 import {InternalError} from '../exception.js';
 import {BufferAccess} from '../buffer_access.js';
 import {Logger} from '../logger.js';

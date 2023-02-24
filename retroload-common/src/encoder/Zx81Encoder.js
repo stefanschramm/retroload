@@ -1,4 +1,4 @@
-import {BaseEncoder} from './base.js';
+import {BaseEncoder} from './BaseEncoder.js';
 
 const fPulse = 3000;
 const bitPause = 0.0013; // s

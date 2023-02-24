@@ -1,4 +1,4 @@
-import {CpcTzxEncoder} from '../encoder/cpctzx.js';
+import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
 import {EntryOption, LoadOption, NameOption} from '../option.js';
 import {InternalError, InvalidArgumentError} from '../exception.js';
 import {BufferAccess} from '../buffer_access.js';

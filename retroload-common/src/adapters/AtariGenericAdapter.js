@@ -1,4 +1,4 @@
-import {AtariEncoder} from '../encoder/atari.js';
+import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {BufferAccess} from '../buffer_access.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 

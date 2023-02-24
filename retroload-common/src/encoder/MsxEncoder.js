@@ -1,4 +1,4 @@
-import {BaseEncoder} from './base.js';
+import {BaseEncoder} from './BaseEncoder.js';
 import {ShortpilotOption, Option} from '../option.js';
 
 const fZero = 1200;

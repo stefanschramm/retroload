@@ -1,5 +1,5 @@
 import {Logger} from '../logger.js';
-import {BaseEncoder} from './base.js';
+import {BaseEncoder} from './BaseEncoder.js';
 
 const fSpace = 3995;
 const fMark = 5327;

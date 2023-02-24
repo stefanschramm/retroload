@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {C64Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/C64Encoder.js';
 import {ShortpilotOption} from '../option.js';
 
 // Usually 'C64 tape image file' but might be different

@@ -1,4 +1,4 @@
-import {C64Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/C64Encoder.js';
 import {LoadOption, NameOption, Option, ShortpilotOption} from '../option.js';
 import {InvalidArgumentError} from '../exception.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';

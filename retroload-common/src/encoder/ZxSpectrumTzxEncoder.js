@@ -1,9 +1,9 @@
-import {AbstractTzxEncoder} from './tzx.js';
+import {AbstractTzxEncoder} from './AbstractTzxEncoder.js';
 
 /**
  * ZX Spectrum-specific variant of the AbstractTzxEncoder
  */
-export class ZxSpectrumEncoder extends AbstractTzxEncoder {
+export class ZxSpectrumTzxEncoder extends AbstractTzxEncoder {
   static getTargetName() {
     return 'zxspectrum';
   }

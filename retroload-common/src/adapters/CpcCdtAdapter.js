@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {CpcTzxEncoder} from '../encoder/cpctzx.js';
+import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
 import {TzxProcessor} from './TzxProcessor.js';
 
 const fileHeader = 'ZXTape!\x1a';

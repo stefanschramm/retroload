@@ -1,12 +1,12 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {TzxProcessor} from './TzxProcessor.js';
-import {ZxSpectrumEncoder} from '../encoder/zxspectrum.js';
+import {ZxSpectrumTzxEncoder} from '../encoder/ZxSpectrumTzxEncoder.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
 export class ZxSpectrumTzxAdapter extends AbstractAdapter {
   static getTargetName() {
-    return ZxSpectrumEncoder.getTargetName();
+    return ZxSpectrumTzxEncoder.getTargetName();
   }
 
   static getName() {
@@ -25,7 +25,7 @@ export class ZxSpectrumTzxAdapter extends AbstractAdapter {
   }
 
   static encode(recorder, ba, options) {
-    const e = new ZxSpectrumEncoder(recorder);
+    const e = new ZxSpectrumTzxEncoder(recorder);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);
   }

@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {KcEncoder} from '../encoder/kc.js';
+import {KcEncoder} from '../encoder/KcEncoder.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
