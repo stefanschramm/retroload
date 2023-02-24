@@ -1,5 +1,5 @@
 import {Logger} from '../Logger.js';
-import {BaseEncoder} from './BaseEncoder.js';
+import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fSpace = 3995;
 const fMark = 5327;
@@ -9,7 +9,7 @@ const fMark = 5327;
  *
  * https://www.atariarchives.org/dere/chaptC.php
  */
-export class AtariEncoder extends BaseEncoder {
+export class AtariEncoder extends AbstractEncoder {
   static getTargetName() {
     return 'atari';
   }

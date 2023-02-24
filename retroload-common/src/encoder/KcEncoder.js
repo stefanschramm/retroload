@@ -1,4 +1,4 @@
-import {BaseEncoder} from './BaseEncoder.js';
+import {AbstractEncoder} from './AbstractEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {InputDataError} from '../Exceptions.js';
 import {Logger} from '../Logger.js';
@@ -19,7 +19,7 @@ const oscillationsBlockIntro = 200; // as in kcemu save_WAV.c; manual: 160
 /**
  * Encoder for KC 85/1 (and similar) and KC 85/4 (and similar)
  */
-export class KcEncoder extends BaseEncoder {
+export class KcEncoder extends AbstractEncoder {
   static getTargetName() {
     return 'kc';
   }

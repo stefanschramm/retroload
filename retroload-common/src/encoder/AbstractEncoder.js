@@ -3,7 +3,7 @@ import {InternalError} from '../Exceptions.js';
 /**
  * Base class for all encoders. Provides many methods commonly used.
  */
-export class BaseEncoder {
+export class AbstractEncoder {
   static getTargetName() {
     throw new InternalError('getTargetName() not implemented!');
   }

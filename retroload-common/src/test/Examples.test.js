@@ -8,9 +8,9 @@ import * as fs from 'fs';
 import * as examples from 'retroload-examples';
 import {Logger} from '../Logger.js';
 
-describe('Encoding Pipeline', () => {
+describe('Encoding pipeline', () => {
   it.each(examples.getExamples())(
-      'returns correct hash (%s)',
+      'returns correct hash for example %s',
       (example) => {
         const hash = encodeAndHash(example.getUrl().pathname, example.options);
         expect(hash).toBe(example.hash);

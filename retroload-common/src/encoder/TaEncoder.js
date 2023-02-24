@@ -1,4 +1,4 @@
-import {BaseEncoder} from './BaseEncoder.js';
+import {AbstractEncoder} from './AbstractEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
 
 const fZero = 1200;
@@ -12,7 +12,7 @@ export const maxFileNameLength = 6;
  *
  * TODO: Generalize? Is the way of writing the header with file name the same on all KCS compatible systems?
  */
-export class TaEncoder extends BaseEncoder {
+export class TaEncoder extends AbstractEncoder {
   static getTargetName() {
     return 'ta';
   }

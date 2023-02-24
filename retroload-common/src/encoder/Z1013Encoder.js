@@ -1,4 +1,4 @@
-import {BaseEncoder} from './BaseEncoder.js';
+import {AbstractEncoder} from './AbstractEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
 
 const blockDataSize = 32;
@@ -6,7 +6,7 @@ const blockDataSize = 32;
 /**
  * Encoder for Robotron Z 1013
  */
-export class Z1013Encoder extends BaseEncoder {
+export class Z1013Encoder extends AbstractEncoder {
   static getTargetName() {
     return 'z1013';
   }

@@ -1,4 +1,4 @@
-import {BaseEncoder} from './BaseEncoder.js';
+import {AbstractEncoder} from './AbstractEncoder.js';
 import {InternalError} from '../Exceptions.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {Logger} from '../Logger.js';
@@ -16,7 +16,7 @@ const fileTypePrg = 0x03;
 /**
  * Encoder for C64 and VIC-20. Used for encoding .prg and .tap files.
  */
-export class C64Encoder extends BaseEncoder {
+export class C64Encoder extends AbstractEncoder {
   static getTargetName() {
     return 'c64';
   }

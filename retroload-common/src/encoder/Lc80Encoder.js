@@ -1,5 +1,5 @@
 import {BufferAccess} from '../BufferAccess.js';
-import {BaseEncoder} from './BaseEncoder.js';
+import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fShort = 2000;
 const fLong = 1000;
@@ -15,7 +15,7 @@ const syncEndLength = 2; // s
  *
  * Format description: Bedienungsanleitung LC 80, p. 24-25
  */
-export class Lc80Encoder extends BaseEncoder {
+export class Lc80Encoder extends AbstractEncoder {
   static getTargetName() {
     return 'lc80';
   }

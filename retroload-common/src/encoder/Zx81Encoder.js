@@ -1,4 +1,4 @@
-import {BaseEncoder} from './BaseEncoder.js';
+import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fPulse = 3000;
 const bitPause = 0.0013; // s
@@ -6,7 +6,7 @@ const bitPause = 0.0013; // s
 /**
  * Encoder for Sinclair ZX81
  */
-export class Zx81Encoder extends BaseEncoder {
+export class Zx81Encoder extends AbstractEncoder {
   static getTargetName() {
     return 'zx81';
   }
