@@ -6,16 +6,17 @@ import {WaveRecorder} from '../recorder/WaveRecorder.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as examples from 'retroload-examples';
+import {BufferAccess} from '../BufferAccess.js';
 
 // Disable log output for more readable test output
 Logger.setHandler(new NullLoggerHandler());
 
-test('Adapter manager returns list of adapters', () => {
+test('getAllAdapters returns non-empty list', () => {
   expect(AdapterManager.getAllAdapters().length).toBeGreaterThan(0);
   // Actual plausibility test of individual adapters is done in AdapterProvider test
 });
 
-test('Adapter manager returns options that have at least key, label and description set', () => {
+test('getAllOptions returns options that have at least key, label and description set', () => {
   const options = AdapterManager.getAllOptions();
   expect(options.length).toBeGreaterThan(0);
   for (const o of options) {
@@ -25,6 +26,10 @@ test('Adapter manager returns options that have at least key, label and descript
     expect(typeof o.description).toBe('string');
     expect(typeof o.getCommanderFlagsString()).toBe('string');
   }
+});
+
+test('identify returns null for unknown formats', () => {
+  expect(AdapterManager.identify('example.xyz', BufferAccess.create(128))).toEqual(null);
 });
 
 describe('Encoding pipeline', () => {

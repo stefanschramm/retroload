@@ -53,6 +53,24 @@ export function encodeWithAdapter(recorder, adapter, data, options={}) {
   return true;
 }
 
+/**
+ * Identify tape file and return matching adapter
+ *
+ * @param {string} filename
+ * @param {BufferAccess} dataBa
+ * @return {AbstractAdapter|null} matching adapter or null if not found
+ */
+export function identify(filename, dataBa) {
+  try {
+    return autodetectAdapter(providedAdapters, filename, dataBa);
+  } catch (e) {
+    if (e instanceof FormatAutodetectionFailedError) {
+      return null;
+    }
+    throw e;
+  }
+}
+
 export function getAllAdapters() {
   return providedAdapters;
 }
