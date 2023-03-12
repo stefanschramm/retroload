@@ -17,8 +17,6 @@ import {Logger} from './Logger.js';
  * @return {boolean} true on success
  */
 export function encode(recorder, filename, data, options={}) {
-  const ba = new BufferAccess(data);
-
   let filteredAdapters = providedAdapters;
   if (options.format !== undefined) {
     filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === options.format);
@@ -35,9 +33,13 @@ export function encode(recorder, filename, data, options={}) {
   const adapter =
     filteredAdapters.length === 1 ?
     filteredAdapters[0] :
-    autodetectAdapter(filteredAdapters, filename, ba)
+    autodetectAdapter(filteredAdapters, filename, new BufferAccess(data))
   ;
 
+  return encodeWithAdapter(recorder, adapter, data, options);
+}
+
+export function encodeWithAdapter(recorder, adapter, data, options={}) {
   const requiredOptions = adapter.getOptions().filter((o) => o.required);
   const missingOptions = requiredOptions.filter((o) => options[o.key] === undefined);
   if (missingOptions.length > 0) {
@@ -46,9 +48,13 @@ export function encode(recorder, filename, data, options={}) {
 
   Logger.info('Format: ' + adapter.getName() + ', Target: ' + adapter.getTargetName());
 
-  adapter.encode(recorder, ba, options);
+  adapter.encode(recorder, new BufferAccess(data), options);
 
   return true;
+}
+
+export function getAllAdapters() {
+  return providedAdapters;
 }
 
 export function getAllOptions() {

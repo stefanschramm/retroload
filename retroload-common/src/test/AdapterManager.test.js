@@ -10,6 +10,11 @@ import * as examples from 'retroload-examples';
 // Disable log output for more readable test output
 Logger.setHandler(new NullLoggerHandler());
 
+test('Adapter manager returns list of adapters', () => {
+  expect(AdapterManager.getAllAdapters().length).toBeGreaterThan(0);
+  // Actual plausibility test of individual adapters is done in AdapterProvider test
+});
+
 test('Adapter manager returns options that have at least key, label and description set', () => {
   const options = AdapterManager.getAllOptions();
   expect(options.length).toBeGreaterThan(0);
