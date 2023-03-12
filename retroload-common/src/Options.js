@@ -7,6 +7,8 @@ export class Option {
     this.common = options.common ?? false;
     this.required = options.required ?? false;
     this.argument = options.argument;
+    this.type = options.type ?? 'text'; // type for web interface (text/bool/enum)
+    this.enum = options.enum ?? []; // possible options for enums
   }
 
   getCommanderFlagsString() {
@@ -28,6 +30,7 @@ export const ShortpilotOption = new Option(
       defaultValue: false,
       common: true,
       required: false,
+      type: 'bool',
     },
 );
 
@@ -40,6 +43,7 @@ export const NameOption = new Option(
       common: true,
       required: false,
       defaultValue: '',
+      type: 'text',
     },
 );
 
@@ -51,6 +55,7 @@ export const LoadOption = new Option(
       argument: 'address',
       common: true,
       required: false,
+      type: 'text',
     },
 );
 
@@ -62,5 +67,6 @@ export const EntryOption = new Option(
       argument: 'address',
       common: true,
       required: false,
+      type: 'text',
     },
 );

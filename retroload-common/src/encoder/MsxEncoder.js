@@ -23,7 +23,7 @@ export class MsxEncoder extends AbstractEncoder {
   static getOptions() {
     return [
       ShortpilotOption,
-      new Option('msxfast', 'Fast baudrate', 'Use 2400 baud instead of 1200 (faster loading, less reliable)'),
+      new Option('msxfast', 'Fast baudrate', 'Use 2400 baud instead of 1200 (faster loading, less reliable)', {type: 'bool'}),
     ];
   }
 

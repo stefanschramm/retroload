@@ -16,7 +16,7 @@ test('getAllAdapters returns non-empty list', () => {
   // Actual plausibility test of individual adapters is done in AdapterProvider test
 });
 
-test('getAllOptions returns options that have at least key, label and description set', () => {
+test('getAllOptions returns options that have at least key, label, description and type set', () => {
   const options = AdapterManager.getAllOptions();
   expect(options.length).toBeGreaterThan(0);
   for (const o of options) {
@@ -24,6 +24,11 @@ test('getAllOptions returns options that have at least key, label and descriptio
     expect(typeof o.key).toBe('string');
     expect(typeof o.label).toBe('string');
     expect(typeof o.description).toBe('string');
+    expect(typeof o.type).toBe('string');
+    expect(['text', 'bool', 'enum']).toContain(o.type);
+    if (o.type === 'enum') {
+      expect(o.enum.length).toBeGreaterThan(0);
+    }
     expect(typeof o.getCommanderFlagsString()).toBe('string');
   }
 });

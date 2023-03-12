@@ -15,7 +15,7 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
           'c64type',
           'C64 file type',
           'File type (C 64). Possible types: basic, data, prg',
-          {argument: 'type', required: true},
+          {argument: 'type', required: true, type: 'enum', enum: ['basic', 'data', 'prg']},
       ),
       NameOption,
       LoadOption,
