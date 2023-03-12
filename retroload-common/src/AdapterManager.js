@@ -30,16 +30,17 @@ export function encode(recorder, filename, data, options={}) {
       throw new TargetMachineNotFoundError(options.machine, options.format);
     }
   }
+  const dataBa = new BufferAccess(data);
   const adapter =
     filteredAdapters.length === 1 ?
     filteredAdapters[0] :
-    autodetectAdapter(filteredAdapters, filename, new BufferAccess(data))
+    autodetectAdapter(filteredAdapters, filename, dataBa);
   ;
 
-  return encodeWithAdapter(recorder, adapter, data, options);
+  return encodeWithAdapter(recorder, adapter, dataBa, options);
 }
 
-export function encodeWithAdapter(recorder, adapter, data, options={}) {
+export function encodeWithAdapter(recorder, adapter, dataBa, options={}) {
   const requiredOptions = adapter.getOptions().filter((o) => o.required);
   const missingOptions = requiredOptions.filter((o) => options[o.key] === undefined);
   if (missingOptions.length > 0) {
@@ -48,7 +49,7 @@ export function encodeWithAdapter(recorder, adapter, data, options={}) {
 
   Logger.info('Format: ' + adapter.getName() + ', Target: ' + adapter.getTargetName());
 
-  adapter.encode(recorder, new BufferAccess(data), options);
+  adapter.encode(recorder, dataBa, options);
 
   return true;
 }
