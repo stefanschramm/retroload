@@ -36,6 +36,7 @@ export const TOKENS = [
   ['<', 0xF0],
   ['=', 0xEF],
   ['>', 0xEE],
+  ['ABS', 0xFF, 0x86],
   // [',', 0x2C],
   // ['$', 0xFE],
   ['AND', 0xF6],
@@ -79,7 +80,9 @@ export const TOKENS = [
   ['FOR', 0x82],
   ['GET', 0xBF],
   ['GOSUB', 0x8D],
+  ['GO SUB', 0x8D], // alternate (EMCA-55 conforming) syntax
   ['GOTO', 0x89],
+  ['GO TO', 0x89], // alternate (EMCA-55 conforming) syntax
   ['HEX$', 0xFF, 0x9A], // TODO: are there other multi-byte tokens?
   ['IF', 0x8B],
   ['IMP', 0xFA],
@@ -136,7 +139,9 @@ export const TOKENS = [
   ['RUN', 0x8A],
   ['SAVE', 0xCA],
   ['SET', 0xC1],
+  ['SGN', 0xFF, 0x84],
   ['SPC(', 0xD9],
+  ['SQR', 0xFF, 0x87],
   ['STEP', 0xD6],
   ['STOP', 0x90],
   ['STRING$', 0xDD],
