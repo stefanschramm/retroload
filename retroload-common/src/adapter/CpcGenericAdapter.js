@@ -19,7 +19,7 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
   }
 
   static getName() {
-    return 'Atari (Generic data)';
+    return 'CPC (Generic data)';
   }
 
   static getOptions() {
