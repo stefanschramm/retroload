@@ -3,8 +3,6 @@ import {InternalError} from '../Exceptions.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {Logger} from '../Logger.js';
 
-// https://www.c64-wiki.com/wiki/Datassette_Encoding
-
 const palClockCycles = 985248;
 
 const fileTypeBasic = 0x01;
@@ -14,7 +12,10 @@ const fileTypePrg = 0x03;
 // const fileTypeEndOfTapeMarker = 0x05;
 
 /**
- * Encoder for C64 and VIC-20. Used for encoding .prg and .tap files.
+ * Encoder for C64 and VIC-20
+ *
+ * https://www.c64-wiki.com/wiki/Datassette_Encoding
+ * 64 intern (Angerhausen, Brückmann, Englisch, Gerits), 4th edition, p. 120 - 122
  */
 export class C64Encoder extends AbstractEncoder {
   static getTargetName() {

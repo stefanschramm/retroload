@@ -5,6 +5,8 @@ const blockDataSize = 32;
 
 /**
  * Encoder for Robotron Z 1013
+ *
+ * https://hc-ddr.hucki.net/wiki/doku.php/z1013/kassettenformate
  */
 export class Z1013Encoder extends AbstractEncoder {
   static getTargetName() {

@@ -65,7 +65,7 @@ see KC 85/3
 
 # LC 80
 
-The file name consist of 4 hexa-decimal digits (here `FFFF`). After loading, the machine can be reset and the program can be run by specifying the entry address (here `2000`).
+The file name consist of 4 hexadecimal digits (here `FFFF`). After loading, the machine can be reset and the program can be run by specifying the entry address (here `2000`).
 
     (LD)
     FFFF
@@ -97,7 +97,7 @@ or
 
 # Z 1013
 
-The load command `L` takes the load and end address as hexadeciman numbers (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
+The load command `L` takes the load and end address as hexadecimal numbers (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
 
     L 0100 018F
     J 0100

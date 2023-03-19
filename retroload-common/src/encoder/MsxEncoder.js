@@ -13,7 +13,7 @@ const pulsesShortHeader = 4000;
  * Encoder for MSX
  *
  * https://www.msx.org/forum/semi-msx-talk/emulation/how-do-exactly-works-cas-format
- * https://github.com/joyrex2001/castools/blob/master/cas2wav.c
+ * MSX Technical Data Book, p. 172 - 175
  */
 export class MsxEncoder extends AbstractEncoder {
   static getTargetName() {
