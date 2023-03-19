@@ -16,6 +16,10 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
     return AtariEncoder.getTargetName();
   }
 
+  static getName() {
+    return 'Atari (Generic data)';
+  }
+
   /**
    * @param {WaveRecorder|PcmRecorder} recorder
    * @param {BufferAccess} ba

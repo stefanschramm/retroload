@@ -8,6 +8,10 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
     return C64Encoder.getTargetName();
   }
 
+  static getName() {
+    return 'C64 (Generic data)';
+  }
+
   static getOptions() {
     return [
       ShortpilotOption, // (not available for .tap)

@@ -18,6 +18,10 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
     return CpcTzxEncoder.getTargetName();
   }
 
+  static getName() {
+    return 'Atari (Generic data)';
+  }
+
   static getOptions() {
     return [
       NameOption,

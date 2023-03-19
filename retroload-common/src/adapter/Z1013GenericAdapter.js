@@ -6,6 +6,10 @@ export class Z1013GenericAdapter extends AbstractGenericAdapter {
     return Z1013Encoder.getTargetName();
   }
 
+  static getName() {
+    return 'Z1013 (Generic data)';
+  }
+
   static encode(recorder, ba, options) {
     const e = new Z1013Encoder(recorder);
     e.begin();

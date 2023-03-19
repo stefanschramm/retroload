@@ -8,6 +8,10 @@ export class Lc80GenericAdapter extends AbstractGenericAdapter {
     return Lc80Encoder.getTargetName();
   }
 
+  static getName() {
+    return 'LC80 (Generic data)';
+  }
+
   static getOptions() {
     return [
       NameOption,

@@ -8,6 +8,10 @@ export class TaGenericAdapter extends AbstractGenericAdapter {
     return TaEncoder.getTargetName();
   }
 
+  static getName() {
+    return 'TA alphatronic PC (BASIC/Generic data)';
+  }
+
   static getOptions() {
     return [
       NameOption,
