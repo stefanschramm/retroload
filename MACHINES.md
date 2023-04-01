@@ -1,5 +1,18 @@
 The following machines are used for testing the [examples](./retroload-examples/formats). The list is supposed to be an overview about the different methods to load tapes.
 
+# Acorn Electron
+
+Volume: 40 %
+
+Load and run program:
+
+    CHAIN ""
+
+or
+
+    LOAD ""
+    RUN
+
 # Atari 800 XL
 
     (Start)+(Power on)
