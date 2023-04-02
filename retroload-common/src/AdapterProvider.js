@@ -7,6 +7,7 @@ import {C64T64Adapter} from './adapter/C64T64Adapter.js';
 import {C64TapAdapter} from './adapter/C64TapAdapter.js';
 import {CpcCdtAdapter} from './adapter/CpcCdtAdapter.js';
 import {CpcGenericAdapter} from './adapter/CpcGenericAdapter.js';
+import {ElectronGenericAdapter} from './adapter/ElectronGenericAdapter.js';
 import {ElectronUefAdapter} from './adapter/ElectronUefAdapter.js';
 import {KcKccAdapter} from './adapter/KcKccAdapter.js';
 import {KcSssAdapter} from './adapter/KcSssAdapter.js';
@@ -32,6 +33,7 @@ export const adapters = [
   C64TapAdapter,
   CpcCdtAdapter,
   CpcGenericAdapter,
+  ElectronGenericAdapter,
   ElectronUefAdapter,
   KcKccAdapter,
   KcSssAdapter,

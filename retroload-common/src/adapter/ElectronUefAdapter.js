@@ -55,7 +55,8 @@ export class ElectronUefAdapter extends AbstractAdapter {
       Logger.debug(chunkBa.asHexDump());
       switch (chunkType) {
         case 0x0000: // origin information chunk
-          Logger.info(`Origin: ${chunkBa.asAsciiString()}`);
+          const origin = chunkBa.slice(0, chunkBa.length() - 1).asAsciiString(); // remove trailing \0
+          Logger.info(`Origin: ${origin}`);
           break;
         case 0x0100: // implicit start/stop bit tape data block
           e.recordBytes(chunkBa);

@@ -16,6 +16,10 @@ export class ElectronEncoder extends AbstractEncoder {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
 
+  recordPilot(length) {
+    this.recordCarrier(fBase * 2 * length);
+  }
+
   end() {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
