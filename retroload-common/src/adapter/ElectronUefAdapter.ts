@@ -3,6 +3,7 @@ import {AbstractAdapter} from './AbstractAdapter.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {Logger} from '../Logger.js';
 import {inflate} from 'pako';
+import {InputDataError} from '../Exceptions.js';
 
 const fileHeader = 'UEF File!\x00';
 const compressedFileHeader = '\x1f\x8b';

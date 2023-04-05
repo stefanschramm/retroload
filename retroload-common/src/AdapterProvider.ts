@@ -1,3 +1,4 @@
+import {AbstractAdapter} from './adapter/AbstractAdapter.js';
 import {AtariCasAdapter} from './adapter/AtariCasAdapter.js';
 import {AtariGenericAdapter} from './adapter/AtariGenericAdapter.js';
 import {C64GenericAdapter} from './adapter/C64GenericAdapter.js';
@@ -23,7 +24,7 @@ import {Zx81PAdapter} from './adapter/Zx81PAdapter.js';
 import {ZxSpectrumTapAdapter} from './adapter/ZxSpectrumTapAdapter.js';
 import {ZxSpectrumTzxAdapter} from './adapter/ZxSpectrumTzxAdapter.js';
 
-export const adapters = [
+export const adapters: (typeof AbstractAdapter)[] = [
   AtariCasAdapter,
   AtariGenericAdapter,
   C64GenericAdapter,

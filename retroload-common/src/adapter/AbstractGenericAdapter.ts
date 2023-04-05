@@ -1,6 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
+import {BufferAccess} from '../BufferAccess.js';
 
-export class AbstractGenericAdapter extends AbstractAdapter {
+export abstract class AbstractGenericAdapter extends AbstractAdapter {
   static getName() {
     return 'Generic data';
   }
@@ -9,7 +10,7 @@ export class AbstractGenericAdapter extends AbstractAdapter {
     return 'generic';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess): any {
     return {
       // filename: filename.match(/^.*\.(bin|raw|txt|asc|atascii)$/i) !== null,
       filename: undefined,

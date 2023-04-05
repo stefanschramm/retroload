@@ -9,6 +9,7 @@ const tzxHeaderLength = 0x0a;
  *  additional layer between adapter and encoder
  */
 export class TzxProcessor {
+  e: any;
   /**
    * @param {AbstractTzxEncoder} encoder
    */

@@ -15,7 +15,7 @@ const fCpu = 3500000;
  * https://github.com/mamedev/mame/blob/master/src/lib/formats/tzx_cas.cpp
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
-export class AbstractTzxEncoder extends AbstractEncoder {
+export abstract class AbstractTzxEncoder extends AbstractEncoder {
   recordStandardSpeedDataBlock(blockDataBa) {
     this.recordDataBlock(blockDataBa, {
       ...this.getStandardSpeedRecordOptions(),
@@ -63,11 +63,7 @@ export class AbstractTzxEncoder extends AbstractEncoder {
     return Math.floor((0.5 + ((this.recorder.sampleRate / fCpu) * cycles)) * this.getTzxCycleFactor());
   }
 
-  getTzxCycleFactor() {
-    throw new InternalError('getTzxCycleFactor() not implemented!');
-  }
+  abstract getTzxCycleFactor(): number;
 
-  getStandardSpeedRecordOptions() {
-    throw new InternalError('getStandardSpeedRecordOptions() not implemented!');
-  }
+  abstract getStandardSpeedRecordOptions(): any;
 }

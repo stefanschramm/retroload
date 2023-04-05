@@ -3,6 +3,7 @@ import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fSpace = 3995;
 const fMark = 5327;
+const defaultBaudrate = 600;
 
 /**
  * Encoder for Atari 800 (might work on Atari 400 as well)
@@ -10,12 +11,13 @@ const fMark = 5327;
  * https://www.atariarchives.org/dere/chaptC.php
  */
 export class AtariEncoder extends AbstractEncoder {
+  baudrate: number = defaultBaudrate;
   static getTargetName() {
     return 'atari';
   }
 
   setDefaultBaudrate() {
-    this.baudrate = 600;
+    this.baudrate = defaultBaudrate;
   }
 
   setBaudrate(baudrate) {

@@ -19,6 +19,7 @@ describe.each(adapters.map((a) => [a.name, a]))('%s', (name, a) => {
   });
 
   test('provides option list', () => {
+    console.log(a.getOptions);
     expect(Array.isArray(a.getOptions())).toBe(true);
   });
 

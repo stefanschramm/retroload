@@ -32,7 +32,7 @@ export class Z1013Z80Adapter extends AbstractAdapter {
     const startAddress = header.getUint16LE(0x04);
     const type = header.getUint8(0x0c);
     const name = (new TextDecoder()).decode(new Uint8Array(ba, 0x10, 0x10));
-    Logger.log(`Filename: "${name.toString(16)}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
+    Logger.log(`Filename: "${name}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
     const e = new Z1013Encoder(recorder);
     e.begin();
     e.recordData(data);

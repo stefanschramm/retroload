@@ -1,3 +1,4 @@
+import {BufferAccess} from '../BufferAccess.js';
 import {Mo5Encoder} from '../encoder/Mo5Encoder.js';
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {Logger} from '../Logger.js';
@@ -26,11 +27,11 @@ export class Mo5K7Adapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba, options) {
+  static encode(recorder, ba: BufferAccess, options) {
     const e = new Mo5Encoder(recorder, options);
     e.begin();
     let i = 0;
-    let blockType = null;
+    let blockType: number|null = null;
     while (i < ba.length()) {
       let headerOffset = 0;
       if (ba.getUint8(i) !== 0x01 && blockType === 0xff) {
@@ -49,7 +50,7 @@ export class Mo5K7Adapter extends AbstractAdapter {
       blockType = ba.getUint8(i + headerOffset + 2);
       const blockLengthField = ba.getUint8(i + headerOffset + 3);
       Logger.debug(`Block type: 0x${blockType.toString(16)}, Block length field: 0x${blockLengthField.toString(16)}`);
-      let blockToRecord = null;
+      let blockToRecord: BufferAccess|null = null;
       switch (blockType) {
         case 0x00: // start block
           blockToRecord = ba.slice(i, headerOffset + 3 + blockLengthField);

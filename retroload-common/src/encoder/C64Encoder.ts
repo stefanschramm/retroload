@@ -110,7 +110,7 @@ export class C64Encoder extends AbstractEncoder {
     this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa, shortpilot);
   }
 
-  recordData() {
+  recordData(filenameBuffer, dataBa, shortpilot) {
     // TODO: implement + test
     throw new InternalError('recordData not implemented yet');
   }

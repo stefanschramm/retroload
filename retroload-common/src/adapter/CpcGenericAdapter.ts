@@ -158,7 +158,7 @@ function calculateSegmentCrc(ba) {
       const bit = (b >> (7 - i) & 1) === 1;
       const c15 = (crc >> 15 & 1) === 1;
       crc <<= 1;
-      if (c15 ^ bit) {
+      if (c15 !== bit) {
         crc ^= polynomial;
       }
     }
