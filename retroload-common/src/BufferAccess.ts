@@ -6,6 +6,9 @@
  * and increment it.
  */
 export class BufferAccess {
+  cursor: number;
+  view: DataView;
+  ui8a: Uint8Array;
   constructor(buffer, offset = 0, length = null) {
     this.cursor = 0;
     this.view = new DataView(buffer, offset, length === null ? buffer.byteLength : length);
@@ -93,7 +96,7 @@ export class BufferAccess {
     const printableCharsRegexp = /[^ -~]+$/g;
     const bytesPerRow = 16;
     const rows = Math.ceil(this.view.byteLength / bytesPerRow);
-    const lines = [];
+    const lines: string[] = [];
     for (let row = 0; row < rows; row++) {
       const remaining = (row === rows - 1 && this.view.byteLength % bytesPerRow !== 0) ? (this.view.byteLength % bytesPerRow) : 16;
       const offset = (row * bytesPerRow).toString(16).padStart(8, '0');
@@ -110,7 +113,7 @@ export class BufferAccess {
       let ascii = '';
       for (let i = 0; i < 16 && i < remaining; i++) {
         const byte = this.view.getUint8(row * bytesPerRow + i);
-        ascii += String.fromCharCode(byte).replaceAll(printableCharsRegexp, '.');
+        ascii += String.fromCharCode(byte).replace(printableCharsRegexp, '.');
       }
       lines.push(offset + '  ' + firstOctet.padEnd(24, ' ') + ' ' + secondOctet.padEnd(24, ' ') + ' |' + ascii + '|');
     };
