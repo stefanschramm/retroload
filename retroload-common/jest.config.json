@@ -1,5 +1,13 @@
 {
-    "bail": 1,
-    "verbose": true,
-    "transform": {}
+  "transform": {"^.+\\.(ts|tsx)$": ["ts-jest"]},
+  "moduleNameMapper": {"(.+)\\.js": "$1"},
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/dist/"
+  ],
+  "collectCoverageFrom": [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**"
+  ]
 }
