@@ -43,6 +43,7 @@ export class MissingOptionsError extends UsageError {
 }
 
 export class InvalidArgumentError extends UsageError {
+  optionName: any;
   constructor(optionName, message) {
     super(message);
     this.optionName = optionName;
