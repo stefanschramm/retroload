@@ -24,16 +24,12 @@ export function encode(recorder, filename, data, options: any = {}) {
     }
   }
   const dataBa = new BufferAccess(data);
-  const adapter =
-    filteredAdapters.length === 1 ?
-    filteredAdapters[0] :
-    autodetectAdapter(filteredAdapters, filename, dataBa);
-  ;
+  const adapter = filteredAdapters.length === 1 ? filteredAdapters[0] : autodetectAdapter(filteredAdapters, filename, dataBa);
 
   return encodeWithAdapter(recorder, adapter, dataBa, options);
 }
 
-export function encodeWithAdapter(recorder, adapter, dataBa, options={}) {
+export function encodeWithAdapter(recorder, adapter, dataBa, options = {}) {
   const requiredOptions = adapter.getOptions().filter((o) => o.required);
   const missingOptions = requiredOptions.filter((o) => options[o.key] === undefined);
   if (missingOptions.length > 0) {
@@ -74,7 +70,7 @@ export function getAllOptions() {
   const optionKeys: string[] = [];
   for (const adapter of providedAdapters) {
     for (const option of adapter.getOptions()) {
-      if (optionKeys.indexOf(option.key) !== -1) {
+      if (optionKeys.includes(option.key)) {
         if (option.common) {
           continue;
         }
@@ -110,14 +106,14 @@ function mapBoolishToScore(value, score) {
 }
 
 function getRankedAdapters(adapters, filename, ba) {
-  const adapterIdentifications = adapters.map(function(adapter) {
+  const adapterIdentifications = adapters.map((adapter) => {
     const identifiation = adapter.identify(filename, ba);
     const score = mapBoolishToScore(identifiation.header, 20) + mapBoolishToScore(identifiation.filename, 10);
 
-    return {adapter: adapter, score};
+    return {adapter, score};
   });
 
-  const adapterIdentificationsRanked = adapterIdentifications.sort(function(a, b) {
+  const adapterIdentificationsRanked = adapterIdentifications.sort((a, b) => {
     if (a.score > b.score) {
       return -1;
     }

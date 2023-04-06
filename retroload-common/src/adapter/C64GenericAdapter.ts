@@ -1,6 +1,6 @@
 import {C64Encoder} from '../encoder/C64Encoder.js';
 import {LoadOption, NameOption, Option, ShortpilotOption} from '../Options.js';
-import {InvalidArgumentError} from '../Exceptions.js';
+import {InternalError, InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 
 export class C64GenericAdapter extends AbstractGenericAdapter {
@@ -16,10 +16,10 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
     return [
       ShortpilotOption, // (not available for .tap)
       new Option(
-          'c64type',
-          'C64 file type',
-          'File type (C 64). Possible types: basic, data, prg',
-          {argument: 'type', required: true, type: 'enum', enum: ['basic', 'data', 'prg']},
+        'c64type',
+        'C64 file type',
+        'File type (C 64). Possible types: basic, data, prg',
+        {argument: 'type', required: true, type: 'enum', enum: ['basic', 'data', 'prg']},
       ),
       NameOption,
       LoadOption,
@@ -32,7 +32,7 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
       throw new InvalidArgumentError('c64type', 'Option c64type is required and expected to be set to "basic", "data" or "prg".');
     }
     const loadAddress = parseInt(options.load, 16);
-    const name = options.name == undefined ? '' : options.name;
+    const name = options.name === undefined ? '' : options.name;
     if (typeof name !== 'string' || name.length > 16) {
       throw new InvalidArgumentError('name', 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
     }
@@ -51,6 +51,8 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
       case 'data':
         e.recordData(name.padEnd(16, ' '), ba, options.shortpilot);
         break;
+      default:
+        throw new InternalError('Got unknown type.');
     }
     e.end();
   }

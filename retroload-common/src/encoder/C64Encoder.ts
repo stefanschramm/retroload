@@ -85,7 +85,7 @@ export class C64Encoder extends AbstractEncoder {
     let checkBit = 1;
     for (let i = 0; i < 8; i += 1) {
       const bit = ((byte & (1 << i)) === 0) ? 0 : 1;
-      checkBit = checkBit ^ bit;
+      checkBit ^= bit;
       this.recordBit(bit);
     }
     this.recordBit(checkBit);
@@ -95,7 +95,7 @@ export class C64Encoder extends AbstractEncoder {
     let checkByte = 0;
     for (let i = 0; i < dataBa.length(); i++) {
       const byte = dataBa.getUint8(i);
-      checkByte = checkByte ^ byte;
+      checkByte ^= byte;
       this.recordByte(byte);
     }
     this.recordByte(checkByte);

@@ -78,7 +78,7 @@ class LineTokenizer {
     this.pos = 0;
     this.tokens = [];
     this.types = [
-      ...sortedTokenMap.map(function(t) {
+      ...sortedTokenMap.map((t) => {
         const keyword = t[0];
         const tokens = t.slice(1);
         return [
@@ -110,9 +110,9 @@ class LineTokenizer {
       if (matched !== null) {
         this.pos += matched[0].length;
         return {
-          action: action,
+          action,
           value: matched[0],
-          mappedValue: mappedValue,
+          mappedValue,
         };
       }
     }

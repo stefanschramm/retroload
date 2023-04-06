@@ -45,7 +45,7 @@ export class C64T64Adapter extends AbstractAdapter {
       const entryOffset = header.length() + (entry * entryLength);
       const entryInfo = ba.slice(entryOffset, entryLength);
       const type = entryInfo.getUint8(0x00); // 0 = free, 1 = tape file, 2 = memory snapshot
-      if (0 === type) {
+      if (type === 0) {
         continue; // not interesting
       }
       const loadAddress = entryInfo.getUint16LE(0x02);

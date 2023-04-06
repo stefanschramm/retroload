@@ -43,7 +43,7 @@ export class MsxCasAdapter extends AbstractAdapter {
         const blockHeaderPosition = i;
         i += blockHeader.length;
         const type = this.determineType(ba, i);
-        const long = (['binary', 'basic', 'ascii'] as (string|undefined)[]).indexOf(type) !== -1;
+        const long = (['binary', 'basic', 'ascii'] as Array<string | undefined>).includes(type);
         Logger.debug('MsxCasAdapter - block header at\t0x' + (blockHeaderPosition).toString(16).padStart(4, '0') + '\t type: ' + type);
         e.recordHeader(long);
       }

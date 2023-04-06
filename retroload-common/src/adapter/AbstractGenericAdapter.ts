@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {BufferAccess} from '../BufferAccess.js';
+import type {BufferAccess} from '../BufferAccess.js';
 
 export abstract class AbstractGenericAdapter extends AbstractAdapter {
   static getName() {

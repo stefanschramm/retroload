@@ -11,7 +11,7 @@ export class AbstractEncoder {
     throw new InternalError('getTargetName() not implemented!');
   }
 
-  constructor(recorder, options={}) {
+  constructor(recorder, options = {}) {
     const sampleRate = 44100;
     this.recorder = recorder;
     this.recorder.initialize(sampleRate);

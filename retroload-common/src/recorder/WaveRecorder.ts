@@ -8,14 +8,16 @@ const dataMap = {
 
 export class WaveRecorder {
   data: number[] = [];
-  sampleRate: number = 44100;
+  sampleRate = 44100;
   initialize(sampleRate: number) {
     this.data = [];
     this.sampleRate = sampleRate;
   }
+
   pushSample(value) {
     this.data.push(dataMap[value]);
   }
+
   getBuffer() {
     const format = 1; // pcm
     const channels = 1;
@@ -53,6 +55,7 @@ export class WaveRecorder {
 
     return ba.asUint8Array();
   }
+
   getRawBuffer() {
     return new Uint8Array(this.data);
   }

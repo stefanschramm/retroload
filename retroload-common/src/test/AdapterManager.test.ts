@@ -39,11 +39,11 @@ test('identify returns null for unknown formats', () => {
 
 describe('Encoding pipeline', () => {
   it.each(examples.getExamples() as any[])(
-      'returns correct hash for example %s',
-      (example) => {
-        const hash = encodeAndHash(example.getPath(), example.options);
-        expect(hash).toBe(example.hash);
-      },
+    'returns correct hash for example %s',
+    (example) => {
+      const hash = encodeAndHash(example.getPath(), example.options);
+      expect(hash).toBe(example.hash);
+    },
   );
 });
 
@@ -51,8 +51,8 @@ function encodeAndHash(file, options) {
   const recorder = new WaveRecorder();
   const data = fs.readFileSync(file);
   const arrayBuffer = data.buffer.slice(
-      data.byteOffset,
-      data.byteOffset + data.byteLength,
+    data.byteOffset,
+    data.byteOffset + data.byteLength,
   );
   if (!AdapterManager.encode(recorder, file, arrayBuffer, options)) {
     Logger.error('Unable to decode ' + file);

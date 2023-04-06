@@ -1,7 +1,7 @@
 import fs from 'fs';
 import {tokenizers} from '../../basic/TokenizerProvider.js';
 
-const FIXTURES_DIR = __dirname + "/fixtures";
+const FIXTURES_DIR = __dirname + '/fixtures';
 const FIXTURES = ['for'];
 
 describe.each(tokenizers.map((t) => [t.name, t]))('%s', (name, t) => {

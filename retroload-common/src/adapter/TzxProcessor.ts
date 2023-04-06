@@ -86,11 +86,7 @@ export class TzxProcessor {
   processTurboSpeedDataBlock(ba) {
     // ID 0x11
     const blockHeaderLength = 0x12;
-    const dataLength =
-      ba.getUint8(0x0f) +
-      ba.getUint8(0x10) * 2 ** 8 +
-      ba.getUint8(0x11) * 2 ** 16
-    ;
+    const dataLength = ba.getUint8(0x0f) + ba.getUint8(0x10) * 2 ** 8 + ba.getUint8(0x11) * 2 ** 16;
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
     this.e.recordDataBlock(blockDataBa, {
@@ -132,11 +128,7 @@ export class TzxProcessor {
   processPureDataBlock(ba) {
     // ID 0x14
     const blockHeaderLength = 0x0a;
-    const dataLength =
-      ba.getUint8(0x07) +
-      ba.getUint8(0x08) * 2 ** 8 +
-      ba.getUint8(0x09) * 2 ** 16
-    ;
+    const dataLength = ba.getUint8(0x07) + ba.getUint8(0x08) * 2 ** 8 + ba.getUint8(0x09) * 2 ** 16;
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
     this.e.recordPureDataBlock(blockDataBa, {

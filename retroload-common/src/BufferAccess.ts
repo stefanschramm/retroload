@@ -21,7 +21,7 @@ export class BufferAccess {
    * @param {int} length
    * @return {BufferAccess}
    */
-  static create(length) {
+  static create(length: number) {
     return new BufferAccess(new ArrayBuffer(length));
   }
 
@@ -62,9 +62,9 @@ export class BufferAccess {
       throw new Error('Illegal length.');
     }
     return new BufferAccess(
-        this.view.buffer,
-        this.view.byteOffset + offset,
-        length !== undefined ? length : (this.view.byteLength - offset),
+      this.view.buffer,
+      this.view.byteOffset + offset,
+      length === undefined ? (this.view.byteLength - offset) : length,
     );
   }
 
@@ -116,7 +116,7 @@ export class BufferAccess {
         ascii += String.fromCharCode(byte).replace(printableCharsRegexp, '.');
       }
       lines.push(offset + '  ' + firstOctet.padEnd(24, ' ') + ' ' + secondOctet.padEnd(24, ' ') + ' |' + ascii + '|');
-    };
+    }
 
     return lines.join('\n');
   }

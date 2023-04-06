@@ -1,5 +1,5 @@
-import {BufferAccess} from '../BufferAccess';
-import {Option} from '../Options'
+import type {BufferAccess} from '../BufferAccess';
+import type {Option} from '../Options';
 
 export abstract class AbstractAdapter {
   static getTargetName: () => string;
