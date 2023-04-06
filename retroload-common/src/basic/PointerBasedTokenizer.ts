@@ -36,7 +36,7 @@ export class PointerBasedSourceTokenizer {
     // longest tokens first so that they will match first
     const sortedTokenMap = [...tokenMap].sort((a, b) => a[0].length > b[0].length ? -1 : 1);
     const tokenizedLines = nonEmptyLines.map((l) => (new LineTokenizer(sortedTokenMap, l)).tokenize());
-    const compiledLines = [];
+    const compiledLines: BufferAccess[] = [];
     let totalByteLength = 0;
     let nextLineAddress = loadAddress;
     for (const tl of tokenizedLines) {
@@ -69,6 +69,10 @@ function escapeRegex(string) {
 }
 
 class LineTokenizer {
+  l: any;
+  pos: number;
+  tokens: any[];
+  types: any[];
   constructor(sortedTokenMap, line) {
     this.l = line;
     this.pos = 0;
