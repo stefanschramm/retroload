@@ -74,7 +74,7 @@ export class KcEncoder extends AbstractEncoder {
     }
   }
 
-  calculateChecksum(data) {
+  calculateChecksum(data: BufferAccess) {
     let sum = 0;
     for (let i = 0; i < data.length(); i++) {
       sum += data.getUint8(i);

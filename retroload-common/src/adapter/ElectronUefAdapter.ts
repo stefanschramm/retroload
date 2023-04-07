@@ -89,5 +89,5 @@ export class ElectronUefAdapter extends AbstractAdapter {
 }
 
 function uncompressIfRequired(ba: BufferAccess) {
-  return ba.containsDataAt(0, compressedFileHeader) ? BufferAccess.createFromUint8Array(inflate(ba.asUint8Array()) as Uint8Array) : ba;
+  return ba.containsDataAt(0, compressedFileHeader) ? BufferAccess.createFromUint8Array(inflate(ba.asUint8Array())) : ba;
 }

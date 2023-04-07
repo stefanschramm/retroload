@@ -137,13 +137,13 @@ function determineTokenByteLength(token: Token): number {
   }
 }
 
-function applyAction(token, lineBa) {
+function applyAction(token: Token, lineBa: BufferAccess) {
   switch (token.action) {
     case 'COPY':
-      lineBa.writeAsciiString(token.value);
+      lineBa.writeAsciiString(token.value as string);
       return;
     case 'MAP':
-      for (const val of token.mappedValue[0]) {
+      for (const val of token.mappedValue[0] as number[]) {
         lineBa.writeUInt8(val);
       }
       return;

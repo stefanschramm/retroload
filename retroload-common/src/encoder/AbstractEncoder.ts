@@ -1,3 +1,4 @@
+import {type BufferAccess} from '../BufferAccess.js';
 import {InternalError} from '../Exceptions.js';
 import {type OptionValues} from '../Options.js';
 import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface.js';
@@ -33,7 +34,7 @@ export class AbstractEncoder {
     this.recordSilence(this.recorder.sampleRate);
   }
 
-  recordBytes(dataBa) {
+  recordBytes(dataBa: BufferAccess) {
     for (let i = 0; i < dataBa.length(); i++) {
       this.recordByte(dataBa.getUint8(i));
     }

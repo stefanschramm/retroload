@@ -57,7 +57,7 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
   }
 }
 
-function calculateChecksum(ba) {
+function calculateChecksum(ba: BufferAccess) {
   // 8 bit checksum with carry being added
   let sum = 0;
   for (let i = 0; i < ba.length(); i++) {

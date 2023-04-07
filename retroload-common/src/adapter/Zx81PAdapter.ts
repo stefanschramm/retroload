@@ -17,9 +17,9 @@ export class Zx81PAdapter extends AbstractAdapter {
     return 'zx81p';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.p$/i) !== null,
+      filename: (/^.*\.p$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
   }

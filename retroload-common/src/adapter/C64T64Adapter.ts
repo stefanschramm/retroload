@@ -20,9 +20,9 @@ export class C64T64Adapter extends AbstractAdapter {
     return 'c64t64';
   }
 
-  static identify(filename, ba: BufferAccess) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.t64$/i) !== null,
+      filename: (/^.*\.t64$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }

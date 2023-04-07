@@ -55,7 +55,7 @@ export class MsxCasAdapter extends AbstractAdapter {
     e.end();
   }
 
-  static determineType(dataBa, offset) {
+  static determineType(dataBa: BufferAccess, offset: number) {
     for (const [type, header] of Object.entries(headerTypes)) {
       if (dataBa.containsDataAt(offset, header)) {
         return type;

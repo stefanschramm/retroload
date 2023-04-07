@@ -21,7 +21,7 @@ export class TaEncoder extends AbstractEncoder {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
 
-  recordFile(filename: string, dataBa) {
+  recordFile(filename: string, dataBa: BufferAccess) {
     const headerBa = BufferAccess.create(16);
     headerBa.writeAsciiString('', 10, 0xd3);
     headerBa.writeAsciiString(filename, maxFileNameLength, 0);

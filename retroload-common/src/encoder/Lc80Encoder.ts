@@ -35,7 +35,7 @@ export class Lc80Encoder extends AbstractEncoder {
     this.recordBytes(headerBa);
   }
 
-  recordData(data) {
+  recordData(data: BufferAccess) {
     const checkSum = this.calculateChecksum(data);
     this.recordByte(checkSum);
     this.recordSeconds(fSyncMid, syncMidLength);
@@ -65,7 +65,7 @@ export class Lc80Encoder extends AbstractEncoder {
     }
   }
 
-  calculateChecksum(data) {
+  calculateChecksum(data: BufferAccess) {
     let sum = 0;
     for (let i = 0; i < data.length(); i++) {
       sum += data.getUint8(i);

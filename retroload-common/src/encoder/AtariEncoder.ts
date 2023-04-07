@@ -1,3 +1,4 @@
+import {type BufferAccess} from '../BufferAccess.js';
 import {Logger} from '../Logger.js';
 import {AbstractEncoder} from './AbstractEncoder.js';
 
@@ -28,7 +29,7 @@ export class AtariEncoder extends AbstractEncoder {
     this.recordSeconds(fMark, length / 1000);
   }
 
-  recordData(irgLength, data) {
+  recordData(irgLength: number, data: BufferAccess) {
     Logger.debug('AtariEncoder - recordData');
     Logger.debug(data.asHexDump());
     this.recordIrg(irgLength);

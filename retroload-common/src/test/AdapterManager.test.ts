@@ -38,10 +38,11 @@ test('identify returns null for unknown formats', () => {
 });
 
 describe('Encoding pipeline', () => {
-  it.each(examples.getExamples() as any[])(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  it.each(examples.getExamples() as Example[])(
     'returns correct hash for example %s',
     (example) => {
-      const hash = encodeAndHash(example.getPath() as string, example.options as OptionValues);
+      const hash = encodeAndHash(example.getPath(), example.options);
       expect(hash).toBe(example.hash);
     },
   );
@@ -65,3 +66,10 @@ function encodeAndHash(file: string, options: OptionValues) {
 function hash(data: Uint8Array) {
   return crypto.createHash('md5').update(data).digest('hex');
 }
+
+// TODO: Should actually come from retroload-examples itself
+type Example = {
+  getPath(): string;
+  options: OptionValues;
+  hash(hash: any): unknown;
+};

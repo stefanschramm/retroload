@@ -1,3 +1,4 @@
+import {type BufferAccess} from '../BufferAccess.js';
 import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fZero = 600;
@@ -14,18 +15,18 @@ export class Mo5Encoder extends AbstractEncoder {
     return 'mo5';
   }
 
-  recordStartBlock(ba) {
+  recordStartBlock(ba: BufferAccess) {
     this.recordPilot(1);
     this.recordBytes(ba);
     this.recordPilot(2);
   }
 
-  recordDataBlock(ba) {
+  recordDataBlock(ba: BufferAccess) {
     this.recordPilot(0.2);
     this.recordBytes(ba);
   }
 
-  recordEndBlock(ba) {
+  recordEndBlock(ba: BufferAccess) {
     this.recordBytes(ba);
     this.recordPilot(1.5);
   }

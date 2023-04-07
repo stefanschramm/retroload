@@ -1,3 +1,4 @@
+import {type BufferAccess} from '../BufferAccess.js';
 import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fPulse = 3000;
@@ -11,7 +12,7 @@ export class Zx81Encoder extends AbstractEncoder {
     return 'zx81';
   }
 
-  recordData(ba) {
+  recordData(ba: BufferAccess) {
     this.recordBytes(ba);
   }
 

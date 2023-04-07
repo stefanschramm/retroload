@@ -20,9 +20,9 @@ export class CpcCdtAdapter extends AbstractAdapter {
     return 'cpccdt';
   }
 
-  static identify(filename, ba: BufferAccess) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.cdt/i) !== null,
+      filename: (/^.*\.cdt/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
