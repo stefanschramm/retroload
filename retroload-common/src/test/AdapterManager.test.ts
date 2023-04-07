@@ -69,7 +69,7 @@ function hash(data: Uint8Array) {
 
 // TODO: Should actually come from retroload-examples itself
 type Example = {
-  getPath(): string;
   options: OptionValues;
+  getPath(): string;
   hash(hash: any): unknown;
 };

@@ -12,10 +12,11 @@ const defaultBaudrate = 600;
  * https://www.atariarchives.org/dere/chaptC.php
  */
 export class AtariEncoder extends AbstractEncoder {
-  baudrate: number = defaultBaudrate;
   static getTargetName() {
     return 'atari';
   }
+
+  baudrate: number = defaultBaudrate;
 
   setDefaultBaudrate() {
     this.baudrate = defaultBaudrate;

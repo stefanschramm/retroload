@@ -17,13 +17,13 @@ export function encode(recorder: RecorderInterface, filename: string, data: Arra
   if (options.format !== undefined) {
     filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === options.format);
     if (filteredAdapters.length === 0) {
-      throw new FormatNotFoundError(options.format);
+      throw new FormatNotFoundError(options.format as string);
     }
   }
   if (options.machine !== undefined) {
     filteredAdapters = filteredAdapters.filter((a) => a.getTargetName() === options.machine);
     if (filteredAdapters.length === 0) {
-      throw new TargetMachineNotFoundError(options.machine, options.format);
+      throw new TargetMachineNotFoundError(options.machine as string, options.format as string);
     }
   }
   const dataBa = new BufferAccess(data);

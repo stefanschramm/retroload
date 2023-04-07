@@ -6,15 +6,6 @@
  * and increment it.
  */
 export class BufferAccess {
-  cursor: number;
-  view: DataView;
-  ui8a: Uint8Array;
-  constructor(buffer: ArrayBufferLike, offset = 0, length: (number | null) = null) {
-    this.cursor = 0;
-    this.view = new DataView(buffer, offset, length ?? buffer.byteLength);
-    this.ui8a = new Uint8Array(buffer, offset, length ?? buffer.byteLength);
-  }
-
   /**
    * Create new buffer of length bytes and return an BufferAccess object referencing the new buffer.
    */
@@ -27,6 +18,16 @@ export class BufferAccess {
    */
   static createFromUint8Array(uint8Array: Uint8Array): BufferAccess {
     return new BufferAccess(uint8Array.buffer, uint8Array.byteOffset, uint8Array.byteLength);
+  }
+
+  cursor: number;
+  view: DataView;
+  ui8a: Uint8Array;
+
+  constructor(buffer: ArrayBufferLike, offset = 0, length: (number | null) = null) {
+    this.cursor = 0;
+    this.view = new DataView(buffer, offset, length ?? buffer.byteLength);
+    this.ui8a = new Uint8Array(buffer, offset, length ?? buffer.byteLength);
   }
 
   length() {

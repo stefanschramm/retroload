@@ -7,12 +7,13 @@ import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface
  * Base class for all encoders. Provides many methods commonly used.
  */
 export class AbstractEncoder {
-  recorder: RecorderInterface;
-  phase: boolean;
-  options: OptionValues;
   static getTargetName() {
     throw new InternalError('getTargetName() not implemented!');
   }
+
+  recorder: RecorderInterface;
+  phase: boolean;
+  options: OptionValues;
 
   constructor(recorder: RecorderInterface, options: OptionValues) {
     const sampleRate = 44100;
