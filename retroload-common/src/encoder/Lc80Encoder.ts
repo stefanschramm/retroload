@@ -49,13 +49,13 @@ export class Lc80Encoder extends AbstractEncoder {
     super.end();
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     this.recordBit(0);
     super.recordByte(byte);
     this.recordBit(1);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordOscillations(fShort, 6);
       this.recordOscillations(fLong, 6);

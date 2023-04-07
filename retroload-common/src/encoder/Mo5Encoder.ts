@@ -31,7 +31,7 @@ export class Mo5Encoder extends AbstractEncoder {
     this.recordPilot(1.5);
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     this.recordByteMSBFirst(byte);
   }
 
@@ -42,7 +42,7 @@ export class Mo5Encoder extends AbstractEncoder {
     this.recordOscillations(fZero, length * fZero);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordHalfOscillation(fOne);
       this.recordHalfOscillation(fOne);

@@ -26,7 +26,7 @@ export class AtariEncoder extends AbstractEncoder {
     this.baudrate = baudrate;
   }
 
-  recordIrg(length) {
+  recordIrg(length: number) {
     this.recordSeconds(fMark, length / 1000);
   }
 
@@ -37,13 +37,13 @@ export class AtariEncoder extends AbstractEncoder {
     this.recordBytes(data);
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     this.recordBit(0);
     this.recordByteLSBFirst(byte);
     this.recordBit(1);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordSeconds(fMark, 1 / this.baudrate);
     } else {

@@ -1,6 +1,7 @@
 import {AbstractEncoder} from './AbstractEncoder.js';
 import {Logger} from '../Logger.js';
 import {type BufferAccess} from '../BufferAccess.js';
+import {InternalError} from '../Exceptions.js';
 
 const fCpu = 3500000;
 
@@ -55,12 +56,16 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
     this.recordSilenceMs(options.pauseLengthMs);
   }
 
-  recordPulse(length) {
+  recordPulse(length: number) {
     this.recordHalfOscillationSamples(this.tzxCyclesToSamples(length));
   }
 
-  tzxCyclesToSamples(cycles) {
+  tzxCyclesToSamples(cycles: number) {
     return Math.floor((0.5 + ((this.recorder.sampleRate / fCpu) * cycles)) * this.getTzxCycleFactor());
+  }
+
+  recordBit(value: number): void {
+    throw new InternalError('Call to recordBit not expected for TzxEncoders.');
   }
 
   abstract getTzxCycleFactor(): number;

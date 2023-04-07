@@ -3,15 +3,15 @@
  * Handler for Logger that just ignores all logging output
  */
 export class NullLoggerHandler {
-  error(...args) {
+  error(..._args: string[]) {
   }
 
-  info(...args) {
+  info(..._args: string[]) {
   }
 
-  log(...args) {
+  log(..._args: string[]) {
   }
 
-  debug(...args) {
+  debug(..._args: string[]) {
   }
 }

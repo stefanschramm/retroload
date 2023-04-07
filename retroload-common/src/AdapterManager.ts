@@ -32,7 +32,7 @@ export function encode(recorder: RecorderInterface, filename: string, data: Arra
   return encodeWithAdapter(recorder, adapter, dataBa, options);
 }
 
-export function encodeWithAdapter(recorder, adapter: (typeof AbstractAdapter), dataBa: BufferAccess, options: OptionValues = {}) {
+export function encodeWithAdapter(recorder: RecorderInterface, adapter: (typeof AbstractAdapter), dataBa: BufferAccess, options: OptionValues = {}) {
   const requiredOptions = adapter.getOptions().filter((o) => o.required);
   const missingOptions = requiredOptions.filter((o) => options[o.key] === undefined);
   if (missingOptions.length > 0) {

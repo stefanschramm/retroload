@@ -16,11 +16,11 @@ export class Zx81Encoder extends AbstractEncoder {
     this.recordBytes(ba);
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     this.recordByteMSBFirst(byte);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordOscillations(fPulse, 9);
     } else {

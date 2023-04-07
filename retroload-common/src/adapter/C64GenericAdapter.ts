@@ -48,10 +48,10 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
         break;
       case 'prg':
         checkLoadAddress(loadAddress);
-        e.recordPrg(loadAddress, name.padEnd(16, ' '), ba, options.shortpilot);
+        e.recordPrg(loadAddress, name.padEnd(16, ' '), ba, options.shortpilot as boolean);
         break;
       case 'data':
-        e.recordData(name.padEnd(16, ' '), ba, options.shortpilot);
+        e.recordData(name.padEnd(16, ' '), ba, options.shortpilot as boolean);
         break;
       default:
         throw new InternalError('Got unknown type.');

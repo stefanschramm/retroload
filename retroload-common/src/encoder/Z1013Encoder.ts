@@ -51,7 +51,7 @@ export class Z1013Encoder extends AbstractEncoder {
     this.recordOscillations(1280, 1);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordHalfOscillation(1280);
     } else {

@@ -23,7 +23,7 @@ export class C64Encoder extends AbstractEncoder {
     return 'c64';
   }
 
-  recordPulse(pulseLength) {
+  recordPulse(pulseLength: number) {
     // Note: The .tap file adapter uses recordPulse directly.
     const samples = Math.ceil((0.5 * this.recorder.sampleRate * pulseLength) / palClockCycles);
     for (const value of [SampleValue.High, SampleValue.Low]) {
@@ -45,7 +45,7 @@ export class C64Encoder extends AbstractEncoder {
     this.recordPulse(8 * 0x56);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordMediumPulse();
       this.recordShortPulse();
@@ -65,7 +65,7 @@ export class C64Encoder extends AbstractEncoder {
     this.recordShortPulse();
   }
 
-  recordPilot(pulses) {
+  recordPilot(pulses: number) {
     for (let i = 0; i < pulses; i++) {
       this.recordShortPulse();
     }
@@ -81,7 +81,7 @@ export class C64Encoder extends AbstractEncoder {
     this.recordBytes(new BufferAccess(syncChain.buffer));
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     this.recordNewDataMarker();
     let checkBit = 1;
     for (let i = 0; i < 8; i += 1) {
@@ -107,16 +107,16 @@ export class C64Encoder extends AbstractEncoder {
     this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa, shortpilot);
   }
 
-  recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot) {
+  recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
     this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa, shortpilot);
   }
 
-  recordData(filenameBuffer, dataBa, shortpilot) {
+  recordData(filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
     // TODO: implement + test
     throw new InternalError('recordData not implemented yet');
   }
 
-  recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot) {
+  recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
     const headerBa = BufferAccess.create(192);
     headerBa.writeUInt8(fileType); // 1 byte: file type: prg or basic file
     headerBa.writeUInt16LE(startAddress); // 2 bytes: start address

@@ -196,7 +196,7 @@ export class BufferAccess {
     this.cursor += sourceBa.length();
   }
 
-  containsDataAt(offset: number, needle) {
+  containsDataAt(offset: number, needle: string | number[]) {
     const isString = typeof needle === 'string';
     for (let i = 0; i < needle.length; i++) {
       if (offset + i > this.view.byteLength) {

@@ -41,6 +41,7 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
       if (partialBlock) {
         blockBa.setUint8(130, dataBytesInCurrentBlock);
       }
+
       blockBa.setUint8(131, calculateChecksum(blockBa));
       e.recordIrg((blockId === 0) ? pilotIrgLength : defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
       e.recordBytes(blockBa);

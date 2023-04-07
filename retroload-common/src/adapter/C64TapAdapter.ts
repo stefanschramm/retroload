@@ -41,7 +41,7 @@ export class C64TapAdapter extends AbstractAdapter {
     e.begin();
     for (let i = 0; i < data.length(); i += 1) {
       const value = data.getUint8(i);
-      let pulseLength;
+      let pulseLength: number;
       if (value === 0) {
         // Long pulse
         if (version === 0) {

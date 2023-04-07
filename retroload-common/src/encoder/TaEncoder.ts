@@ -33,14 +33,14 @@ export class TaEncoder extends AbstractEncoder {
     this.recordOscillations(fOne, 500);
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     this.recordBit(0); // start bit
     super.recordByte(byte);
     this.recordBit(1); // stop bits
     this.recordBit(1);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordOscillations(fOne, 2);
     } else {

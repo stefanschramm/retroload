@@ -38,7 +38,6 @@ test('identify returns undefined for unknown formats', () => {
 });
 
 describe('Encoding pipeline', () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   it.each(examples.getExamples() as Example[])(
     'returns correct hash for example %s',
     (example) => {
@@ -67,7 +66,6 @@ function hash(data: Uint8Array) {
   return crypto.createHash('md5').update(data).digest('hex');
 }
 
-// TODO: Should actually come from retroload-examples itself
 type Example = {
   options: OptionValues;
   getPath(): string;

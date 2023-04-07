@@ -61,12 +61,12 @@ export class KcEncoder extends AbstractEncoder {
     this.recordOscillations(fDelimiter, 1);
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     super.recordByte(byte);
     this.recordDelimiter();
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordOscillations(fOne, 1);
     } else {

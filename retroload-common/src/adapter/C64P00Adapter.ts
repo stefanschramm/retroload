@@ -42,7 +42,7 @@ export class C64P00Adapter extends AbstractAdapter {
     const data = ba.slice(0x1c);
     const e = new C64Encoder(recorder, options);
     e.begin();
-    e.recordPrg(loadAddress, fileName.asAsciiString(), data, options.shortpilot);
+    e.recordPrg(loadAddress, fileName.asAsciiString(), data, options.shortpilot as boolean);
     e.end();
   }
 }

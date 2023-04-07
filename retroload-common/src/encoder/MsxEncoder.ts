@@ -34,14 +34,14 @@ export class MsxEncoder extends AbstractEncoder {
     this.recordOscillations(fOne * this.getBaudrateFactor(), pulses);
   }
 
-  recordByte(byte) {
+  recordByte(byte: number) {
     this.recordBit(0);
     super.recordByte(byte);
     this.recordBit(1);
     this.recordBit(1);
   }
 
-  recordBit(value) {
+  recordBit(value: number) {
     if (value) {
       this.recordOscillations(fOne * this.getBaudrateFactor(), 2);
     } else {

@@ -11,7 +11,7 @@ export class PcmRecorder implements RecorderInterface {
   audioContext: any;
   data: number[] = [];
   sampleRate = 44100;
-  constructor(audioContext) {
+  constructor(audioContext: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     this.audioContext = audioContext;
   }

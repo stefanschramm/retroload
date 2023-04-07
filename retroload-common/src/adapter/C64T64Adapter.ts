@@ -58,7 +58,7 @@ export class C64T64Adapter extends AbstractAdapter {
       const containerOffset = entryInfo.getUint32LE(0x08);
       const filename = ba.slice(entryOffset + 0x10, 0x10);
       const entryData = ba.slice(containerOffset, dataLength);
-      e.recordPrg(loadAddress, filename.asAsciiString(), entryData, options.shortpilot);
+      e.recordPrg(loadAddress, filename.asAsciiString(), entryData, options.shortpilot as boolean);
     }
 
     e.end();

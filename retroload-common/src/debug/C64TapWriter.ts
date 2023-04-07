@@ -11,7 +11,7 @@ export class C64TapWriter extends C64Encoder {
     super.begin();
   }
 
-  recordPulse(value) {
+  recordPulse(value: number) {
     super.recordPulse(value);
     this.pulses.push(value / 8);
   }
