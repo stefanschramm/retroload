@@ -33,8 +33,8 @@ test('getAllOptions returns options that have at least key, label, description a
   }
 });
 
-test('identify returns null for unknown formats', () => {
-  expect(AdapterManager.identify('example.xyz', BufferAccess.create(128))).toEqual(null);
+test('identify returns undefined for unknown formats', () => {
+  expect(AdapterManager.identify('example.xyz', BufferAccess.create(128))).toEqual(undefined);
 });
 
 describe('Encoding pipeline', () => {

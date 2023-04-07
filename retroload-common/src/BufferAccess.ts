@@ -24,7 +24,7 @@ export class BufferAccess {
   view: DataView;
   ui8a: Uint8Array;
 
-  constructor(buffer: ArrayBufferLike, offset = 0, length: (number | null) = null) {
+  constructor(buffer: ArrayBufferLike, offset = 0, length: (number | undefined) = undefined) {
     this.cursor = 0;
     this.view = new DataView(buffer, offset, length ?? buffer.byteLength);
     this.ui8a = new Uint8Array(buffer, offset, length ?? buffer.byteLength);

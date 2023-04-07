@@ -49,12 +49,12 @@ export function encodeWithAdapter(recorder, adapter: (typeof AbstractAdapter), d
 /**
  * Identify tape file and return matching adapter
  */
-export function identify(filename: string, dataBa: BufferAccess) : (AbstractAdapter | null) {
+export function identify(filename: string, dataBa: BufferAccess) : (AbstractAdapter | undefined) {
   try {
     return autodetectAdapter(providedAdapters, filename, dataBa);
   } catch (e) {
     if (e instanceof FormatAutodetectionFailedError) {
-      return null;
+      return undefined;
     }
     throw e;
   }
