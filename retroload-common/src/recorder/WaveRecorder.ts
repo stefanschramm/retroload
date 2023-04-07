@@ -1,12 +1,13 @@
 import {BufferAccess} from '../BufferAccess.js';
+import {SampleValue, type RecorderInterface} from './RecorderInterface.js';
 
-const dataMap = {
-  true: 0xfe,
-  false: 0x02,
-  null: 0x80,
+const dataMap: Record<SampleValue, number> = {
+  [SampleValue.High]: 0xfe,
+  [SampleValue.Low]: 0x02,
+  [SampleValue.Zero]: 0x80,
 };
 
-export class WaveRecorder {
+export class WaveRecorder implements RecorderInterface {
   data: number[] = [];
   sampleRate = 44100;
   initialize(sampleRate: number) {
@@ -14,8 +15,9 @@ export class WaveRecorder {
     this.sampleRate = sampleRate;
   }
 
-  pushSample(value) {
-    this.data.push(dataMap[value]);
+  pushSample(value: SampleValue) {
+    const mappedValue = dataMap[value];
+    this.data.push(mappedValue);
   }
 
   getBuffer() {

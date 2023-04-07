@@ -1,8 +1,9 @@
 import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
-import {EntryOption, LoadOption, NameOption} from '../Options.js';
+import {EntryOption, LoadOption, NameOption, type OptionValues} from '../Options.js';
 import {InternalError, InvalidArgumentError} from '../Exceptions.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;
@@ -32,28 +33,24 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
 
   /**
    * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
-   *
-   * @param {WaveRecorder|PcmRecorder} recorder
-   * @param {BufferAccess} ba
-   * @param {*} options
    */
-  static encode(recorder, ba, options) {
-    const filename = options.name !== undefined ? options.name : '';
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+    const filename = options.name !== undefined ? (options.name as string) : '';
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
 
-    const load = parseInt(options.load !== undefined ? options.load : '0000', 16);
+    const load = parseInt(options.load !== undefined ? (options.load as string) : '0000', 16);
     if (isNaN(load) || load < 0 || load > 0xffff) {
       throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
-    const entry = parseInt(options.entry !== undefined ? options.entry : '0000', 16);
+    const entry = parseInt(options.entry !== undefined ? (options.entry as string) : '0000', 16);
     if (isNaN(entry) || entry < 0 || entry > 0xffff) {
       throw new InvalidArgumentError('entry', 'Option entry is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
-    const e = new CpcTzxEncoder(recorder);
+    const e = new CpcTzxEncoder(recorder, options);
 
     const dataRecordCount = Math.ceil(ba.length() / dataBytesPerDataBlock);
     const dataBytesInLastBlock = ba.length() - (dataRecordCount - 1) * dataBytesPerDataBlock;
@@ -93,11 +90,7 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
   }
 }
 
-/**
- * @param {BufferAccess} headerBa
- * @return {BufferAccess}
- */
-function createHeaderRecord(headerBa) {
+function createHeaderRecord(headerBa: BufferAccess) {
   if (headerBa.length() !== dataBytesPerSegment) {
     throw new InternalError(`Header record size must be exactly ${dataBytesPerSegment} bytes (padded with zeros).`);
   }
@@ -111,11 +104,7 @@ function createHeaderRecord(headerBa) {
   return headerRecordBa;
 }
 
-/**
- * @param {BufferAccess} dataBa
- * @return {BufferAccess}
- */
-function createDataRecord(dataBa) {
+function createDataRecord(dataBa: BufferAccess) {
   if (dataBa.length() > dataBytesPerDataBlock) {
     throw new InternalError(`Data record size cannot exceed ${dataBytesPerDataBlock} bytes.`);
   }
@@ -145,11 +134,8 @@ function createDataRecord(dataBa) {
 
 /**
  * https://gist.github.com/chitchcock/5112270?permalink_comment_id=3834064#gistcomment-3834064
- *
- * @param {BufferAccess} ba
- * @return {number}
  */
-function calculateSegmentCrc(ba) {
+function calculateSegmentCrc(ba: BufferAccess): number {
   const polynomial = 0x1021;
   let crc = 0xffff;
   for (let n = 0; n < ba.length(); n++) {

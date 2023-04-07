@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 const defaultVerbosity = 1;
 let verbosity = defaultVerbosity;
 let handler = console;

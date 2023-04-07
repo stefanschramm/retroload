@@ -8,8 +8,9 @@ import {
 import {BufferAccess} from './BufferAccess.js';
 import {adapters as providedAdapters} from './AdapterProvider.js';
 import {Logger} from './Logger.js';
+import {type AbstractAdapter} from './adapter/AbstractAdapter.js';
 
-export function encode(recorder, filename, data, options: any = {}) {
+export function encode(recorder, filename, data: ArrayBufferLike, options: any = {}) {
   let filteredAdapters = providedAdapters;
   if (options.format !== undefined) {
     filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === options.format);
@@ -29,7 +30,7 @@ export function encode(recorder, filename, data, options: any = {}) {
   return encodeWithAdapter(recorder, adapter, dataBa, options);
 }
 
-export function encodeWithAdapter(recorder, adapter, dataBa, options = {}) {
+export function encodeWithAdapter(recorder, adapter, dataBa, options: any = {}) {
   const requiredOptions = adapter.getOptions().filter((o) => o.required);
   const missingOptions = requiredOptions.filter((o) => options[o.key] === undefined);
   if (missingOptions.length > 0) {
@@ -45,12 +46,8 @@ export function encodeWithAdapter(recorder, adapter, dataBa, options = {}) {
 
 /**
  * Identify tape file and return matching adapter
- *
- * @param {string} filename
- * @param {BufferAccess} dataBa
- * @return {AbstractAdapter|null} matching adapter or null if not found
  */
-export function identify(filename, dataBa) {
+export function identify(filename: string, dataBa: BufferAccess) : (AbstractAdapter | null) {
   try {
     return autodetectAdapter(providedAdapters, filename, dataBa);
   } catch (e) {

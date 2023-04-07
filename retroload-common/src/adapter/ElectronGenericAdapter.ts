@@ -1,9 +1,10 @@
-import {NameOption, LoadOption, EntryOption, ShortpilotOption} from '../Options.js';
+import {NameOption, LoadOption, EntryOption, ShortpilotOption, type OptionValues} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {ElectronEncoder} from '../encoder/ElectronEncoder.js';
 import {Logger} from '../Logger.js';
 import {BufferAccess} from '../BufferAccess.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const maxFileNameLength = 10;
 const maxBlockSize = 256;
@@ -26,25 +27,25 @@ export class ElectronGenericAdapter extends AbstractGenericAdapter {
     ];
   }
 
-  static encode(recorder, ba, options) {
-    const filename = options.name !== undefined ? options.name : '';
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+    const filename = options.name !== undefined ? (options.name as string) : '';
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
 
-    const load = parseInt(options.load !== undefined ? options.load : '0000', 16);
+    const load = parseInt(options.load !== undefined ? (options.load as string) : '0000', 16);
     if (isNaN(load) || load < 0 || load > 0xffff) {
       throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
-    const entry = parseInt(options.entry !== undefined ? options.entry : '0000', 16);
+    const entry = parseInt(options.entry !== undefined ? (options.entry as string) : '0000', 16);
     if (isNaN(entry) || entry < 0 || entry > 0xffff) {
       throw new InvalidArgumentError('entry', 'Option entry is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
     const blocks = Math.ceil(ba.length() / maxBlockSize);
 
-    const e = new ElectronEncoder(recorder);
+    const e = new ElectronEncoder(recorder, options);
     e.begin();
 
     for (let block = 0; block < blocks; block++) {
@@ -85,11 +86,8 @@ export class ElectronGenericAdapter extends AbstractGenericAdapter {
 
 /**
  * https://stackoverflow.com/a/75806068
- *
- * @param {BufferAccess} ba
- * @return {number}
  */
-function calculateCrc(ba) {
+function calculateCrc(ba: BufferAccess): number {
   let crc = 0;
   for (let i = 0, t = 0; i < ba.length(); i++, crc &= 0xffff) {
     t = (crc >> 8) ^ ba.getUint8(i);

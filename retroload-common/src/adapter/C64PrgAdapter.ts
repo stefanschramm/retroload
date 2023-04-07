@@ -1,6 +1,8 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {ShortpilotOption} from '../Options.js';
+import {type OptionValues, ShortpilotOption} from '../Options.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 // import {C64TapWriter as C64Encoder} from '../debug/C64TapWriter.js';
 
 export class C64PrgAdapter extends AbstractAdapter {
@@ -29,7 +31,7 @@ export class C64PrgAdapter extends AbstractAdapter {
     ];
   }
 
-  static encode(recorder, ba, options) {
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const header = ba.slice(0, 2);
     const loadAddress = header.getUint16LE(0);
     const data = ba.slice(2);

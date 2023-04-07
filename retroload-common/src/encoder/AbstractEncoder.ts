@@ -1,17 +1,19 @@
 import {InternalError} from '../Exceptions.js';
+import {type OptionValues} from '../Options.js';
+import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 /**
  * Base class for all encoders. Provides many methods commonly used.
  */
 export class AbstractEncoder {
-  recorder: any;
+  recorder: RecorderInterface;
   phase: boolean;
-  options: any;
+  options: OptionValues;
   static getTargetName() {
     throw new InternalError('getTargetName() not implemented!');
   }
 
-  constructor(recorder, options = {}) {
+  constructor(recorder: RecorderInterface, options: OptionValues) {
     const sampleRate = 44100;
     this.recorder = recorder;
     this.recorder.initialize(sampleRate);
@@ -61,7 +63,7 @@ export class AbstractEncoder {
   recordOscillations(frequency, oscillations) {
     const samples = Math.floor(this.recorder.sampleRate / frequency / 2);
     for (let i = 0; i < oscillations; i += 1) {
-      for (const value of (this.phase ? [true, false] : [false, true])) {
+      for (const value of (this.phase ? [SampleValue.High, SampleValue.Low] : [SampleValue.Low, SampleValue.High])) {
         for (let j = 0; j < samples; j += 1) {
           this.recorder.pushSample(value);
         }
@@ -77,7 +79,7 @@ export class AbstractEncoder {
 
   recordHalfOscillationSamples(samples) {
     for (let j = 0; j < samples; j += 1) {
-      this.recorder.pushSample(this.phase);
+      this.recorder.pushSample(this.phase ? SampleValue.High : SampleValue.Low);
     }
     this.phase = !this.phase;
   }
@@ -88,7 +90,7 @@ export class AbstractEncoder {
 
   recordSilence(samples) {
     for (let j = 0; j < samples; j += 1) {
-      this.recorder.pushSample(null);
+      this.recorder.pushSample(SampleValue.Zero);
     }
   }
 

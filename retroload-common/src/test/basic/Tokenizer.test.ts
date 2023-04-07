@@ -27,12 +27,8 @@ describe.each(tokenizers.map((t) => [t.name, t]))('%s', (name, t) => {
 
 /**
  * Check if the passed arrays have the same length and content.
- *
- * @param {Uint8Array} a
- * @param {Uint8Array} b
- * @return {boolean}
  */
-function uInt8ArrayEqual(a, b) {
+function uInt8ArrayEqual(a: Uint8Array, b: Uint8Array): boolean {
   if (a.byteLength !== b.byteLength) {
     return false;
   }

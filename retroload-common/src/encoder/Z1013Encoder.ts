@@ -18,7 +18,7 @@ export class Z1013Encoder extends AbstractEncoder {
     this.recordFirstIntro();
   }
 
-  recordData(ba) {
+  recordData(ba: BufferAccess) {
     const blocks = Math.ceil(ba.length() / blockDataSize);
 
     // blocks
@@ -28,7 +28,7 @@ export class Z1013Encoder extends AbstractEncoder {
     }
   }
 
-  recordBlock(blockNumber, blockDataBa) {
+  recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
     const blockBa = BufferAccess.create(2 + blockDataBa.length() + 2);
     blockBa.writeUInt16LE(blockNumber);
     blockBa.writeBa(blockDataBa);

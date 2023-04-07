@@ -35,9 +35,9 @@ export class Mo5Encoder extends AbstractEncoder {
   }
 
   /**
-   * @param {number} length in seconds
+   * @param length length in seconds
    */
-  recordPilot(length) {
+  recordPilot(length: number) {
     this.recordOscillations(fZero, length * fZero);
   }
 

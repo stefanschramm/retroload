@@ -1,5 +1,8 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {Zx81Encoder} from '../encoder/Zx81Encoder.js';
+import {type OptionValues} from '../Options.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 export class Zx81PAdapter extends AbstractAdapter {
   static getTargetName() {
@@ -21,8 +24,8 @@ export class Zx81PAdapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba, options) {
-    const e = new Zx81Encoder(recorder);
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+    const e = new Zx81Encoder(recorder, options);
     e.begin();
     // Filename in ZX 81 charset - https://en.wikipedia.org/wiki/ZX81_character_set
     // "TEST"

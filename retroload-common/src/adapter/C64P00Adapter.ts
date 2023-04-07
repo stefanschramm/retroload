@@ -1,6 +1,8 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {ShortpilotOption} from '../Options.js';
+import {type OptionValues, ShortpilotOption} from '../Options.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fileHeader = 'C64File';
 
@@ -31,8 +33,10 @@ export class C64P00Adapter extends AbstractAdapter {
     ];
   }
 
-  // http://unusedino.de/ec64/technical/formats/pc64.html
-  static encode(recorder, ba, options) {
+  /**
+   * http://unusedino.de/ec64/technical/formats/pc64.html
+   */
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const fileName = ba.slice(8, 0x10);
     const loadAddress = ba.getUint16LE(0x1a);
     const data = ba.slice(0x1c);

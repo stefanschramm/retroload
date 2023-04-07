@@ -41,13 +41,13 @@ describe('Encoding pipeline', () => {
   it.each(examples.getExamples() as any[])(
     'returns correct hash for example %s',
     (example) => {
-      const hash = encodeAndHash(example.getPath(), example.options);
+      const hash = encodeAndHash(example.getPath() as string, example.options);
       expect(hash).toBe(example.hash);
     },
   );
 });
 
-function encodeAndHash(file, options) {
+function encodeAndHash(file: string, options) {
   const recorder = new WaveRecorder();
   const data = fs.readFileSync(file);
   const arrayBuffer = data.buffer.slice(
@@ -62,6 +62,6 @@ function encodeAndHash(file, options) {
   return hash(recorder.getBuffer());
 }
 
-function hash(data) {
+function hash(data: Uint8Array) {
   return crypto.createHash('md5').update(data).digest('hex');
 }

@@ -2,6 +2,9 @@ import {AbstractAdapter} from './AbstractAdapter.js';
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {InternalError} from '../Exceptions.js';
 import {Logger} from '../Logger.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type OptionValues} from '../Options.js';
 
 const fileHeader = 'FUJI';
 
@@ -18,25 +21,15 @@ export class AtariCasAdapter extends AbstractAdapter {
     return 'Atari .CAS-File';
   }
 
-  /**
-   * @param {string} filename
-   * @param {BufferAccess} ba
-   * @return {object}
-   */
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.cas/i) !== null,
+      filename: (/^.*\.cas/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  /**
-   * @param {PcmRecorder|WaveRecorder} recorder
-   * @param {BufferAccess} ba
-   * @param {object} options
-   */
-  static encode(recorder, ba, options) {
-    const e = new AtariEncoder(recorder);
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+    const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
     let i = 0;
     while (i < ba.length()) {

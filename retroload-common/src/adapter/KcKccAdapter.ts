@@ -1,6 +1,9 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {InputDataError} from '../Exceptions.js';
+import {type OptionValues} from '../Options.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fileBlockSize = 128;
 
@@ -24,7 +27,7 @@ export class KcKccAdapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba, options) {
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const blocks = Math.ceil(ba.length() / fileBlockSize);
 
     if (blocks > 255) {
@@ -34,7 +37,7 @@ export class KcKccAdapter extends AbstractAdapter {
       throw new InputDataError('Length of data in KCC file is not a multiple of 128.');
     }
 
-    const e = new KcEncoder(recorder);
+    const e = new KcEncoder(recorder, options);
 
     e.begin();
     for (let i = 0; i < blocks; i++) {

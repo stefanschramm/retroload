@@ -3,6 +3,8 @@ import {Mo5Encoder} from '../encoder/Mo5Encoder.js';
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {Logger} from '../Logger.js';
 import {InputDataError} from '../Exceptions.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type OptionValues} from '../Options.js';
 
 // the number of 0x01 in the header seems to vary; many images have 64, 16 and some less...
 const fileHeader = [0x01, 0x01, 0x01, 0x01];
@@ -27,7 +29,7 @@ export class Mo5K7Adapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba: BufferAccess, options) {
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new Mo5Encoder(recorder, options);
     e.begin();
     let i = 0;

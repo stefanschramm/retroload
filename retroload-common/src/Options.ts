@@ -75,3 +75,5 @@ export const EntryOption = new Option(
     type: 'text',
   },
 );
+
+export type OptionValues = Record<string, string | boolean>;

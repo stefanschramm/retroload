@@ -1,8 +1,9 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
-import {NameOption} from '../Options.js';
+import {NameOption, type OptionValues} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;
@@ -34,14 +35,9 @@ export class KcSssAdapter extends AbstractAdapter {
     ];
   }
 
-  /**
-   * @param {WavRecorder|PcmRecorder} recorder
-   * @param {BufferAccess} ba
-   * @param {object} options
-   */
-  static encode(recorder, ba, options) {
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
-    const filename = options.name !== undefined ? options.name : '';
+    const filename = options.name !== undefined ? (options.name as string) : '';
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
@@ -58,7 +54,7 @@ export class KcSssAdapter extends AbstractAdapter {
     const remainingDataBa = ba.slice(blockSize - headerSize);
     const remainingBlocks = Math.ceil(remainingDataBa.length() / blockSize);
 
-    const e = new KcEncoder(recorder);
+    const e = new KcEncoder(recorder, options);
 
     e.begin();
     e.recordBlock(1, firstBlockBa);

@@ -1,6 +1,8 @@
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
+import {type OptionValues} from '../Options.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const markerByte = 0x55;
 const blockTypeFull = 0xfc;
@@ -20,13 +22,8 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
     return 'Atari (Generic data)';
   }
 
-  /**
-   * @param {WaveRecorder|PcmRecorder} recorder
-   * @param {BufferAccess} ba
-   * @param {object} options
-   */
-  static encode(recorder, ba, options) {
-    const e = new AtariEncoder(recorder);
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+    const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
     const blocks = Math.ceil(ba.length() / dataBytesPerBlock);
     for (let blockId = 0; blockId < blocks; blockId++) {

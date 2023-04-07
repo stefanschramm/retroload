@@ -2,6 +2,7 @@ import {AbstractEncoder} from './AbstractEncoder.js';
 import {InternalError} from '../Exceptions.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {Logger} from '../Logger.js';
+import {SampleValue} from '../recorder/RecorderInterface.js';
 
 const palClockCycles = 985248;
 
@@ -25,7 +26,7 @@ export class C64Encoder extends AbstractEncoder {
   recordPulse(pulseLength) {
     // Note: The .tap file adapter uses recordPulse directly.
     const samples = Math.ceil((0.5 * this.recorder.sampleRate * pulseLength) / palClockCycles);
-    for (const value of [true, false]) {
+    for (const value of [SampleValue.High, SampleValue.Low]) {
       for (let j = 0; j < samples; j += 1) {
         this.recorder.pushSample(value);
       }
@@ -101,12 +102,12 @@ export class C64Encoder extends AbstractEncoder {
     this.recordByte(checkByte);
   }
 
-  recordBasic(startAddress, filenameBuffer, dataBa, shortpilot) {
+  recordBasic(startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
     // TODO: test
     this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa, shortpilot);
   }
 
-  recordPrg(startAddress, filenameBuffer, dataBa, shortpilot) {
+  recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot) {
     this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa, shortpilot);
   }
 
@@ -115,7 +116,7 @@ export class C64Encoder extends AbstractEncoder {
     throw new InternalError('recordData not implemented yet');
   }
 
-  recordBasicOrPrg(fileType, startAddress, filenameBuffer, dataBa, shortpilot) {
+  recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot) {
     const headerBa = BufferAccess.create(192);
     headerBa.writeUInt8(fileType); // 1 byte: file type: prg or basic file
     headerBa.writeUInt16LE(startAddress); // 2 bytes: start address

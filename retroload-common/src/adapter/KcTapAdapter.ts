@@ -1,5 +1,8 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type OptionValues} from '../Options.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
@@ -27,7 +30,7 @@ export class KcTapAdapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba, options) {
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const blocks = Math.ceil((ba.length() - fileHeaderLength) / fileBlockSize);
 
     // TODO: Possible warnings when:
@@ -35,7 +38,7 @@ export class KcTapAdapter extends AbstractAdapter {
     // - more than 255 blocks
     // - last block number not 0xff
 
-    const e = new KcEncoder(recorder);
+    const e = new KcEncoder(recorder, options);
 
     e.begin();
     for (let i = 0; i < blocks; i++) {

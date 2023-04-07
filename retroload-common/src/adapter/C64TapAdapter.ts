@@ -1,6 +1,9 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
 import {Logger} from '../Logger.js';
+import {type OptionValues} from '../Options.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fileHeader = 'C64-TAPE-RAW';
 
@@ -26,15 +29,15 @@ export class C64TapAdapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba, options) {
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
     const dataLength = header.getUint32LE(0x10);
 
-    Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, 0)}, dataLength: ${dataLength}`);
+    Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, '0')}, dataLength: ${dataLength}`);
 
     const data = ba.slice(header.length(), dataLength);
-    const e = new C64Encoder(recorder);
+    const e = new C64Encoder(recorder, options);
     e.begin();
     for (let i = 0; i < data.length(); i += 1) {
       const value = data.getUint8(i);

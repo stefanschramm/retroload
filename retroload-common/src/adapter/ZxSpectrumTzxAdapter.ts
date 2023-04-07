@@ -1,6 +1,9 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {TzxProcessor} from './TzxProcessor.js';
 import {ZxSpectrumTzxEncoder} from '../encoder/ZxSpectrumTzxEncoder.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type BufferAccess} from '../BufferAccess.js';
+import {type OptionValues} from '../Options.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
@@ -24,8 +27,8 @@ export class ZxSpectrumTzxAdapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba, options) {
-    const e = new ZxSpectrumTzxEncoder(recorder);
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+    const e = new ZxSpectrumTzxEncoder(recorder, options);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);
   }

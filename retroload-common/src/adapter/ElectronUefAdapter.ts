@@ -4,6 +4,8 @@ import {BufferAccess} from '../BufferAccess.js';
 import {Logger} from '../Logger.js';
 import {inflate} from 'pako';
 import {InputDataError} from '../Exceptions.js';
+import {type OptionValues} from '../Options.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fileHeader = 'UEF File!\x00';
 const compressedFileHeader = '\x1f\x8b';
@@ -33,7 +35,7 @@ export class ElectronUefAdapter extends AbstractAdapter {
     };
   }
 
-  static encode(recorder, ba, options) {
+  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const uefBa = uncompressIfRequired(ba);
 
     if (!uefBa.containsDataAt(0, fileHeader)) {
@@ -86,6 +88,6 @@ export class ElectronUefAdapter extends AbstractAdapter {
   }
 }
 
-function uncompressIfRequired(ba) {
-  return ba.containsDataAt(0, compressedFileHeader) ? BufferAccess.createFromUint8Array(inflate(ba.asUint8Array())) : ba;
+function uncompressIfRequired(ba: BufferAccess) {
+  return ba.containsDataAt(0, compressedFileHeader) ? BufferAccess.createFromUint8Array(inflate(ba.asUint8Array()) as Uint8Array) : ba;
 }

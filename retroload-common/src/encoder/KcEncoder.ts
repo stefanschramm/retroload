@@ -29,7 +29,7 @@ export class KcEncoder extends AbstractEncoder {
     this.recordIntro();
   }
 
-  recordBlock(blockNumber, blockDataBa) {
+  recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
     if (blockDataBa.length() > blockSize) {
       throw new InputDataError('Block data exceeds length of 128 bytes');
     }
@@ -38,7 +38,7 @@ export class KcEncoder extends AbstractEncoder {
 
     const checksum = this.calculateChecksum(blockDataBa);
 
-    Logger.debug(`KcEncoder - recordBlock: blockNumber: 0x${blockNumber.toString(16).padStart(2, 0)}, checksum: 0x${checksum.toString(16).padStart(2, '0')}`);
+    Logger.debug(`KcEncoder - recordBlock: blockNumber: 0x${blockNumber.toString(16).padStart(2, '0')}, checksum: 0x${checksum.toString(16).padStart(2, '0')}`);
     Logger.debug(blockDataBa.asHexDump());
 
     const blockBa = BufferAccess.create(1 + blockSize + 1);

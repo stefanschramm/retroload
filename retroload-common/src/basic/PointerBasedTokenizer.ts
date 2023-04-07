@@ -30,7 +30,7 @@ const baseTypes = [
  * In contrast there also exist length-based dialects (Atari 800).
  */
 export class PointerBasedSourceTokenizer {
-  static tokenize(loadAddress, tokenMap, str) {
+  static tokenize(loadAddress: number, tokenMap, str) {
     const lines = str.trim().split('\n');
     const nonEmptyLines = lines.filter((l) => l.trim() !== '');
     // longest tokens first so that they will match first
@@ -40,7 +40,7 @@ export class PointerBasedSourceTokenizer {
     let totalByteLength = 0;
     let nextLineAddress = loadAddress;
     for (const tl of tokenizedLines) {
-      const lineNumber = tl[0].value; // TODO: check if number
+      const lineNumber = tl[0].value as number; // TODO: check if number
       const tlTail = tl.slice(1);
       const lineByteLength = 2 + 2 + determineLineByteLength(tlTail) + 1; // 2 bytes pointer + 2 bytes line number + data + 1 end of line (zero)
       totalByteLength += lineByteLength;
@@ -121,7 +121,7 @@ class LineTokenizer {
   }
 }
 
-function determineLineByteLength(tokens) {
+function determineLineByteLength(tokens): number {
   return tokens.reduce((a, b) => a + determineTokenByteLength(b), 0);
 }
 

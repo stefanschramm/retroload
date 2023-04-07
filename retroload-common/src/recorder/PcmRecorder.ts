@@ -1,12 +1,13 @@
 import {Logger} from '../Logger.js';
+import {SampleValue, type RecorderInterface} from './RecorderInterface.js';
 
 const dataMap = {
-  true: 1.0,
-  false: -1.0,
-  null: 0.0,
+  [SampleValue.High]: 1.0,
+  [SampleValue.Low]: -1.0,
+  [SampleValue.Zero]: 0.0,
 };
 
-export class PcmRecorder {
+export class PcmRecorder implements RecorderInterface {
   audioContext: any;
   data: number[] = [];
   sampleRate: any;
@@ -19,7 +20,7 @@ export class PcmRecorder {
     this.sampleRate = sampleRate;
   }
 
-  pushSample(value) {
+  pushSample(value: SampleValue) {
     this.data.push(dataMap[value]);
   }
 

@@ -1,3 +1,4 @@
+import {type AbstractTzxEncoder} from '../encoder/AbstractTzxEncoder.js';
 import {InputDataError} from '../Exceptions.js';
 import {Logger} from '../Logger.js';
 
@@ -10,10 +11,7 @@ const tzxHeaderLength = 0x0a;
  */
 export class TzxProcessor {
   e: any;
-  /**
-   * @param {AbstractTzxEncoder} encoder
-   */
-  constructor(encoder) {
+  constructor(encoder: AbstractTzxEncoder) {
     this.e = encoder;
   }
 
