@@ -1,3 +1,5 @@
+import {type Option} from './Options';
+
 /**
  * Error that is usually caused by invalid usage
  */
@@ -36,7 +38,7 @@ export class TargetMachineNotFoundError extends UsageError {
 }
 
 export class MissingOptionsError extends UsageError {
-  constructor(missingOptions) {
+  constructor(missingOptions: Option[]) {
     const optionList = missingOptions.map((o) => o.key);
     super(`The following options are required: ${optionList.join(', ')}`);
   }

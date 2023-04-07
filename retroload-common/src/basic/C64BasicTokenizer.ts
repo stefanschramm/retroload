@@ -11,7 +11,7 @@ export class C64BasicTokenizer {
     return 'prg';
   }
 
-  static tokenize(str) {
+  static tokenize(str: string) {
     // TODO: Offer option to convert to PETSCII
     const offset = 0x0800;
     const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, TOKENS, str);

@@ -6,7 +6,7 @@ export class MsxBasicTokenizer {
     return 'bas';
   }
 
-  static tokenize(str) {
+  static tokenize(str: string) {
     // TODO: untested
     const offset = 0x8000;
 

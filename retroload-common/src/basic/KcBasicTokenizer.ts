@@ -12,7 +12,7 @@ export class KcBasicTokenizer {
     return 'sss';
   }
 
-  static tokenize(str) {
+  static tokenize(str: string) {
     const offset = 0x0401;
     const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, TOKENS, str);
 

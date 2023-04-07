@@ -1,7 +1,7 @@
 import * as AdapterManager from '../AdapterManager.js';
 import {Logger} from '../Logger.js';
 import {NullLoggerHandler} from '../NullLoggerHandler.js';
-import {Option} from '../Options.js';
+import {Option, type OptionValues} from '../Options.js';
 import {WaveRecorder} from '../recorder/WaveRecorder.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
@@ -41,13 +41,13 @@ describe('Encoding pipeline', () => {
   it.each(examples.getExamples() as any[])(
     'returns correct hash for example %s',
     (example) => {
-      const hash = encodeAndHash(example.getPath() as string, example.options);
+      const hash = encodeAndHash(example.getPath() as string, example.options as OptionValues);
       expect(hash).toBe(example.hash);
     },
   );
 });
 
-function encodeAndHash(file: string, options) {
+function encodeAndHash(file: string, options: OptionValues) {
   const recorder = new WaveRecorder();
   const data = fs.readFileSync(file);
   const arrayBuffer = data.buffer.slice(

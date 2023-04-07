@@ -58,7 +58,7 @@ export class TaBasicTokenizer {
     return 'bas';
   }
 
-  static tokenize(str) {
+  static tokenize(str: string) {
     const offset = 0x6001;
     const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, TOKENS, str);
 

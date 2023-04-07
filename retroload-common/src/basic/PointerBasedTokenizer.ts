@@ -1,6 +1,6 @@
 import {BufferAccess} from '../BufferAccess.js';
 
-const baseTypes = [
+const baseTypes: PatternDefinition[] = [
   [
     // Number
     /^\d+/,
@@ -30,7 +30,7 @@ const baseTypes = [
  * In contrast there also exist length-based dialects (Atari 800).
  */
 export class PointerBasedSourceTokenizer {
-  static tokenize(loadAddress: number, tokenMap, str) {
+  static tokenize(loadAddress: number, tokenMap, str: string) {
     const lines = str.trim().split('\n');
     const nonEmptyLines = lines.filter((l) => l.trim() !== '');
     // longest tokens first so that they will match first
@@ -63,7 +63,7 @@ export class PointerBasedSourceTokenizer {
   }
 }
 
-function escapeRegex(string) {
+function escapeRegex(string: string) {
   // https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
   return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
 }
@@ -71,27 +71,28 @@ function escapeRegex(string) {
 class LineTokenizer {
   l: any;
   pos: number;
-  tokens: any[];
+  tokens: Token[];
   types: any[];
-  constructor(sortedTokenMap, line) {
+  constructor(sortedTokenMap: any[], line: string) {
     this.l = line;
     this.pos = 0;
     this.tokens = [];
     this.types = [
       ...sortedTokenMap.map((t) => {
-        const keyword = t[0];
+        const keyword = t[0] as string;
         const tokens = t.slice(1);
-        return [
+        const patternDefinition: PatternDefinition = [
           new RegExp('^' + escapeRegex(keyword), 'i'), // case insensitive
           'MAP',
           tokens,
         ];
+        return patternDefinition;
       }),
       ...baseTypes,
     ];
   }
 
-  tokenize() {
+  tokenize(): Token[] {
     while (this.hasTokensLeft()) {
       this.tokens.push(this.getNextToken());
     }
@@ -103,7 +104,7 @@ class LineTokenizer {
     return this.pos < this.l.length;
   }
 
-  getNextToken() {
+  getNextToken(): Token {
     const s = this.l.slice(this.pos);
     for (const [regexp, action, ...mappedValue] of this.types) {
       const matched = regexp.exec(s);
@@ -121,16 +122,16 @@ class LineTokenizer {
   }
 }
 
-function determineLineByteLength(tokens): number {
+function determineLineByteLength(tokens: Token[]): number {
   return tokens.reduce((a, b) => a + determineTokenByteLength(b), 0);
 }
 
-function determineTokenByteLength(token) {
+function determineTokenByteLength(token: Token): number {
   switch (token.action) {
     case 'COPY':
-      return token.value.length;
+      return (token.value as string).length;
     case 'MAP':
-      return token.mappedValue[0].length;
+      return (token.mappedValue as number[][])[0].length;
     default:
       throw new Error(`Unknown action: ${token.action}`);
   }
@@ -150,3 +151,11 @@ function applyAction(token, lineBa) {
       throw new Error(`Unknown action: ${token.action}`);
   }
 }
+
+type Token = {
+  action: string;
+  value: any;
+  mappedValue: number[] | number[][];
+};
+
+type PatternDefinition = Array<RegExp | string | number | number[]>;

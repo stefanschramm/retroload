@@ -33,6 +33,7 @@ export class PcmRecorder implements RecorderInterface {
     const buffer = this.audioContext.createBuffer(1, this.data.length, this.sampleRate);
     buffer.copyToChannel(new Float32Array(this.data), 0, 0);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return buffer;
   }
 }
