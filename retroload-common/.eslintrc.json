@@ -17,15 +17,14 @@
         "@typescript-eslint/indent": ["error", 2],
         "no-bitwise": ["off"],
         "arrow-parens": ["error", "always"],
+        "no-mixed-operators": ["off"],
+        "capitalized-comments": ["off"],
         "@typescript-eslint/padding-line-between-statements": ["off"],
         "@typescript-eslint/naming-convention": ["off"],
         "@typescript-eslint/no-extraneous-class": ["off"],
         "@typescript-eslint/parameter-properties": ["off"],
-        "no-mixed-operators": ["off"],
-        "capitalized-comments": ["off"],
         "max-params": ["off"],
-        "no-warning-comments": ["off"],
-        "no-negated-condition": ["off"]
+        "no-warning-comments": ["off"]
       }
     }
   ],

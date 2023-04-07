@@ -37,7 +37,7 @@ export class KcSssAdapter extends AbstractAdapter {
 
   static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
-    const filename = options.name !== undefined ? (options.name as string) : '';
+    const filename = (options.name ?? '') as string;
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }

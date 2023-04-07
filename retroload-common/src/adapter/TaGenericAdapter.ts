@@ -21,7 +21,7 @@ export class TaGenericAdapter extends AbstractGenericAdapter {
   }
 
   static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
-    const filename = options.name !== undefined ? (options.name as string) : '';
+    const filename = (options.name ?? '') as string;
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }

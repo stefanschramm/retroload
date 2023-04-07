@@ -35,17 +35,17 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
    * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
    */
   static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
-    const filename = options.name !== undefined ? (options.name as string) : '';
+    const filename = (options.name ?? '') as string;
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
 
-    const load = parseInt(options.load !== undefined ? (options.load as string) : '0000', 16);
+    const load = parseInt((options.load ?? '0000') as string, 16);
     if (isNaN(load) || load < 0 || load > 0xffff) {
       throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
-    const entry = parseInt(options.entry !== undefined ? (options.entry as string) : '0000', 16);
+    const entry = parseInt((options.entry ?? '0000') as string, 16);
     if (isNaN(entry) || entry < 0 || entry > 0xffff) {
       throw new InvalidArgumentError('entry', 'Option entry is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
