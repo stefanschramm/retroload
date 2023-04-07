@@ -1,0 +1,12 @@
+{
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "editor.indentSize": "tabSize",
+    "eslint.workingDirectories": [
+      "retroload-common",
+      "retroload-cli",
+      "retroload-examples",
+    ]
+}
