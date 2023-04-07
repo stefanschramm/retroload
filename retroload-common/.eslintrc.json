@@ -21,7 +21,6 @@
         "@typescript-eslint/naming-convention": ["off"],
         "@typescript-eslint/no-extraneous-class": ["off"],
         "@typescript-eslint/parameter-properties": ["off"],
-        "@typescript-eslint/no-empty-function": ["off"],
         "@typescript-eslint/ban-types": ["off"],
         "no-mixed-operators": ["off"],
         "capitalized-comments": ["off"],
