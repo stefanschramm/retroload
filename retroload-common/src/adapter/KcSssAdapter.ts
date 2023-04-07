@@ -22,9 +22,9 @@ export class KcSssAdapter extends AbstractAdapter {
     return 'kcsss';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.sss$/i) !== null,
+      filename: (/^.*\.sss$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
   }

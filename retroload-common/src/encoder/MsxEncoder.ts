@@ -27,7 +27,7 @@ export class MsxEncoder extends AbstractEncoder {
     ];
   }
 
-  recordHeader(long) {
+  recordHeader(long: boolean) {
     this.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
     long = this.options.shortpilot ? false : long; // use short pulse if shortpilot option is set
     const pulses = long ? pulsesLongHeader : pulsesShortHeader;

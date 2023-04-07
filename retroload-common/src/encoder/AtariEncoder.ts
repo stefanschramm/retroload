@@ -20,7 +20,7 @@ export class AtariEncoder extends AbstractEncoder {
     this.baudrate = defaultBaudrate;
   }
 
-  setBaudrate(baudrate) {
+  setBaudrate(baudrate: number) {
     this.baudrate = baudrate;
   }
 

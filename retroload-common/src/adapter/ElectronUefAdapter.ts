@@ -28,9 +28,9 @@ export class ElectronUefAdapter extends AbstractAdapter {
     return 'electronuef';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.uef/i) !== null,
+      filename: (/^.*\.uef/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader) || ba.containsDataAt(0, compressedFileHeader),
     };
   }

@@ -20,9 +20,9 @@ export class C64P00Adapter extends AbstractAdapter {
   }
 
   // We support p00 only, not multiple parts (p01, ...)
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.p00$/i) !== null,
+      filename: (/^.*\.p00$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }

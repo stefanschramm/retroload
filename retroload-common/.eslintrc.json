@@ -17,7 +17,6 @@
         "@typescript-eslint/indent": ["error", 2],
         "no-bitwise": ["off"],
         "arrow-parens": ["error", "always"],
-        "@typescript-eslint/no-unsafe-assignment": ["off"],
         "@typescript-eslint/no-unsafe-call": ["off"],
         "@typescript-eslint/prefer-nullish-coalescing": ["off"],
         "@typescript-eslint/naming-convention": ["off"],

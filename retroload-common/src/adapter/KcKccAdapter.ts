@@ -20,9 +20,9 @@ export class KcKccAdapter extends AbstractAdapter {
     return 'kckcc';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.kcc$/i) !== null,
+      filename: (/^.*\.kcc$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
   }

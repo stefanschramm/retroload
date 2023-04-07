@@ -8,7 +8,7 @@ export class Option {
   argument: any;
   type: any;
   enum: any;
-  constructor(key: string, label: string, description: string, options: any = {}) {
+  constructor(key: string, label: string, description: string, options: OptionOptions = {}) {
     this.key = key;
     this.label = label;
     this.description = description;
@@ -77,3 +77,12 @@ export const EntryOption = new Option(
 );
 
 export type OptionValues = Record<string, string | boolean>;
+
+export type OptionOptions = {
+  defaultValue?: string | boolean;
+  common?: boolean;
+  required?: boolean;
+  argument?: string;
+  type?: string;
+  enum?: string[];
+};

@@ -20,9 +20,9 @@ export class Z1013Z80Adapter extends AbstractAdapter {
     return 'z1013z80';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.z80$/i) !== null,
+      filename: (/^.*\.z80$/i).exec(filename) !== null,
       header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
     };
   }

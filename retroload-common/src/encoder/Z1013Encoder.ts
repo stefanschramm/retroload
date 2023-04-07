@@ -60,7 +60,7 @@ export class Z1013Encoder extends AbstractEncoder {
   }
 }
 
-function calculateChecksum(ba) {
+function calculateChecksum(ba: BufferAccess) {
   let checkSum = 0;
   for (let i = 0; i < ba.length(); i += 2) {
     const word = ba.getUint16LE(i);

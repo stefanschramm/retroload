@@ -27,9 +27,9 @@ export class MsxCasAdapter extends AbstractAdapter {
     return 'msxcas';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.cas$/i) !== null,
+      filename: (/^.*\.cas$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, blockHeader),
     };
   }

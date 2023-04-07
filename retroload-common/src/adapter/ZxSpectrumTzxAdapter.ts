@@ -20,9 +20,9 @@ export class ZxSpectrumTzxAdapter extends AbstractAdapter {
     return 'zxspectrumtzx';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.tzx/i) !== null,
+      filename: (/^.*\.tzx/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }

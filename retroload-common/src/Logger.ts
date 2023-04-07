@@ -4,11 +4,12 @@ let verbosity = defaultVerbosity;
 let handler = console;
 
 export class Logger {
-  static setVerbosity(v) {
+  static setVerbosity(v: number) {
     verbosity = v;
   }
 
   static setHandler(h) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     handler = h;
   }
 

@@ -12,10 +12,11 @@ export class PcmRecorder implements RecorderInterface {
   data: number[] = [];
   sampleRate: any;
   constructor(audioContext) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     this.audioContext = audioContext;
   }
 
-  initialize(sampleRate) {
+  initialize(sampleRate: number) {
     this.data = [];
     this.sampleRate = sampleRate;
   }
@@ -30,6 +31,7 @@ export class PcmRecorder implements RecorderInterface {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const buffer = this.audioContext.createBuffer(1, this.data.length, this.sampleRate);
     buffer.copyToChannel(new Float32Array(this.data), 0, 0);
 

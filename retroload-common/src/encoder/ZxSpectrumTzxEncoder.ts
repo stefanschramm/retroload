@@ -1,4 +1,4 @@
-import {AbstractTzxEncoder} from './AbstractTzxEncoder.js';
+import {AbstractTzxEncoder, type SpeedRecordOptions} from './AbstractTzxEncoder.js';
 
 /**
  * ZX Spectrum-specific variant of the AbstractTzxEncoder
@@ -12,7 +12,7 @@ export class ZxSpectrumTzxEncoder extends AbstractTzxEncoder {
     return 1;
   }
 
-  getStandardSpeedRecordOptions() {
+  getStandardSpeedRecordOptions(): SpeedRecordOptions {
     return {
       // ZX Spectrum defaults (for non-turbo-speed-data blocks)
       pauseLengthMs: 1000,

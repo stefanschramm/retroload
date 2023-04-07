@@ -22,9 +22,9 @@ export class C64TapAdapter extends AbstractAdapter {
     return 'c64tap';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.tap$/i) !== null,
+      filename: (/^.*\.tap$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }

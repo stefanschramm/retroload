@@ -1,6 +1,6 @@
 import {AbstractEncoder} from './AbstractEncoder.js';
-import {InternalError} from '../Exceptions.js';
 import {Logger} from '../Logger.js';
+import {type BufferAccess} from '../BufferAccess.js';
 
 const fCpu = 3500000;
 
@@ -16,14 +16,14 @@ const fCpu = 3500000;
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
 export abstract class AbstractTzxEncoder extends AbstractEncoder {
-  recordStandardSpeedDataBlock(blockDataBa) {
+  recordStandardSpeedDataBlock(blockDataBa: BufferAccess) {
     this.recordDataBlock(blockDataBa, {
       ...this.getStandardSpeedRecordOptions(),
       pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223, // TODO: why?
     });
   }
 
-  recordDataBlock(blockDataBa, options) {
+  recordDataBlock(blockDataBa: BufferAccess, options: SpeedRecordOptions) {
     const pilotSamples = this.tzxCyclesToSamples(options.pilotPulseLength);
     for (let i = 0; i < options.pilotPulses; i++) {
       this.recordHalfOscillationSamples(pilotSamples);
@@ -33,7 +33,7 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
     this.recordPureDataBlock(blockDataBa, options);
   }
 
-  recordPureDataBlock(blockDataBa, options) {
+  recordPureDataBlock(blockDataBa: BufferAccess, options: SpeedRecordOptions) {
     const zeroBitSamples = this.tzxCyclesToSamples(options.zeroBitPulseLength);
     const oneBitSamples = this.tzxCyclesToSamples(options.oneBitPulseLength);
 
@@ -65,5 +65,7 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
 
   abstract getTzxCycleFactor(): number;
 
-  abstract getStandardSpeedRecordOptions(): any;
+  abstract getStandardSpeedRecordOptions(): SpeedRecordOptions;
 }
+
+export type SpeedRecordOptions = Record<string, number>;

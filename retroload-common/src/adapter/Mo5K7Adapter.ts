@@ -22,9 +22,9 @@ export class Mo5K7Adapter extends AbstractAdapter {
     return 'mo5k7';
   }
 
-  static identify(filename, ba) {
+  static identify(filename: string, ba: BufferAccess) {
     return {
-      filename: filename.match(/^.*\.k7/i) !== null,
+      filename: (/^.*\.k7/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }

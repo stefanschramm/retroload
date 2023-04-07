@@ -30,11 +30,11 @@ const baseTypes: PatternDefinition[] = [
  * In contrast there also exist length-based dialects (Atari 800).
  */
 export class PointerBasedSourceTokenizer {
-  static tokenize(loadAddress: number, tokenMap, str: string) {
+  static tokenize(loadAddress: number, tokenMap: RawTokenDefinition[], str: string) {
     const lines = str.trim().split('\n');
     const nonEmptyLines = lines.filter((l) => l.trim() !== '');
     // longest tokens first so that they will match first
-    const sortedTokenMap = [...tokenMap].sort((a, b) => a[0].length > b[0].length ? -1 : 1);
+    const sortedTokenMap = [...tokenMap].sort((a, b) => (a[0] as string).length > (b[0] as string).length ? -1 : 1);
     const tokenizedLines = nonEmptyLines.map((l) => (new LineTokenizer(sortedTokenMap, l)).tokenize());
     const compiledLines: BufferAccess[] = [];
     let totalByteLength = 0;
@@ -69,18 +69,18 @@ function escapeRegex(string: string) {
 }
 
 class LineTokenizer {
-  l: any;
+  l: string;
   pos: number;
   tokens: Token[];
-  types: any[];
-  constructor(sortedTokenMap: any[], line: string) {
+  types: PatternDefinition[];
+  constructor(sortedTokenMap: RawTokenDefinition[], line: string) {
     this.l = line;
     this.pos = 0;
     this.tokens = [];
     this.types = [
       ...sortedTokenMap.map((t) => {
         const keyword = t[0] as string;
-        const tokens = t.slice(1);
+        const tokens = t.slice(1) as number[];
         const patternDefinition: PatternDefinition = [
           new RegExp('^' + escapeRegex(keyword), 'i'), // case insensitive
           'MAP',
@@ -107,13 +107,13 @@ class LineTokenizer {
   getNextToken(): Token {
     const s = this.l.slice(this.pos);
     for (const [regexp, action, ...mappedValue] of this.types) {
-      const matched = regexp.exec(s);
+      const matched = (regexp as RegExp).exec(s);
       if (matched !== null) {
         this.pos += matched[0].length;
         return {
-          action,
+          action: action as string,
           value: matched[0],
-          mappedValue,
+          mappedValue: mappedValue as number[],
         };
       }
     }
@@ -159,3 +159,5 @@ type Token = {
 };
 
 type PatternDefinition = Array<RegExp | string | number | number[]>;
+
+type RawTokenDefinition = Array<string | number>;
