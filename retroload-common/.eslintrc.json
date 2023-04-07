@@ -15,6 +15,8 @@
       ],
       "rules": {
         "@typescript-eslint/indent": ["error", 2],
+        "no-bitwise": ["off"],
+        "arrow-parens": ["error", "always"],
         "@typescript-eslint/no-unsafe-argument": ["off"],
         "@typescript-eslint/no-unsafe-return": ["off"],
         "@typescript-eslint/no-unsafe-assignment": ["off"],
@@ -31,9 +33,7 @@
         "@typescript-eslint/ban-types": ["off"],
         "no-mixed-operators": ["off"],
         "capitalized-comments": ["off"],
-        "arrow-parens": ["off"],
         "max-params": ["off"],
-        "no-bitwise": ["off"], // really needed! :)
         "no-warning-comments": ["off"],
         "no-negated-condition": ["off"]
       }
