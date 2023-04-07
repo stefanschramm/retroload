@@ -2,12 +2,12 @@ export class Option {
   key: string;
   label: string;
   description: string;
-  defaultValue: any;
-  common: any;
-  required: any;
-  argument: any;
-  type: any;
-  enum: any;
+  defaultValue: string | boolean | undefined;
+  common: boolean;
+  required: boolean;
+  argument: string | undefined;
+  type: string;
+  enum: string[];
   constructor(key: string, label: string, description: string, options: OptionOptions = {}) {
     this.key = key;
     this.label = label;

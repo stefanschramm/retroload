@@ -22,13 +22,13 @@ export class FormatAutodetectionFailedError extends UsageError {
 }
 
 export class FormatNotFoundError extends UsageError {
-  constructor(format) {
+  constructor(format: string) {
     super(`Specified format "${format}" not found.`);
   }
 }
 
 export class TargetMachineNotFoundError extends UsageError {
-  constructor(machine, format) {
+  constructor(machine: string, format: string) {
     if (format === undefined) {
       super(`Specified machine type "${machine}" not found.`);
     } else {

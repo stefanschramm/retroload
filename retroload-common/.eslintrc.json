@@ -20,8 +20,6 @@
         "@typescript-eslint/padding-line-between-statements": ["off"],
         "@typescript-eslint/naming-convention": ["off"],
         "@typescript-eslint/member-ordering": ["off"],
-        "@typescript-eslint/restrict-plus-operands": ["off"],
-        "@typescript-eslint/restrict-template-expressions": ["off"],
         "@typescript-eslint/no-extraneous-class": ["off"],
         "@typescript-eslint/parameter-properties": ["off"],
         "@typescript-eslint/no-empty-function": ["off"],
