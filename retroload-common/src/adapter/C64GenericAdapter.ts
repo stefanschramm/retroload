@@ -34,7 +34,7 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
       throw new InvalidArgumentError('c64type', 'Option c64type is required and expected to be set to "basic", "data" or "prg".');
     }
     const loadAddress = parseInt(options.load as string, 16);
-    const name = options.name === undefined ? '' : options.name;
+    const name = options.name ?? '';
     if (typeof name !== 'string' || name.length > 16) {
       throw new InvalidArgumentError('name', 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
     }

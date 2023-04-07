@@ -18,7 +18,6 @@
         "no-bitwise": ["off"],
         "arrow-parens": ["error", "always"],
         "@typescript-eslint/padding-line-between-statements": ["off"],
-        "@typescript-eslint/prefer-nullish-coalescing": ["off"],
         "@typescript-eslint/naming-convention": ["off"],
         "@typescript-eslint/member-ordering": ["off"],
         "@typescript-eslint/restrict-plus-operands": ["off"],
