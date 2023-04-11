@@ -20,11 +20,11 @@ const oscillationsBlockIntro = 200; // as in kcemu save_WAV.c; manual: 160
  * Encoder for KC 85/1 (and similar) and KC 85/4 (and similar)
  */
 export class KcEncoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'kc';
   }
 
-  begin() {
+  override begin() {
     this.recordSilence(this.recorder.sampleRate / 2);
     this.recordIntro();
   }
@@ -61,7 +61,7 @@ export class KcEncoder extends AbstractEncoder {
     this.recordOscillations(fDelimiter, 1);
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     super.recordByte(byte);
     this.recordDelimiter();
   }

@@ -15,15 +15,15 @@ const headerRecordSyncCharacter = 0x2c;
 const dataRecordSyncCharacter = 0x16;
 
 export class CpcGenericAdapter extends AbstractGenericAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return CpcTzxEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'CPC (Generic data)';
   }
 
-  static getOptions() {
+  static override getOptions() {
     return [
       NameOption,
       LoadOption,
@@ -34,7 +34,7 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
   /**
    * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
    */
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const filename = (options.name ?? '') as string;
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);

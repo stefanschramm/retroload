@@ -6,22 +6,22 @@ import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 export class Lc80GenericAdapter extends AbstractGenericAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return Lc80Encoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'LC80 (Generic data)';
   }
 
-  static getOptions() {
+  static override getOptions() {
     return [
       NameOption,
       LoadOption,
     ];
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const fileNumber = parseInt(options.name as string, 16);
     if (isNaN(fileNumber) || fileNumber < 0 || fileNumber > 0xffff) {
       throw new InvalidArgumentError('name', 'Option name is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 0001');

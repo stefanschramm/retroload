@@ -9,26 +9,26 @@ import {type OptionValues} from '../Options.js';
 const fileHeader = 'FUJI';
 
 export class AtariCasAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return AtariEncoder.getTargetName();
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'ataricas';
   }
 
-  static getName() {
+  static override getName() {
     return 'Atari .CAS-File';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.cas/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
     let i = 0;

@@ -12,7 +12,7 @@ const defaultBaudrate = 600;
  * https://www.atariarchives.org/dere/chaptC.php
  */
 export class AtariEncoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'atari';
   }
 
@@ -37,7 +37,7 @@ export class AtariEncoder extends AbstractEncoder {
     this.recordBytes(data);
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     this.recordBit(0);
     this.recordByteLSBFirst(byte);
     this.recordBit(1);

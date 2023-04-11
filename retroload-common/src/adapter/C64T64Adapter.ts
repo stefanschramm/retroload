@@ -8,26 +8,26 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 const fileHeader = 'C64';
 
 export class C64T64Adapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return C64Encoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'C64 .T64-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'c64t64';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.t64$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  static getOptions() {
+  static override getOptions() {
     return [
       ShortpilotOption, // (not available for .tap)
     ];
@@ -36,7 +36,7 @@ export class C64T64Adapter extends AbstractAdapter {
   /**
    * http://unusedino.de/ec64/technical/formats/t64.html
    */
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new C64Encoder(recorder, options);
 
     const header = ba.slice(0, 0x40);

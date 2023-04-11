@@ -10,26 +10,26 @@ const fileHeader = 'C64-TAPE-RAW';
 const defaultLongPulse = 2048;
 
 export class C64TapAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return C64Encoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'C64 .TAP-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'c64tap';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.tap$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
     const dataLength = header.getUint32LE(0x10);

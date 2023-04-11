@@ -15,30 +15,30 @@ const headerTypes = {
 };
 
 export class MsxCasAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return MsxEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'MSX .CAS-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'msxcas';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.cas$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, blockHeader),
     };
   }
 
-  static getOptions() {
+  static override getOptions() {
     return MsxEncoder.getOptions();
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new MsxEncoder(recorder, options);
     e.begin();
     for (let i = 0; i < ba.length(); i++) {

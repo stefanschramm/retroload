@@ -6,21 +6,21 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../BufferAccess.js';
 
 export class TaGenericAdapter extends AbstractGenericAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return TaEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'TA alphatronic PC (BASIC/Generic data)';
   }
 
-  static getOptions() {
+  static override getOptions() {
     return [
       NameOption,
     ];
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const filename = (options.name ?? '') as string;
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);

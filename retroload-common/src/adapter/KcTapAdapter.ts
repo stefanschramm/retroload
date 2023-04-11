@@ -11,26 +11,26 @@ const blockSize = 128;
 const fileBlockSize = 1 + blockSize; // 1 byte block number
 
 export class KcTapAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return KcEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'KC .TAP-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'kctap';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.tap$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const blocks = Math.ceil((ba.length() - fileHeaderLength) / fileBlockSize);
 
     // TODO: Possible warnings when:

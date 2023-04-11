@@ -8,26 +8,26 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 const headerLength = 0x20;
 
 export class Z1013Z80Adapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return Z1013Encoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'Z1013 .Z80-File (Headersave)';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'z1013z80';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.z80$/i).exec(filename) !== null,
       header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const header = ba.slice(0, headerLength);
     const data = ba.slice(headerLength);
     const loadAddress = header.getUint16LE(0x00);

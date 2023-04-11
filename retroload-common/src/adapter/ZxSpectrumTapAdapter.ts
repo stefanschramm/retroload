@@ -8,26 +8,26 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
 export class ZxSpectrumTapAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return ZxSpectrumTzxEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'ZX Spectrum .TAP-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'zxspectrumtap';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.tap/i).exec(filename) !== null,
       header: undefined,
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new ZxSpectrumTzxEncoder(recorder, options);
     e.begin();
     let i = 0;

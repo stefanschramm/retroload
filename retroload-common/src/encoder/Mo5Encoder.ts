@@ -11,7 +11,7 @@ const fOne = 1200;
  * SAVEMA MO5 Documentation technique - MO5 Lecteuer-enregistreur de programmes / Programmrekorder / Program Recorder
  */
 export class Mo5Encoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'mo5';
   }
 
@@ -31,7 +31,7 @@ export class Mo5Encoder extends AbstractEncoder {
     this.recordPilot(1.5);
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     this.recordByteMSBFirst(byte);
   }
 

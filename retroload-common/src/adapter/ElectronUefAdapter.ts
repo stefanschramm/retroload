@@ -16,26 +16,26 @@ const compressedFileHeader = '\x1f\x8b';
  * http://electrem.emuunlim.com/UEFSpecs.html
  */
 export class ElectronUefAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return ElectronEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'Acorn Electron .UEF-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'electronuef';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.uef/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader) || ba.containsDataAt(0, compressedFileHeader),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const uefBa = uncompressIfRequired(ba);
 
     if (!uefBa.containsDataAt(0, fileHeader)) {

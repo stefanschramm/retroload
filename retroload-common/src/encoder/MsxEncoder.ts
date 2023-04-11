@@ -16,7 +16,7 @@ const pulsesShortHeader = 4000;
  * MSX Technical Data Book, p. 172 - 175
  */
 export class MsxEncoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'msx';
   }
 
@@ -34,7 +34,7 @@ export class MsxEncoder extends AbstractEncoder {
     this.recordOscillations(fOne * this.getBaudrateFactor(), pulses);
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     this.recordBit(0);
     super.recordByte(byte);
     this.recordBit(1);

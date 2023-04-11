@@ -10,15 +10,15 @@ const maxFileNameLength = 10;
 const maxBlockSize = 256;
 
 export class ElectronGenericAdapter extends AbstractGenericAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return ElectronEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'Acorn Electron (Generic data)';
   }
 
-  static getOptions() {
+  static override getOptions() {
     return [
       NameOption, // 1 - 10 characters
       LoadOption,
@@ -27,7 +27,7 @@ export class ElectronGenericAdapter extends AbstractGenericAdapter {
     ];
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const filename = (options.name ?? '') as string;
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);

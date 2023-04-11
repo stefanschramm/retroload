@@ -6,17 +6,17 @@ import * as fs from 'fs';
  */
 export class C64TapWriter extends C64Encoder {
   pulses: number[] = [];
-  begin() {
+  override begin() {
     this.pulses = [];
     super.begin();
   }
 
-  recordPulse(value: number) {
+  override recordPulse(value: number) {
     super.recordPulse(value);
     this.pulses.push(value / 8);
   }
 
-  end() {
+  override end() {
     super.end();
 
     const lengthBuffer = new ArrayBuffer(4);

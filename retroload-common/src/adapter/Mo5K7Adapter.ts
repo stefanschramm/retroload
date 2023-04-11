@@ -10,26 +10,26 @@ import {type OptionValues} from '../Options.js';
 const fileHeader = [0x01, 0x01, 0x01, 0x01];
 
 export class Mo5K7Adapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return Mo5Encoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'MO5 .K7-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'mo5k7';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.k7/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new Mo5Encoder(recorder, options);
     e.begin();
     let i = 0;

@@ -8,11 +8,11 @@ const fBase = 1200;
  * https://beebwiki.mdfs.net/Acorn_cassette_format
  */
 export class ElectronEncoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'electron';
   }
 
-  begin() {
+  override begin() {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
 
@@ -20,7 +20,7 @@ export class ElectronEncoder extends AbstractEncoder {
     this.recordCarrier(fBase * 2 * length);
   }
 
-  end() {
+  override end() {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
 
@@ -34,7 +34,7 @@ export class ElectronEncoder extends AbstractEncoder {
     this.recordSilenceMs(1000 / (2 * length * fBase));
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     this.recordBit(0); // start bit
     super.recordByte(byte);
     this.recordBit(1); // stop bit

@@ -10,32 +10,32 @@ const blockSize = 128;
 const maxFileNameLength = 8;
 
 export class KcSssAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return KcEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'KC .SSS-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'kcsss';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.sss$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
   }
 
-  static getOptions() {
+  static override getOptions() {
     return [
       NameOption,
     ];
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
     const filename = (options.name ?? '') as string;
     if (filename.length > maxFileNameLength) {

@@ -5,26 +5,26 @@ import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 export class Zx81PAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return Zx81Encoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'ZX81 .P-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'zx81p';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.p$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new Zx81Encoder(recorder, options);
     e.begin();
     // Filename in ZX 81 charset - https://en.wikipedia.org/wiki/ZX81_character_set

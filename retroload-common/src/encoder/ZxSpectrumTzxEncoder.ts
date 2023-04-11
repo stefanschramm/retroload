@@ -4,7 +4,7 @@ import {AbstractTzxEncoder, type SpeedRecordOptions} from './AbstractTzxEncoder.
  * ZX Spectrum-specific variant of the AbstractTzxEncoder
  */
 export class ZxSpectrumTzxEncoder extends AbstractTzxEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'zxspectrum';
   }
 

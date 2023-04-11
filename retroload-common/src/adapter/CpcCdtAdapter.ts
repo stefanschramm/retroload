@@ -8,26 +8,26 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 const fileHeader = 'ZXTape!\x1a';
 
 export class CpcCdtAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return CpcTzxEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'CPC .CDT-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'cpccdt';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.cdt/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new CpcTzxEncoder(recorder, options);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);

@@ -8,26 +8,26 @@ import {type OptionValues} from '../Options.js';
 const fileHeader = 'ZXTape!\x1a';
 
 export class ZxSpectrumTzxAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return ZxSpectrumTzxEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'ZX Spectrum .TZX-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'zxspectrumtzx';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.tzx/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new ZxSpectrumTzxEncoder(recorder, options);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);

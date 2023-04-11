@@ -6,15 +6,15 @@ import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 export class C64GenericAdapter extends AbstractGenericAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return C64Encoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'C64 (Generic data)';
   }
 
-  static getOptions() {
+  static override getOptions() {
     return [
       ShortpilotOption, // (not available for .tap)
       new Option(
@@ -28,7 +28,7 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
     ];
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const type: string = options.c64type as string;
     if (!['basic', 'data', 'prg'].includes(type)) {
       throw new InvalidArgumentError('c64type', 'Option c64type is required and expected to be set to "basic", "data" or "prg".');

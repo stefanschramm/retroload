@@ -19,7 +19,7 @@ const fileTypePrg = 0x03;
  * 64 intern (Angerhausen, Brückmann, Englisch, Gerits), 4th edition, p. 120 - 122
  */
 export class C64Encoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'c64';
   }
 
@@ -81,7 +81,7 @@ export class C64Encoder extends AbstractEncoder {
     this.recordBytes(new BufferAccess(syncChain.buffer));
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     this.recordNewDataMarker();
     let checkBit = 1;
     for (let i = 0; i < 8; i += 1) {

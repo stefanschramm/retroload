@@ -9,11 +9,11 @@ const blockDataSize = 32;
  * https://hc-ddr.hucki.net/wiki/doku.php/z1013/kassettenformate
  */
 export class Z1013Encoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'z1013';
   }
 
-  begin() {
+  override begin() {
     super.begin();
     this.recordFirstIntro();
   }

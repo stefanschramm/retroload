@@ -14,15 +14,15 @@ const pilotIrgLength = 20000;
 const defaultIrgLength = 3000;
 
 export class AtariGenericAdapter extends AbstractGenericAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return AtariEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'Atari (Generic data)';
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
     const blocks = Math.ceil(ba.length() / dataBytesPerBlock);

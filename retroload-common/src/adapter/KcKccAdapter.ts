@@ -8,26 +8,26 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 const fileBlockSize = 128;
 
 export class KcKccAdapter extends AbstractAdapter {
-  static getTargetName() {
+  static override getTargetName() {
     return KcEncoder.getTargetName();
   }
 
-  static getName() {
+  static override getName() {
     return 'KC .KCC-File';
   }
 
-  static getInternalName() {
+  static override getInternalName() {
     return 'kckcc';
   }
 
-  static identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.kcc$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
   }
 
-  static encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const blocks = Math.ceil(ba.length() / fileBlockSize);
 
     if (blocks > 255) {

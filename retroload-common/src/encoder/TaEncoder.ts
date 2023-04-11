@@ -13,11 +13,11 @@ export const maxFileNameLength = 6;
  * TODO: Generalize? Is the way of writing the header with file name the same on all KCS compatible systems?
  */
 export class TaEncoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'ta';
   }
 
-  begin() {
+  override begin() {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
 
@@ -33,7 +33,7 @@ export class TaEncoder extends AbstractEncoder {
     this.recordOscillations(fOne, 500);
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     this.recordBit(0); // start bit
     super.recordByte(byte);
     this.recordBit(1); // stop bits

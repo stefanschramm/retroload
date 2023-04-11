@@ -16,11 +16,11 @@ const syncEndLength = 2; // s
  * Format description: Bedienungsanleitung LC 80, p. 24-25
  */
 export class Lc80Encoder extends AbstractEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'lc80';
   }
 
-  begin() {
+  override begin() {
     super.begin();
     this.recordSeconds(fSyncIntro, syncIntroLength);
   }
@@ -44,12 +44,12 @@ export class Lc80Encoder extends AbstractEncoder {
     }
   }
 
-  end() {
+  override end() {
     this.recordSeconds(fSyncEnd, syncEndLength);
     super.end();
   }
 
-  recordByte(byte: number) {
+  override recordByte(byte: number) {
     this.recordBit(0);
     super.recordByte(byte);
     this.recordBit(1);

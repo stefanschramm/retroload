@@ -4,7 +4,7 @@ import {AbstractTzxEncoder, type SpeedRecordOptions} from './AbstractTzxEncoder.
  * Amstrad CPC-specific variant of the TzxEncoder (.cdt files)
  */
 export class CpcTzxEncoder extends AbstractTzxEncoder {
-  static getTargetName() {
+  static override getTargetName() {
     return 'cpc';
   }
 
