@@ -1,14 +1,14 @@
 export class Option {
-  key: any;
-  label: any;
-  description: any;
+  key: string;
+  label: string;
+  description: string;
   defaultValue: any;
   common: any;
   required: any;
   argument: any;
   type: any;
   enum: any;
-  constructor(key, label, description, options: any = {}) {
+  constructor(key: string, label: string, description: string, options: any = {}) {
     this.key = key;
     this.label = label;
     this.description = description;

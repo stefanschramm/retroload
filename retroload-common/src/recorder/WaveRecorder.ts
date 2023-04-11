@@ -7,7 +7,9 @@ const dataMap = {
 };
 
 export class WaveRecorder {
-  initialize(sampleRate) {
+  data: number[] = [];
+  sampleRate: number = 44100;
+  initialize(sampleRate: number) {
     this.data = [];
     this.sampleRate = sampleRate;
   }

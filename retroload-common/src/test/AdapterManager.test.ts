@@ -38,10 +38,10 @@ test('identify returns null for unknown formats', () => {
 });
 
 describe('Encoding pipeline', () => {
-  it.each(examples.getExamples())(
+  it.each(examples.getExamples() as any[])(
       'returns correct hash for example %s',
       (example) => {
-        const hash = encodeAndHash(example.getUrl().pathname, example.options);
+        const hash = encodeAndHash(example.getPath(), example.options);
         expect(hash).toBe(example.hash);
       },
   );

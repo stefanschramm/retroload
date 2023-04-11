@@ -9,14 +9,7 @@ import {BufferAccess} from './BufferAccess.js';
 import {adapters as providedAdapters} from './AdapterProvider.js';
 import {Logger} from './Logger.js';
 
-/**
- * @param {WaveRecorder|PcmRecorder} recorder
- * @param {string} filename helps for identifiying the format by its extension
- * @param {ArrayBufferLike} data
- * @param {*} options
- * @return {boolean} true on success
- */
-export function encode(recorder, filename, data, options={}) {
+export function encode(recorder, filename, data, options: any = {}) {
   let filteredAdapters = providedAdapters;
   if (options.format !== undefined) {
     filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === options.format);
@@ -77,8 +70,8 @@ export function getAllAdapters() {
 }
 
 export function getAllOptions() {
-  const options = [];
-  const optionKeys = [];
+  const options: any[] = [];
+  const optionKeys: string[] = [];
   for (const adapter of providedAdapters) {
     for (const option of adapter.getOptions()) {
       if (optionKeys.indexOf(option.key) !== -1) {

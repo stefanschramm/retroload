@@ -7,6 +7,9 @@ const dataMap = {
 };
 
 export class PcmRecorder {
+  audioContext: any;
+  data: number[] = [];
+  sampleRate: any;
   constructor(audioContext) {
     this.audioContext = audioContext;
   }

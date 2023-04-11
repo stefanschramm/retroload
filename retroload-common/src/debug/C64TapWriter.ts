@@ -1,10 +1,11 @@
-import {Encoder} from '../encoder/c64.js';
+import {C64Encoder} from '../encoder/C64Encoder.js';
 import * as fs from 'fs';
 
 /**
  * Used for debugging to convert .prg files to .tap for testing in emulator
  */
-export class C64TapWriter extends Encoder {
+export class C64TapWriter extends C64Encoder {
+  pulses: number[] = [];
   begin() {
     this.pulses = [];
     super.begin();

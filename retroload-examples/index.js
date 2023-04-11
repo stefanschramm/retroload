@@ -1,6 +1,6 @@
 // Default option values are not automatically used when running outside CLI and have to be specified explicitly.
 // The hashes are md5sums of the resulting WAVE files (when running retroload cli with -o option).
-export function getExamples() {
+function getExamples() {
   return [
     // Acorn Electron
     new Example('electron_generic', 'rl.bas', {machine: 'electron', format: 'generic', name: 'RL', load: '0e00', entry: '801f', shortpilot: true}, 'e64e45d7c1f4d7fb2eaed067b05b5112', 'CHAIN ""'), // 2023-04-02 (Acorn Electron)
@@ -11,7 +11,7 @@ export function getExamples() {
     new Example('c64', 'rl.bin', {machine: 'c64', c64type: 'prg', load: '1100'}, '1233722ffe4f62310c6777aaf606b5c2', 'LOAD\n<space>\nSYS 4352'), // 2023-01-29 OK (C64 C)
     new Example('c64', 'rl.p00', {shortpilot: true}, '8f3bf1bfd24a2881680bb7f5f94d13c8', 'LOAD\n<space>\nSYS 4352'), // 2023-01-29 OK (C64 C)
     new Example('c64', 'rl.prg', {}, '1233722ffe4f62310c6777aaf606b5c2', 'LOAD\n<space>\nSYS 4352'), // 2022-11-16 OK (C64 C)
-    new Example('c64', 'rl.t64', {shortpilot: true}, '9a59e4a22a9bc475cb0bb3eb405dd260', 'LOAD\n<space>\nSYS 4352'), // 2023-01-29 OK (C64 C)
+    new Example('c64', 'rl.t64', {shortpilot: false}, '9a59e4a22a9bc475cb0bb3eb405dd260', 'LOAD\n<space>\nSYS 4352'), // 2023-01-29 OK (C64 C)
     new Example('c64', 'rl.tap', {}, 'ecba52a4a6a2e894c3473590b77890dc', 'LOAD\n<space>\nSYS 4352'), // 2022-11-16 OK (C64 C)
     // CPC 464
     new Example('cpc', 'rl.bin', {machine: 'cpc', load: '2000', entry: '2000', name: 'RL'}, '30d06c882c900ffb970dc6154e5b4141', 'RUN ""'), // 2023-02-11 OK (CPC 464)
@@ -52,10 +52,14 @@ class Example {
     this.options = options;
     this.hash = expectedHash;
   }
-  getUrl() {
-    return new URL(`formats/${this.path}/${this.file}`, import.meta.url);
+  getPath() {
+    return `${__dirname}/formats/${this.path}/${this.file}`;
   }
   toString() {
     return `${this.path}/${this.file}, options: ${JSON.stringify(this.options)}`;
   }
 }
+
+module.exports = {
+  getExamples,
+};
