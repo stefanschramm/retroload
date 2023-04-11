@@ -5,12 +5,19 @@
     "rootDir": "./src",
     "moduleResolution": "node",
     "outDir": "./dist",
+    "noEmitOnError": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "useDefineForClassFields": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
-    "declaration": true
+    "declaration": true,
+		"pretty": true,
+		"newLine": "lf",
+    "stripInternal": true,
   }
 }
