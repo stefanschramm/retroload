@@ -16,8 +16,8 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "declaration": true,
-		"pretty": true,
-		"newLine": "lf",
+    "pretty": true,
+    "newLine": "lf",
     "stripInternal": true,
   }
 }
