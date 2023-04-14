@@ -43,16 +43,15 @@ export class ElectronGenericAdapter extends AbstractGenericAdapter {
       throw new InvalidArgumentError('entry', 'Option entry is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
-    const blocks = Math.ceil(ba.length() / maxBlockSize);
+    const chunks = ba.chunks(maxBlockSize);
 
     const e = new ElectronEncoder(recorder, options);
     e.begin();
 
-    for (let block = 0; block < blocks; block++) {
+    for (let block = 0; block < chunks.length; block++) {
       const isFirstBlock = block === 0;
-      const isLastBlock = block === blocks - 1;
-      const remainingBytes = ba.length() - block * maxBlockSize;
-      const blockDataBa = ba.slice(block * maxBlockSize, Math.min(maxBlockSize, remainingBytes));
+      const isLastBlock = block === chunks.length - 1;
+      const blockDataBa = chunks[block];
 
       const blockHeaderBa = BufferAccess.create(filename.length + 18);
       blockHeaderBa.writeAsciiString(filename);
