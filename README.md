@@ -18,6 +18,7 @@ Since the retroload packages are not yet published to the npm registry, they cur
     git clone https://github.com/stefanschramm/retroload.git
     cd retroload
     npm install # install dependencies
+    npm build # calls TypeScript "compiler"
     sudo npm link retroload-cli/ # the "/" is important!
 
 Now, the retroload CLI should be available in your path:
