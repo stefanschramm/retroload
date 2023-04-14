@@ -5,14 +5,14 @@ import {
   InternalError,
   MissingOptionsError,
 } from './Exceptions.js';
-import {BufferAccess} from './BufferAccess.js';
+import {type BufferAccess} from './BufferAccess.js';
 import {adapters as providedAdapters} from './AdapterProvider.js';
 import {Logger} from './Logger.js';
 import {type AbstractAdapter} from './adapter/AbstractAdapter.js';
 import {type Option, type OptionValues} from './Options.js';
 import {type RecorderInterface} from './recorder/RecorderInterface.js';
 
-export function encode(recorder: RecorderInterface, filename: string, data: ArrayBufferLike, options: OptionValues = {}) {
+export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, options: OptionValues = {}) {
   let filteredAdapters = providedAdapters;
   if (options.format !== undefined) {
     filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === options.format);
@@ -26,7 +26,6 @@ export function encode(recorder: RecorderInterface, filename: string, data: Arra
       throw new TargetMachineNotFoundError(options.machine as string, options.format as string);
     }
   }
-  const dataBa = new BufferAccess(data);
   const adapter = filteredAdapters.length === 1 ? filteredAdapters[0] : autodetectAdapter(filteredAdapters, filename, dataBa);
 
   return encodeWithAdapter(recorder, adapter, dataBa, options);

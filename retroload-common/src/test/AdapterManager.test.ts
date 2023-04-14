@@ -54,7 +54,8 @@ function encodeAndHash(file: string, options: OptionValues) {
     data.byteOffset,
     data.byteOffset + data.byteLength,
   );
-  if (!AdapterManager.encode(recorder, file, arrayBuffer, options)) {
+  const ba = new BufferAccess(arrayBuffer);
+  if (!AdapterManager.encode(recorder, file, ba, options)) {
     Logger.error('Unable to decode ' + file);
     return false;
   }
