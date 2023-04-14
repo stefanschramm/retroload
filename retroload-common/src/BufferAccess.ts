@@ -60,6 +60,23 @@ export class BufferAccess {
   }
 
   /**
+   * Return chunks of specified size that reference the same buffer
+   *
+   * There will be no padding for the last chunk.
+   */
+  chunks(chunkSize: number): BufferAccess[] {
+    if (chunkSize === 0) {
+      throw new Error('Illegal chunk size.');
+    }
+    const chunkCount = Math.ceil(this.length() / chunkSize);
+    const chunks: BufferAccess[] = [];
+    for (let i = 0; i < chunkCount; i++) {
+      chunks.push(this.slice(i * chunkSize, Math.min(chunkSize, this.length() - i * chunkSize)));
+    }
+    return chunks;
+  }
+
+  /**
    * Return copy that references a new buffer
    */
   copy(offset = 0, length = this.view.byteLength): BufferAccess {

@@ -67,6 +67,36 @@ test('slice references original buffer', () => {
   expect(ba.asHexDump()).toBe('00000000  00 00 48 65 6c 6c 6f 20  48 61 6c 6c 65 00 00 00  |..Hello Halle...|');
 });
 
+test('chunk', () => {
+  const ba = BufferAccess.create(11);
+  ba.writeAsciiString('Hello World');
+  const chunks = ba.chunks(3);
+  expect(chunks.length).toBe(4);
+  expect(chunks[0].asHexDump()).toBe('00000000  48 65 6c                                          |Hel|');
+  expect(chunks[1].asHexDump()).toBe('00000000  6c 6f 20                                          |lo |');
+  expect(chunks[2].asHexDump()).toBe('00000000  57 6f 72                                          |Wor|');
+  expect(chunks[3].asHexDump()).toBe('00000000  6c 64                                             |ld|');
+});
+
+test('chunk with empty BufferAccess returns no chunks', () => {
+  const ba = BufferAccess.create(0);
+  const chunks = ba.chunks(3);
+  expect(chunks.length).toBe(0);
+});
+
+test('chunk with zero chunk size throws error', () => {
+  const ba = BufferAccess.create(8);
+  let caughtException = false;
+  try {
+    ba.chunks(0);
+    caughtException = false;
+  } catch (e: any) {
+    expect(e.message).toBe('Illegal chunk size.');
+    caughtException = true;
+  }
+  expect(caughtException).toBe(true);
+});
+
 test('setBa', () => {
   const ba1 = BufferAccess.create(16);
   ba1.setAsciiString(0, 'Hello World');
