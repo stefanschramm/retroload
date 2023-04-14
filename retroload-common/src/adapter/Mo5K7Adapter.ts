@@ -56,20 +56,17 @@ export class Mo5K7Adapter extends AbstractAdapter {
       switch (blockType) {
         case 0x00: // start block
           blockToRecord = ba.slice(i, headerOffset + 3 + blockLengthField);
-          Logger.debug(blockToRecord.asHexDump());
           e.recordStartBlock(blockToRecord);
           break;
         case 0x01: // data block
         {
           const actualBlockLength = blockLengthField === 0x00 ? 0xff : blockLengthField;
           blockToRecord = ba.slice(i, headerOffset + 4 + actualBlockLength);
-          Logger.debug(blockToRecord.asHexDump());
           e.recordDataBlock(blockToRecord);
           break;
         }
         case 0xff: // end block
           blockToRecord = ba.slice(i, headerOffset + 5);
-          Logger.debug(blockToRecord.asHexDump());
           e.recordEndBlock(blockToRecord);
           break;
         default:

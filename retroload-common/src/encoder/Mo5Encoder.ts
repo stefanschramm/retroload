@@ -1,4 +1,5 @@
 import {type BufferAccess} from '../BufferAccess.js';
+import {Logger} from '../Logger.js';
 import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fZero = 600;
@@ -16,17 +17,20 @@ export class Mo5Encoder extends AbstractEncoder {
   }
 
   recordStartBlock(ba: BufferAccess) {
+    Logger.debug(ba.asHexDump());
     this.recordPilot(1);
     this.recordBytes(ba);
     this.recordPilot(2);
   }
 
   recordDataBlock(ba: BufferAccess) {
+    Logger.debug(ba.asHexDump());
     this.recordPilot(0.2);
     this.recordBytes(ba);
   }
 
   recordEndBlock(ba: BufferAccess) {
+    Logger.debug(ba.asHexDump());
     this.recordBytes(ba);
     this.recordPilot(1.5);
   }
