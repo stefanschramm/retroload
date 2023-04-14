@@ -108,6 +108,22 @@ or
     cload
     run
 
+# Thomson MO5
+
+Volume: 25 % (using cassette adapter)
+
+Load and run:
+
+    LOAD"",R
+
+Load:
+
+    LOAD
+
+Run:
+
+    RUN
+
 # Z 1013
 
 The load command `L` takes the load and end address as hexadecimal numbers (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
