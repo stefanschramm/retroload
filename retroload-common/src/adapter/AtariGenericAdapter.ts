@@ -25,21 +25,19 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
   static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
-    const blocks = Math.ceil(ba.length() / dataBytesPerBlock);
-    for (let blockId = 0; blockId < blocks; blockId++) {
-      const remainingBytes = ba.length() - (blockId * dataBytesPerBlock);
-      const partialBlock = remainingBytes < dataBytesPerBlock;
-      const dataBytesInCurrentBlock = partialBlock ? remainingBytes : dataBytesPerBlock;
+    const chunks = ba.chunks(dataBytesPerBlock);
+    for (let blockId = 0; blockId < chunks.length; blockId++) {
+      const chunkBa = chunks[blockId];
+      const partialBlock = chunkBa.length() !== dataBytesPerBlock;
       const blockType = partialBlock ? blockTypePartial : blockTypeFull;
-      const dataBa = ba.slice(blockId * dataBytesPerBlock, dataBytesInCurrentBlock);
       // actual block length will be 132 bytes: 2 markers, 1 block type byte, 128 actual data bytes, 1 checksum byte
       const blockBa = BufferAccess.create(132);
       blockBa.writeUInt8(markerByte);
       blockBa.writeUInt8(markerByte);
       blockBa.writeUInt8(blockType);
-      blockBa.writeBa(dataBa); // (not always 128 bytes!)
+      blockBa.writeBa(chunkBa); // (not always 128 bytes!)
       if (partialBlock) {
-        blockBa.setUint8(130, dataBytesInCurrentBlock);
+        blockBa.setUint8(130, chunkBa.length());
       }
 
       blockBa.setUint8(131, calculateChecksum(blockBa));
