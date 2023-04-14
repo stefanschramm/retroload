@@ -1,6 +1,8 @@
 {
     "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "typescript.preferences.importModuleSpecifierEnding": "js",
     "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+    "javascript.preferences.importModuleSpecifierEnding": "js",
     "editor.tabSize": 2,
     "editor.detectIndentation": false,
     "editor.indentSize": "tabSize",
