@@ -60,7 +60,7 @@ export class Mo5K7Adapter extends AbstractAdapter {
           break;
         case 0x01: // data block
         {
-          const actualBlockLength = blockLengthField === 0x00 ? 0xff : blockLengthField;
+          const actualBlockLength = blockLengthField === 0x00 ? 0xff : (blockLengthField - 1);
           blockToRecord = ba.slice(i, headerOffset + 4 + actualBlockLength);
           e.recordDataBlock(blockToRecord);
           break;

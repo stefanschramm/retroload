@@ -33,7 +33,8 @@ function getExamples() {
     // TA alphatronic PC
     new Example('ta_bas', 'rl.bas', {format: 'generic', machine: 'ta'}, '1d084c6b0dfa38930f26ad2cc3166dd0', 'cload\nrun'), // 2023-02-17 OK (TA alphatronic PC)
     // Thomson MO5
-    new Example('mo5_generic', 'rl.bas', {machine: 'mo5', name: 'RL      BAS'}, '86f4f59162694e5e63ee3b2696c68c74', 'LOAD"",R'), // 2023-04-14 OK (Thomson MO5)
+    new Example('mo5', 'rl.bas', {machine: 'mo5', name: 'RL      BAS'}, '86f4f59162694e5e63ee3b2696c68c74', 'LOAD"",R'), // 2023-04-15 OK (Thomson MO5)
+    new Example('mo5', 'rl.k7', {}, '86f4f59162694e5e63ee3b2696c68c74', 'LOAD"",R'), // 2023-04-15 OK (Thomson MO5)
     // Z 1013
     new Example('z1013_z13', 'rl.z13', {}, '34083eb0e8ee6f631e92a412c8926f71', 'L 0100 018F\nJ 0100'),
     new Example('z1013_z80', 'rl.z80', {}, '779a051a0ed4769462d24aded68a94b3', 'L 0100 0200\nJ 0100'),

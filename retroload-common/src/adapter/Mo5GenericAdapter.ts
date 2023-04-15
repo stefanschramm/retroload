@@ -66,7 +66,7 @@ function createBlock(blockType: number, blockDataBa: BufferAccess): BufferAccess
   blockBa.writeUInt8(0x3c);
   blockBa.writeUInt8(0x5a);
   blockBa.writeUInt8(blockType);
-  blockBa.writeUInt8(blockDataBa.length() + 2);
+  blockBa.writeUInt8((blockDataBa.length() + 2) & 0xff); // 0x100 will become 0x00
   blockBa.writeBa(blockDataBa);
   blockBa.writeUInt8(calculateChecksum(blockDataBa));
 
