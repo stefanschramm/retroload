@@ -10,6 +10,7 @@ const fOne = 1200;
  *
  * http://pulko.mandy.pagesperso-orange.fr/shinra/mo5_hard.shtml
  * SAVEMA MO5 Documentation technique - MO5 Lecteuer-enregistreur de programmes / Programmrekorder / Program Recorder
+ * http://dcmoto.free.fr/documentation/moniteur-mo5-casst/moniteur-mo5-casst_src.txt
  */
 export class Mo5Encoder extends AbstractEncoder {
   static override getTargetName() {
