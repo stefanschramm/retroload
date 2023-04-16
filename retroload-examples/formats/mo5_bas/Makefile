@@ -9,4 +9,4 @@ rl.k7: rl.k7.asm rl.bas
 	$(6809_ASM) $< -o $@
 
 clean:
-	rm -f *.bas *.wav
+	rm -f *.bas *.k7 *.wav
