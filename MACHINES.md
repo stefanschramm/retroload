@@ -1,5 +1,7 @@
 The following machines are used for testing the [examples](./retroload-examples/formats). The list is supposed to be an overview about the different methods to load tapes.
 
+The volume levels are just meant to be a rough orientation based on experiments (e.g. the ZX 81 wants a higher volume than the Acorn Electron).
+
 # Acorn Electron
 
 Volume: 40 %
@@ -112,17 +114,26 @@ or
 
 Volume: 25 % (using cassette adapter)
 
-Load and run:
+Load and run BASIC program:
 
     LOAD"",R
 
-Load:
+or
 
     LOAD
-
-Run:
-
     RUN
+
+Load and run machine language program:
+
+    LOADM"",,R
+
+Load machine language program:
+
+    LOADM""
+
+Run machine language program (with entry point `2700`, hexadecimal):
+
+    EXEC &H2700
 
 # Z 1013
 
