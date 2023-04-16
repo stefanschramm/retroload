@@ -1,6 +1,6 @@
 import {BufferAccess} from '../BufferAccess.js';
 import {InvalidArgumentError} from '../Exceptions.js';
-import {NameOption, type OptionValues} from '../Options.js';
+import {NameOption, Option, type OptionValues} from '../Options.js';
 import {Mo5Encoder} from '../encoder/Mo5Encoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
@@ -11,12 +11,8 @@ const blockTypeStart = 0x00;
 const blockTypeData = 0x01;
 const blockTypeEnd = 0xff;
 
-const fileTypeBasic = 0x00;
-const fileTypeData = 0x01;
-const fileTypeBinary = 0x02;
-
-const fileModeBinary = 0x00;
-const fileModeText = 0xff;
+const fileTypeBasic = 0x00; // other types: 1 == data, 2 == binary
+const fileModeBinary = 0x00; // other modes: 0xff == text
 
 export class Mo5GenericAdapter extends AbstractGenericAdapter {
   static override getTargetName() {
@@ -30,6 +26,18 @@ export class Mo5GenericAdapter extends AbstractGenericAdapter {
   static override getOptions() {
     return [
       NameOption,
+      new Option(
+        'mo5type',
+        'MO5 file type',
+        'File type (MO 5). Possible types: 0 = basic, 1 = data, 2 = binary',
+        {argument: 'type', required: false, type: 'text'},
+      ),
+      new Option(
+        'mo5mode',
+        'MO5 file mode',
+        'File mode (MO 5). Possible modes: 0 = binary, ff = text',
+        {argument: 'mode', required: false, type: 'text'},
+      ),
     ];
   }
 
@@ -38,10 +46,9 @@ export class Mo5GenericAdapter extends AbstractGenericAdapter {
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
-    // TODO: if filename contains "." and its length is shorter than maxFilenameLength or equals maxFilenameLength + 1: map ("RL.BAS" -> "RL      BAS", "EXAMPLE1.BAS" -> "EXAMPLE1BAS")
 
-    const filetype = fileTypeBasic; // TODO: optionize
-    const filemode = fileModeBinary; // TODO: optionize
+    const filetype = parseInt((options.mo5type ?? fileTypeBasic) as string, 16);
+    const filemode = parseInt((options.mo5mode ?? fileModeBinary) as string, 16);
 
     const startBlockDataBa = BufferAccess.create(maxFileNameLength + 3);
     startBlockDataBa.writeAsciiString(filename, maxFileNameLength, 0x20);

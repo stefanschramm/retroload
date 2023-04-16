@@ -37,7 +37,12 @@ RUN git clone --depth 1 --branch v1.4.2 https://github.com/lronaldo/cpctelera.gi
         make && \
         ln -s /opt/cpctelera/cpctelera/tools/2cdt/bin/2cdt /usr/local/bin/2cdt
 RUN wget "https://sourceforge.net/p/emuscriptoria/code/HEAD/tree/desprot/ZMakeBas.c?format=raw" -O "ZMakeBas.c" && \
-	gcc ZMakeBas.c -o ZMakeBas && \
-	ln -s /opt/ZMakeBas /usr/local/bin/ZMakeBas
+        gcc ZMakeBas.c -o ZMakeBas && \
+        ln -s /opt/ZMakeBas /usr/local/bin/ZMakeBas
+RUN wget "https://www.6809.org.uk/asm6809/dl/asm6809-2.12.tar.gz" -O asm6809-2.12.tar.gz && \
+        tar -zxvf asm6809-2.12.tar.gz && \
+        cd asm6809-2.12 && \
+        ./configure && \
+        make install
 COPY /rebuild_all.sh /
 CMD [ "/rebuild_all.sh" ]

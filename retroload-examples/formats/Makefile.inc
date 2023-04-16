@@ -1,2 +1,3 @@
 65XX_ASM = xa
 Z80_ASM = z80asm
+6809_ASM = asm6809
