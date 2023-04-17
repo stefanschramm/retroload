@@ -12,29 +12,36 @@ import {Option} from '../Options.js';
 describe('Instantiation of exceptions', () => {
   test('UsageError', () => {
     const e = new UsageError('Example');
+    expect(e).toBeInstanceOf(UsageError);
   });
 
   test('InternalError', () => {
     const e = new InternalError('Example');
+    expect(e).toBeInstanceOf(InternalError);
   });
 
-  test('InternalError', () => {
+  test('FormatAutodetectionFailedError', () => {
     const e = new FormatAutodetectionFailedError();
+    expect(e).toBeInstanceOf(FormatAutodetectionFailedError);
   });
 
   test('FormatNotFoundError', () => {
     const e = new FormatNotFoundError('exampleformat');
+    expect(e).toBeInstanceOf(FormatNotFoundError);
   });
 
   test('TargetMachineNotFoundError', () => {
     const e = new TargetMachineNotFoundError('examplemachine', 'exampleformat');
+    expect(e).toBeInstanceOf(TargetMachineNotFoundError);
   });
 
   test('MissingOptionsError', () => {
     const e = new MissingOptionsError([new Option('exampleoption', 'Example option label', 'Example option description')]);
+    expect(e).toBeInstanceOf(MissingOptionsError);
   });
 
   test('InvalidArgumentError', () => {
     const e = new InvalidArgumentError('exampleoption', 'Example error for exampleoption.');
+    expect(e).toBeInstanceOf(InvalidArgumentError);
   });
 });

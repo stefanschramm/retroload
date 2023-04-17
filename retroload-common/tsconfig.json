@@ -12,6 +12,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "useDefineForClassFields": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
