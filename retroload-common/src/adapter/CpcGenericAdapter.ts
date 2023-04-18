@@ -52,29 +52,28 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
 
     const e = new CpcTzxEncoder(recorder, options);
 
-    const dataRecordCount = Math.ceil(ba.length() / dataBytesPerDataBlock);
-    const dataBytesInLastBlock = ba.length() - (dataRecordCount - 1) * dataBytesPerDataBlock;
+    const chunks = ba.chunks(dataBytesPerDataBlock);
 
     e.begin();
-    for (let b = 0; b < dataRecordCount; b++) {
+    for (let b = 0; b < chunks.length; b++) {
+      const chunk = chunks[b];
       const isFirstBlock = b === 0;
-      const isLastBlock = b === (dataRecordCount - 1);
+      const isLastBlock = b === (chunks.length - 1);
       const blockDataLocation = load + b * dataBytesPerDataBlock;
-      const dataBytesInCurrentBlock = isLastBlock ? dataBytesInLastBlock : dataBytesPerDataBlock;
 
       // header block
 
       const headerBa = BufferAccess.create(0x100);
-      headerBa.setAsciiString(0, filename, maxFileNameLength, 0);
-      headerBa.setUint8(16, b + 1); // block number
-      headerBa.setUint8(17, isLastBlock ? 0xff : 0x00);
-      headerBa.setUint8(18, fileTypeBinary);
-      headerBa.setUint16LE(19, dataBytesInCurrentBlock);
-      headerBa.setUint16LE(21, blockDataLocation);
-      headerBa.setUint8(23, isFirstBlock ? 0xff : 0x00);
+      headerBa.writeAsciiString(filename, maxFileNameLength, 0);
+      headerBa.writeUInt8(b + 1); // block number
+      headerBa.writeUInt8(isLastBlock ? 0xff : 0x00);
+      headerBa.writeUInt8(fileTypeBinary);
+      headerBa.writeUInt16LE(chunk.length());
+      headerBa.writeUInt16LE(blockDataLocation);
+      headerBa.writeUInt8(isFirstBlock ? 0xff : 0x00);
       // user fields
-      headerBa.setUint16LE(24, ba.length()); // logical length
-      headerBa.setUint16LE(26, entry); // entry address
+      headerBa.writeUInt16LE(ba.length()); // logical length
+      headerBa.writeUInt16LE(entry); // entry address
 
       // Remaining bytes 28..63 stay unallocated. Rest of header segment is padded with zeros.
 
@@ -83,7 +82,7 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
 
       // data block
 
-      const dataRecordBa = createDataRecord(ba.slice(b * dataBytesPerDataBlock, dataBytesInCurrentBlock));
+      const dataRecordBa = createDataRecord(chunk);
       e.recordDataBlock(dataRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x09c4});
     }
     e.end();
@@ -96,10 +95,10 @@ function createHeaderRecord(headerBa: BufferAccess) {
   }
   const headerRecordSize = 1 + dataBytesPerSegment + 2 + 4; // sync char + data + checksum + trailer
   const headerRecordBa = BufferAccess.create(headerRecordSize);
-  headerRecordBa.setUint8(0, headerRecordSyncCharacter); // synchronisation character
-  headerRecordBa.setBa(1, headerBa); // data
-  headerRecordBa.setUint16BE(1 + dataBytesPerSegment, calculateSegmentCrc(headerBa)); // crc checksum
-  headerRecordBa.setUint32LE(1 + dataBytesPerSegment + 2, 0xffffffff); // trailer
+  headerRecordBa.writeUInt8(headerRecordSyncCharacter); // synchronisation character
+  headerRecordBa.writeBa(headerBa); // data
+  headerRecordBa.writeUInt16BE(calculateSegmentCrc(headerBa)); // crc checksum
+  headerRecordBa.writeUInt32LE(0xffffffff); // trailer
 
   return headerRecordBa;
 }
@@ -109,25 +108,15 @@ function createDataRecord(dataBa: BufferAccess) {
     throw new InternalError(`Data record size cannot exceed ${dataBytesPerDataBlock} bytes.`);
   }
 
-  const segmentCount = Math.ceil(dataBa.length() / dataBytesPerSegment);
-  const dataRecordSize = 1 + segmentCount * (dataBytesPerSegment + 2) + 4;
+  const segments = dataBa.chunksPadded(dataBytesPerSegment, 0x00);
+  const dataRecordSize = 1 + segments.length * (dataBytesPerSegment + 2) + 4;
   const dataRecordBa = BufferAccess.create(dataRecordSize);
-
-  dataRecordBa.setUint8(0, dataRecordSyncCharacter); // synchronisation character
-  for (let s = 0; s < segmentCount; s++) {
-    const paddingRequired = (s * dataBytesPerSegment + dataBytesPerSegment) > dataBa.length();
-    const segmentDataOffset = 1 + s * (dataBytesPerSegment + 2);
-    if (paddingRequired) {
-      const remainingDataBa = dataBa.slice(s * dataBytesPerSegment, dataBa.length() - s * dataBytesPerSegment);
-      const paddedRemainingDataBa = BufferAccess.create(dataBytesPerSegment);
-      paddedRemainingDataBa.setBa(0, remainingDataBa);
-      dataRecordBa.setBa(segmentDataOffset, paddedRemainingDataBa); // data
-      dataRecordBa.setUint16BE(segmentDataOffset + dataBytesPerSegment, calculateSegmentCrc(paddedRemainingDataBa)); // crc checksum
-    } else {
-      dataRecordBa.setBa(segmentDataOffset, dataBa.slice(s * dataBytesPerSegment, dataBytesPerSegment)); // data
-    }
+  dataRecordBa.writeUInt8(dataRecordSyncCharacter); // synchronisation character
+  for (const segmentData of segments) {
+    dataRecordBa.writeBa(segmentData); // data
+    dataRecordBa.writeUInt16BE(calculateSegmentCrc(segmentData)); // crc checksum
   }
-  dataRecordBa.setUint32LE(dataRecordBa.length() - 4, 0xffffffff); // trailer
+  dataRecordBa.writeUInt32LE(0xffffffff); // trailer
 
   return dataRecordBa;
 }
