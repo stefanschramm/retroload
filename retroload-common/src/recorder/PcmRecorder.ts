@@ -16,11 +16,6 @@ export class PcmRecorder implements RecorderInterface {
     this.audioContext = audioContext;
   }
 
-  initialize(sampleRate: number) {
-    this.data = [];
-    this.sampleRate = sampleRate;
-  }
-
   pushSample(value: SampleValue) {
     this.data.push(dataMap[value]);
   }

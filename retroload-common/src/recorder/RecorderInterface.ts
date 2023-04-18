@@ -1,5 +1,4 @@
 export type RecorderInterface = {
-  initialize: (sampleRate: number) => void;
   pushSample: (value: SampleValue) => void;
   sampleRate: number;
 };

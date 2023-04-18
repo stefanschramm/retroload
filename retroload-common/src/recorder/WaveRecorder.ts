@@ -10,10 +10,6 @@ const dataMap: Record<SampleValue, number> = {
 export class WaveRecorder implements RecorderInterface {
   data: number[] = [];
   sampleRate = 44100;
-  initialize(sampleRate: number) {
-    this.data = [];
-    this.sampleRate = sampleRate;
-  }
 
   pushSample(value: SampleValue) {
     const mappedValue = dataMap[value];

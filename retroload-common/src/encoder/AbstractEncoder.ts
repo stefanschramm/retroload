@@ -16,9 +16,7 @@ export abstract class AbstractEncoder {
   options: OptionValues;
 
   constructor(recorder: RecorderInterface, options: OptionValues) {
-    const sampleRate = 44100;
     this.recorder = recorder;
-    this.recorder.initialize(sampleRate);
     /**
      * this.phase determines whether the next half oscillation is positive.
      * It's modified only when recording half oscillations.
