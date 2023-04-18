@@ -77,6 +77,28 @@ export class BufferAccess {
   }
 
   /**
+   * Return chunks of specified size and pad last chunk
+   *
+   * If the last chunk required padding, it will be a copy while the other chunks are always references.
+   */
+  chunksPadded(chunkSize: number, paddingByte: number): BufferAccess[] {
+    const unpaddedChunks = this.chunks(chunkSize);
+    if (unpaddedChunks.length === 0) {
+      return unpaddedChunks;
+    }
+    if (unpaddedChunks[unpaddedChunks.length - 1].length() === chunkSize) {
+      return unpaddedChunks; // no padding required
+    }
+    const lastChunk = BufferAccess.create(chunkSize);
+    lastChunk.writeBa(unpaddedChunks[unpaddedChunks.length - 1]);
+
+    return [
+      ...unpaddedChunks.slice(0, unpaddedChunks.length - 1),
+      lastChunk,
+    ];
+  }
+
+  /**
    * Return copy that references a new buffer
    */
   copy(offset = 0, length = this.view.byteLength): BufferAccess {
