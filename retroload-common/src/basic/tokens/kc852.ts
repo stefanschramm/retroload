@@ -1,4 +1,4 @@
-export const TOKENS = [
+export const tokens = [
   ['-', 0xAD],
   ['!', 0x9C],
   ['*', 0xAE],

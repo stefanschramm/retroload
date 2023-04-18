@@ -1,5 +1,5 @@
 import {Lc80Encoder} from '../encoder/Lc80Encoder.js';
-import {LoadOption, NameOption, type OptionValues} from '../Options.js';
+import {loadOption, nameOption, type OptionValues} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type BufferAccess} from '../BufferAccess.js';
@@ -16,8 +16,8 @@ export class Lc80GenericAdapter extends AbstractGenericAdapter {
 
   static override getOptions() {
     return [
-      NameOption,
-      LoadOption,
+      nameOption,
+      loadOption,
     ];
   }
 

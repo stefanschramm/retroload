@@ -1,5 +1,5 @@
 import {AbstractEncoder} from './AbstractEncoder.js';
-import {ShortpilotOption, Option} from '../Options.js';
+import {shortpilotOption, Option} from '../Options.js';
 
 const fZero = 1200;
 const fOne = 2400;
@@ -22,7 +22,7 @@ export class MsxEncoder extends AbstractEncoder {
 
   static getOptions() {
     return [
-      ShortpilotOption,
+      shortpilotOption,
       new Option('msxfast', 'Fast baudrate', 'Use 2400 baud instead of 1200 (faster loading, less reliable)', {type: 'bool'}),
     ];
   }

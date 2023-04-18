@@ -41,16 +41,16 @@ export abstract class AbstractEncoder {
 
   recordByte(byte: number) {
     // Default: LSB first
-    this.recordByteLSBFirst(byte);
+    this.recordByteLsbFirst(byte);
   }
 
-  recordByteLSBFirst(byte: number) {
+  recordByteLsbFirst(byte: number) {
     for (let i = 0; i < 8; i += 1) {
       this.recordBit(((byte & (1 << i)) === 0) ? 0 : 1);
     }
   }
 
-  recordByteMSBFirst(byte: number) {
+  recordByteMsbFirst(byte: number) {
     for (let i = 7; i >= 0; i -= 1) {
       this.recordBit(((byte & (1 << i)) === 0) ? 0 : 1);
     }

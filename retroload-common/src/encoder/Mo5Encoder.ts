@@ -37,7 +37,7 @@ export class Mo5Encoder extends AbstractEncoder {
   }
 
   override recordByte(byte: number) {
-    this.recordByteMSBFirst(byte);
+    this.recordByteMsbFirst(byte);
   }
 
   /**

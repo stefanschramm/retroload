@@ -27,7 +27,7 @@ export class Option {
 
 // Some common options used by several Adapters/Encoders
 
-export const ShortpilotOption = new Option(
+export const shortpilotOption = new Option(
   'shortpilot',
   'Short pilot',
   'Use short pilot tone for faster start of loading',
@@ -39,7 +39,7 @@ export const ShortpilotOption = new Option(
   },
 );
 
-export const NameOption = new Option(
+export const nameOption = new Option(
   'name',
   'File name',
   'File name for tape record. Different machines have different constraints for file names.',
@@ -52,7 +52,7 @@ export const NameOption = new Option(
   },
 );
 
-export const LoadOption = new Option(
+export const loadOption = new Option(
   'load',
   'Load address',
   'Address (hexadecimal 16-bit number) where to load the program to',
@@ -64,7 +64,7 @@ export const LoadOption = new Option(
   },
 );
 
-export const EntryOption = new Option(
+export const entryOption = new Option(
   'entry',
   'Entry address',
   'Address (hexadecimal 16-bit number) of entry point of program (in memory)',

@@ -1,5 +1,5 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
-import {type OptionValues, ShortpilotOption} from '../Options.js';
+import {type OptionValues, shortpilotOption} from '../Options.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
 import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
@@ -29,7 +29,7 @@ export class C64P00Adapter extends AbstractAdapter {
 
   static override getOptions() {
     return [
-      ShortpilotOption, // (not available for .tap)
+      shortpilotOption, // (not available for .tap)
     ];
   }
 

@@ -1,8 +1,8 @@
 import fs from 'fs';
 import {tokenizers} from '../../basic/TokenizerProvider.js';
 
-const FIXTURES_DIR = __dirname + '/fixtures';
-const FIXTURES = ['for'];
+const fixturesDir = __dirname + '/fixtures';
+const fixtures = ['for'];
 
 describe.each(tokenizers.map((t) => [t.name, t]))('%s', (name, t) => {
   test('provides name', () => {
@@ -17,10 +17,10 @@ describe.each(tokenizers.map((t) => [t.name, t]))('%s', (name, t) => {
     expect(typeof t.tokenize).toBe('function');
   });
 
-  test.each(FIXTURES)('Example code: %s.txt', (fixture) => {
-    const source = fs.readFileSync(`${FIXTURES_DIR}/${fixture}.txt`).toString();
+  test.each(fixtures)('Example code: %s.txt', (fixture) => {
+    const source = fs.readFileSync(`${fixturesDir}/${fixture}.txt`).toString();
     const tokenized = t.tokenize(source);
-    const expected = fs.readFileSync(`${FIXTURES_DIR}/${t.getName()}/${fixture}.${t.getExtension()}`);
+    const expected = fs.readFileSync(`${fixturesDir}/${t.getName()}/${fixture}.${t.getExtension()}`);
     expect(uInt8ArrayEqual(new Uint8Array(expected), tokenized.asUint8Array())).toBe(true);
   });
 });

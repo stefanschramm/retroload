@@ -1,5 +1,5 @@
 import {TaEncoder, maxFileNameLength} from '../encoder/TaEncoder.js';
-import {NameOption, type OptionValues} from '../Options.js';
+import {nameOption, type OptionValues} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
@@ -16,7 +16,7 @@ export class TaGenericAdapter extends AbstractGenericAdapter {
 
   static override getOptions() {
     return [
-      NameOption,
+      nameOption,
     ];
   }
 

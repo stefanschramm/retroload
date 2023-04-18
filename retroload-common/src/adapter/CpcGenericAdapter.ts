@@ -1,5 +1,5 @@
 import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
-import {EntryOption, LoadOption, NameOption, type OptionValues} from '../Options.js';
+import {entryOption, loadOption, nameOption, type OptionValues} from '../Options.js';
 import {InternalError, InvalidArgumentError} from '../Exceptions.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
@@ -25,9 +25,9 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
 
   static override getOptions() {
     return [
-      NameOption,
-      LoadOption,
-      EntryOption,
+      nameOption,
+      loadOption,
+      entryOption,
     ];
   }
 

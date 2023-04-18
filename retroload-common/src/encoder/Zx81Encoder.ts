@@ -17,7 +17,7 @@ export class Zx81Encoder extends AbstractEncoder {
   }
 
   override recordByte(byte: number) {
-    this.recordByteMSBFirst(byte);
+    this.recordByteMsbFirst(byte);
   }
 
   recordBit(value: number) {

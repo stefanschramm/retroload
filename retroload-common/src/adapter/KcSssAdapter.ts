@@ -1,7 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
-import {NameOption, type OptionValues} from '../Options.js';
+import {nameOption, type OptionValues} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
@@ -31,7 +31,7 @@ export class KcSssAdapter extends AbstractAdapter {
 
   static override getOptions() {
     return [
-      NameOption,
+      nameOption,
     ];
   }
 

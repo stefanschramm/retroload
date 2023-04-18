@@ -1,4 +1,4 @@
-import {NameOption, LoadOption, EntryOption, ShortpilotOption, type OptionValues} from '../Options.js';
+import {nameOption, loadOption, entryOption, shortpilotOption, type OptionValues} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {ElectronEncoder} from '../encoder/ElectronEncoder.js';
@@ -20,10 +20,10 @@ export class ElectronGenericAdapter extends AbstractGenericAdapter {
 
   static override getOptions() {
     return [
-      NameOption, // 1 - 10 characters
-      LoadOption,
-      EntryOption,
-      ShortpilotOption,
+      nameOption, // 1 - 10 characters
+      loadOption,
+      entryOption,
+      shortpilotOption,
     ];
   }
 

@@ -39,7 +39,7 @@ export class AtariEncoder extends AbstractEncoder {
 
   override recordByte(byte: number) {
     this.recordBit(0);
-    this.recordByteLSBFirst(byte);
+    this.recordByteLsbFirst(byte);
     this.recordBit(1);
   }
 

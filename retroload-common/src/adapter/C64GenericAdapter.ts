@@ -1,5 +1,5 @@
 import {C64Encoder} from '../encoder/C64Encoder.js';
-import {LoadOption, NameOption, Option, type OptionValues, ShortpilotOption} from '../Options.js';
+import {loadOption, nameOption, Option, type OptionValues, shortpilotOption} from '../Options.js';
 import {InternalError, InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type BufferAccess} from '../BufferAccess.js';
@@ -16,15 +16,15 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
 
   static override getOptions() {
     return [
-      ShortpilotOption, // (not available for .tap)
+      shortpilotOption, // (not available for .tap)
       new Option(
         'c64type',
         'C64 file type',
         'File type (C 64). Possible types: basic, data, prg',
         {argument: 'type', required: true, type: 'enum', enum: ['basic', 'data', 'prg']},
       ),
-      NameOption,
-      LoadOption,
+      nameOption,
+      loadOption,
     ];
   }
 

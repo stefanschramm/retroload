@@ -1,6 +1,6 @@
 import {BufferAccess} from '../BufferAccess.js';
 import {InvalidArgumentError} from '../Exceptions.js';
-import {NameOption, Option, type OptionValues} from '../Options.js';
+import {nameOption, Option, type OptionValues} from '../Options.js';
 import {Mo5Encoder} from '../encoder/Mo5Encoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
@@ -25,7 +25,7 @@ export class Mo5GenericAdapter extends AbstractGenericAdapter {
 
   static override getOptions() {
     return [
-      NameOption,
+      nameOption,
       new Option(
         'mo5type',
         'MO5 file type',

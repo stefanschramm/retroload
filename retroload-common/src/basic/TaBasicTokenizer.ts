@@ -1,6 +1,6 @@
 import {BufferAccess} from '../BufferAccess.js';
 import {PointerBasedSourceTokenizer} from './PointerBasedTokenizer.js';
-import {TOKENS} from './tokens/ta.js';
+import {tokens} from './tokens/ta.js';
 
 /**
  * Tokenizer for BASIC on TA alphatronic PC
@@ -60,7 +60,7 @@ export class TaBasicTokenizer {
 
   static tokenize(str: string) {
     const offset = 0x6001;
-    const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, TOKENS, str);
+    const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, tokens, str);
 
     const taBasBa = BufferAccess.create(lineDataBa.length() + 10); // it wants to have 10 x 0x00 at the end
     taBasBa.writeBa(lineDataBa);

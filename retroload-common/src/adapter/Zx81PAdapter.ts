@@ -4,6 +4,7 @@ import {type OptionValues} from '../Options.js';
 import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export class Zx81PAdapter extends AbstractAdapter {
   static override getTargetName() {
     return Zx81Encoder.getTargetName();

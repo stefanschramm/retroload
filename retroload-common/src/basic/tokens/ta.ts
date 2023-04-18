@@ -19,7 +19,7 @@
  *
  * TODO: There are still a lot of tokens missing. Some are identical with MSX tokens, some not.
  */
-export const TOKENS = [
+export const tokens = [
   // ['7', 0xEC],
   // ['_', 0xFD],
   ['-', 0xF2],
