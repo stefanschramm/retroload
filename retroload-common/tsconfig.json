@@ -13,11 +13,10 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
+    "exactOptionalPropertyTypes": true,
     "useDefineForClassFields": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,
     "declaration": true,
-    "pretty": true,
     "newLine": "lf",
     "stripInternal": true,
   }
