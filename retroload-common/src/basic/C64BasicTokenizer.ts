@@ -17,8 +17,8 @@ export class C64BasicTokenizer {
     const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, TOKENS, str);
 
     const c64PrgBa = BufferAccess.create(lineDataBa.length() + 3);
-    c64PrgBa.writeUInt16LE(offset);
-    c64PrgBa.writeUInt8(0);
+    c64PrgBa.writeUint16Le(offset);
+    c64PrgBa.writeUint8(0);
     c64PrgBa.writeBa(lineDataBa);
 
     return c64PrgBa;

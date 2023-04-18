@@ -32,22 +32,22 @@ export class WaveRecorder implements RecorderInterface {
 
     // RIFF section
     ba.writeAsciiString('RIFF');
-    ba.writeUInt32LE(chunkSize);
+    ba.writeUint32Le(chunkSize);
     ba.writeAsciiString('WAVE');
 
     // Format section
     ba.writeAsciiString('fmt ');
-    ba.writeUInt32LE(formatChunkSize);
-    ba.writeUInt16LE(format);
-    ba.writeUInt16LE(channels);
-    ba.writeUInt32LE(this.sampleRate);
-    ba.writeUInt32LE(byteRate);
-    ba.writeUInt16LE(blockAlign);
-    ba.writeUInt16LE(bitsPerSample);
+    ba.writeUint32Le(formatChunkSize);
+    ba.writeUint16Le(format);
+    ba.writeUint16Le(channels);
+    ba.writeUint32Le(this.sampleRate);
+    ba.writeUint32Le(byteRate);
+    ba.writeUint16Le(blockAlign);
+    ba.writeUint16Le(bitsPerSample);
 
     // Data section
     ba.writeAsciiString('data');
-    ba.writeUInt32LE(this.data.length);
+    ba.writeUint32Le(this.data.length);
 
     ba.writeBa(BufferAccess.createFromUint8Array(this.getRawBuffer()));
 

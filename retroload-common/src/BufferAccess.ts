@@ -152,7 +152,7 @@ export class BufferAccess {
     this.view.setInt8(offset, i);
   }
 
-  writeUInt8(i: number) {
+  writeUint8(i: number) {
     this.view.setInt8(this.cursor, i);
     this.cursor += 1;
   }
@@ -161,50 +161,50 @@ export class BufferAccess {
     return this.view.getUint8(offset);
   }
 
-  setUint16LE(offset: number, i: number) {
+  setUint16Le(offset: number, i: number) {
     this.view.setInt16(offset, i, true);
   }
 
-  writeUInt16LE(i: number) {
+  writeUint16Le(i: number) {
     this.view.setInt16(this.cursor, i, true);
     this.cursor += 2;
   }
 
-  getUint16LE(offset: number) {
+  getUint16Le(offset: number) {
     return this.view.getUint16(offset, true);
   }
 
-  setUint16BE(offset: number, i: number) {
+  setUint16Be(offset: number, i: number) {
     this.view.setInt16(offset, i, false);
   }
 
-  writeUInt16BE(i: number) {
+  writeUint16Be(i: number) {
     this.view.setInt16(this.cursor, i, false);
     this.cursor += 2;
   }
 
-  getUint16BE(offset: number) {
+  getUint16Be(offset: number) {
     return this.view.getUint16(offset, false);
   }
 
-  setUint32LE(offset: number, i: number) {
+  setUint32Le(offset: number, i: number) {
     this.view.setInt32(offset, i, true);
   }
 
-  writeUInt32LE(i: number) {
+  writeUint32Le(i: number) {
     this.view.setInt32(this.cursor, i, true);
     this.cursor += 4;
   }
 
-  getUint32LE(offset: number) {
+  getUint32Le(offset: number) {
     return this.view.getUint32(offset, true);
   }
 
-  setUint32BE(offset: number, i: number) {
+  setUint32Be(offset: number, i: number) {
     this.view.setInt32(offset, i, false);
   }
 
-  writeUInt32BE(i: number) {
+  writeUint32Be(i: number) {
     this.view.setInt32(this.cursor, i, false);
     this.cursor += 4;
   }

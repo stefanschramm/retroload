@@ -18,25 +18,25 @@ test('setUint8', () => {
 
 test('setUint16LE', () => {
   const ba = BufferAccess.create(8);
-  ba.setUint16LE(2, 0x4142);
+  ba.setUint16Le(2, 0x4142);
   expect(ba.asHexDump()).toBe('00000000  00 00 42 41 00 00 00 00                           |..BA....|');
 });
 
 test('setUint16BE', () => {
   const ba = BufferAccess.create(8);
-  ba.setUint16BE(2, 0x4142);
+  ba.setUint16Be(2, 0x4142);
   expect(ba.asHexDump()).toBe('00000000  00 00 41 42 00 00 00 00                           |..AB....|');
 });
 
 test('setUint32LE', () => {
   const ba = BufferAccess.create(8);
-  ba.setUint32LE(2, 0x41424344);
+  ba.setUint32Le(2, 0x41424344);
   expect(ba.asHexDump()).toBe('00000000  00 00 44 43 42 41 00 00                           |..DCBA..|');
 });
 
 test('setUint32BE', () => {
   const ba = BufferAccess.create(8);
-  ba.setUint32BE(2, 0x41424344);
+  ba.setUint32Be(2, 0x41424344);
   expect(ba.asHexDump()).toBe('00000000  00 00 41 42 43 44 00 00                           |..ABCD..|');
 });
 
@@ -139,11 +139,11 @@ test('write functions', () => {
   const ba2 = BufferAccess.create(5);
   ba2.setAsciiString(0, 'Hello');
 
-  ba.writeUInt8(0x01);
-  ba.writeUInt16LE(0x0302);
-  ba.writeUInt16BE(0x0405);
-  ba.writeUInt32LE(0x09080706);
-  ba.writeUInt32BE(0x0a0b0c0d);
+  ba.writeUint8(0x01);
+  ba.writeUint16Le(0x0302);
+  ba.writeUint16Be(0x0405);
+  ba.writeUint32Le(0x09080706);
+  ba.writeUint32Be(0x0a0b0c0d);
   ba.writeAsciiString('AAA');
   ba.writeBa(ba2);
 
@@ -152,15 +152,15 @@ test('write functions', () => {
 
 test('get functions', () => {
   const ba = BufferAccess.create(32);
-  ba.writeUInt8(0x01);
-  ba.writeUInt16LE(0x0302);
-  ba.writeUInt16BE(0x0405);
-  ba.writeUInt32LE(0x09080706);
+  ba.writeUint8(0x01);
+  ba.writeUint16Le(0x0302);
+  ba.writeUint16Be(0x0405);
+  ba.writeUint32Le(0x09080706);
 
   expect(ba.getUint8(0)).toBe(0x01);
-  expect(ba.getUint16LE(1)).toBe(0x0302);
-  expect(ba.getUint16BE(3)).toBe(0x0405);
-  expect(ba.getUint32LE(5)).toBe(0x09080706);
+  expect(ba.getUint16Le(1)).toBe(0x0302);
+  expect(ba.getUint16Be(3)).toBe(0x0405);
+  expect(ba.getUint32Le(5)).toBe(0x09080706);
 });
 
 test('containsDataAt', () => {

@@ -52,9 +52,9 @@ export class Mo5GenericAdapter extends AbstractGenericAdapter {
 
     const startBlockDataBa = BufferAccess.create(maxFileNameLength + 3);
     startBlockDataBa.writeAsciiString(filename, maxFileNameLength, 0x20);
-    startBlockDataBa.writeUInt8(filetype);
-    startBlockDataBa.writeUInt8(filemode);
-    startBlockDataBa.writeUInt8(filemode);
+    startBlockDataBa.writeUint8(filetype);
+    startBlockDataBa.writeUint8(filemode);
+    startBlockDataBa.writeUint8(filemode);
 
     const e = new Mo5Encoder(recorder, options);
     e.begin();
@@ -70,12 +70,12 @@ export class Mo5GenericAdapter extends AbstractGenericAdapter {
 function createBlock(blockType: number, blockDataBa: BufferAccess): BufferAccess {
   const blockBa = BufferAccess.create(16 + 2 + 1 + blockDataBa.length() + 2);
   blockBa.writeAsciiString('', 16, 0x01);
-  blockBa.writeUInt8(0x3c);
-  blockBa.writeUInt8(0x5a);
-  blockBa.writeUInt8(blockType);
-  blockBa.writeUInt8((blockDataBa.length() + 2) & 0xff); // 0x100 will become 0x00
+  blockBa.writeUint8(0x3c);
+  blockBa.writeUint8(0x5a);
+  blockBa.writeUint8(blockType);
+  blockBa.writeUint8((blockDataBa.length() + 2) & 0xff); // 0x100 will become 0x00
   blockBa.writeBa(blockDataBa);
-  blockBa.writeUInt8(calculateChecksum(blockDataBa));
+  blockBa.writeUint8(calculateChecksum(blockDataBa));
 
   return blockBa;
 }

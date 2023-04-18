@@ -55,21 +55,21 @@ export class ElectronGenericAdapter extends AbstractGenericAdapter {
 
       const blockHeaderBa = BufferAccess.create(filename.length + 18);
       blockHeaderBa.writeAsciiString(filename);
-      blockHeaderBa.writeUInt8(0);
-      blockHeaderBa.writeUInt32LE(load | 0xffff0000); // TODO: why 32 bits?
-      blockHeaderBa.writeUInt32LE(entry | 0xffff0000); // TODO: why 32 bits?
-      blockHeaderBa.writeUInt16LE(block);
-      blockHeaderBa.writeUInt16LE(blockDataBa.length());
-      blockHeaderBa.writeUInt8(isLastBlock ? 0x80 : 0x00);
-      blockHeaderBa.writeUInt32LE(0xffffffff); // TODO: address of next file?
+      blockHeaderBa.writeUint8(0);
+      blockHeaderBa.writeUint32Le(load | 0xffff0000); // TODO: why 32 bits?
+      blockHeaderBa.writeUint32Le(entry | 0xffff0000); // TODO: why 32 bits?
+      blockHeaderBa.writeUint16Le(block);
+      blockHeaderBa.writeUint16Le(blockDataBa.length());
+      blockHeaderBa.writeUint8(isLastBlock ? 0x80 : 0x00);
+      blockHeaderBa.writeUint32Le(0xffffffff); // TODO: address of next file?
 
       const blockSize = 1 + blockHeaderBa.length() + 2 + blockDataBa.length() + (blockDataBa.length() > 0 ? 2 : 0);
       const blockBa = BufferAccess.create(blockSize);
-      blockBa.writeUInt8(0x2a); // sync byte
+      blockBa.writeUint8(0x2a); // sync byte
       blockBa.writeBa(blockHeaderBa);
-      blockBa.writeUInt16BE(calculateCrc(blockHeaderBa));
+      blockBa.writeUint16Be(calculateCrc(blockHeaderBa));
       blockBa.writeBa(blockDataBa);
-      blockBa.writeUInt16BE(calculateCrc(blockDataBa));
+      blockBa.writeUint16Be(calculateCrc(blockDataBa));
 
       Logger.debug(`Block 0x${block.toString(16).padStart(2, '0')}`);
       Logger.debug(blockBa.asHexDump());

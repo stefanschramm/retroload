@@ -17,9 +17,9 @@ export class KcBasicTokenizer {
     const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, TOKENS, str);
 
     const kcSssBa = BufferAccess.create(lineDataBa.length() + 3);
-    kcSssBa.writeUInt16LE(lineDataBa.length());
+    kcSssBa.writeUint16Le(lineDataBa.length());
     kcSssBa.writeBa(lineDataBa);
-    kcSssBa.writeUInt8(0x03);
+    kcSssBa.writeUint8(0x03);
 
     return kcSssBa;
   }

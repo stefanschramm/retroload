@@ -30,9 +30,9 @@ export class Z1013Z80Adapter extends AbstractAdapter {
   static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const header = ba.slice(0, headerLength);
     const data = ba.slice(headerLength);
-    const loadAddress = header.getUint16LE(0x00);
-    const endAddress = header.getUint16LE(0x02);
-    const startAddress = header.getUint16LE(0x04);
+    const loadAddress = header.getUint16Le(0x00);
+    const endAddress = header.getUint16Le(0x02);
+    const startAddress = header.getUint16Le(0x04);
     const type = header.getUint8(0x0c);
     const name = ba.slice(0x10, 0x10).asAsciiString();
     Logger.log(`Filename: "${name}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);

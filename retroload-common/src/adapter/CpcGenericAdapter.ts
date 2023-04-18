@@ -65,15 +65,15 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
 
       const headerBa = BufferAccess.create(0x100);
       headerBa.writeAsciiString(filename, maxFileNameLength, 0);
-      headerBa.writeUInt8(b + 1); // block number
-      headerBa.writeUInt8(isLastBlock ? 0xff : 0x00);
-      headerBa.writeUInt8(fileTypeBinary);
-      headerBa.writeUInt16LE(chunk.length());
-      headerBa.writeUInt16LE(blockDataLocation);
-      headerBa.writeUInt8(isFirstBlock ? 0xff : 0x00);
+      headerBa.writeUint8(b + 1); // block number
+      headerBa.writeUint8(isLastBlock ? 0xff : 0x00);
+      headerBa.writeUint8(fileTypeBinary);
+      headerBa.writeUint16Le(chunk.length());
+      headerBa.writeUint16Le(blockDataLocation);
+      headerBa.writeUint8(isFirstBlock ? 0xff : 0x00);
       // user fields
-      headerBa.writeUInt16LE(ba.length()); // logical length
-      headerBa.writeUInt16LE(entry); // entry address
+      headerBa.writeUint16Le(ba.length()); // logical length
+      headerBa.writeUint16Le(entry); // entry address
 
       // Remaining bytes 28..63 stay unallocated. Rest of header segment is padded with zeros.
 
@@ -95,10 +95,10 @@ function createHeaderRecord(headerBa: BufferAccess) {
   }
   const headerRecordSize = 1 + dataBytesPerSegment + 2 + 4; // sync char + data + checksum + trailer
   const headerRecordBa = BufferAccess.create(headerRecordSize);
-  headerRecordBa.writeUInt8(headerRecordSyncCharacter); // synchronisation character
+  headerRecordBa.writeUint8(headerRecordSyncCharacter); // synchronisation character
   headerRecordBa.writeBa(headerBa); // data
-  headerRecordBa.writeUInt16BE(calculateSegmentCrc(headerBa)); // crc checksum
-  headerRecordBa.writeUInt32LE(0xffffffff); // trailer
+  headerRecordBa.writeUint16Be(calculateSegmentCrc(headerBa)); // crc checksum
+  headerRecordBa.writeUint32Le(0xffffffff); // trailer
 
   return headerRecordBa;
 }
@@ -111,12 +111,12 @@ function createDataRecord(dataBa: BufferAccess) {
   const segments = dataBa.chunksPadded(dataBytesPerSegment, 0x00);
   const dataRecordSize = 1 + segments.length * (dataBytesPerSegment + 2) + 4;
   const dataRecordBa = BufferAccess.create(dataRecordSize);
-  dataRecordBa.writeUInt8(dataRecordSyncCharacter); // synchronisation character
+  dataRecordBa.writeUint8(dataRecordSyncCharacter); // synchronisation character
   for (const segmentData of segments) {
     dataRecordBa.writeBa(segmentData); // data
-    dataRecordBa.writeUInt16BE(calculateSegmentCrc(segmentData)); // crc checksum
+    dataRecordBa.writeUint16Be(calculateSegmentCrc(segmentData)); // crc checksum
   }
-  dataRecordBa.writeUInt32LE(0xffffffff); // trailer
+  dataRecordBa.writeUint32Le(0xffffffff); // trailer
 
   return dataRecordBa;
 }

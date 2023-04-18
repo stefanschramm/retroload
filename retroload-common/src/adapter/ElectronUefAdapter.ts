@@ -51,8 +51,8 @@ export class ElectronUefAdapter extends AbstractAdapter {
 
     let chunkOffset = 12;
     while (chunkOffset < uefBa.length()) {
-      const chunkType = uefBa.getUint16LE(chunkOffset);
-      const chunkLength = uefBa.getUint32LE(chunkOffset + 2);
+      const chunkType = uefBa.getUint16Le(chunkOffset);
+      const chunkLength = uefBa.getUint32Le(chunkOffset + 2);
       Logger.debug(`Chunk - Offset: 0x${chunkOffset.toString(16)} Type: 0x${chunkType.toString(16)} Length: 0x${chunkLength.toString(16)}`);
       const chunkBa = uefBa.slice(chunkOffset + 6, chunkLength);
       Logger.debug(chunkBa.asHexDump());
@@ -71,10 +71,10 @@ export class ElectronUefAdapter extends AbstractAdapter {
           Logger.error(`Chunk type 0x${chunkType.toString(16)} not implemented.`);
           break;
         case 0x0110: // carrier tone
-          e.recordCarrier(chunkBa.getUint16LE(0));
+          e.recordCarrier(chunkBa.getUint16Le(0));
           break;
         case 0x0112: // integer gap
-          e.recordGap(chunkBa.getUint16LE(0));
+          e.recordGap(chunkBa.getUint16Le(0));
           break;
         default:
           // TODO - try to support all 0x01xx (tape) chunks

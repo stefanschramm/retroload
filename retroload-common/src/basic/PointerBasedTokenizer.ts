@@ -46,12 +46,12 @@ export class PointerBasedSourceTokenizer {
       totalByteLength += lineByteLength;
       nextLineAddress += lineByteLength;
       const lineBa = BufferAccess.create(lineByteLength);
-      lineBa.writeUInt16LE(nextLineAddress);
-      lineBa.writeUInt16LE(lineNumber);
+      lineBa.writeUint16Le(nextLineAddress);
+      lineBa.writeUint16Le(lineNumber);
       for (const t of tlTail) {
         applyAction(t, lineBa);
       }
-      lineBa.writeUInt8(0x00); // end of line
+      lineBa.writeUint8(0x00); // end of line
       compiledLines.push(lineBa);
     }
     const destinationBa = BufferAccess.create(totalByteLength + 2); // 0x00, 0x00 at the end
@@ -144,7 +144,7 @@ function applyAction(token: Token, lineBa: BufferAccess) {
       return;
     case 'MAP':
       for (const val of token.mappedValue[0] as number[]) {
-        lineBa.writeUInt8(val);
+        lineBa.writeUint8(val);
       }
       return;
     default:

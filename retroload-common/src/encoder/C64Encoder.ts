@@ -118,9 +118,9 @@ export class C64Encoder extends AbstractEncoder {
 
   recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
     const headerBa = BufferAccess.create(192);
-    headerBa.writeUInt8(fileType); // 1 byte: file type: prg or basic file
-    headerBa.writeUInt16LE(startAddress); // 2 bytes: start address
-    headerBa.writeUInt16LE(startAddress + dataBa.length()); // 2 bytes: end address
+    headerBa.writeUint8(fileType); // 1 byte: file type: prg or basic file
+    headerBa.writeUint16Le(startAddress); // 2 bytes: start address
+    headerBa.writeUint16Le(startAddress + dataBa.length()); // 2 bytes: end address
     headerBa.writeAsciiString(filenameBuffer); // 16 bytes: filename
     headerBa.writeAsciiString(' '.repeat(171)); // 171 bytes: padding with spaces
 

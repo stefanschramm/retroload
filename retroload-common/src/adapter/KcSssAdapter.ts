@@ -45,9 +45,9 @@ export class KcSssAdapter extends AbstractAdapter {
     // Usually, .SSS files are a multiple of 128. But for now we're not enforcing it because the blocks will get padded by the Encoder's recordBlock function.
 
     const firstBlockBa = BufferAccess.create(128);
-    firstBlockBa.writeUInt8(0xd3);
-    firstBlockBa.writeUInt8(0xd3);
-    firstBlockBa.writeUInt8(0xd3);
+    firstBlockBa.writeUint8(0xd3);
+    firstBlockBa.writeUint8(0xd3);
+    firstBlockBa.writeUint8(0xd3);
     firstBlockBa.writeAsciiString(filename, maxFileNameLength, 0x20);
     firstBlockBa.writeBa(ba.slice(0, blockSize - headerSize));
 

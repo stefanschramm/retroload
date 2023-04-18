@@ -32,7 +32,7 @@ export class C64TapAdapter extends AbstractAdapter {
   static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
-    const dataLength = header.getUint32LE(0x10);
+    const dataLength = header.getUint32Le(0x10);
 
     Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, '0')}, dataLength: ${dataLength}`);
 

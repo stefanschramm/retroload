@@ -32,7 +32,7 @@ export class ZxSpectrumTapAdapter extends AbstractAdapter {
     e.begin();
     let i = 0;
     while (i < ba.length()) {
-      const dataLength = ba.getUint16LE(i);
+      const dataLength = ba.getUint16Le(i);
       if (dataLength === 0) {
         break; // There might be garbage(-zeros) at the end
       }

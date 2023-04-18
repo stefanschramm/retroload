@@ -33,7 +33,7 @@ export class C64PrgAdapter extends AbstractAdapter {
 
   static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const header = ba.slice(0, 2);
-    const loadAddress = header.getUint16LE(0);
+    const loadAddress = header.getUint16Le(0);
     const data = ba.slice(2);
     const e = new C64Encoder(recorder, options);
     e.begin();

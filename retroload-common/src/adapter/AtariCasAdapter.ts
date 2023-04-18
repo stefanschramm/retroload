@@ -37,19 +37,19 @@ export class AtariCasAdapter extends AbstractAdapter {
       const chunkBa = ba.slice(i);
 
       if (chunkBa.containsDataAt(0, 'FUJI')) {
-        const chunkLength = chunkBa.getUint16LE(4);
+        const chunkLength = chunkBa.getUint16Le(4);
         const tapeDescriptionBa = chunkBa.slice(8, chunkLength);
         Logger.debug(`AtariCasAdapter - tape description: ${tapeDescriptionBa.asAsciiString()}`);
         i += 8 + chunkLength;
       } else if (chunkBa.containsDataAt(0, 'baud')) {
-        const chunkLength = chunkBa.getUint16LE(4);
-        const baudRate = chunkBa.getUint16LE(6);
+        const chunkLength = chunkBa.getUint16Le(4);
+        const baudRate = chunkBa.getUint16Le(6);
         e.setBaudrate(baudRate);
         Logger.debug(`AtariCasAdapter - type: baud, baudRate: ${baudRate}`);
         i += 8 + chunkLength;
       } else if (chunkBa.containsDataAt(0, 'data')) {
-        const chunkLength = chunkBa.getUint16LE(4);
-        const irgLength = chunkBa.getUint16LE(6);
+        const chunkLength = chunkBa.getUint16Le(4);
+        const irgLength = chunkBa.getUint16Le(6);
         Logger.debug(`AtariCasAdapter - type: data, chunkLength: ${chunkLength}, irgLength: ${irgLength}`);
         const data = chunkBa.slice(8, chunkLength);
         e.recordData(irgLength, data);

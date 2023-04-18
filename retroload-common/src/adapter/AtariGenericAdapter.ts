@@ -32,9 +32,9 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
       const blockType = partialBlock ? blockTypePartial : blockTypeFull;
       // actual block length will be 132 bytes: 2 markers, 1 block type byte, 128 actual data bytes, 1 checksum byte
       const blockBa = BufferAccess.create(132);
-      blockBa.writeUInt8(markerByte);
-      blockBa.writeUInt8(markerByte);
-      blockBa.writeUInt8(blockType);
+      blockBa.writeUint8(markerByte);
+      blockBa.writeUint8(markerByte);
+      blockBa.writeUint8(blockType);
       blockBa.writeBa(chunkBa); // (not always 128 bytes!)
       if (partialBlock) {
         blockBa.setUint8(130, chunkBa.length());
@@ -47,9 +47,9 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
 
     // End of file block
     const eofBlockBa = BufferAccess.create(132);
-    eofBlockBa.writeUInt8(markerByte);
-    eofBlockBa.writeUInt8(markerByte);
-    eofBlockBa.writeUInt8(blockTypeEndOfFile);
+    eofBlockBa.writeUint8(markerByte);
+    eofBlockBa.writeUint8(markerByte);
+    eofBlockBa.writeUint8(blockTypeEndOfFile);
     eofBlockBa.setUint8(131, calculateChecksum(eofBlockBa));
     e.recordIrg(defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
     e.recordBytes(eofBlockBa);

@@ -40,7 +40,7 @@ export class C64T64Adapter extends AbstractAdapter {
     const e = new C64Encoder(recorder, options);
 
     const header = ba.slice(0, 0x40);
-    const entries = header.getUint16LE(0x24);
+    const entries = header.getUint16Le(0x24);
 
     e.begin();
 
@@ -52,10 +52,10 @@ export class C64T64Adapter extends AbstractAdapter {
       if (type === 0) {
         continue; // not interesting
       }
-      const loadAddress = entryInfo.getUint16LE(0x02);
-      const endAddress = entryInfo.getUint16LE(0x04);
+      const loadAddress = entryInfo.getUint16Le(0x02);
+      const endAddress = entryInfo.getUint16Le(0x04);
       const dataLength = endAddress - loadAddress;
-      const containerOffset = entryInfo.getUint32LE(0x08);
+      const containerOffset = entryInfo.getUint32Le(0x08);
       const filename = ba.slice(entryOffset + 0x10, 0x10);
       const entryData = ba.slice(containerOffset, dataLength);
       e.recordPrg(loadAddress, filename.asAsciiString(), entryData, options.shortpilot as boolean);

@@ -42,7 +42,7 @@ export class KcEncoder extends AbstractEncoder {
     Logger.debug(blockDataBa.asHexDump());
 
     const blockBa = BufferAccess.create(1 + blockSize + 1);
-    blockBa.writeUInt8(blockNumber);
+    blockBa.writeUint8(blockNumber);
     blockBa.writeBa(blockDataBa);
     blockBa.setUint8(blockSize + 1, checksum);
 

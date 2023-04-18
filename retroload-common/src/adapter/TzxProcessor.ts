@@ -70,12 +70,12 @@ export class TzxProcessor {
   processStandardSpeedDataBlock(ba: BufferAccess) {
     // ID 0x10
     const blockHeaderLength = 0x04;
-    const dataLength = ba.getUint16LE(0x02);
+    const dataLength = ba.getUint16Le(0x02);
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
     this.e.recordDataBlock(blockDataBa, {
       ...this.e.getStandardSpeedRecordOptions(),
-      pauseLengthMs: ba.getUint16LE(0x00),
+      pauseLengthMs: ba.getUint16Le(0x00),
       pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223,
     });
 
@@ -89,14 +89,14 @@ export class TzxProcessor {
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
     this.e.recordDataBlock(blockDataBa, {
-      pilotPulseLength: ba.getUint16LE(0x00),
-      syncFirstPulseLength: ba.getUint16LE(0x02),
-      syncSecondPulseLength: ba.getUint16LE(0x04),
-      zeroBitPulseLength: ba.getUint16LE(0x06),
-      oneBitPulseLength: ba.getUint16LE(0x08),
-      pilotPulses: ba.getUint16LE(0x0a),
+      pilotPulseLength: ba.getUint16Le(0x00),
+      syncFirstPulseLength: ba.getUint16Le(0x02),
+      syncSecondPulseLength: ba.getUint16Le(0x04),
+      zeroBitPulseLength: ba.getUint16Le(0x06),
+      oneBitPulseLength: ba.getUint16Le(0x08),
+      pilotPulses: ba.getUint16Le(0x0a),
       lastByteUsedBits: ba.getUint8(0x0c),
-      pauseLengthMs: ba.getUint16LE(0x0d),
+      pauseLengthMs: ba.getUint16Le(0x0d),
     });
 
     return blockHeaderLength + dataLength;
@@ -104,8 +104,8 @@ export class TzxProcessor {
 
   processPureToneBlock(ba: BufferAccess) {
     // ID 0x12
-    const pulseLength = ba.getUint16LE(0);
-    const numberOfPulses = ba.getUint16LE(2);
+    const pulseLength = ba.getUint16Le(0);
+    const numberOfPulses = ba.getUint16Le(2);
     for (let i = 0; i < numberOfPulses; i++) {
       this.e.recordPulse(pulseLength);
     }
@@ -117,7 +117,7 @@ export class TzxProcessor {
     // ID 0x13
     const numberOfPulses = ba.getUint8(0);
     for (let i = 0; i < numberOfPulses; i++) {
-      const pulseLength = ba.getUint16LE(1 + 2 * i);
+      const pulseLength = ba.getUint16Le(1 + 2 * i);
       this.e.recordPulse(pulseLength);
     }
 
@@ -131,10 +131,10 @@ export class TzxProcessor {
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
     this.e.recordPureDataBlock(blockDataBa, {
-      zeroBitPulseLength: ba.getUint16LE(0x00),
-      oneBitPulseLength: ba.getUint16LE(0x02),
+      zeroBitPulseLength: ba.getUint16Le(0x00),
+      oneBitPulseLength: ba.getUint16Le(0x02),
       lastByteUsedBits: ba.getUint8(0x04),
-      pauseLengthMs: ba.getUint16LE(0x05),
+      pauseLengthMs: ba.getUint16Le(0x05),
     });
 
     return blockHeaderLength + dataLength;
@@ -142,7 +142,7 @@ export class TzxProcessor {
 
   processPauseBlock(ba: BufferAccess) {
     // ID 0x20
-    const length = ba.getUint16LE(0);
+    const length = ba.getUint16Le(0);
     this.e.recordSilenceMs(length);
 
     return 2;
@@ -167,7 +167,7 @@ export class TzxProcessor {
   processArchiveInfoBlock(ba: BufferAccess) {
     // ID 0x32
     // For now just ignore block
-    const length = ba.getUint16LE(0);
+    const length = ba.getUint16Le(0);
 
     return 2 + length;
   }

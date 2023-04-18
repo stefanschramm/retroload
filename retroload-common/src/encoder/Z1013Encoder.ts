@@ -30,9 +30,9 @@ export class Z1013Encoder extends AbstractEncoder {
 
   recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
     const blockBa = BufferAccess.create(2 + blockDataBa.length() + 2);
-    blockBa.writeUInt16LE(blockNumber);
+    blockBa.writeUint16Le(blockNumber);
     blockBa.writeBa(blockDataBa);
-    blockBa.writeUInt16LE(calculateChecksum(blockBa.slice(0, blockBa.length() - 2)));
+    blockBa.writeUint16Le(calculateChecksum(blockBa.slice(0, blockBa.length() - 2)));
 
     this.recordIntro();
     this.recordDelimiter();
@@ -63,7 +63,7 @@ export class Z1013Encoder extends AbstractEncoder {
 function calculateChecksum(ba: BufferAccess) {
   let checkSum = 0;
   for (let i = 0; i < ba.length(); i += 2) {
-    const word = ba.getUint16LE(i);
+    const word = ba.getUint16Le(i);
     checkSum = (checkSum + word) & 0xffff;
   }
 

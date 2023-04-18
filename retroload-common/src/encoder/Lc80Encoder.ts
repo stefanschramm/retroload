@@ -29,9 +29,9 @@ export class Lc80Encoder extends AbstractEncoder {
     // The "file name" gets written to the tape in reverse order.
     // So it's rather a little-endian file number than a name.
     const headerBa = BufferAccess.create(6);
-    headerBa.writeUInt16LE(fileNumber);
-    headerBa.writeUInt16LE(startAddress);
-    headerBa.writeUInt16LE(endAddress);
+    headerBa.writeUint16Le(fileNumber);
+    headerBa.writeUint16Le(startAddress);
+    headerBa.writeUint16Le(endAddress);
     this.recordBytes(headerBa);
   }
 

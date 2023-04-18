@@ -38,7 +38,7 @@ export class C64P00Adapter extends AbstractAdapter {
    */
   static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
     const fileName = ba.slice(8, 0x10);
-    const loadAddress = ba.getUint16LE(0x1a);
+    const loadAddress = ba.getUint16Le(0x1a);
     const data = ba.slice(0x1c);
     const e = new C64Encoder(recorder, options);
     e.begin();
