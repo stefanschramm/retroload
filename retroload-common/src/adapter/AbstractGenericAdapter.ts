@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
+import {AbstractAdapter, type FormatIdentification} from './AbstractAdapter.js';
 import type {BufferAccess} from '../BufferAccess.js';
 
 export abstract class AbstractGenericAdapter extends AbstractAdapter {
@@ -10,7 +10,7 @@ export abstract class AbstractGenericAdapter extends AbstractAdapter {
     return 'generic';
   }
 
-  static override identify(filename: string, ba: BufferAccess): any {
+  static override identify(filename: string, ba: BufferAccess): FormatIdentification {
     return {
       // filename: filename.match(/^.*\.(bin|raw|txt|asc|atascii)$/i) !== null,
       filename: undefined,
