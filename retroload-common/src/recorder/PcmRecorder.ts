@@ -1,4 +1,4 @@
-import {Logger} from '../Logger.js';
+import {InternalError} from '../Exceptions.js';
 import {SampleValue, type RecorderInterface} from './RecorderInterface.js';
 
 const dataMap = {
@@ -8,7 +8,7 @@ const dataMap = {
 };
 
 export class PcmRecorder implements RecorderInterface {
-  audioContext: any;
+  audioContext: AudioContext;
   data: number[] = [];
   sampleRate = 44100;
   constructor(audioContext: any) {
@@ -20,18 +20,14 @@ export class PcmRecorder implements RecorderInterface {
     this.data.push(dataMap[value]);
   }
 
-  getAudioContextBuffer() {
+  getAudioContextBuffer(): AudioBuffer {
     if (this.data.length === 0) {
-      Logger.error('No data recorded!');
-      return;
+      throw new InternalError('No data recorded!');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const buffer = this.audioContext.createBuffer(1, this.data.length, this.sampleRate);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     buffer.copyToChannel(new Float32Array(this.data), 0, 0);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return buffer;
   }
 }
