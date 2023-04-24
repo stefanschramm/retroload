@@ -11,36 +11,65 @@ import {Logger} from './Logger.js';
 import {type AbstractAdapter} from './adapter/AbstractAdapter.js';
 import {OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
 import {type RecorderInterface} from './recorder/RecorderInterface.js';
+import {type ArgumentOptionDefinition} from './Options.js';
 
-export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, options: OptionValues = {}) {
+export const formatOption: ArgumentOptionDefinition<string | undefined> = {
+  name: 'format',
+  label: 'Format',
+  description: 'Format of input file (required when automatic format detection by content and filename fails)',
+  common: false,
+  type: 'text',
+  argument: 'format',
+  required: false,
+  parse: (v) => v === '' ? undefined : v,
+  // TODO: add enum
+};
+
+export const machineOption: ArgumentOptionDefinition<string | undefined> = {
+  name: 'machine',
+  label: 'Machine type',
+  description: 'Machine type to load data onto (required for some formats that can be used for several machines)',
+  common: false,
+  type: 'text',
+  argument: 'machine type',
+  required: false,
+  parse: (v) => v === '' ? undefined : v,
+  // TODO: add enum
+};
+
+export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, optionValues: OptionValues = {}) {
+  const optionContainer = new OptionContainer(optionValues);
+  const format = optionContainer.getArgument(formatOption);
+  const machine = optionContainer.getArgument(machineOption);
   let filteredAdapters = providedAdapters;
-  if (options.format !== undefined) {
-    filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === options.format);
+  if (format !== undefined) {
+    filteredAdapters = filteredAdapters.filter((a) => a.getInternalName() === format);
     if (filteredAdapters.length === 0) {
-      throw new FormatNotFoundError(options.format as string);
+      throw new FormatNotFoundError(format);
     }
   }
-  if (options.machine !== undefined) {
-    filteredAdapters = filteredAdapters.filter((a) => a.getTargetName() === options.machine);
+  if (machine !== undefined) {
+    filteredAdapters = filteredAdapters.filter((a) => a.getTargetName() === machine);
     if (filteredAdapters.length === 0) {
-      throw new TargetMachineNotFoundError(options.machine as string, options.format as string);
+      throw new TargetMachineNotFoundError(machine, format);
     }
   }
   const adapter = filteredAdapters.length === 1 ? filteredAdapters[0] : autodetectAdapter(filteredAdapters, filename, dataBa);
 
-  return encodeWithAdapter(recorder, adapter, dataBa, options);
+  return encodeWithAdapter(recorder, adapter, dataBa, optionValues);
 }
 
-export function encodeWithAdapter(recorder: RecorderInterface, adapter: (typeof AbstractAdapter), dataBa: BufferAccess, options: OptionValues = {}) {
+export function encodeWithAdapter(recorder: RecorderInterface, adapter: (typeof AbstractAdapter), dataBa: BufferAccess, optionValues: OptionValues = {}) {
+  const optionContainer = new OptionContainer(optionValues);
   const requiredOptions = adapter.getOptions().filter((o) => o.type !== 'bool' && o.required);
-  const missingOptions = requiredOptions.filter((o) => options[o.name] === undefined);
+  const missingOptions = requiredOptions.filter((o) => optionValues[o.name] === undefined);
   if (missingOptions.length > 0) {
     throw new MissingOptionsError(missingOptions);
   }
 
   Logger.info('Format: ' + adapter.getName() + ', Target: ' + adapter.getTargetName());
 
-  adapter.encode(recorder, dataBa, new OptionContainer(options));
+  adapter.encode(recorder, dataBa, optionContainer);
 
   return true;
 }

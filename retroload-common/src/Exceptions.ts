@@ -28,7 +28,7 @@ export class FormatNotFoundError extends UsageError {
 }
 
 export class TargetMachineNotFoundError extends UsageError {
-  constructor(machine: string, format: string) {
+  constructor(machine: string, format: string | undefined) {
     if (format === undefined) {
       super(`Specified machine type "${machine}" not found.`);
     } else {

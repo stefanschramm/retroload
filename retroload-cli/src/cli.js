@@ -15,8 +15,8 @@ async function main() {
       .argument('infile', 'Path to file to play (default) or convert (when using -o <outfile> option)')
       .allowExcessArguments(false)
       .option('-o <outfile>', 'Generate WAVE file <outfile> instead of playback')
-      .option('-f, --format <format>', 'Format of input file (required when automatic format detection by content and filename fails)')
-      .option('-m, --machine <machine type>', 'Machine type to load data onto (required for some formats that can be used for several machines)')
+      .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), AdapterManager.formatOption.description)
+      .option('-m, ' + getCommanderFlagsString(AdapterManager.machineOption), AdapterManager.machineOption.description)
       .option('-v, --verbosity <verbosity>', 'Verbosity of log output', 1)
   ;
   // Options defined in adapters/encoders
