@@ -101,7 +101,7 @@ function createDataRecord(dataBa: BufferAccess) {
     throw new InternalError(`Data record size cannot exceed ${dataBytesPerDataBlock} bytes.`);
   }
 
-  const segments = dataBa.chunksPadded(dataBytesPerSegment, 0x00);
+  const segments = dataBa.chunksPadded(dataBytesPerSegment);
   const dataRecordSize = 1 + segments.length * (dataBytesPerSegment + 2) + 4;
   const dataRecordBa = BufferAccess.create(dataRecordSize);
   dataRecordBa.writeUint8(dataRecordSyncCharacter); // synchronisation character

@@ -81,7 +81,7 @@ test('chunks', () => {
 test('chunksPadded', () => {
   const ba = BufferAccess.create(11);
   ba.writeAsciiString('Hello World');
-  const chunks = ba.chunksPadded(3, 0x00);
+  const chunks = ba.chunksPadded(3);
   expect(chunks.length).toBe(4);
   expect(chunks[0].asHexDump()).toBe('00000000  48 65 6c                                          |Hel|');
   expect(chunks[1].asHexDump()).toBe('00000000  6c 6f 20                                          |lo |');

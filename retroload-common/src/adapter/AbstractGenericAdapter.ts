@@ -10,7 +10,7 @@ export abstract class AbstractGenericAdapter extends AbstractAdapter {
     return 'generic';
   }
 
-  static override identify(filename: string, ba: BufferAccess): FormatIdentification {
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return {
       // filename: filename.match(/^.*\.(bin|raw|txt|asc|atascii)$/i) !== null,
       filename: undefined,

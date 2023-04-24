@@ -20,7 +20,7 @@ export class KcKccAdapter extends AbstractAdapter {
     return 'kckcc';
   }
 
-  static override identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.kcc$/i).exec(filename) !== null,
       header: undefined, // no specific header

@@ -4,7 +4,7 @@ import {tokenizers} from '../../basic/TokenizerProvider.js';
 const fixturesDir = __dirname + '/fixtures';
 const fixtures = ['for'];
 
-describe.each(tokenizers.map((t) => [t.name, t]))('%s', (name, t) => {
+describe.each(tokenizers.map((t) => [t.name, t]))('%s', (_name, t) => {
   test('provides name', () => {
     expect(typeof t.getName()).toBe('string');
   });

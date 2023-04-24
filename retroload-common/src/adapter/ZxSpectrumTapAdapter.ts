@@ -20,7 +20,7 @@ export class ZxSpectrumTapAdapter extends AbstractAdapter {
     return 'zxspectrumtap';
   }
 
-  static override identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.tap/i).exec(filename) !== null,
       header: undefined,

@@ -18,7 +18,7 @@ export class Zx81PAdapter extends AbstractAdapter {
     return 'zx81p';
   }
 
-  static override identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.p$/i).exec(filename) !== null,
       header: undefined, // no specific header

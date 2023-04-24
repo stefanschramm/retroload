@@ -22,7 +22,7 @@ export class KcSssAdapter extends AbstractAdapter {
     return 'kcsss';
   }
 
-  static override identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.sss$/i).exec(filename) !== null,
       header: undefined, // no specific header

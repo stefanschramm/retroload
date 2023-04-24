@@ -180,7 +180,7 @@ export class TzxProcessor {
     return 1 + entries * 3;
   }
 
-  processGlueBlock(ba: BufferAccess) {
+  processGlueBlock(_ba: BufferAccess) {
     // ID 0x5a
     // Just ignore
     return 9;

@@ -10,7 +10,7 @@ export class Z1013Z13Adapter extends Z1013GenericAdapter {
     return 'z1013z13';
   }
 
-  static override identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.z13$/i).exec(filename) !== null,
       header: undefined, // no specific header

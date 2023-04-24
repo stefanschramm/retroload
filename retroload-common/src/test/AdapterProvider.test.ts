@@ -5,7 +5,7 @@ test('Adapter provider lists adapters', () => {
   expect(adapters.length).toBeGreaterThan(0);
 });
 
-describe.each(adapters.map((a) => [a.name, a]))('%s', (name, a) => {
+describe.each(adapters.map((a) => [a.name, a]))('%s', (_name, a) => {
   test('provides target name', () => {
     expect(typeof a.getTargetName()).toBe('string');
   });

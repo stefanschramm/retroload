@@ -18,7 +18,7 @@ export class C64PrgAdapter extends AbstractAdapter {
     return 'c64prg';
   }
 
-  static override identify(filename: string, ba: BufferAccess) {
+  static override identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.prg$/i).exec(filename) !== null,
       header: undefined, // no specific header

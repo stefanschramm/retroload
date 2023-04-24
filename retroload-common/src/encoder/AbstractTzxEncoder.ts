@@ -64,7 +64,7 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
     return Math.floor((0.5 + ((this.recorder.sampleRate / fCpu) * cycles)) * this.getTzxCycleFactor());
   }
 
-  recordBit(value: number): void {
+  recordBit(_value: number): void {
     throw new InternalError('Call to recordBit not expected for TzxEncoders.');
   }
 

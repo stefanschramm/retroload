@@ -81,7 +81,7 @@ export class BufferAccess {
    *
    * If the last chunk required padding, it will be a copy while the other chunks are always references.
    */
-  chunksPadded(chunkSize: number, paddingByte: number): BufferAccess[] {
+  chunksPadded(chunkSize: number): BufferAccess[] {
     const unpaddedChunks = this.chunks(chunkSize);
     if (unpaddedChunks.length === 0) {
       return unpaddedChunks;
