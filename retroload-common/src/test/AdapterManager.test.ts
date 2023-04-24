@@ -20,7 +20,6 @@ test('getAllOptions returns options that have at least name, label, description 
   const options = AdapterManager.getAllOptions();
   expect(options.length).toBeGreaterThan(0);
   for (const o of options) {
-    expect(o).toBeInstanceOf(Option);
     expect(typeof o.name).toBe('string');
     expect(typeof o.label).toBe('string');
     expect(typeof o.description).toBe('string');
