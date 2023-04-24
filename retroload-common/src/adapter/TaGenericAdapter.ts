@@ -1,5 +1,5 @@
 import {TaEncoder, maxFileNameLength} from '../encoder/TaEncoder.js';
-import {nameOption, type OptionValues} from '../Options.js';
+import {nameOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
@@ -20,8 +20,8 @@ export class TaGenericAdapter extends AbstractGenericAdapter {
     ];
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
-    const filename = (options.name ?? '') as string;
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+    const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }

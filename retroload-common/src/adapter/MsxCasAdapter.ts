@@ -3,7 +3,7 @@ import {MsxEncoder} from '../encoder/MsxEncoder.js';
 import {Logger} from '../Logger.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../BufferAccess.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 
 const blockHeader = [0x1f, 0xa6, 0xde, 0xba, 0xcc, 0x13, 0x7d, 0x74];
 
@@ -38,7 +38,7 @@ export class MsxCasAdapter extends AbstractAdapter {
     return MsxEncoder.getOptions();
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new MsxEncoder(recorder, options);
     e.begin();
     for (let i = 0; i < ba.length(); i++) {

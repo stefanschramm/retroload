@@ -1,7 +1,7 @@
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const markerByte = 0x55;
@@ -22,7 +22,7 @@ export class AtariGenericAdapter extends AbstractGenericAdapter {
     return 'Atari (Generic data)';
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
     const chunks = ba.chunks(dataBytesPerBlock);

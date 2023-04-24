@@ -1,6 +1,6 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
-import {type OptionValues, shortpilotOption} from '../Options.js';
+import {shortpilotOption, type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
@@ -36,7 +36,7 @@ export class C64T64Adapter extends AbstractAdapter {
   /**
    * http://unusedino.de/ec64/technical/formats/t64.html
    */
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new C64Encoder(recorder, options);
 
     const header = ba.slice(0, 0x40);
@@ -58,7 +58,7 @@ export class C64T64Adapter extends AbstractAdapter {
       const containerOffset = entryInfo.getUint32Le(0x08);
       const filename = ba.slice(entryOffset + 0x10, 0x10);
       const entryData = ba.slice(containerOffset, dataLength);
-      e.recordPrg(loadAddress, filename.asAsciiString(), entryData, options.shortpilot as boolean);
+      e.recordPrg(loadAddress, filename.asAsciiString(), entryData, options.isFlagSet(shortpilotOption));
     }
 
     e.end();

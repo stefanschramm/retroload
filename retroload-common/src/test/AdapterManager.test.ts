@@ -1,7 +1,7 @@
 import * as AdapterManager from '../AdapterManager.js';
 import {Logger} from '../Logger.js';
 import {NullLoggerHandler} from '../NullLoggerHandler.js';
-import {Option, type OptionValues} from '../Options.js';
+import {type OptionValues} from '../Options.js';
 import {WaveRecorder} from '../recorder/WaveRecorder.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
@@ -16,20 +16,16 @@ test('getAllAdapters returns non-empty list', () => {
   // Actual plausibility test of individual adapters is done in AdapterProvider test
 });
 
-test('getAllOptions returns options that have at least key, label, description and type set', () => {
+test('getAllOptions returns options that have at least name, label, description and type set', () => {
   const options = AdapterManager.getAllOptions();
   expect(options.length).toBeGreaterThan(0);
   for (const o of options) {
     expect(o).toBeInstanceOf(Option);
-    expect(typeof o.key).toBe('string');
+    expect(typeof o.name).toBe('string');
     expect(typeof o.label).toBe('string');
     expect(typeof o.description).toBe('string');
     expect(typeof o.type).toBe('string');
     expect(['text', 'bool', 'enum']).toContain(o.type);
-    if (o.type === 'enum') {
-      expect(o.enum.length).toBeGreaterThan(0);
-    }
-    expect(typeof o.getCommanderFlagsString()).toBe('string');
   }
 });
 

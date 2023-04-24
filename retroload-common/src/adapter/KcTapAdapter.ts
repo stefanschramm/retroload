@@ -2,7 +2,7 @@ import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../BufferAccess.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
@@ -30,7 +30,7 @@ export class KcTapAdapter extends AbstractAdapter {
     };
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const blocks = Math.ceil((ba.length() - fileHeaderLength) / fileBlockSize);
 
     // TODO: Possible warnings when:

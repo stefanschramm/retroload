@@ -9,7 +9,7 @@ import {type BufferAccess} from './BufferAccess.js';
 import {adapters as providedAdapters} from './AdapterProvider.js';
 import {Logger} from './Logger.js';
 import {type AbstractAdapter} from './adapter/AbstractAdapter.js';
-import {type Option, type OptionValues} from './Options.js';
+import {OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
 import {type RecorderInterface} from './recorder/RecorderInterface.js';
 
 export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, options: OptionValues = {}) {
@@ -32,15 +32,15 @@ export function encode(recorder: RecorderInterface, filename: string, dataBa: Bu
 }
 
 export function encodeWithAdapter(recorder: RecorderInterface, adapter: (typeof AbstractAdapter), dataBa: BufferAccess, options: OptionValues = {}) {
-  const requiredOptions = adapter.getOptions().filter((o) => o.required);
-  const missingOptions = requiredOptions.filter((o) => options[o.key] === undefined);
+  const requiredOptions = adapter.getOptions().filter((o) => o.type !== 'bool' && o.required);
+  const missingOptions = requiredOptions.filter((o) => options[o.name] === undefined);
   if (missingOptions.length > 0) {
     throw new MissingOptionsError(missingOptions);
   }
 
   Logger.info('Format: ' + adapter.getName() + ', Target: ' + adapter.getTargetName());
 
-  adapter.encode(recorder, dataBa, options);
+  adapter.encode(recorder, dataBa, new OptionContainer(options));
 
   return true;
 }
@@ -64,17 +64,17 @@ export function getAllAdapters() {
 }
 
 export function getAllOptions() {
-  const options: Option[] = [];
+  const options: OptionDefinition[] = [];
   const optionKeys: string[] = [];
   for (const adapter of providedAdapters) {
     for (const option of adapter.getOptions()) {
-      if (optionKeys.includes(option.key)) {
+      if (optionKeys.includes(option.name)) {
         if (option.common) {
           continue;
         }
-        throw new InternalError(`Non-common option "${option.key}" defined multiple times.`);
+        throw new InternalError(`Non-common option "${option.name}" defined multiple times.`);
       }
-      optionKeys.push(option.key);
+      optionKeys.push(option.name);
       options.push(option);
     }
   }

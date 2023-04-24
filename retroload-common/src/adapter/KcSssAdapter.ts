@@ -1,7 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {BufferAccess} from '../BufferAccess.js';
-import {nameOption, type OptionValues} from '../Options.js';
+import {nameOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
@@ -35,9 +35,9 @@ export class KcSssAdapter extends AbstractAdapter {
     ];
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
-    const filename = (options.name ?? '') as string;
+    const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }

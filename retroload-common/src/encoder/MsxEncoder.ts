@@ -1,5 +1,5 @@
 import {AbstractEncoder} from './AbstractEncoder.js';
-import {shortpilotOption, Option} from '../Options.js';
+import {type FlagOptionDefinition, shortpilotOption} from '../Options.js';
 
 const fZero = 1200;
 const fOne = 2400;
@@ -8,6 +8,14 @@ const secondsShortSilence = 1.0;
 const secondsLongSilence = 2.0;
 const pulsesLongHeader = 16000;
 const pulsesShortHeader = 4000;
+
+const msxfastOption: FlagOptionDefinition = {
+  name: 'msxfast',
+  label: 'Fast baudrate',
+  description: 'Use 2400 baud instead of 1200 (faster loading, less reliable)',
+  type: 'bool',
+  common: false,
+};
 
 /**
  * Encoder for MSX
@@ -23,13 +31,13 @@ export class MsxEncoder extends AbstractEncoder {
   static getOptions() {
     return [
       shortpilotOption,
-      new Option('msxfast', 'Fast baudrate', 'Use 2400 baud instead of 1200 (faster loading, less reliable)', {type: 'bool'}),
+      msxfastOption,
     ];
   }
 
   recordHeader(long: boolean) {
     this.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
-    long = this.options.shortpilot ? false : long; // use short pulse if shortpilot option is set
+    long = this.options.isFlagSet(shortpilotOption) ? false : long; // use short pulse if shortpilot option is set
     const pulses = long ? pulsesLongHeader : pulsesShortHeader;
     this.recordOscillations(fOne * this.getBaudrateFactor(), pulses);
   }
@@ -50,6 +58,6 @@ export class MsxEncoder extends AbstractEncoder {
   }
 
   getBaudrateFactor() {
-    return this.options.msxfast ? 2 : 1; // use 1200 or 2400 baud
+    return this.options.isFlagSet(msxfastOption) ? 2 : 1; // use 1200 or 2400 baud
   }
 }

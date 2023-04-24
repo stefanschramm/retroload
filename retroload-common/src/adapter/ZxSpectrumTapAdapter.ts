@@ -1,7 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {ZxSpectrumTzxEncoder} from '../encoder/ZxSpectrumTzxEncoder.js';
 import {type BufferAccess} from '../BufferAccess.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 /**
@@ -27,7 +27,7 @@ export class ZxSpectrumTapAdapter extends AbstractAdapter {
     };
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new ZxSpectrumTzxEncoder(recorder, options);
     e.begin();
     let i = 0;

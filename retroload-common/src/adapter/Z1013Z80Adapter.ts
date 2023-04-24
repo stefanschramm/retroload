@@ -2,8 +2,8 @@ import {AbstractAdapter} from './AbstractAdapter.js';
 import {Z1013Encoder} from '../encoder/Z1013Encoder.js';
 import {Logger} from '../Logger.js';
 import {type BufferAccess} from '../BufferAccess.js';
-import {type OptionValues} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type OptionContainer} from '../Options.js';
 
 const headerLength = 0x20;
 
@@ -27,7 +27,7 @@ export class Z1013Z80Adapter extends AbstractAdapter {
     };
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const header = ba.slice(0, headerLength);
     const data = ba.slice(headerLength);
     const loadAddress = header.getUint16Le(0x00);

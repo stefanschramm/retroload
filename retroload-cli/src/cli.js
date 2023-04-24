@@ -23,7 +23,7 @@ async function main() {
   const allOptions = AdapterManager.getAllOptions();
   allOptions.sort((a, b) => a.common && !b.common ? -1 : 0);
   for (const option of allOptions) {
-    program.option(option.getCommanderFlagsString(), option.description, option.defaultValue);
+    program.option(getCommanderFlagsString(option), option.description, option.defaultValue);
   }
   program.parse();
 
@@ -64,6 +64,10 @@ async function main() {
     writeOutputFile(outfile, recorder.getBuffer());
     process.exit(0);
   }
+}
+
+function getCommanderFlagsString(optionDefinition) {
+  return optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
 }
 
 async function initializeSpeaker() {

@@ -4,7 +4,7 @@ import {BufferAccess} from '../BufferAccess.js';
 import {Logger} from '../Logger.js';
 import {inflate} from 'pako';
 import {InputDataError} from '../Exceptions.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fileHeader = 'UEF File!\x00';
@@ -35,7 +35,7 @@ export class ElectronUefAdapter extends AbstractAdapter {
     };
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const uefBa = uncompressIfRequired(ba);
 
     if (!uefBa.containsDataAt(0, fileHeader)) {

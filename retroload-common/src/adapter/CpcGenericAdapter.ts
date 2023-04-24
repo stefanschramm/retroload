@@ -1,5 +1,5 @@
 import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
-import {entryOption, loadOption, nameOption, type OptionValues} from '../Options.js';
+import {entryOption, loadOption, nameOption, type OptionContainer} from '../Options.js';
 import {InternalError, InvalidArgumentError} from '../Exceptions.js';
 import {BufferAccess} from '../BufferAccess.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
@@ -34,21 +34,14 @@ export class CpcGenericAdapter extends AbstractGenericAdapter {
   /**
    * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
    */
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
-    const filename = (options.name ?? '') as string;
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+    const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
 
-    const load = parseInt((options.load ?? '0000') as string, 16);
-    if (isNaN(load) || load < 0 || load > 0xffff) {
-      throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
-    }
-
-    const entry = parseInt((options.entry ?? '0000') as string, 16);
-    if (isNaN(entry) || entry < 0 || entry > 0xffff) {
-      throw new InvalidArgumentError('entry', 'Option entry is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
-    }
+    const load = options.getArgument(loadOption) ?? 0x0000;
+    const entry = options.getArgument(entryOption) ?? 0x0000;
 
     const e = new CpcTzxEncoder(recorder, options);
 

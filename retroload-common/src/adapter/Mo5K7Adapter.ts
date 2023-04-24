@@ -4,7 +4,7 @@ import {AbstractAdapter} from './AbstractAdapter.js';
 import {Logger} from '../Logger.js';
 import {InputDataError} from '../Exceptions.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 
 // The number of 0x01 in the header seems to vary.
 // By definition it should be 16, but many images have more and some less.
@@ -30,7 +30,7 @@ export class Mo5K7Adapter extends AbstractAdapter {
     };
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new Mo5Encoder(recorder, options);
     e.begin();
     let i = 0;

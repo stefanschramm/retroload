@@ -1,7 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
 import {Logger} from '../Logger.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
@@ -29,7 +29,7 @@ export class C64TapAdapter extends AbstractAdapter {
     };
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
     const dataLength = header.getUint32Le(0x10);

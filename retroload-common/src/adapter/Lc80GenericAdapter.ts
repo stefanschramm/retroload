@@ -1,5 +1,5 @@
 import {Lc80Encoder} from '../encoder/Lc80Encoder.js';
-import {loadOption, nameOption, type OptionValues} from '../Options.js';
+import {loadOption, nameOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type BufferAccess} from '../BufferAccess.js';
@@ -21,14 +21,14 @@ export class Lc80GenericAdapter extends AbstractGenericAdapter {
     ];
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
-    const fileNumber = parseInt(options.name as string, 16);
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+    const fileNumber = parseInt(options.getArgument(nameOption), 16);
     if (isNaN(fileNumber) || fileNumber < 0 || fileNumber > 0xffff) {
       throw new InvalidArgumentError('name', 'Option name is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 0001');
     }
 
-    const loadAddress = parseInt(options.load as string, 16);
-    if (isNaN(loadAddress) || loadAddress < 0 || loadAddress > 0xffff) {
+    const loadAddress = options.getArgument(loadOption);
+    if (loadAddress === undefined) {
       throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 

@@ -1,7 +1,7 @@
 import {AbstractAdapter} from './AbstractAdapter.js';
 import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
 import {TzxProcessor} from './TzxProcessor.js';
-import {type OptionValues} from '../Options.js';
+import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
@@ -27,7 +27,7 @@ export class CpcCdtAdapter extends AbstractAdapter {
     };
   }
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionValues) {
+  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new CpcTzxEncoder(recorder, options);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);

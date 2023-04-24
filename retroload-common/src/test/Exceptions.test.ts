@@ -7,7 +7,7 @@ import {
   TargetMachineNotFoundError,
   UsageError,
 } from '../Exceptions.js';
-import {Option} from '../Options.js';
+import {type ArgumentOptionDefinition} from '../Options.js';
 
 describe('Instantiation of exceptions', () => {
   test('UsageError', () => {
@@ -36,7 +36,16 @@ describe('Instantiation of exceptions', () => {
   });
 
   test('MissingOptionsError', () => {
-    const e = new MissingOptionsError([new Option('exampleoption', 'Example option label', 'Example option description')]);
+    const optionDefinition: ArgumentOptionDefinition<string> = {
+      name: 'exampleoption',
+      label: 'Example option label',
+      description: 'example option description',
+      type: 'text',
+      common: false,
+      parse: (v) => v,
+      required: false,
+    };
+    const e = new MissingOptionsError([optionDefinition]);
     expect(e).toBeInstanceOf(MissingOptionsError);
   });
 
