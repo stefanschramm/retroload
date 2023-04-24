@@ -1,4 +1,4 @@
-import {AbstractTzxEncoder, type SpeedRecordOptions} from './AbstractTzxEncoder.js';
+import {AbstractTzxEncoder, type DataRecordOptions} from './AbstractTzxEncoder.js';
 
 /**
  * Amstrad CPC-specific variant of the TzxEncoder (.cdt files)
@@ -12,7 +12,7 @@ export class CpcTzxEncoder extends AbstractTzxEncoder {
     return 40 / 35;
   }
 
-  getStandardSpeedRecordOptions(): SpeedRecordOptions {
+  getStandardSpeedRecordOptions(): DataRecordOptions {
     return {
       pilotPulseLength: 0x091a,
       syncFirstPulseLength: 0x048d,

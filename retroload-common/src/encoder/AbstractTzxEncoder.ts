@@ -24,7 +24,7 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
     });
   }
 
-  recordDataBlock(blockDataBa: BufferAccess, options: SpeedRecordOptions) {
+  recordDataBlock(blockDataBa: BufferAccess, options: DataRecordOptions) {
     const pilotSamples = this.tzxCyclesToSamples(options.pilotPulseLength);
     for (let i = 0; i < options.pilotPulses; i++) {
       this.recordHalfOscillationSamples(pilotSamples);
@@ -34,7 +34,7 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
     this.recordPureDataBlock(blockDataBa, options);
   }
 
-  recordPureDataBlock(blockDataBa: BufferAccess, options: SpeedRecordOptions) {
+  recordPureDataBlock(blockDataBa: BufferAccess, options: PureDataRecordOptions) {
     const zeroBitSamples = this.tzxCyclesToSamples(options.zeroBitPulseLength);
     const oneBitSamples = this.tzxCyclesToSamples(options.oneBitPulseLength);
 
@@ -70,7 +70,19 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
 
   abstract getTzxCycleFactor(): number;
 
-  abstract getStandardSpeedRecordOptions(): SpeedRecordOptions;
+  abstract getStandardSpeedRecordOptions(): DataRecordOptions;
 }
 
-export type SpeedRecordOptions = Record<string, number>;
+type PureDataRecordOptions = {
+  zeroBitPulseLength: number;
+  oneBitPulseLength: number;
+  lastByteUsedBits: number;
+  pauseLengthMs: number;
+};
+
+export type DataRecordOptions = PureDataRecordOptions & {
+  pilotPulseLength: number;
+  pilotPulses: number;
+  syncFirstPulseLength: number;
+  syncSecondPulseLength: number;
+};

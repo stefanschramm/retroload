@@ -1,4 +1,4 @@
-import {AbstractTzxEncoder, type SpeedRecordOptions} from './AbstractTzxEncoder.js';
+import {AbstractTzxEncoder, type DataRecordOptions} from './AbstractTzxEncoder.js';
 
 /**
  * ZX Spectrum-specific variant of the AbstractTzxEncoder
@@ -12,7 +12,7 @@ export class ZxSpectrumTzxEncoder extends AbstractTzxEncoder {
     return 1;
   }
 
-  getStandardSpeedRecordOptions(): SpeedRecordOptions {
+  getStandardSpeedRecordOptions(): DataRecordOptions {
     return {
       // ZX Spectrum defaults (for non-turbo-speed-data blocks)
       pauseLengthMs: 1000,
@@ -22,6 +22,7 @@ export class ZxSpectrumTzxEncoder extends AbstractTzxEncoder {
       zeroBitPulseLength: 855,
       oneBitPulseLength: 1710,
       lastByteUsedBits: 8,
+      pilotPulses: 8063,
     };
   }
 }
