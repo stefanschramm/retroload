@@ -4,6 +4,7 @@ function getExamples() {
   return [
     // Acorn Electron
     new Example('electron_generic', 'rl.bas', {machine: 'electron', format: 'generic', name: 'RL', load: '0e00', entry: '801f', shortpilot: true}, 'e64e45d7c1f4d7fb2eaed067b05b5112', 'CHAIN ""'), // 2023-04-02 (Acorn Electron)
+    new Example('electron_generic', 'rl.uef', {shortpilot: true}, 'e64e45d7c1f4d7fb2eaed067b05b5112', 'CHAIN ""'), // 2023-04-02 (Acorn Electron)
     // Atari 800 XL
     new Example('atari_cas', 'rl.cas', {}, '8d36a2a696c7e27807c4d1f058fdec34', 'START+POWERON\nPLAY\nANYKEY'), // 2023-01-19 OK (Atari 800 XL)
     new Example('atari_generic', 'rl.atascii', {machine: 'atari'}, '9f9c3073bd22e2fddde2e00128bb7f87', 'ENTER "C:"'), // 2023-01-20 OK (Atari 800 XL)
