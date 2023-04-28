@@ -1,4 +1,3 @@
-import {type BufferAccess} from '../BufferAccess.js';
 import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fPulse = 3000;
@@ -10,10 +9,6 @@ const bitPause = 0.0013; // s
 export class Zx81Encoder extends AbstractEncoder {
   static override getTargetName() {
     return 'zx81';
-  }
-
-  recordData(ba: BufferAccess) {
-    this.recordBytes(ba);
   }
 
   override recordByte(byte: number) {

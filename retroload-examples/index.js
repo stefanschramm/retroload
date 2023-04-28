@@ -41,7 +41,7 @@ function getExamples() {
     new Example('z1013_z13', 'rl.z13', {}, '34083eb0e8ee6f631e92a412c8926f71', 'L 0100 018F\nJ 0100'),
     new Example('z1013_z80', 'rl.z80', {}, '779a051a0ed4769462d24aded68a94b3', 'L 0100 0200\nJ 0100'),
     // ZX 81
-    new Example('zx81_p', 'rl.p', {}, '23457ea2403a1e38be2911868a5b8bf4', 'LOAD""\nRUN'),
+    new Example('zx81_p', 'rl.p', {name: 'TEST'}, '23457ea2403a1e38be2911868a5b8bf4', 'LOAD""\nRUN'), // TODO: use different example filename (RL) and test again on real hardware
     // ZX Spectrum
     new Example('zxspectrum', 'rl.bas.tap', {format: 'zxspectrumtap'}, '1a5cddb97fb7e433bc518fac58a5c8bc', 'LOAD ""\nRUN'), // 2022-12-04 OK (ZX Spectrum+)
     new Example('zxspectrum', 'rl.bin.tap', {format: 'zxspectrumtap'}, '84f3375e693b3c42bdfb0e46cbc656c0', 'LOAD "" CODE\nPRINT USR 32768'), // 2022-12-06 OK (ZX Spectrum+)
