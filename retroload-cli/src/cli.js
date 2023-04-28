@@ -9,6 +9,7 @@ import {Command} from 'commander';
 main();
 
 async function main() {
+  const machineFormatList = AdapterManager.getAllAdapters().map((a) => a.getTargetName() + '/' + a.getInternalName()).join(', ');
   const program = (new Command())
       .name('retroload')
       .description('Play 8 bit homecomputer tape images or convert them to WAVE files.')
@@ -18,6 +19,7 @@ async function main() {
       .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), AdapterManager.formatOption.description)
       .option('-m, ' + getCommanderFlagsString(AdapterManager.machineOption), AdapterManager.machineOption.description)
       .option('-v, --verbosity <verbosity>', 'Verbosity of log output', 1)
+      .addHelpText('after', `\nAvailable machine/format combinations: ${machineFormatList}`)
   ;
   // Options defined in adapters/encoders
   const allOptions = AdapterManager.getAllOptions();
