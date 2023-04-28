@@ -4,7 +4,7 @@
   "description": "RetroLoad.com common library",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-only",
   "private": true,
   "type": "module",
   "main": "dist/index.js",
@@ -14,6 +14,9 @@
     "test-watch": "jest --watch",
     "coverage": "jest --coverage",
     "build": "tsc"
+  },
+  "dependencies": {
+    "pako": "^2.1.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
@@ -28,8 +31,5 @@
     "retroload-examples": "^0.0.1",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
-  },
-  "dependencies": {
-    "pako": "^2.1.0"
   }
 }

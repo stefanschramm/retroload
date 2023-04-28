@@ -2,15 +2,15 @@
   "name": "retroload-examples",
   "version": "0.0.1",
   "description": "RetroLoad.com example tape files",
+  "author": "Stefan Schramm",
+  "email": "mail@stefanschramm.net",
+  "license": "AGPL-3.0-only",
+  "private": true,
   "type": "module",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./index.js"
   },
-  "author": "Stefan Schramm",
-  "email": "mail@stefanschramm.net",
-  "license": "UNLICENSED",
-  "private": true,
   "devDependencies": {
     "eslint": "^8.38.0"
   }
