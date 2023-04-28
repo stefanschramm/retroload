@@ -3,6 +3,7 @@
   "workspaces": [
     "retroload-common",
     "retroload-cli",
+    "retroload-encoders",
     "retroload-examples"
   ]
 }
