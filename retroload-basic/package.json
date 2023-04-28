@@ -1,0 +1,22 @@
+{
+  "name": "retroload-basic",
+  "version": "0.0.1",
+  "description": "RetroLoad.com basic tokenizer library",
+  "author": "Stefan Schramm",
+  "email": "mail@stefanschramm.net",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
+  "scripts": {
+    "lint": "eslint src/",
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "coverage": "jest --coverage",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "retroload-common": "^0.0.1"
+  }
+}

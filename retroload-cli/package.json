@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "commander": "^10.0.0",
+    "retroload-basic": "^0.0.1",
     "retroload-common": "^0.0.1"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 {
   "name": "retroload",
   "workspaces": [
+    "retroload-basic",
     "retroload-common",
     "retroload-cli",
     "retroload-encoders",

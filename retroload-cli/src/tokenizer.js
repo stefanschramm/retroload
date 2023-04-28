@@ -2,8 +2,7 @@
 
 import fs from 'fs';
 import {Command} from 'commander';
-import {InternalError} from 'retroload-common/src/Exceptions.js';
-import {BasicTokenizers, Logger} from 'retroload-common';
+import {BasicTokenizers} from 'retroload-basic';
 
 function main() {
   const program = (new Command())
@@ -31,11 +30,11 @@ function getTokenizerByDialectName(name) {
 
   if (result.length === 0) {
     const avaliableDialectNames = BasicTokenizers.map((t) => t.getName());
-    Logger.error(`Tokenizer for BASIC dialect "${name}" not found. Available dialects: ${avaliableDialectNames.join(', ')}`);
+    console.error(`Tokenizer for BASIC dialect "${name}" not found. Available dialects: ${avaliableDialectNames.join(', ')}`);
     process.exit(1);
   }
   if (result.length > 1) {
-    throw new InternalError(`Found multiple BASIC tokenizers with name "${name}".`);
+    throw new Error(`Found multiple BASIC tokenizers with name "${name}".`);
   }
 
   return result[0];
