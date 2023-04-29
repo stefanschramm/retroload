@@ -6,5 +6,9 @@
     "retroload-cli",
     "retroload-encoders",
     "retroload-examples"
-  ]
+  ],
+  "scripts": {
+    "build": "tsc --build -v",
+    "build-watch": "tsc --build -v --watch"
+  }
 }

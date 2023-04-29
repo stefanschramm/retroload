@@ -13,8 +13,7 @@
     "lint": "eslint src/",
     "test": "jest",
     "test-watch": "jest --watch",
-    "coverage": "jest --coverage",
-    "build": "tsc"
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "pako": "^2.1.0",

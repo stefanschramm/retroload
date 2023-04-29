@@ -1,25 +1,8 @@
 {
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es2022",
-    "module": "commonjs",
-    "rootDir": "./src",
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "noEmitOnError": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "exactOptionalPropertyTypes": true,
-    "useDefineForClassFields": true,
-    "skipLibCheck": true,
-    "declaration": true,
-    "newLine": "lf",
-    "stripInternal": true,
-  }
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "references": [{"path": "../retroload-common"}]
 }

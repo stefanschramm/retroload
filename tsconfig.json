@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    {"path": "retroload-basic"},
+    {"path": "retroload-common"},
+    {"path": "retroload-encoders"}
+  ]
+}
