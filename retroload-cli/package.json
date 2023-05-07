@@ -9,7 +9,8 @@
   "type": "module",
   "main": "src/cli.js",
   "scripts": {
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "test": "echo 'no tests configured for retroload-cli'"
   },
   "bin": {
     "retroload": "./src/cli.js",
