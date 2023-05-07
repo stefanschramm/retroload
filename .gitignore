@@ -1,2 +1,4 @@
-node_modules
-tsconfig.tsbuildinfo
+/node_modules
+*/tsconfig.tsbuildinfo
+*/coverage
+*/dist
