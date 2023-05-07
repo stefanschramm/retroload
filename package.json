@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "tsc --build -v",
+    "clean": "tsc --build --clean",
     "build-watch": "tsc --build -v --watch"
   }
 }
