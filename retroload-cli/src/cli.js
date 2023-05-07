@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import {WaveRecorder, AdapterManager, Exception, Logger, BufferAccess} from 'retroload-common';
+import {BufferAccess} from 'retroload-common';
+import {WaveRecorder, AdapterManager, Exception, Logger} from 'retroload-encoders';
 
 import fs from 'fs';
 import stream from 'stream';

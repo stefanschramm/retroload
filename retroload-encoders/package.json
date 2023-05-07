@@ -1,7 +1,7 @@
 {
-  "name": "retroload-common",
+  "name": "retroload-encoders",
   "version": "0.0.1",
-  "description": "RetroLoad.com common library",
+  "description": "RetroLoad.com encoders library",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
   "license": "AGPL-3.0-only",
@@ -14,5 +14,13 @@
     "test": "jest",
     "test-watch": "jest --watch",
     "coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "pako": "^2.1.0",
+    "retroload-common": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/pako": "^2.0.0",
+    "retroload-examples": "^0.0.1"
   }
 }

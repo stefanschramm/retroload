@@ -1,14 +1,16 @@
 {
-    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-    "typescript.preferences.importModuleSpecifierEnding": "js",
-    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-    "javascript.preferences.importModuleSpecifierEnding": "js",
-    "editor.tabSize": 2,
-    "editor.detectIndentation": false,
-    "editor.indentSize": "tabSize",
-    "eslint.workingDirectories": [
-      "retroload-common",
-      "retroload-cli",
-      "retroload-examples",
-    ]
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.indentSize": "tabSize",
+  "eslint.workingDirectories": [
+    "retroload-basic",
+    "retroload-cli",
+    "retroload-common",
+    "retroload-encoders",
+    "retroload-examples"
+  ]
 }

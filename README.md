@@ -4,11 +4,13 @@
 
 This repository contains
 
+- **retroload-basic**, some experiments for BASIC tokenization
 - **retroload-cli**, a command line interface for converting tape images to WAVE files or playing them using the speaker module
-- **retroload-common**, the base library used by [RetroLoad.com](https://retroload.com/) and retroload-cli
-- **retroload-examples**, a collection of example tape files that have successfully been converted and tested on real machines including their build scripts (Basic or Assembler). These examples are used by retroload-common's unit tests to prevent regressions. 
+- **retroload-common**, common helper class(es)
+- **retroload-encoders**, library containing the actual code for encoding (used by retroload-cli and [RetroLoad.com](https://retroload.com/))
+- **retroload-examples**, a collection of example tape files that have successfully been converted and tested on real machines including their build scripts (BASIC or Assembler). These examples are used by retroload-encoder's unit tests to prevent regressions.
 
-**Project state:** Right now everything is work in progress. Only some of the formats are currently considered as working.
+**Project state:** A lot is still work in progress. Some of the (more complex) tape archive formats are only partly supported.
 
 
 ## Installation from Git repository (development environment)
@@ -17,8 +19,8 @@ Since the retroload packages are not yet published to the npm registry, they cur
 
     git clone https://github.com/stefanschramm/retroload.git
     cd retroload
-    npm install # install dependencies
-    npm run build --workspaces --if-present # calls TypeScript "compiler"
+    npm ci # install dependencies
+    npm run build # calls TypeScript "compiler"
     sudo npm link retroload-cli/ # the "/" is important!
 
 Now, the retroload CLI should be available in your path:
@@ -32,6 +34,8 @@ Later you can remove the symlinks by
 ## Using retroload-cli
 
 A list of available command line options can be shown using `retroload --help`.
+
+[MACHINES.md](./MACHINES.md) contains some instructions on how to load tapes on different devices.
 
 ### Creating WAVE files
 
