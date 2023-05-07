@@ -21,7 +21,6 @@
     "retroload-common": "^0.0.1"
   },
   "devDependencies": {
-    "eslint": "^8.38.0",
     "eslint-config-google": "^0.14.0"
   }
 }
