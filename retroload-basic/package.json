@@ -13,6 +13,7 @@
   },
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.js",
+  "files": ["dist/"],
   "scripts": {
     "lint": "eslint src/",
     "test": "jest",

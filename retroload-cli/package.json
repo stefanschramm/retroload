@@ -8,6 +8,7 @@
   "private": true,
   "type": "module",
   "main": "src/cli.js",
+  "files": ["dist/"],
   "scripts": {
     "lint": "eslint src/",
     "test": "echo 'no tests configured for retroload-cli'"
@@ -20,5 +21,8 @@
     "commander": "^10.0.0",
     "retroload-basic": "^0.0.1",
     "retroload-common": "^0.0.1"
+  },
+  "devDependencies": {
+    "speaker": "*"
   }
 }

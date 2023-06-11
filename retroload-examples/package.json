@@ -8,6 +8,7 @@
   "private": true,
   "type": "module",
   "main": "index.js",
+  "files": ["dist/"],
   "scripts": {
     "lint": "eslint ./index.js",
     "test": "echo 'no tests configured for retroload-examples'"
