@@ -24,7 +24,10 @@
         "@typescript-eslint/parameter-properties": ["off"],
         "max-params": ["off"],
         "no-warning-comments": ["off"]
-      }
+      },
+      "parserOptions": {
+        "project": "tsconfig.esm.json"
+      }        
     }
   ],
   "parserOptions": {

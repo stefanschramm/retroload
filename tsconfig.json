@@ -1,8 +1,11 @@
 {
   "files": [],
   "references": [
-    {"path": "retroload-basic"},
-    {"path": "retroload-common"},
-    {"path": "retroload-encoders"}
+    {"path": "retroload-basic/tsconfig.cjs.json"},
+    {"path": "retroload-basic/tsconfig.esm.json"},
+    {"path": "retroload-common/tsconfig.cjs.json"},
+    {"path": "retroload-common/tsconfig.esm.json"},
+    {"path": "retroload-encoders/tsconfig.cjs.json"},
+    {"path": "retroload-encoders/tsconfig.esm.json"}
   ]
 }
