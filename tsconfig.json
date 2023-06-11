@@ -6,6 +6,8 @@
     {"path": "retroload-common/tsconfig.cjs.json"},
     {"path": "retroload-common/tsconfig.esm.json"},
     {"path": "retroload-encoders/tsconfig.cjs.json"},
-    {"path": "retroload-encoders/tsconfig.esm.json"}
+    {"path": "retroload-encoders/tsconfig.esm.json"},
+    {"path": "retroload-cli/tsconfig.cjs.json"},
+    {"path": "retroload-cli/tsconfig.esm.json"}
   ]
 }

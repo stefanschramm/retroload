@@ -13,15 +13,12 @@
     "test": "echo 'no tests configured for retroload-cli'"
   },
   "bin": {
-    "retroload": "./src/cli.js",
+    "retroload": "./dist/cjs/cli.js",
     "retroload-tokenizer": "./src/tokenizer.js"
   },
   "dependencies": {
     "commander": "^10.0.0",
     "retroload-basic": "^0.0.1",
     "retroload-common": "^0.0.1"
-  },
-  "devDependencies": {
-    "eslint-config-google": "^0.14.0"
   }
 }
