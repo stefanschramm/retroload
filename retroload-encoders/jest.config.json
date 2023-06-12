@@ -1,5 +1,5 @@
 {
-  "transform": {"^.+\\.(ts|tsx)$": ["ts-jest"]},
+  "transform": {"^.+\\.(ts|tsx)$": ["ts-jest", {"tsconfig": "tsconfig.cjs.json"}]},
   "moduleNameMapper": {"(.+)\\.js": "$1"},
   "testPathIgnorePatterns": [
     "/node_modules/",

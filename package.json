@@ -1,5 +1,6 @@
 {
   "name": "retroload",
+  "private": true,
   "workspaces": [
     "retroload-basic",
     "retroload-common",
@@ -10,7 +11,8 @@
   "scripts": {
     "build": "tsc --build -v",
     "clean": "tsc --build --clean",
-    "build-watch": "tsc --build -v --watch"
+    "build-watch": "tsc --build -v --watch",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

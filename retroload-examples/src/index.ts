@@ -1,6 +1,6 @@
 // Default option values are not automatically used when running outside CLI and have to be specified explicitly.
 // The hashes are md5sums of the resulting WAVE files (when running retroload cli with -o option).
-function getExamples() {
+export function getExamples() {
   return [
     // Acorn Electron
     new Example('electron_generic', 'rl.bas', {machine: 'electron', format: 'generic', name: 'RL', load: '0e00', entry: '801f', shortpilot: true}, 'e64e45d7c1f4d7fb2eaed067b05b5112', 'CHAIN ""'), // 2023-04-02 (Acorn Electron)
@@ -48,23 +48,28 @@ function getExamples() {
     new Example('zxspectrum', 'rl.bas.tzx', {}, '1a5cddb97fb7e433bc518fac58a5c8bc', 'LOAD ""\nRUN'), // 2022-12-06 OK (ZX Spectrum+)
     new Example('zxspectrum', 'rl.bin.tzx', {}, '84f3375e693b3c42bdfb0e46cbc656c0', 'LOAD "" CODE\nPRINT USR 32768'), // 2022-12-06 OK (ZX Spectrum+)
   ];
-};
+}
+
+// Redeclared here to make it independent of retroload-encoders
+type OptionValues = Record<string, string | boolean>;
 
 class Example {
-  constructor(path, file, options, expectedHash, _loadInstructions) {
+  path: string;
+  file: string;
+  options: any;
+  hash: string;
+  constructor(path: string, file: string, options: OptionValues, expectedHash: string, _loadInstructions: string) {
     this.path = path;
     this.file = file;
     this.options = options;
     this.hash = expectedHash;
   }
+
   getPath() {
-    return `${__dirname}/formats/${this.path}/${this.file}`;
+    return `${__dirname}/../../formats/${this.path}/${this.file}`;
   }
+
   toString() {
     return `${this.path}/${this.file}, options: ${JSON.stringify(this.options)}`;
   }
 }
-
-module.exports = {
-  getExamples,
-};

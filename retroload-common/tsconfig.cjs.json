@@ -2,7 +2,7 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist"
-  },
-  "references": [{"path": "../retroload-common"}]
+    "outDir": "dist/cjs",
+    "module": "commonjs"
+  }
 }
