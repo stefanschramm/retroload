@@ -32,6 +32,12 @@ async function main() {
   for (const option of allOptions) {
     program.option(getCommanderFlagsString(option), option.description);
   }
+  program.exitOverride((err) => {
+    if (err.code === 'commander.missingArgument') {
+      program.outputHelp();
+    }
+    process.exit(err.exitCode);
+  });
   program.parse();
 
   const options = program.opts();
