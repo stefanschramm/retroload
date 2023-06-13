@@ -17,7 +17,7 @@ const fileModeBinary = 0x00; // other modes: 0xff == text
 const typeOption: ArgumentOptionDefinition<number> = {
   name: 'mo5type',
   label: 'MO5 file type',
-  description: 'MO5: File type. Possible types: 0 = basic, 1 = data, 2 = binary',
+  description: 'MO5: File type. Possible types: 0 = basic (default), 1 = data, 2 = binary',
   argument: 'type',
   required: false,
   common: false,
@@ -28,7 +28,7 @@ const typeOption: ArgumentOptionDefinition<number> = {
 const modeOption: ArgumentOptionDefinition<number> = {
   name: 'mo5mode',
   label: 'MO5 file mode',
-  description: 'MO5: File mode. Possible modes: 0 = binary, ff = text',
+  description: 'MO5: File mode. Possible modes: 0 = binary (default), ff = text',
   argument: 'mode',
   required: false,
   common: false,
