@@ -10,6 +10,19 @@ test('asHexDump', () => {
   expect(ba.asHexDump()).toBe('00000000  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|\n00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|');
 });
 
+test('createFromUint8Array', () => {
+  const data = new Uint8Array([0x41, 0x42, 0x43]);
+  const ba = BufferAccess.createFromUint8Array(data);
+  expect(ba.length()).toBe(3);
+  expect(ba.asHexDump()).toBe('00000000  41 42 43                                          |ABC|');
+});
+
+test('asAsciiString', () => {
+  const data = new Uint8Array([0x41, 0x42, 0x43]);
+  const ba = BufferAccess.createFromUint8Array(data);
+  expect(ba.asAsciiString()).toBe('ABC');
+});
+
 test('setUint8', () => {
   const ba = BufferAccess.create(8);
   ba.setUint8(2, 0x41);
@@ -173,7 +186,13 @@ test('containsDataAt', () => {
 });
 
 test('containsDataAt works with needle exceeding buffer length', () => {
-  const ba1 = BufferAccess.create(16);
+  const ba1 = BufferAccess.create(11);
   ba1.setAsciiString(0, 'Hello World');
   expect(ba1.containsDataAt(6, 'World Example')).toBe(false);
+});
+
+test('containsDataAt returns true for empty needle', () => {
+  const ba1 = BufferAccess.create(11);
+  ba1.setAsciiString(0, 'Hello World');
+  expect(ba1.containsDataAt(0, '')).toBe(true);
 });

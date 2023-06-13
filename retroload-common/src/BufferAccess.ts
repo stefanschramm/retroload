@@ -235,11 +235,14 @@ export class BufferAccess {
     this.cursor += sourceBa.length();
   }
 
+  /**
+   * If needle is an empty string, true will be returned
+   */
   containsDataAt(offset: number, needle: string | number[]) {
     const isString = typeof needle === 'string';
     for (let i = 0; i < needle.length; i++) {
-      if (offset + i > this.view.byteLength) {
-        return false; // Needle longer than data to search in
+      if (offset + i >= this.view.byteLength) {
+        return false; // Trying to read behind end of buffer
       }
       if (this.view.getUint8(offset + i) !== (isString ? needle.charCodeAt(i) : needle[i])) {
         return false;
