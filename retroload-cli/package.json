@@ -14,8 +14,8 @@
     "test": "echo 'no tests configured for retroload-cli'"
   },
   "bin": {
-    "retroload": "./dist/esm/cli.js",
-    "retroload-tokenizer": "./dist/esm/tokenizer.js"
+    "retroload": "./bin/retroload.js",
+    "retroload-tokenizer": "./bin/retroload-tokenizer.js"
   },
   "dependencies": {
     "commander": "^10.0.0",
