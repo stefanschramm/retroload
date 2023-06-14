@@ -3,6 +3,8 @@ import {KcEncoder} from '../encoder/KcEncoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from 'retroload-common';
 import {type OptionContainer} from '../Options.js';
+import {Logger} from '../Logger.js';
+import {InputDataError} from '../Exceptions.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
@@ -31,21 +33,30 @@ export class KcTapAdapter extends AbstractAdapter {
   }
 
   static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const blocks = Math.ceil((ba.length() - fileHeaderLength) / fileBlockSize);
+    const dataBa = ba.slice(fileHeaderLength);
 
-    // TODO: Possible warnings when:
-    // - (data.length - fileHeaderLength) % fileBlockSize !== 0
-    // - more than 255 blocks
-    // - last block number not 0xff
+    if (dataBa.length() === 0) {
+      throw new InputDataError('TAP file is empty.');
+    }
+    if (dataBa.length() % fileBlockSize !== 0) {
+      Logger.info(`Warning: Data length in TAP file is not a multiple of ${blockSize}. Will pad with zeroes.`);
+    }
+
+    const blocks = dataBa.chunksPadded(fileBlockSize);
+
+    if (blocks.length > 0xff) {
+      Logger.info('Warning: Got more than 256 blocks in TAP file.');
+    }
+    if (blocks[blocks.length - 1].getUint8(0) !== 0xff) {
+      Logger.info('Warning: Last block in TAP file does not have block number 0xff.');
+    }
 
     const e = new KcEncoder(recorder, options);
 
     e.begin();
-    for (let i = 0; i < blocks; i++) {
-      const fileOffset = fileHeaderLength + i * fileBlockSize;
-      const dvBlock = ba.slice(fileOffset, fileBlockSize);
-      const blockNumber = dvBlock.getUint8(0);
-      const blockData = dvBlock.slice(1);
+    for (const blockBa of blocks) {
+      const blockNumber = blockBa.getUint8(0);
+      const blockData = blockBa.slice(1);
       e.recordBlock(blockNumber, blockData);
     }
     e.end();
