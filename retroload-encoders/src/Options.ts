@@ -63,16 +63,20 @@ export class OptionContainer {
   private readonly values: OptionValues;
 
   constructor(values: OptionValues) {
-    // TODO: explicitly check types during runtime
     this.values = values;
   }
 
   public getArgument<T>(optionDefinition: ArgumentOptionDefinition<T>): T {
     const value = this.values[optionDefinition.name];
-    if (value !== undefined && typeof value !== 'string') {
-      throw new InternalError(`Got invalid type (${typeof value}) for option ${optionDefinition.name}`);
+    if (value === undefined) {
+      return optionDefinition.parse('');
     }
-    // TODO: If enum is set, check if value matches an entry.
+    if (typeof value !== 'string') {
+      throw new InternalError(`Got invalid type (${typeof value}) for option "${optionDefinition.name}"`);
+    }
+    if (optionDefinition.enum !== undefined && !optionDefinition.enum.includes(value)) {
+      throw new InvalidArgumentError(optionDefinition.name, `Value "${value}" is invalid for option "${optionDefinition.name}". Valid values are: ${optionDefinition.enum.join(', ')}`);
+    }
     return optionDefinition.parse(value ?? '');
   }
 
@@ -82,20 +86,11 @@ export class OptionContainer {
       return false;
     }
     if (typeof value !== 'boolean') {
-      throw new InternalError(`Got invalid type for option ${optionDefinition.name}`);
+      throw new InternalError(`Got invalid type (${typeof value}) for option "${optionDefinition.name}"`);
     }
     return value;
   }
 }
-
-// TODO: does individual refinement contradict with common options?
-// TODO: allow multiple definitions of options when at least one common option exists? where will it be defined?
-// TODO: add adapterSpecificDescription?
-// TODO: UI might use parse function to check for exceptions directly?
-// export const entryOptionRequiredDefinition = {
-//   ...entryOptionDefinition,
-//   required: true,
-// };
 
 // Some common options used by several Adapters/Encoders
 
