@@ -22,7 +22,7 @@ export const formatOption: ArgumentOptionDefinition<string | undefined> = {
   argument: 'format',
   required: false,
   parse: (v) => v === '' ? undefined : v,
-  // TODO: add enum
+  enum: [...new Set(providedAdapters.map((a) => a.getInternalName()))],
 };
 
 export const machineOption: ArgumentOptionDefinition<string | undefined> = {
@@ -34,7 +34,7 @@ export const machineOption: ArgumentOptionDefinition<string | undefined> = {
   argument: 'machine type',
   required: false,
   parse: (v) => v === '' ? undefined : v,
-  // TODO: add enum
+  enum: [...new Set(providedAdapters.map((a) => a.getTargetName()))],
 };
 
 export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, optionValues: OptionValues = {}) {
