@@ -68,9 +68,8 @@ export class C64GenericAdapter extends AbstractGenericAdapter {
   }
 }
 
-// TODO: Move into Options.ts?
 function checkLoadAddress(loadAddress: number | undefined) {
   if (loadAddress === undefined) {
-    throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 1000');
+    throw new InvalidArgumentError(loadOption.name, `Load address (argument "${loadOption.name}") must be set for this data type.`);
   }
 }

@@ -127,12 +127,12 @@ export const loadOption: ArgumentOptionDefinition<number | undefined> = {
   required: false,
   type: 'text',
   parse(v) {
-    if (v === undefined) {
+    if (v === undefined || v === '') {
       return undefined;
     }
     const address = parseInt(v, 16);
-    if (isNaN(address) || address < 0 || address > 0xffff) {
-      throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
+    if (!isHexNumber(v) || isNaN(address) || address < 0 || address > 0xffff) {
+      throw new InvalidArgumentError(this.name, `Option ${this.name} is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000`);
     }
 
     return address;
@@ -152,10 +152,14 @@ export const entryOption: ArgumentOptionDefinition<number | undefined> = {
       return undefined;
     }
     const address = parseInt(v, 16);
-    if (isNaN(address) || address < 0 || address > 0xffff) {
-      throw new InvalidArgumentError('entry', 'Option entry is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
+    if (!isHexNumber(v) || isNaN(address) || address < 0 || address > 0xffff) {
+      throw new InvalidArgumentError(this.name, `Option ${this.name} is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000`);
     }
 
     return address;
   },
 };
+
+function isHexNumber(str: string) {
+  return /^[A-Fa-f0-9]+$/.exec(str) !== null;
+}
