@@ -25,7 +25,7 @@ Text (ATASCII) files:
 
     ENTER "C:"
 
-# C64
+# C64, C64 C
 
 Load and run a basic program or machine language program with autostart loader:
 
@@ -38,10 +38,6 @@ Load and run machine language program (prg)
     SYS 4352
 
 4353 (0x1100) is the entry address of the program in memory.
-
-# C64 C
-
-see C64
 
 # CPC 464
 
@@ -64,19 +60,24 @@ Entering a program name (here `EXAMPLE`) that is not yet loaded will cause the m
     EXAMPLE
     (return)
 
-# KC 85/3
+# KC 85/3, KC 85/4
+
+Volume: 20 % (tested with KC 85/4)
+
+Machine programs can be loaded from the main menu:
 
     LOAD
     MENU
 
-in Basic (for .SSS files):
+Most programs create a new menu entry that can be called then.
 
-    CLOAD "EXAMPLE"
+For BASIC programs (.SSS files) the BASIC interpreter needs to be started first (using `BASIC` and pressing Enter at the "MEMORY END ? :"-Prompt). Then files can be loaded by:
 
-# KC 85/4
+    CLOAD"EXAMPLE"
 
-see KC 85/3
+For files having no (an empty) name can be loaded using `CLOAD" "` (note the space between the quotation marks).
 
+From within BASIC, `BLOAD` can be used to machine programs.
 
 # LC 80
 

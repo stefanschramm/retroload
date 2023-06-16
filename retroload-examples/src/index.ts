@@ -21,7 +21,7 @@ export function getExamples() {
     new Example('kc851_tap', 'rl.tap', {}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2022-11-16 OK (KC 85/1)
     // KC 85/4
     new Example('kc_kcc', 'rl.kcc', {}, '7c81f6a04a7745a26afaff0e55c9b901', 'LOAD\nRL'), // 2022-11-16 OK (KC 85/4)
-    new Example('kc_sss', 'rl.sss', {name: 'RL'}, '47de579a63d2e2c92bc0248a365a24b3', 'BASIC\n<return>CLOAD"RL"'), // TODO: Test on real device. (2023-02-11 Only tested in jkcemu for now.)
+    new Example('kc_sss', 'rl.sss', {name: 'RL'}, '47de579a63d2e2c92bc0248a365a24b3', 'BASIC\n<return>CLOAD"RL"'), // 2023-06-16 OK (KC 85/4)
     // LC 80
     new Example('lc80_bin', 'rl.bin', {name: 'ffff', load: '2000', machine: 'lc80'}, '3a92341af5d83050caf3112cf053d8d3', '<LD>FFFF<EX>\n<RES><ADR>2000<EX>'), // 2022-11-30 OK (LC 80)
     // MSX
