@@ -230,6 +230,19 @@ export class BufferAccess {
     this.cursor += 4;
   }
 
+  getFloat32Le(offset: number) {
+    return this.view.getFloat32(offset, true);
+  }
+
+  setFloat32Le(offset: number, f: number) {
+    this.view.setFloat32(offset, f, true);
+  }
+
+  writeFloat32Le(f: number) {
+    this.view.setFloat32(this.cursor, f, true);
+    this.cursor += 4;
+  }
+
   setAsciiString(offset: number, string: string, paddingLength = 0, paddingCharCode = 0) {
     for (let i = 0; i < string.length; i++) {
       this.view.setUint8(offset + i, string.charCodeAt(i));
