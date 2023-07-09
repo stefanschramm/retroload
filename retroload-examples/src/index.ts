@@ -17,8 +17,9 @@ export function getExamples() {
     // CPC 464
     new Example('cpc', 'rl.bin', {machine: 'cpc', load: '2000', entry: '2000', name: 'RL'}, '30d06c882c900ffb970dc6154e5b4141', 'RUN ""'), // 2023-02-11 OK (CPC 464)
     new Example('cpc', 'rl.cdt', {}, 'd08d4975fef3fb4bb78bb93224ca7ea3', 'RUN ""'), // 2023-02-11 OK (CPC 464)
-    // KC 85/1
+    // KC 85/1, KC 87, Z 9001
     new Example('kc851_tap', 'rl.tap', {}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2022-11-16 OK (KC 85/1)
+    new Example('kc851_tap', 'rl.com', {machine: 'kc', format: 'generic', name: 'RL', load: '0300', entry: '0300', kcfirstblock: '0'}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2023-07-09 OK (KC 87)
     // KC 85/4
     new Example('kc_kcc', 'rl.kcc', {}, '7c81f6a04a7745a26afaff0e55c9b901', 'LOAD\nRL'), // 2022-11-16 OK (KC 85/4)
     new Example('kc_sss', 'rl.sss', {name: 'RL'}, '47de579a63d2e2c92bc0248a365a24b3', 'BASIC\n<return>CLOAD"RL"'), // 2023-06-16 OK (KC 85/4)

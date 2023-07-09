@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.tap
+all: rl.tap rl.com
 
 %.wav: %.tap
 	retroload -o $@ $<

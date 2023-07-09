@@ -53,12 +53,38 @@ Load at specific memory location and run:
     load "", &2000
     call &2000
 
-# KC 85/1
+# KC 85/1, KC 87, Z 9000
 
-Entering a program name (here `EXAMPLE`) that is not yet loaded will cause the machine to load it from tape:
+Volume: 40 % (tested with KC 87.11)
+
+Entering a name (here `EXAMPLE`) that is not yet available as command will cause the machine to load and excute it from tape:
 
     EXAMPLE
     (return)
+
+or
+
+    EXAMPLE.COM
+    (return)
+
+Specifiying the extension is optional. Note the additional Return after the message "start tape" appeared!
+
+Loading a program without starting it:
+
+    CLOAD EXAMPLE
+    (return)
+
+or
+
+    CLOAD EXAMPLE.COM
+    (return)
+
+The command name can be different than the file name that was used to store the program on tape.
+
+For BASIC files (usually .SSS file extension), the BASIC interpreter has to be started first. Then programs can be loaded like this:
+
+    CLOAD "EXAMPLE"
+
 
 # KC 85/3, KC 85/4
 
