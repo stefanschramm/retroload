@@ -62,6 +62,12 @@ test('setUint32BE', () => {
   expect(ba.asHexDump()).toBe('00000000  00 00 41 42 43 44 00 00                           |..ABCD..|');
 });
 
+test('setFloat32Le', () => {
+  const ba = BufferAccess.create(8);
+  ba.setFloat32Le(2, 1.5);
+  expect(ba.asHexDump()).toBe('00000000  00 00 00 00 c0 3f 00 00                           |.....?..|');
+});
+
 test('setAsciiString', () => {
   const ba = BufferAccess.create(8);
   ba.setAsciiString(2, 'Hello');
@@ -189,11 +195,13 @@ test('get functions', () => {
   ba.writeUint16Le(0x0302);
   ba.writeUint16Be(0x0405);
   ba.writeUint32Le(0x09080706);
+  ba.writeFloat32Le(1.5);
 
   expect(ba.getUint8(0)).toBe(0x01);
   expect(ba.getUint16Le(1)).toBe(0x0302);
   expect(ba.getUint16Be(3)).toBe(0x0405);
   expect(ba.getUint32Le(5)).toBe(0x09080706);
+  expect(ba.getFloat32Le(9)).toBe(1.5);
 });
 
 test('containsDataAt', () => {
