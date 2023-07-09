@@ -1,6 +1,6 @@
 import {AbstractEncoder} from './AbstractEncoder.js';
 
-const fBase = 1200;
+// const fBase = 1200;
 
 /**
  * Encoder for Acorn Electron
@@ -12,12 +12,14 @@ export class ElectronEncoder extends AbstractEncoder {
     return 'electron';
   }
 
+  private fBase = 1200;
+
   override begin() {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
 
   recordPilot(length: number) {
-    this.recordCarrier(fBase * 2 * length);
+    this.recordCarrier(this.fBase * 2 * length);
   }
 
   override end() {
@@ -26,12 +28,12 @@ export class ElectronEncoder extends AbstractEncoder {
 
   recordCarrier(oscillations: number) {
     // UEF Chunk &0111 - carrier tone
-    this.recordOscillations(fBase * 2, oscillations);
+    this.recordOscillations(this.fBase * 2, oscillations);
   }
 
   recordGap(length: number) {
     // UEF Chunk &0112 - integer gap
-    this.recordSilenceMs(1000 / (2 * length * fBase));
+    this.recordSilenceMs(1000 / (2 * length * this.fBase));
   }
 
   override recordByte(byte: number) {
@@ -42,9 +44,13 @@ export class ElectronEncoder extends AbstractEncoder {
 
   recordBit(value: number) {
     if (value) {
-      this.recordOscillations(fBase * 2, 2);
+      this.recordOscillations(this.fBase * 2, 2);
     } else {
-      this.recordOscillations(fBase, 1);
+      this.recordOscillations(this.fBase, 1);
     }
+  }
+
+  setBaseFrequency(f: number) {
+    this.fBase = f;
   }
 }

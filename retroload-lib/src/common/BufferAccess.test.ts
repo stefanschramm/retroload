@@ -53,6 +53,13 @@ test('setUint32BE', () => {
   expect(ba.asHexDump()).toBe('00000000  00 00 41 42 43 44 00 00                           |..ABCD..|');
 });
 
+test('setFloat32Le', () => {
+  const ba = BufferAccess.create(8);
+  // ba.setFloat32Le(2, 0x100);
+  ba.setFloat32Le(2, 829.44);
+  expect(ba.asHexDump()).toBe('00000000  00 00 41 42 43 44 00 00                           |..ABCD..|');
+});
+
 test('setAsciiString', () => {
   const ba = BufferAccess.create(8);
   ba.setAsciiString(2, 'Hello');
