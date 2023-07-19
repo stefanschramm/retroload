@@ -53,7 +53,7 @@ Load at specific memory location and run:
     load "", &2000
     call &2000
 
-# KC 85/1, KC 87, Z 9000
+# KC 85/1, KC 87, Z 9001
 
 Volume: 40 % (tested with KC 87.11)
 
@@ -85,6 +85,9 @@ For BASIC files (usually .SSS file extension), the BASIC interpreter has to be s
 
     CLOAD "EXAMPLE"
 
+BASIC ASCII listings can be loaded (within BASIC) using
+
+    LOAD#1 "EXAMPLE"
 
 # KC 85/3, KC 85/4
 

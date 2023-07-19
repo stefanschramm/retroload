@@ -22,7 +22,9 @@ export function getExamples() {
     new Example('kc851_tap', 'rl.com', {machine: 'kc', format: 'generic', name: 'RL', load: '0300', entry: '0300', kcfirstblock: '0'}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2023-07-09 OK (KC 87)
     // KC 85/4
     new Example('kc_kcc', 'rl.kcc', {}, '7c81f6a04a7745a26afaff0e55c9b901', 'LOAD\nRL'), // 2022-11-16 OK (KC 85/4)
-    new Example('kc_sss', 'rl.sss', {name: 'RL'}, '47de579a63d2e2c92bc0248a365a24b3', 'BASIC\n<return>CLOAD"RL"'), // 2023-06-16 OK (KC 85/4)
+    new Example('kc_sss', 'rl.sss', {name: 'RL'}, '47de579a63d2e2c92bc0248a365a24b3', 'BASIC\n<return>\nCLOAD"RL"'), // 2023-06-16 OK (KC 85/4)
+    // KC BASIC
+    new Example('kc_basic_generic', 'rl.txt', {name: 'RL', machine: 'kc', format: 'kcbasic', kcbasictype: 'ascii'}, 'a971316b56ffe172a931455ce641819c', 'BASIC\n<return>\nLOAD#1 "RL"'), // 2023-07-19 OK (KC 87)
     // LC 80
     new Example('lc80_bin', 'rl.bin', {name: 'ffff', load: '2000', machine: 'lc80'}, '3a92341af5d83050caf3112cf053d8d3', '<LD>FFFF<EX>\n<RES><ADR>2000<EX>'), // 2022-11-30 OK (LC 80)
     // MSX
