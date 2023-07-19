@@ -10,6 +10,8 @@ import {CpcCdtAdapter} from './adapter/CpcCdtAdapter.js';
 import {CpcGenericAdapter} from './adapter/CpcGenericAdapter.js';
 import {ElectronGenericAdapter} from './adapter/ElectronGenericAdapter.js';
 import {ElectronUefAdapter} from './adapter/ElectronUefAdapter.js';
+import {KcBasicGenericAdapter} from './adapter/KcBasicGenericAdapter.js';
+import {KcGenericAdapter} from './adapter/KcGenericAdapter.js';
 import {KcKccAdapter} from './adapter/KcKccAdapter.js';
 import {KcSssAdapter} from './adapter/KcSssAdapter.js';
 import {KcTapAdapter} from './adapter/KcTapAdapter.js';
@@ -37,6 +39,8 @@ export const adapters: Array<typeof AbstractAdapter> = [
   CpcGenericAdapter,
   ElectronGenericAdapter,
   ElectronUefAdapter,
+  KcBasicGenericAdapter,
+  KcGenericAdapter,
   KcKccAdapter,
   KcSssAdapter,
   KcTapAdapter,

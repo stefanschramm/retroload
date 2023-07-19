@@ -2,7 +2,9 @@
 ; example program for KC 85/1
 ; to be assembled using z80asm
 ;
-; Loading: RL<ENTER><ENTER>
+; Load and run: RL<ENTER><ENTER>
+; Load: CLOAD RL<ENTER><ENTER>
+; Run: RL<ENTER>
 
 BOS:	equ	0x0005 ; entry for all OS routines
 CONSO:	equ	2 ; OS routine
