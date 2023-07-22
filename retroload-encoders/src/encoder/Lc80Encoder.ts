@@ -1,5 +1,6 @@
 import {BufferAccess} from 'retroload-common';
 import {AbstractEncoder} from './AbstractEncoder.js';
+import {calculateChecksum8} from '../Utils.js';
 
 const fShort = 2000;
 const fLong = 1000;
@@ -36,8 +37,7 @@ export class Lc80Encoder extends AbstractEncoder {
   }
 
   recordData(data: BufferAccess) {
-    const checkSum = this.calculateChecksum(data);
-    this.recordByte(checkSum);
+    this.recordByte(calculateChecksum8(data));
     this.recordSeconds(fSyncMid, syncMidLength);
     for (let i = 0; i < data.length(); i++) {
       this.recordByte(data.getUint8(i));
@@ -63,14 +63,5 @@ export class Lc80Encoder extends AbstractEncoder {
       this.recordOscillations(fShort, 12);
       this.recordOscillations(fLong, 3);
     }
-  }
-
-  calculateChecksum(data: BufferAccess) {
-    let sum = 0;
-    for (let i = 0; i < data.length(); i++) {
-      sum += data.getUint8(i);
-    }
-
-    return sum & 0xff;
   }
 }

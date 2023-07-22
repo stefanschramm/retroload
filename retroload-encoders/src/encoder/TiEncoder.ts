@@ -2,6 +2,7 @@ import {AbstractEncoder} from './AbstractEncoder.js';
 import {type BufferAccess} from 'retroload-common';
 import {InputDataError} from '../Exceptions.js';
 import {Logger} from '../Logger.js';
+import {calculateChecksum8} from '../Utils.js';
 
 const fZero = 689.5;
 const fOne = 1379;
@@ -42,7 +43,7 @@ export class TiEncoder extends AbstractEncoder {
       }
       this.recordByte(0xff); // data mark
       this.recordBytes(blockDataBa);
-      this.recordByte(calculateChecksum(blockDataBa));
+      this.recordByte(calculateChecksum8(blockDataBa));
     }
   }
 
@@ -57,13 +58,4 @@ export class TiEncoder extends AbstractEncoder {
       this.recordHalfOscillation(fZero);
     }
   }
-}
-
-function calculateChecksum(data: BufferAccess) {
-  let sum = 0;
-  for (let i = 0; i < data.length(); i++) {
-    sum += data.getUint8(i);
-  }
-
-  return sum & 0xff;
 }

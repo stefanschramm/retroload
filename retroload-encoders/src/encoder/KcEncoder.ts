@@ -2,6 +2,7 @@ import {AbstractEncoder} from './AbstractEncoder.js';
 import {BufferAccess} from 'retroload-common';
 import {InputDataError} from '../Exceptions.js';
 import {Logger} from '../Logger.js';
+import {calculateChecksum8} from '../Utils.js';
 
 const fZero = 1950; // manual: 2400;
 const fOne = 1050; // manual: 1200;
@@ -36,7 +37,7 @@ export class KcEncoder extends AbstractEncoder {
     this.recordBlockIntro();
     this.recordDelimiter();
 
-    const checksum = this.calculateChecksum(blockDataBa);
+    const checksum = calculateChecksum8(blockDataBa);
 
     Logger.debug(`KcEncoder - recordBlock: blockNumber: 0x${blockNumber.toString(16).padStart(2, '0')}, checksum: 0x${checksum.toString(16).padStart(2, '0')}`);
     Logger.debug(blockDataBa.asHexDump());
@@ -72,14 +73,5 @@ export class KcEncoder extends AbstractEncoder {
     } else {
       this.recordOscillations(fZero, 1);
     }
-  }
-
-  calculateChecksum(data: BufferAccess) {
-    let sum = 0;
-    for (let i = 0; i < data.length(); i++) {
-      sum += data.getUint8(i);
-    }
-
-    return sum & 0xff;
   }
 }
