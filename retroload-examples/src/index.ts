@@ -43,6 +43,7 @@ export function getExamples() {
     // TI-99/4A
     new Example('ti_basic', 'rl.bin', {machine: 'ti', format: 'generic'}, 'ed3e9e3e373d69e12197c389bc35627f', 'OLD CS1'), // 2023-07-21 OK (TI-99/4A)
     new Example('ti_basic', 'rl.fiad', {machine: 'ti', format: 'tifiad'}, 'fd7679575b06927b04bf946d1249f8c5', 'OLD CS1'), // 2023-07-22 OK (TI-99/4A)
+    new Example('ti_basic', 'rl.tifile', {}, 'ed3e9e3e373d69e12197c389bc35627f', 'OLD CS1'), // 2023-07-22 OK (TI-99/4A)
     // Z 1013
     new Example('z1013_z13', 'rl.z13', {}, '34083eb0e8ee6f631e92a412c8926f71', 'L 0100 018F\nJ 0100'),
     new Example('z1013_z80', 'rl.z80', {}, '779a051a0ed4769462d24aded68a94b3', 'L 0100 0200\nJ 0100'),
