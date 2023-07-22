@@ -1,4 +1,4 @@
-import {type BufferAccess} from 'retroload-common/dist/cjs/BufferAccess.js';
+import {type BufferAccess} from 'retroload-common';
 
 export function calculateChecksum8(data: BufferAccess) {
   let sum = 0;
