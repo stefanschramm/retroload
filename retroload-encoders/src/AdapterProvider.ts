@@ -20,6 +20,10 @@ import {Mo5GenericAdapter} from './adapter/Mo5GenericAdapter.js';
 import {Mo5K7Adapter} from './adapter/Mo5K7Adapter.js';
 import {MsxCasAdapter} from './adapter/MsxCasAdapter.js';
 import {TaGenericAdapter} from './adapter/TaGenericAdapter.js';
+import {TiFiadAdapter} from './adapter/TiFiadAdapter.js';
+import {TiGenericAdapter} from './adapter/TiGenericAdapter.js';
+import {TiTifileAdapter} from './adapter/TiTifileAdapter.js';
+import {TiTitapeAdapter} from './adapter/TiTitapeAdapter.js';
 import {Z1013GenericAdapter} from './adapter/Z1013GenericAdapter.js';
 import {Z1013Z13Adapter} from './adapter/Z1013Z13Adapter.js';
 import {Z1013Z80Adapter} from './adapter/Z1013Z80Adapter.js';
@@ -49,6 +53,10 @@ export const adapters: Array<typeof AbstractAdapter> = [
   Mo5K7Adapter,
   MsxCasAdapter,
   TaGenericAdapter,
+  TiFiadAdapter,
+  TiGenericAdapter,
+  TiTifileAdapter,
+  TiTitapeAdapter,
   Z1013GenericAdapter,
   Z1013Z13Adapter,
   Z1013Z80Adapter,

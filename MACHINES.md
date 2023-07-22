@@ -165,6 +165,26 @@ Run machine language program (with entry point `2700`, hexadecimal):
 
     EXEC &H2700
 
+# TI-99/4A
+
+Volume: 60 % (using line cable)
+
+Pinout of D-Sub-9 connector: 8 = Audio In, 9 = Audio In Ground, 3 = Audio Out, 5 = Audio Out Ground
+
+Loading a BASIC program:
+
+    OLD CS1
+
+The command is case-sensitive (all caps)!
+
+Then `ENTER` twice, play the "tape", and one more `ENTER` once loading has finished.
+
+The loaded program can be started using
+
+    RUN
+
+If loading succeeds, but BASIC complains about an incorrect statment (and the program's `LIST`ing contains garbage), the program is likely for "TI Extended BASIC" (which is available as a cartridge) and not the integrated "TI BASIC".
+
 # Z 1013
 
 The load command `L` takes the load and end address as hexadecimal numbers (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
