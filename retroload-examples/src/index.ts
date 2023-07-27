@@ -3,7 +3,7 @@
 export function getExamples() {
   return [
     // Acorn Electron
-    new Example('electron_generic', 'rl.bas', {machine: 'electron', format: 'generic', name: 'RL', load: '0e00', entry: '801f', shortpilot: true}, 'e64e45d7c1f4d7fb2eaed067b05b5112', 'CHAIN ""'), // 2023-04-02 (Acorn Electron)
+    new Example('electron_generic', 'rl.bas', {format: 'electrongeneric', name: 'RL', load: '0e00', entry: '801f', shortpilot: true}, 'e64e45d7c1f4d7fb2eaed067b05b5112', 'CHAIN ""'), // 2023-04-02 (Acorn Electron)
     new Example('electron_generic', 'rl.uef', {shortpilot: true}, 'e64e45d7c1f4d7fb2eaed067b05b5112', 'CHAIN ""'), // 2023-04-02 (Acorn Electron)
     // Atari 800 XL
     new Example('atari_cas', 'rl.cas', {}, '8d36a2a696c7e27807c4d1f058fdec34', 'START+POWERON\nPLAY\nANYKEY'), // 2023-01-19 OK (Atari 800 XL)
@@ -19,7 +19,7 @@ export function getExamples() {
     new Example('cpc', 'rl.cdt', {}, 'd08d4975fef3fb4bb78bb93224ca7ea3', 'RUN ""'), // 2023-02-11 OK (CPC 464)
     // KC 85/1, KC 87, Z 9001
     new Example('kc851_tap', 'rl.tap', {}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2022-11-16 OK (KC 85/1)
-    new Example('kc851_tap', 'rl.com', {machine: 'kc', format: 'generic', name: 'RL', load: '0300', entry: '0300', kcfirstblock: '0'}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2023-07-09 OK (KC 87)
+    new Example('kc851_tap', 'rl.com', {format: 'kcgeneric', name: 'RL', load: '0300', entry: '0300', kcfirstblock: '0'}, '117e0758f5effea2aaff8a234797ea19', 'RL\n<return>'), // 2023-07-09 OK (KC 87)
     // KC 85/4
     new Example('kc_kcc', 'rl.kcc', {}, '7c81f6a04a7745a26afaff0e55c9b901', 'LOAD\nRL'), // 2022-11-16 OK (KC 85/4)
     new Example('kc_sss', 'rl.sss', {name: 'RL'}, '47de579a63d2e2c92bc0248a365a24b3', 'BASIC\n<return>\nCLOAD"RL"'), // 2023-06-16 OK (KC 85/4)
@@ -35,14 +35,14 @@ export function getExamples() {
     new Example('msx_cas_basic', 'rl.cas', {shortpilot: true, msxfast: true}, 'dc4d7cbcc29679936312ae7eabc27624', 'cload\nrun'), // 2022-11-29 OK (Philips VG-8020)
     new Example('msx_cas_binary', 'rl.cas', {shortpilot: true, msxfast: true}, '1eaa89c87bad3f9a4a900a028db83c64', 'bload"cas:",r'), // 2022-11-29 OK (Philips VG-8020)
     // TA alphatronic PC
-    new Example('ta_bas', 'rl.bas', {format: 'generic', machine: 'ta'}, '1d084c6b0dfa38930f26ad2cc3166dd0', 'cload\nrun'), // 2023-02-17 OK (TA alphatronic PC)
+    new Example('ta_bas', 'rl.bas', {format: 'tageneric'}, '1d084c6b0dfa38930f26ad2cc3166dd0', 'cload\nrun'), // 2023-02-17 OK (TA alphatronic PC)
     // Thomson MO5
     new Example('mo5_bas', 'rl.bas', {machine: 'mo5', name: 'RL      BAS'}, '9bf6bd56b1ec9d85e7d6d72f7d87fece', 'LOAD"",R'), // 2023-04-16 OK (Thomson MO5)
     new Example('mo5_bas', 'rl.k7', {}, '9bf6bd56b1ec9d85e7d6d72f7d87fece', 'LOAD"",R'), // 2023-04-16 OK (Thomson MO5)
     new Example('mo5_bin', 'rl.bin', {machine: 'mo5', mo5type: '2', name: 'RL      BIN'}, '827ed65977d2264ea635a9d70a1e2a8c', 'LOADM"",,R'), // 2023-04-16 OK (Thomson MO5)
     // TI-99/4A
-    new Example('ti_basic', 'rl.bin', {machine: 'ti', format: 'generic'}, 'ed3e9e3e373d69e12197c389bc35627f', 'OLD CS1'), // 2023-07-21 OK (TI-99/4A)
-    new Example('ti_basic', 'rl.fiad', {machine: 'ti', format: 'tifiad'}, 'fd7679575b06927b04bf946d1249f8c5', 'OLD CS1'), // 2023-07-22 OK (TI-99/4A)
+    new Example('ti_basic', 'rl.bin', {format: 'tigeneric'}, 'ed3e9e3e373d69e12197c389bc35627f', 'OLD CS1'), // 2023-07-21 OK (TI-99/4A)
+    new Example('ti_basic', 'rl.fiad', {format: 'fiad'}, 'fd7679575b06927b04bf946d1249f8c5', 'OLD CS1'), // 2023-07-22 OK (TI-99/4A)
     new Example('ti_basic', 'rl.tifile', {}, 'ed3e9e3e373d69e12197c389bc35627f', 'OLD CS1'), // 2023-07-22 OK (TI-99/4A)
     // Z 1013
     new Example('z1013_z13', 'rl.z13', {}, '34083eb0e8ee6f631e92a412c8926f71', 'L 0100 018F\nJ 0100'),

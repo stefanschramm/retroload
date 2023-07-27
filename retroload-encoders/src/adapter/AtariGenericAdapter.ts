@@ -1,8 +1,8 @@
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {BufferAccess} from 'retroload-common';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
 const markerByte = 0x55;
 const blockTypeFull = 0xfc;
@@ -13,13 +13,21 @@ const dataBytesPerBlock = 128;
 const pilotIrgLength = 20000;
 const defaultIrgLength = 3000;
 
-export class AtariGenericAdapter extends AbstractGenericAdapter {
+export class AtariGenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return AtariEncoder.getTargetName();
   }
 
   static override getName() {
     return 'Atari (Generic data)';
+  }
+
+  static override getInternalName(): string {
+    return 'atarigeneric';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {

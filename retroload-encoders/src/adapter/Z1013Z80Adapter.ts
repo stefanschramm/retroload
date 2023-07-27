@@ -17,7 +17,7 @@ export class Z1013Z80Adapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'z1013z80';
+    return 'z80';
   }
 
   static override identify(filename: string, ba: BufferAccess) {

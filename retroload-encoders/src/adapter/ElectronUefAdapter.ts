@@ -25,7 +25,7 @@ export class ElectronUefAdapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'electronuef';
+    return 'uef';
   }
 
   static override identify(filename: string, ba: BufferAccess) {

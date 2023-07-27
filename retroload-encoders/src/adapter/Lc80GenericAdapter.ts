@@ -1,17 +1,25 @@
 import {Lc80Encoder} from '../encoder/Lc80Encoder.js';
 import {loadOption, nameOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type BufferAccess} from 'retroload-common';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
-export class Lc80GenericAdapter extends AbstractGenericAdapter {
+export class Lc80GenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return Lc80Encoder.getTargetName();
   }
 
   static override getName() {
     return 'LC80 (Generic data)';
+  }
+
+  static override getInternalName(): string {
+    return 'lc80generic';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions() {

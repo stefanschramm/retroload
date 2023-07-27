@@ -3,12 +3,12 @@ import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from 'retroload-common';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {TiEncoder} from '../encoder/TiEncoder.js';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {Logger} from '../Logger.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
 const blockSize = 64;
 
-export class TiGenericAdapter extends AbstractGenericAdapter {
+export class TiGenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return TiEncoder.getTargetName();
   }
@@ -17,11 +17,12 @@ export class TiGenericAdapter extends AbstractGenericAdapter {
     return 'TI-99/4A (Generic)';
   }
 
-  static override identify(_filename: string, _ba: BufferAccess) {
-    return {
-      filename: undefined, // no specific extension
-      header: undefined, // no specific header
-    };
+  static override getInternalName(): string {
+    return 'tigeneric';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions() {

@@ -20,7 +20,7 @@ export class TiTitapeAdapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'tititape';
+    return 'titape';
   }
 
   static override identify(filename: string, ba: BufferAccess) {

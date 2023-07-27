@@ -1,17 +1,25 @@
 import {TaEncoder, maxFileNameLength} from '../encoder/TaEncoder.js';
 import {nameOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from 'retroload-common';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
-export class TaGenericAdapter extends AbstractGenericAdapter {
+export class TaGenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return TaEncoder.getTargetName();
   }
 
   static override getName() {
     return 'TA alphatronic PC (BASIC/Generic data)';
+  }
+
+  static override getInternalName(): string {
+    return 'tageneric';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions() {

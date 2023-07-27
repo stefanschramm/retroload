@@ -1,10 +1,10 @@
 import {BufferAccess} from 'retroload-common';
 import {entryOption, loadOption, nameOption, type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {InvalidArgumentError} from '../Exceptions.js';
 import {kcFirstBlockOption} from './options/KcOptions.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
 const maxFileNameLength = 8;
 
@@ -13,13 +13,21 @@ const maxFileNameLength = 8;
  * [2] KC 85/3 Systemhandbuch, p. 82 - 83
  * [3] KC 85/4 Systemhandbuch, p. 93 - 95
  */
-export class KcGenericAdapter extends AbstractGenericAdapter {
+export class KcGenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return KcEncoder.getTargetName();
   }
 
   static override getName() {
     return 'KC (Generic)';
+  }
+
+  static override getInternalName(): string {
+    return 'kcgeneric';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions() {

@@ -28,7 +28,7 @@ export const formatOption: ArgumentOptionDefinition<string | undefined> = {
 export const machineOption: ArgumentOptionDefinition<string | undefined> = {
   name: 'machine',
   label: 'Machine type',
-  description: 'Machine type to load data onto (required for some formats that can be used for several machines)',
+  description: 'Machine type to load data onto (can be used to limit format autodetection to a certain subset; not required when format is specified manually)',
   common: false,
   type: 'text',
   argument: 'machine type',

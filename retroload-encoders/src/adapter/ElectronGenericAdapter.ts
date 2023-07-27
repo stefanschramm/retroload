@@ -1,21 +1,29 @@
 import {nameOption, loadOption, entryOption, shortpilotOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../Exceptions.js';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {ElectronEncoder} from '../encoder/ElectronEncoder.js';
 import {Logger} from '../Logger.js';
 import {BufferAccess} from 'retroload-common';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
 const maxFileNameLength = 10;
 const maxBlockSize = 256;
 
-export class ElectronGenericAdapter extends AbstractGenericAdapter {
+export class ElectronGenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return ElectronEncoder.getTargetName();
   }
 
   static override getName() {
     return 'Acorn Electron (Generic data)';
+  }
+
+  static override getInternalName(): string {
+    return 'electrongeneric';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions() {

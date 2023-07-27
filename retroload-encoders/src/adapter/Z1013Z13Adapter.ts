@@ -7,7 +7,7 @@ export class Z1013Z13Adapter extends Z1013GenericAdapter {
   }
 
   static override getInternalName() {
-    return 'z1013z13';
+    return 'z13';
   }
 
   static override identify(filename: string, _ba: BufferAccess) {

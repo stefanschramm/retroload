@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
+import {AbstractAdapter, unidentifiable} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {BufferAccess} from 'retroload-common';
 import {type ArgumentOptionDefinition, nameOption, type OptionContainer, type FlagOptionDefinition} from '../Options.js';
@@ -60,10 +60,7 @@ export class KcBasicGenericAdapter extends AbstractAdapter {
   }
 
   static override identify(_filename: string, _ba: BufferAccess) {
-    return {
-      filename: undefined, // no specific extension
-      header: undefined, // no specific header
-    };
+    return unidentifiable;
   }
 
   static override getOptions() {
