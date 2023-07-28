@@ -1,9 +1,9 @@
 import {C64Encoder} from '../encoder/C64Encoder.js';
 import {loadOption, nameOption, shortpilotOption, type ArgumentOptionDefinition, type OptionContainer} from '../Options.js';
 import {InternalError, InvalidArgumentError} from '../Exceptions.js';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type BufferAccess} from 'retroload-common';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
 const c64typeOption: ArgumentOptionDefinition<string> = {
   name: 'c64type',
@@ -17,13 +17,21 @@ const c64typeOption: ArgumentOptionDefinition<string> = {
   parse: (v) => v,
 };
 
-export class C64GenericAdapter extends AbstractGenericAdapter {
+export class C64GenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return C64Encoder.getTargetName();
   }
 
   static override getName() {
     return 'C64 (Generic data)';
+  }
+
+  static override getInternalName(): string {
+    return 'c64generic';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions() {

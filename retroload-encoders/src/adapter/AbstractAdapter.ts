@@ -17,3 +17,8 @@ export type FormatIdentification = {
   header: (boolean | undefined);
   filename: (boolean | undefined);
 };
+
+export const unidentifiable: FormatIdentification = {
+  filename: undefined,
+  header: undefined,
+};

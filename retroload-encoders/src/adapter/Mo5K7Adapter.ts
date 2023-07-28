@@ -20,7 +20,7 @@ export class Mo5K7Adapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'mo5k7';
+    return 'k7';
   }
 
   static override identify(filename: string, ba: BufferAccess) {

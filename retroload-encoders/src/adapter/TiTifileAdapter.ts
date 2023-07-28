@@ -22,7 +22,7 @@ export class TiTifileAdapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'titifile';
+    return 'tifile';
   }
 
   static override identify(filename: string, ba: BufferAccess) {

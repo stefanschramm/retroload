@@ -17,7 +17,7 @@ export class C64T64Adapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'c64t64';
+    return 't64';
   }
 
   static override identify(filename: string, ba: BufferAccess) {

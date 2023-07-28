@@ -17,7 +17,7 @@ export class CpcCdtAdapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'cpccdt';
+    return 'cdt';
   }
 
   static override identify(filename: string, ba: BufferAccess) {

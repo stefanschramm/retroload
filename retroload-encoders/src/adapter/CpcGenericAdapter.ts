@@ -2,8 +2,8 @@ import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
 import {entryOption, loadOption, nameOption, type OptionContainer} from '../Options.js';
 import {InternalError, InvalidArgumentError} from '../Exceptions.js';
 import {BufferAccess} from 'retroload-common';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;
@@ -14,13 +14,21 @@ const maxFileNameLength = 16;
 const headerRecordSyncCharacter = 0x2c;
 const dataRecordSyncCharacter = 0x16;
 
-export class CpcGenericAdapter extends AbstractGenericAdapter {
+export class CpcGenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return CpcTzxEncoder.getTargetName();
   }
 
   static override getName() {
     return 'CPC (Generic data)';
+  }
+
+  static override getInternalName(): string {
+    return 'cpcgeneric';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions() {

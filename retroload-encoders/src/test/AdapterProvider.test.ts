@@ -35,3 +35,11 @@ describe.each(adapters.map((a) => [a.name, a]))('%s', (_name, a) => {
     expect(['boolean', 'undefined']).toContain(typeof identification.header);
   });
 });
+
+test('Format identifiers are unique', () => {
+  const formatNames = [];
+  for (const a of adapters) {
+    expect(formatNames).not.toContain(a.getInternalName());
+    formatNames.push(a.getInternalName());
+  }
+});

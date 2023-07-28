@@ -19,7 +19,7 @@ export class KcSssAdapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'kcsss';
+    return 'sss';
   }
 
   static override identify(filename: string, _ba: BufferAccess) {

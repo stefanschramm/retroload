@@ -3,7 +3,7 @@ import {InvalidArgumentError} from '../Exceptions.js';
 import {type OptionDefinition, nameOption, type ArgumentOptionDefinition, type OptionContainer} from '../Options.js';
 import {Mo5Encoder} from '../encoder/Mo5Encoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractGenericAdapter} from './AbstractGenericAdapter.js';
+import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
 
 const maxFileNameLength = 11;
 
@@ -36,13 +36,21 @@ const modeOption: ArgumentOptionDefinition<number> = {
   parse: (v) => v === '' ? fileModeBinary : parseInt(v, 16),
 };
 
-export class Mo5GenericAdapter extends AbstractGenericAdapter {
+export class Mo5GenericAdapter extends AbstractAdapter {
   static override getTargetName() {
     return Mo5Encoder.getTargetName();
   }
 
   static override getName() {
     return 'MO5 (Generic data)';
+  }
+
+  static override getInternalName(): string {
+    return 'mo5generic';
+  }
+
+  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+    return unidentifiable;
   }
 
   static override getOptions(): OptionDefinition[] {

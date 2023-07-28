@@ -1,4 +1,4 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
+import {AbstractAdapter, unidentifiable} from './AbstractAdapter.js';
 import {InputDataError} from '../Exceptions.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from 'retroload-common';
@@ -17,14 +17,11 @@ export class TiFiadAdapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'tifiad';
+    return 'fiad';
   }
 
   static override identify(_filename: string, _ba: BufferAccess) {
-    return {
-      filename: undefined, // no specific extension
-      header: undefined, // no specific header
-    };
+    return unidentifiable;
   }
 
   static override getOptions() {

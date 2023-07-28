@@ -21,7 +21,7 @@ export class KcKccAdapter extends AbstractAdapter {
   }
 
   static override getInternalName() {
-    return 'kckcc';
+    return 'kcc';
   }
 
   static override identify(filename: string, _ba: BufferAccess) {
