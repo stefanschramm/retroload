@@ -45,9 +45,9 @@ async function main() {
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
   Logger.setVerbosity(parseInt(typeof options['verbosity'] === 'string' ? options['verbosity'] : '1', 10));
   const playback = undefined === outfile;
-  const speaker = playback ? await initializeSpeaker() : null;
   const data = readInputFile(infile);
   const recorder = new WaveRecorder();
+  const speaker = playback ? await initializeSpeaker(recorder.sampleRate, recorder.bitsPerSample, recorder.channels) : null;
   const arrayBuffer = data.buffer.slice(
     data.byteOffset,
     data.byteOffset + data.byteLength,
@@ -87,17 +87,13 @@ function getCommanderFlagsString(optionDefinition: OptionDefinition) {
   return optionDefinition.type !== 'text' || optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
 }
 
-async function initializeSpeaker() {
+async function initializeSpeaker(sampleRate: number, bitDepth: number, channels: number) {
   try {
     // Dynamically try to load speaker module.
     // This way it doesn't need to be an actual dependency.
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const Speaker = (await import('speaker')).default;
-    return new Speaker({
-      channels: 1,
-      bitDepth: 8,
-      sampleRate: 44100,
-    });
+    return new Speaker({channels, bitDepth, sampleRate});
   } catch (e: any) {
     if (e.code === 'ERR_MODULE_NOT_FOUND') {
       console.error('Unable to load speaker module. Install it using "npm install speaker". You may need to install additional system packages like build-essential and libasound2-dev. Alternatively, if you wish to generate a WAVE file, please specify the output file using the -o option.');
