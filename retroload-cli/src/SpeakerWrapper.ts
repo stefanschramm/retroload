@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/prefer-ts-expect-error */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {Logger} from 'retroload-encoders';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
 // @ts-ignore
 import type Speaker from 'speaker';
 import stream from 'stream';
@@ -35,9 +40,7 @@ async function initializeSpeaker(sampleRate: number, bitDepth: number, channels:
   try {
     // Dynamically try to load speaker module.
     // This way it doesn't need to be an actual dependency.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
     // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     const Speaker = (await import('speaker')).default;
     return new Speaker({channels, bitDepth, sampleRate});
   } catch (e: any) {
