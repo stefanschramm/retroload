@@ -2,12 +2,10 @@
 
 import {BufferAccess} from 'retroload-common';
 import {WaveRecorder, AdapterManager, Exception, Logger} from 'retroload-encoders';
-
 import fs from 'fs';
-import stream from 'stream';
 import {Command} from 'commander';
 import {type OptionDefinition} from 'retroload-encoders/dist/cjs/Options.js';
-import type Speaker from 'speaker';
+import {SpeakerWrapper} from './SpeakerWrapper.js';
 
 main()
   .catch((err) => {
@@ -45,9 +43,9 @@ async function main() {
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
   Logger.setVerbosity(parseInt(typeof options['verbosity'] === 'string' ? options['verbosity'] : '1', 10));
   const playback = undefined === outfile;
-  const speaker = playback ? await initializeSpeaker() : null;
   const data = readInputFile(infile);
   const recorder = new WaveRecorder();
+  const speakerWrapper = playback ? (await SpeakerWrapper.create(recorder.sampleRate, recorder.bitsPerSample, recorder.channels)) : undefined;
   const arrayBuffer = data.buffer.slice(
     data.byteOffset,
     data.byteOffset + data.byteLength,
@@ -71,11 +69,11 @@ async function main() {
   }
 
   if (playback) {
-    if (speaker === null) {
+    if (speakerWrapper === undefined) {
       Logger.error('Speaker module not found.');
       process.exit(1);
     }
-    await play(speaker, recorder.getRawBuffer());
+    await speakerWrapper.play(recorder.getRawBuffer());
     process.exit(0);
   } else {
     writeOutputFile(outfile, recorder.getBuffer());
@@ -85,27 +83,6 @@ async function main() {
 
 function getCommanderFlagsString(optionDefinition: OptionDefinition) {
   return optionDefinition.type !== 'text' || optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
-}
-
-async function initializeSpeaker() {
-  try {
-    // Dynamically try to load speaker module.
-    // This way it doesn't need to be an actual dependency.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const Speaker = (await import('speaker')).default;
-    return new Speaker({
-      channels: 1,
-      bitDepth: 8,
-      sampleRate: 44100,
-    });
-  } catch (e: any) {
-    if (e.code === 'ERR_MODULE_NOT_FOUND') {
-      console.error('Unable to load speaker module. Install it using "npm install speaker". You may need to install additional system packages like build-essential and libasound2-dev. Alternatively, if you wish to generate a WAVE file, please specify the output file using the -o option.');
-    } else {
-      console.error(e);
-    }
-    process.exit(1);
-  }
 }
 
 function readInputFile(path: string) {
@@ -126,16 +103,3 @@ function writeOutputFile(path: string, data: Uint8Array) {
   }
 }
 
-async function play(speaker: Speaker, buffer: Uint8Array) {
-  return new Promise((resolve) => {
-    Logger.info('Playing...');
-    const s = new stream.PassThrough();
-    s.push(buffer);
-    s.push(null);
-    speaker.on('finish', () => {
-      Logger.info('Finished.');
-      resolve(null);
-    });
-    s.pipe(speaker);
-  });
-}
