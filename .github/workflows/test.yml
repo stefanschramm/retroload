@@ -16,7 +16,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: sudo apt-get install libasound2-dev
       - run: npm ci
       - run: npm run build
       - run: npm run test --workspaces
