@@ -2,18 +2,17 @@ import {BufferAccess} from 'retroload-common';
 import {Logger} from '../Logger.js';
 import {InputDataError} from '../Exceptions.js';
 import {calculateChecksum8} from '../Utils.js';
+import {type HalfPeriodProvider, SampleToHalfPeriodConverter} from './SampleToHalfPeriodConverter.js';
+import {WaveDecoder} from './WaveDecoder.js';
 
-const pcmFormatTag = 0x0001;
-
-const one = [882, 1225];
-const delimiter = [501, 668];
-const zero = [1470, 3150];
+const one = [880, 1250];
+const delimiter = [500, 670];
+const zero = [1400, 2800];
 const minIntroPeriods = 50;
 
 export class KcDecoder {
   decode(ba: BufferAccess) {
-    const wd = new WaveDecoder(ba);
-    const hpp = new HalfPeriodProcessor(wd.getHalfPeriods());
+    const hpp = new HalfPeriodProcessor(new SampleToHalfPeriodConverter(new WaveDecoder(ba)));
     let block: BufferAccess | undefined;
     while (undefined !== (block = hpp.decodeBlock())) {
       Logger.debug(block.asHexDump());
@@ -21,107 +20,11 @@ export class KcDecoder {
   }
 }
 
-class WaveDecoder {
-  ba: BufferAccess;
-  sampleRate: number;
-  bitsPerSample: number;
-  channels: number;
-
-  constructor(ba: BufferAccess) {
-    this.ba = ba;
-    if (!ba.containsDataAt(0, 'RIFF')) {
-      throw new InputDataError('File does not seem to be a WAVE file.');
-    }
-    const formatTag = ba.getUint16Le(0x14);
-    if (formatTag !== pcmFormatTag) {
-      throw new InputDataError('WAVE file is not in PCM format.');
-    }
-    this.channels = ba.getUint16Le(0x16);
-    if (this.channels > 1) {
-      Logger.info('Multiple channels detected. Will use first channel for decoding.');
-    }
-    this.sampleRate = ba.getUint32Le(0x18);
-    this.bitsPerSample = ba.getUint16Le(0x22);
-    Logger.debug(`Format: PCM, Channels: ${this.channels}, Sample Rate: ${this.sampleRate}, Bits per sample: ${this.bitsPerSample}`);
-    if (!ba.containsDataAt(0x24, 'data')) {
-      throw new InputDataError('Unable to find data block of WAVE file.');
-    }
-  }
-
-  /**
-   * @returns List of frequency values (Hz) for all half periods
-   */
-  public getHalfPeriods(): number[] {
-    const samples = this.getSamples();
-    const offset = this.determineOffset(samples);
-
-    const halfPeriods = [];
-    let length = 1;
-    let positive = samples[0] > offset;
-    for (let i = 1; i < samples.length; i++) {
-      const currentPositive = samples[i] > offset;
-      if (positive !== currentPositive) {
-        halfPeriods.push(this.sampleRate / (length * 2));
-        length = 0;
-        positive = currentPositive;
-      }
-      length++;
-    }
-
-    // const histogram = getHistogram(halfPeriods);
-    // console.log(histogram);
-
-    return halfPeriods;
-  }
-
-  private determineOffset(samples: number[]): number {
-    let min = 0;
-    let max = 0;
-    for (const s of samples) {
-      if (s > max) {
-        max = s;
-      } else if (s < min) {
-        min = s;
-      }
-    }
-    return (max - min) / 2;
-  }
-
-  private getSamples(): number[] {
-    const blockAlign = this.ba.getUint16Le(0x20); // size of a frame in bytes
-    const dataLength = this.ba.getUint32Le(0x28);
-    if (dataLength !== this.ba.length() - 44) {
-      Logger.info('Unexpected data length.');
-    }
-    const dataBa = this.ba.slice(0x2c);
-
-    const samples = [];
-    for (let i = 0; i < dataLength; i += blockAlign) {
-      // Get data for first channel only.
-      switch (this.bitsPerSample) {
-        case 8:
-          samples.push(dataBa.getUint8(i));
-          continue;
-        case 16:
-          samples.push(dataBa.getUint16Le(i));
-          continue;
-        case 32:
-          samples.push(dataBa.getUint32Le(i));
-          continue;
-        default:
-          throw new InputDataError('Can only process 8, 16 or 32 bits per sample.');
-      }
-    }
-
-    return samples;
-  }
-}
-
 class HalfPeriodProcessor {
   private readonly halfPeriods: number[];
   private i = 0;
-  constructor(halfPeriods: number[]) {
-    this.halfPeriods = halfPeriods;
+  constructor(halfPeriodProvider: HalfPeriodProvider) {
+    this.halfPeriods = halfPeriodProvider.getHalfPeriods();
   }
 
   decodeBlock(): BufferAccess | undefined {
@@ -217,20 +120,3 @@ class HalfPeriodProcessor {
     return byte;
   }
 }
-/*
-type Histogram = Record<number, number>;
-
-function getHistogram(halfPeriods: number[]) {
-  const histogram: Histogram = {};
-  for (const hp of halfPeriods) {
-    if (histogram[hp] === undefined) {
-      histogram[hp] = 1;
-    }
-    else {
-      histogram[hp]++;
-    }
-  }
-
-  return histogram;
-}
-*/
