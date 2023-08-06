@@ -29,7 +29,21 @@ async function main() {
   const ba = new BufferAccess(arrayBuffer);
   Logger.debug(`Processing ${infile}...`);
   const decoder = new KcDecoder();
-  decoder.decode(ba);
+  const files = decoder.decode(ba);
+  Logger.debug(`Got ${files.length} files.`);
+  let i = 0;
+  for (const file of files) {
+    Logger.debug('----------------');
+    const fileHeader = '\xc3KC-TAPE by AF. ';
+    const tapFile = BufferAccess.create(fileHeader.length + 129 * file.length);
+    tapFile.writeAsciiString(fileHeader);
+    for (const block of file) {
+      tapFile.writeBa(block);
+    }
+    Logger.debug(tapFile.asHexDump());
+    writeOutputFile(`${i}.tap`, tapFile.asUint8Array()); // TODO: Option for path/name(-prefix).
+    i++;
+  }
 }
 
 function readInputFile(path: string) {
@@ -41,7 +55,6 @@ function readInputFile(path: string) {
   }
 }
 
-/*
 function writeOutputFile(path: string, data: Uint8Array) {
   try {
     fs.writeFileSync(path, data);
@@ -50,4 +63,3 @@ function writeOutputFile(path: string, data: Uint8Array) {
     process.exit(1);
   }
 }
-*/

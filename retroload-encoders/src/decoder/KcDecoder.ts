@@ -1,37 +1,86 @@
 import {BufferAccess} from 'retroload-common';
 import {Logger} from '../Logger.js';
 import {InputDataError} from '../Exceptions.js';
-import {calculateChecksum8} from '../Utils.js';
+import {calculateChecksum8, hex8} from '../Utils.js';
 import {type HalfPeriodProvider, SampleToHalfPeriodConverter} from './SampleToHalfPeriodConverter.js';
 import {WaveDecoder} from './WaveDecoder.js';
 
-const one = [880, 1250];
-const delimiter = [500, 670];
-const zero = [1400, 2800];
+type FrequencyRange = [number, number];
+
+const one: FrequencyRange = [770, 1300];
+const delimiter: FrequencyRange = [500, 670];
+const zero: FrequencyRange = [1400, 2800];
 const minIntroPeriods = 50;
 
 export class KcDecoder {
-  decode(ba: BufferAccess) {
-    const hpp = new HalfPeriodProcessor(new SampleToHalfPeriodConverter(new WaveDecoder(ba)));
+  decode(ba: BufferAccess): BufferAccess[][] {
+    const sampleProvider = new WaveDecoder(ba);
+    const halfPeriodProvider = new SampleToHalfPeriodConverter(sampleProvider);
+    const hpp = new HalfPeriodProcessor(halfPeriodProvider);
     let block: BufferAccess | undefined;
-    while (undefined !== (block = hpp.decodeBlock())) {
-      Logger.debug(block.asHexDump());
-    }
+    let previousBlockNumber: number | undefined;
+    const files: BufferAccess[][] = [];
+    let blocks: BufferAccess[] = [];
+    do {
+      block = hpp.decodeBlock(true);
+      if (block === undefined) {
+        return files; // very last block reached
+      }
+      const blockNumber = block.getUint8(0);
+      if (previousBlockNumber !== undefined) {
+        if (blockNumber <= previousBlockNumber) {
+          files.push(blocks);
+          // begin of a new file
+          blocks = [];
+          if (blockNumber !== 0 && blockNumber !== 1) {
+            Logger.info(`Warning: Got first block with block number ${hex8(blockNumber)}`);
+          }
+        } else if (blockNumber > previousBlockNumber + 1 && blockNumber !== 0xff) {
+          Logger.info(`Warning: Missing block. Got block number ${hex8(blockNumber)} but expected was ${hex8(previousBlockNumber + 1)}.`);
+        }
+      }
+      previousBlockNumber = blockNumber;
+      blocks.push(block);
+    } while (block !== undefined);
+
+    return files;
   }
 }
 
 class HalfPeriodProcessor {
-  private readonly halfPeriods: number[];
-  private i = 0;
+  private readonly halfPeriodProvider: HalfPeriodProvider;
   constructor(halfPeriodProvider: HalfPeriodProvider) {
-    this.halfPeriods = halfPeriodProvider.getHalfPeriods();
+    this.halfPeriodProvider = halfPeriodProvider;
   }
 
-  decodeBlock(): BufferAccess | undefined {
+  decodeBlock(skipUnreadable = false): BufferAccess | undefined {
+    let success = true;
+    let block;
+    do {
+      block = undefined;
+      try {
+        block = this.decodeBlockImpl();
+        success = true;
+      } catch (e) {
+        if (!skipUnreadable) {
+          throw e;
+        }
+        success = false;
+        if (e instanceof InputDataError) {
+          Logger.error(e.message);
+        }
+      }
+    } while (!success);
+
+    return block;
+  }
+
+  decodeBlockImpl(): BufferAccess | undefined {
     const block = BufferAccess.create(130);
     if (!this.findValidIntro()) {
       return undefined;
     }
+    Logger.info(`Reading block at ${this.getFormattedPosition()}`);
     for (let i = 0; i < 130; i++) {
       const byte = this.readByte();
       block.writeUint8(byte);
@@ -42,8 +91,9 @@ class HalfPeriodProcessor {
     if (calculatedChecksum !== readChecksum) {
       Logger.error(`Warning: Invalid checksum for block ${blockNumber}! Read checksum: ${readChecksum}, Calculated checksum: ${calculatedChecksum}.`);
     }
+    Logger.debug(`Read block number 0x${blockNumber.toString(16).padStart(2, '0')}`);
 
-    return block.slice(0, 129); // return block number, but not checksum
+    return block.slice(0, 129); // return slice with block number, but not checksum
   }
 
   findValidIntro(): boolean {
@@ -57,33 +107,45 @@ class HalfPeriodProcessor {
   }
 
   findIntroStart(): boolean {
-    while (this.halfPeriods[this.i] < one[0] || this.halfPeriods[this.i] > one[1]) {
-      this.i++;
-      if (this.i >= this.halfPeriods.length) {
+    let f;
+    do {
+      f = this.halfPeriodProvider.getNext();
+      if (f === undefined) {
         return false;
       }
-    }
+    } while (isNot(f, one));
+    this.halfPeriodProvider.rewindOne();
 
     return true;
   }
 
   /**
-   * @returns intro length
+   * @returns intro length in half periods
    */
   findIntroEnd(): number {
-    const introStart = this.i;
-    while (this.halfPeriods[this.i] >= one[0] && this.halfPeriods[this.i] <= one[1]) {
-      this.i++;
-    }
-    const introLength = this.i - introStart;
+    let introLength = 0;
+    let f;
+    do {
+      f = this.halfPeriodProvider.getNext();
+      if (f === undefined) {
+        return introLength;
+      }
+      introLength++;
+    } while (is(f, one));
+    this.halfPeriodProvider.rewindOne();
+
     return introLength;
-    // TODO: check for data end
   }
 
   readDelimiter(): boolean {
-    const firstHalf = this.halfPeriods[this.i++];
-    const secondHalf = this.halfPeriods[this.i++];
-    if (firstHalf < delimiter[0] || firstHalf > delimiter[1] || secondHalf < delimiter[0] || secondHalf > delimiter[1]) {
+    // check full oscillation
+    const firstHalf = this.halfPeriodProvider.getNext();
+    const secondHalf = this.halfPeriodProvider.getNext();
+
+    if (firstHalf === undefined || secondHalf === undefined) {
+      return false;
+    }
+    if (isNot(firstHalf, delimiter) || isNot(secondHalf, delimiter)) {
       return false;
     }
 
@@ -91,10 +153,14 @@ class HalfPeriodProcessor {
   }
 
   readBit(): boolean | undefined {
-    const firstHalf = this.halfPeriods[this.i++];
-    const secondHalf = this.halfPeriods[this.i++];
-    const isOne = (firstHalf >= one[0] && firstHalf <= one[1] && secondHalf >= one[0] && secondHalf <= one[1]);
-    const isZero = (firstHalf >= zero[0] && firstHalf <= zero[1] && secondHalf >= zero[0] && secondHalf <= zero[1]);
+    // check full oscillation
+    const firstHalf = this.halfPeriodProvider.getNext();
+    const secondHalf = this.halfPeriodProvider.getNext();
+    if (firstHalf === undefined || secondHalf === undefined) {
+      return undefined;
+    }
+    const isOne = is(firstHalf, one) && is(secondHalf, one);
+    const isZero = is(firstHalf, zero) && is(secondHalf, zero);
 
     if (!isOne && !isZero) {
       return undefined;
@@ -106,17 +172,29 @@ class HalfPeriodProcessor {
   readByte(): number {
     const delimiter = this.readDelimiter();
     if (!delimiter) {
-      throw new InputDataError(`Did not found a delimiter at half period offset ${this.i}.`);
+      throw new InputDataError(`Did not found a delimiter at half period at ${this.getFormattedPosition()}.`);
     }
     let byte = 0;
     for (let i = 0; i < 8; i++) {
       const bit = this.readBit();
       if (bit === undefined) {
-        throw new InputDataError(`Unable to detect bit at half period offset ${this.i}.`);
+        throw new InputDataError(`Unable to detect bit at half period at ${this.getFormattedPosition()}.`);
       }
       byte |= ((bit ? 1 : 0) << i);
     }
 
     return byte;
   }
+
+  private getFormattedPosition(): string {
+    return `${this.halfPeriodProvider.getCurrentPositionSecond().toFixed(4)} s (sample ${this.halfPeriodProvider.getCurrentPositionSample()})`;
+  }
+}
+
+function is(value: number, range: FrequencyRange): boolean {
+  return value >= range[0] && value <= range[1];
+}
+
+function isNot(value: number, range: FrequencyRange): boolean {
+  return value < range[0] || value > range[1];
 }

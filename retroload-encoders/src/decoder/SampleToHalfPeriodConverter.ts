@@ -2,29 +2,59 @@ import {type SampleProvider} from './WaveDecoder.js';
 
 export type HalfPeriodProvider = {
   /**
-   * @returns List of frequency values (Hz) for all half periods
+   * @returns Frequency value (Hz) of next half period
    */
-  getHalfPeriods(): number[];
+  getNext(): number | undefined;
+  /**
+   * rewind cursor to previous half period
+   */
+  rewindOne(): void;
+  getCurrentPositionSecond(): number;
+  getCurrentPositionSample(): number;
 };
 
 export class SampleToHalfPeriodConverter implements HalfPeriodProvider {
   private readonly sampleProvider: SampleProvider;
+  private readonly halfPeriods: number[] = [];
+  private readonly halfPeriodPositions: number[] = [];
+  private cursor = 0;
 
   constructor(sampleProvider: SampleProvider) {
     this.sampleProvider = sampleProvider;
+    this.loadHalfPeriods();
   }
 
-  public getHalfPeriods(): number[] {
+  public rewindOne(): void {
+    this.cursor--;
+  }
+
+  public getNext(): number | undefined {
+    if (this.halfPeriods[this.cursor] === undefined) {
+      return undefined;
+    }
+
+    return this.halfPeriods[this.cursor++];
+  }
+
+  public getCurrentPositionSecond(): number {
+    return this.getCurrentPositionSample() / this.sampleProvider.sampleRate;
+  }
+
+  public getCurrentPositionSample(): number {
+    return (this.cursor === 0) ? 0 : this.halfPeriodPositions[this.cursor - 1];
+  }
+
+  private loadHalfPeriods(): void {
     const samples = this.sampleProvider.getSamples();
     const offset = this.determineOffset(samples);
 
-    const halfPeriods = [];
     let length = 1;
     let positive = samples[0] > offset;
     for (let i = 1; i < samples.length; i++) {
       const currentPositive = samples[i] > offset;
       if (positive !== currentPositive) {
-        halfPeriods.push(this.sampleProvider.sampleRate / (length * 2));
+        this.halfPeriods.push(this.sampleProvider.sampleRate / (length * 2));
+        this.halfPeriodPositions.push(i);
         length = 0;
         positive = currentPositive;
       }
@@ -33,8 +63,6 @@ export class SampleToHalfPeriodConverter implements HalfPeriodProvider {
 
     // const histogram = getHistogram(halfPeriods);
     // console.log(histogram);
-
-    return halfPeriods;
   }
 
   private determineOffset(samples: number[]): number {
