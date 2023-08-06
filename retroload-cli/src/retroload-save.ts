@@ -14,9 +14,13 @@ async function main() {
   const program = (new Command())
     .name('retroload-save')
     .description('Decode WAVE files of historical computers.')
-    .argument('infile', 'Path to WAVE file to analyze')
-    .allowExcessArguments(false);
+    .argument('<infile>', 'Path to WAVE file to analyze')
+    .allowExcessArguments(false)
+    .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1');
+  program.parse();
+  const options = program.opts();
   const infile = program.args[0];
+  Logger.setVerbosity(parseInt(typeof options['verbosity'] === 'string' ? options['verbosity'] : '1', 10));
   const data = readInputFile(infile);
   const arrayBuffer = data.buffer.slice(
     data.byteOffset,
@@ -24,10 +28,8 @@ async function main() {
   );
   const ba = new BufferAccess(arrayBuffer);
   Logger.debug(`Processing ${infile}...`);
-  Logger.debug(ba.asHexDump());
-
   const decoder = new KcDecoder();
-  decoder.decode();
+  decoder.decode(ba);
 }
 
 function readInputFile(path: string) {
