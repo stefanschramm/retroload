@@ -71,7 +71,7 @@ export class KcHalfPeriodProcessor {
     // return slice with block number, but not checksum
     return new BlockDecodingResult(
       block.slice(0, 129),
-      checksumCorrect ? BlockDecodingResultStatus.Complete : BlockDecodingResultStatus.InvalidChecksum
+      checksumCorrect ? BlockDecodingResultStatus.Complete : BlockDecodingResultStatus.InvalidChecksum,
     );
   }
 
