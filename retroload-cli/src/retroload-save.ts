@@ -37,7 +37,7 @@ TODO:
   - total files
   - invalid blocks
   - invalid files
-- (ASCII-)visualize wave on error (at --stop)
+- (ASCII-)visualize wave on error (at --on-error stop)
   */
   const program = (new Command())
     .name('retroload-save')
