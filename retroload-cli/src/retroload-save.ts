@@ -46,7 +46,8 @@ TODO:
     .allowExcessArguments(false)
     .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1')
     .option('--on-error <errorhandling>', 'Error handling strategy', 'ignore')
-    .option('--to <outputtype>', 'Output format');
+    .option('--to <outputtype>', 'Output format')
+    .option('--skip <samples>', 'Start processing of input data after skipping <samples> samples', '0');
   program.parse();
   const options = program.opts();
   const infile = program.args[0];
@@ -87,6 +88,7 @@ function getConverterSettings(options: OptionValues): ConverterManager.Converter
 
   return {
     onError: options['onError'],
+    skip: parseInt(typeof options['skip'] === 'string' ? options['skip'] : '0', 10),
   };
 }
 

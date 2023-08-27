@@ -26,6 +26,10 @@ export type OutputFile = {
 
 export type ConverterSettings = {
   onError: ErrorHandlingType;
+  /**
+   * Number of samples to skip in input
+   */
+  skip: number;
 };
 
 export type ErrorHandlingType = 'stop' | 'skipfile' | 'ignore';

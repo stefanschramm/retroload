@@ -12,7 +12,7 @@ export const wav2KcTapConverter: ConverterDefinition = {
 };
 
 function * convert(ba: BufferAccess, settings: ConverterSettings): Generator<OutputFile> {
-  const sampleProvider = new WaveDecoder(ba);
+  const sampleProvider = new WaveDecoder(ba, settings.skip);
   const halfPeriodProvider = new SampleToHalfPeriodConverter(sampleProvider);
   const hpp = new KcHalfPeriodProcessor(halfPeriodProvider);
   const blockProcessor = new KcBlockProcessor(hpp, settings);
