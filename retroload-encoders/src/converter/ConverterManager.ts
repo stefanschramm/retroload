@@ -2,7 +2,7 @@ import {type BufferAccess} from 'retroload-common';
 import {UsageError} from '../Exceptions.js';
 import {converters} from './ConverterProvider.js';
 
-export function convert(ba: BufferAccess, from: string, to: string, settings: ConverterSettings): OutputFile[] {
+export function convert(ba: BufferAccess, from: string, to: string, settings: ConverterSettings): Generator <OutputFile> {
   const availableConverters = converters.filter((c) => c.from === from && c.to === to);
   if (availableConverters.length === 0) {
     throw new UsageError(`No converter for output format "${to}" found.`);
@@ -16,7 +16,7 @@ export function convert(ba: BufferAccess, from: string, to: string, settings: Co
 export type ConverterDefinition = {
   from: string;
   to: string;
-  convert(ba: BufferAccess, settings: ConverterSettings): OutputFile[];
+  convert(ba: BufferAccess, settings: ConverterSettings): Generator<OutputFile>;
 };
 
 export type OutputFile = {
@@ -28,4 +28,4 @@ export type ConverterSettings = {
   onError: ErrorHandlingType;
 };
 
-type ErrorHandlingType = 'stop' | 'skipfile' | 'zerofill' | 'partial';
+export type ErrorHandlingType = 'stop' | 'skipfile' | 'ignore';

@@ -3,7 +3,7 @@
 import {BufferAccess} from 'retroload-common';
 import {ConverterManager, Logger} from 'retroload-encoders';
 import fs from 'fs';
-import {Command} from 'commander';
+import {Command, type OptionValues} from 'commander';
 
 main()
   .catch((err) => {
@@ -45,6 +45,7 @@ TODO:
     .argument('<infile>', 'Path to WAVE file to analyze')
     .allowExcessArguments(false)
     .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1')
+    .option('--on-error <errorhandling>', 'Error handling strategy', 'ignore')
     .option('--to <outputtype>', 'Output format');
   program.parse();
   const options = program.opts();
@@ -55,6 +56,7 @@ TODO:
     Logger.error('error: missing required argument \'to\'');
     return;
   }
+  const converterSettings = getConverterSettings(options);
   const data = readInputFile(infile);
   const arrayBuffer = data.buffer.slice(
     data.byteOffset,
@@ -62,16 +64,30 @@ TODO:
   );
   const ba = new BufferAccess(arrayBuffer);
   Logger.debug(`Output format: ${outputFormat}`);
+  Logger.debug(`Error handling method: ${converterSettings.onError}`);
   Logger.debug(`Processing ${infile}...`);
-  const files = ConverterManager.convert(ba, 'wav', outputFormat, {onError: 'partial'}); // TODO: settings as arguments
-  Logger.debug(`Got ${files.length} files.`);
   let i = 0;
-  for (const file of files) {
+  for (const file of ConverterManager.convert(ba, 'wav', outputFormat, converterSettings)) {
     Logger.info(file.proposedName ?? '');
     Logger.debug(file.data.asHexDump());
     writeOutputFile(`${i}.tap`, file.data.asUint8Array()); // TODO: Option for path/name(-prefix).
     i++;
   }
+}
+
+function getConverterSettings(options: OptionValues): ConverterManager.ConverterSettings {
+  if (typeof options['onError'] !== 'string') {
+    Logger.error('error: invalid value for argument \'on-error\'');
+    process.exit(1);
+  }
+  if (options['onError'] !== 'stop' && options['onError'] !== 'ignore' && options['onError'] !== 'skipfile') {
+    Logger.error('error: invalid value for argument \'on-error\'');
+    process.exit(1);
+  }
+
+  return {
+    onError: options['onError'],
+  };
 }
 
 function readInputFile(path: string) {

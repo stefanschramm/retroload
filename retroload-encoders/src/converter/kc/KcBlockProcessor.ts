@@ -3,6 +3,7 @@ import {type ConverterSettings} from '../ConverterManager.js';
 import {BlockDecodingResultStatus, type KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
 import {hex8} from '../../Utils.js';
 import {Logger} from '../../Logger.js';
+import {DecodingError} from '../ConverterExceptions.js';
 
 export class KcBlockProcessor {
   private readonly blockProvider: KcHalfPeriodProcessor;
@@ -18,21 +19,22 @@ export class KcBlockProcessor {
   }
 
   * files(): Generator<FileDecodingResult> {
-    console.log(this.settings);
-
     for (const decodingResult of this.blockProvider.blocks()) {
       switch (decodingResult.status) {
         case BlockDecodingResultStatus.Complete:
           break;
         case BlockDecodingResultStatus.InvalidChecksum:
         case BlockDecodingResultStatus.Partial:
-          // TODO: stop? zerofill?
+          if (this.settings.onError === 'stop') {
+            throw new DecodingError('Stopping.');
+          }
           this.errorOccured = true;
           break;
         default:
           throw new Error('Unexpected BlockDecodingResultStatus.');
       }
 
+      // TODO: Check distance of block to the end of the previous and start a new file if it exceeds a certain threshold
       const blockNumber = decodingResult.data.getUint8(0);
       if (this.blockNumberBelongsToNextFile(blockNumber)) {
         yield this.finishFile();
