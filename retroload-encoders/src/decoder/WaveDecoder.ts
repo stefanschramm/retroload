@@ -6,7 +6,7 @@ const pcmFormatTag = 0x0001;
 
 export type SampleProvider = {
   readonly sampleRate: number;
-  getSamples(): number[];
+  getSamples(): Generator<number>;
 };
 
 export class WaveDecoder implements SampleProvider {
@@ -36,7 +36,7 @@ export class WaveDecoder implements SampleProvider {
     }
   }
 
-  public getSamples(): number[] {
+  public * getSamples(): Generator<number> {
     const blockAlign = this.ba.getUint16Le(0x20); // size of a frame in bytes
     const dataLength = this.ba.getUint32Le(0x28);
     if (dataLength !== this.ba.length() - 44) {
@@ -44,24 +44,21 @@ export class WaveDecoder implements SampleProvider {
     }
     const dataBa = this.ba.slice(0x2c);
 
-    const samples = [];
     for (let i = 0; i < dataLength; i += blockAlign) {
       // Get data for first channel only.
       switch (this.bitsPerSample) {
         case 8:
-          samples.push(dataBa.getUint8(i));
+          yield dataBa.getUint8(i);
           continue;
         case 16:
-          samples.push(dataBa.getUint16Le(i));
+          yield dataBa.getUint16Le(i);
           continue;
         case 32:
-          samples.push(dataBa.getUint32Le(i));
+          yield dataBa.getUint32Le(i);
           continue;
         default:
           throw new InputDataError('Can only process 8, 16 or 32 bits per sample.');
       }
     }
-
-    return samples;
   }
 }

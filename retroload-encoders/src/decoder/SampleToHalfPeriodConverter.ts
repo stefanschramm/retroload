@@ -45,7 +45,7 @@ export class SampleToHalfPeriodConverter implements HalfPeriodProvider {
   }
 
   private loadHalfPeriods(): void {
-    const samples = this.sampleProvider.getSamples();
+    const samples = Array.from(this.sampleProvider.getSamples());
     const offset = this.determineOffset(samples);
 
     let length = 1;
