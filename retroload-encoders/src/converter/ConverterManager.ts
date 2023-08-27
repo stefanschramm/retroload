@@ -28,4 +28,4 @@ export type ConverterSettings = {
   onError: ErrorHandlingType;
 };
 
-type ErrorHandlingType = 'stop' | 'skipfile' | 'skipblock' | 'zerofill' | 'partial';
+type ErrorHandlingType = 'stop' | 'skipfile' | 'zerofill' | 'partial';

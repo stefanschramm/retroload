@@ -2,7 +2,6 @@ import {BufferAccess} from 'retroload-common';
 import {type HalfPeriodProvider} from '../../decoder/SampleToHalfPeriodConverter.js';
 import {Logger} from '../../Logger.js';
 import {calculateChecksum8} from '../../Utils.js';
-import {type ConverterSettings} from '../ConverterManager.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../ConverterExceptions.js';
 
 type FrequencyRange = [number, number];
@@ -12,29 +11,20 @@ const delimiter: FrequencyRange = [500, 670];
 const zero: FrequencyRange = [1400, 2800];
 const minIntroPeriods = 50;
 
+/**
+ * Decode half periods into blocks.
+ */
 export class KcHalfPeriodProcessor {
   private readonly halfPeriodProvider: HalfPeriodProvider;
-  private readonly settings: ConverterSettings;
-  constructor(halfPeriodProvider: HalfPeriodProvider, settings: ConverterSettings) {
+  constructor(halfPeriodProvider: HalfPeriodProvider) {
     this.halfPeriodProvider = halfPeriodProvider;
-    this.settings = settings;
   }
 
-  decodeBlock(): BufferAccess | undefined {
+  * blocks(): Generator<BlockDecodingResult> {
     let keepGoing = true;
     do {
       try {
-        const blockWrapper = this.decodeBlockImpl();
-        if (blockWrapper.status === BlockStatus.Complete) {
-          return blockWrapper.data;
-        }
-        // invalid blocks (partial / invalid checksum):
-        if (this.settings.onError === 'partial') {
-          return blockWrapper.data;
-        }
-        if (['stop', 'skipfile', 'zerofill'].includes(this.settings.onError)) {
-          throw new DecodingError('Unable to decode block.');
-        }
+        yield this.decodeBlockImpl();
       } catch (e) {
         if (e instanceof BlockStartNotFound) {
           continue;
@@ -45,11 +35,9 @@ export class KcHalfPeriodProcessor {
         }
       }
     } while (keepGoing);
-
-    return undefined;
   }
 
-  decodeBlockImpl(): BlockWrapper {
+  decodeBlockImpl(): BlockDecodingResult {
     if (!this.findValidIntro()) {
       throw new EndOfInput();
     }
@@ -65,7 +53,7 @@ export class KcHalfPeriodProcessor {
           if (i === 0) {
             throw new BlockStartNotFound();
           }
-          return new BlockWrapper(block.slice(0, 129), BlockStatus.Partial);
+          return new BlockDecodingResult(block.slice(0, 129), BlockDecodingResultStatus.Partial);
         }
         throw e; // unknown exception
       }
@@ -81,10 +69,13 @@ export class KcHalfPeriodProcessor {
     Logger.debug(`${this.getFormattedPosition()} Finished reading block number 0x${blockNumber.toString(16).padStart(2, '0')}`);
 
     // return slice with block number, but not checksum
-    return new BlockWrapper(block.slice(0, 129), checksumCorrect ? BlockStatus.Complete : BlockStatus.InvalidChecksum);
+    return new BlockDecodingResult(
+      block.slice(0, 129),
+      checksumCorrect ? BlockDecodingResultStatus.Complete : BlockDecodingResultStatus.InvalidChecksum
+    );
   }
 
-  findValidIntro(): boolean {
+  private findValidIntro(): boolean {
     do {
       if (!this.findIntroStart()) {
         return false; // end reached
@@ -94,7 +85,7 @@ export class KcHalfPeriodProcessor {
     return true;
   }
 
-  findIntroStart(): boolean {
+  private findIntroStart(): boolean {
     let f;
     do {
       f = this.halfPeriodProvider.getNext();
@@ -110,7 +101,7 @@ export class KcHalfPeriodProcessor {
   /**
    * @returns intro length in half periods
    */
-  findIntroEnd(): number {
+  private findIntroEnd(): number {
     let introLength = 0;
     let f;
     do {
@@ -125,7 +116,7 @@ export class KcHalfPeriodProcessor {
     return introLength;
   }
 
-  readDelimiter(): boolean {
+  private readDelimiter(): boolean {
     // check full oscillation
     const firstHalf = this.halfPeriodProvider.getNext();
     const secondHalf = this.halfPeriodProvider.getNext();
@@ -140,7 +131,7 @@ export class KcHalfPeriodProcessor {
     return true;
   }
 
-  readBit(): boolean | undefined {
+  private readBit(): boolean | undefined {
     // check full oscillation
     const firstHalf = this.halfPeriodProvider.getNext();
     const secondHalf = this.halfPeriodProvider.getNext();
@@ -157,7 +148,7 @@ export class KcHalfPeriodProcessor {
     return isOne;
   }
 
-  readByte(): number {
+  private readByte(): number {
     const delimiter = this.readDelimiter();
     if (!delimiter) {
       throw new DecodingError(`${this.getFormattedPosition()} Did not found a delimiter at half period.`);
@@ -198,14 +189,14 @@ function secondsToTimestamp(totalSeconds: number): string {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-export class BlockWrapper {
+export class BlockDecodingResult {
   constructor(
     readonly data: BufferAccess,
-    readonly status: BlockStatus,
+    readonly status: BlockDecodingResultStatus,
   ) {}
 }
 
-enum BlockStatus {
+export enum BlockDecodingResultStatus {
   /**
    * A complete block has successfully been read.
    */
