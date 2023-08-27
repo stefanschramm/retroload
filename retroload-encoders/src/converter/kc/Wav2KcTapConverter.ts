@@ -1,9 +1,9 @@
 import {BufferAccess} from 'retroload-common';
-import {WaveDecoder} from '../decoder/WaveDecoder.js';
-import {SampleToHalfPeriodConverter} from '../decoder/SampleToHalfPeriodConverter.js';
-import {type OutputFile, type ConverterDefinition, type ConverterSettings} from './ConverterManager.js';
-import {KcHalfPeriodProcessor} from './kc/KcHalfPeriodProcessor.js';
-import {FileDecodingResultStatus, KcBlockProcessor} from './kc/KcBlockProcessor.js';
+import {WaveDecoder} from '../../decoder/WaveDecoder.js';
+import {SampleToHalfPeriodConverter} from '../../decoder/SampleToHalfPeriodConverter.js';
+import {type OutputFile, type ConverterDefinition, type ConverterSettings} from '../ConverterManager.js';
+import {KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
+import {FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
 
 export const wav2KcTapConverter: ConverterDefinition = {
   from: 'wav',
