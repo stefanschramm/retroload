@@ -1,19 +1,7 @@
+import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 import {type SampleProvider} from './WaveDecoder.js';
 
-export type HalfPeriodProvider = {
-  /**
-   * @returns Frequency value (Hz) of next half period
-   */
-  getNext(): number | undefined;
-  /**
-   * rewind cursor to previous half period
-   */
-  rewindOne(): void;
-  getCurrentPositionSecond(): number;
-  getCurrentPositionSample(): number;
-};
-
-export class SampleToHalfPeriodConverter implements HalfPeriodProvider {
+export class AveragingSampleToHalfPeriodConverter implements HalfPeriodProvider {
   private readonly sampleProvider: SampleProvider;
   private readonly halfPeriods: number[] = [];
   private readonly halfPeriodPositions: number[] = [];

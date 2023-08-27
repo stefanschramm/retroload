@@ -1,5 +1,5 @@
 import {BufferAccess} from 'retroload-common';
-import {type HalfPeriodProvider} from '../../decoder/SampleToHalfPeriodConverter.js';
+import {type HalfPeriodProvider} from '../../decoder/HalfPeriodProvider.js';
 import {Logger} from '../../Logger.js';
 import {calculateChecksum8} from '../../Utils.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../ConverterExceptions.js';

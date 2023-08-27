@@ -6,6 +6,7 @@ const pcmFormatTag = 0x0001;
 
 export type SampleProvider = {
   readonly sampleRate: number;
+  readonly bitsPerSample: number;
   getSamples(): Generator<number>;
 };
 

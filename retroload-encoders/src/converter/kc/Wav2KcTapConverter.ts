@@ -1,9 +1,9 @@
 import {BufferAccess} from 'retroload-common';
 import {WaveDecoder} from '../../decoder/WaveDecoder.js';
-import {SampleToHalfPeriodConverter} from '../../decoder/SampleToHalfPeriodConverter.js';
 import {type OutputFile, type ConverterDefinition, type ConverterSettings} from '../ConverterManager.js';
 import {KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
 import {FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
+import {StreamingSampleToHalfPeriodConverter} from '../../decoder/StreamingSampleToHalfPeriodConverter.js';
 
 export const wav2KcTapConverter: ConverterDefinition = {
   from: 'wav',
@@ -13,8 +13,8 @@ export const wav2KcTapConverter: ConverterDefinition = {
 
 function * convert(ba: BufferAccess, settings: ConverterSettings): Generator<OutputFile> {
   const sampleProvider = new WaveDecoder(ba, settings.skip);
-  const halfPeriodProvider = new SampleToHalfPeriodConverter(sampleProvider);
-  const hpp = new KcHalfPeriodProcessor(halfPeriodProvider);
+  const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
+  const hpp = new KcHalfPeriodProcessor(streamingHalfPeriodProvider);
   const blockProcessor = new KcBlockProcessor(hpp, settings);
 
   for (const fileDecodingResult of blockProcessor.files()) {
