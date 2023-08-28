@@ -44,7 +44,8 @@ export class WaveDecoder implements SampleProvider {
       throw new InputDataError('Unable to find data block of WAVE file.');
     }
     this.dataLength = this.ba.getUint32Le(0x28);
-    if (this.dataLength !== this.ba.length() - 44) {
+    // File might be padded with 0, so it's OK when buffer size exceeds this.dataLength.
+    if (this.dataLength > this.ba.length() - 44) {
       Logger.info('Unexpected data length.');
     }
     if (this.skip * this.blockAlign >= this.dataLength) {
