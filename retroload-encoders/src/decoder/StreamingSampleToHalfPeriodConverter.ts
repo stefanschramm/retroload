@@ -64,11 +64,11 @@ export class StreamingSampleToHalfPeriodConverter implements HalfPeriodProvider 
 
   private nextHasSamePolarity(): boolean | undefined {
     this.generatorPosition++;
-    const nextValue = this.generator.next().value;
-    if (nextValue === undefined) {
+    const next = this.generator.next();
+    if (next.value === undefined) {
       this.endOfInput = true;
       return false;
     }
-    return this.positive === (nextValue > this.offset);
+    return this.positive === (next.value > this.offset);
   }
 }
