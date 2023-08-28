@@ -74,6 +74,7 @@ TODO:
     writeOutputFile(`${i}.tap`, file.data.asUint8Array()); // TODO: Option for path/name(-prefix).
     i++;
   }
+  Logger.info(`Dumped ${i} file(s).`);
 }
 
 function getConverterSettings(options: OptionValues): ConverterManager.ConverterSettings {

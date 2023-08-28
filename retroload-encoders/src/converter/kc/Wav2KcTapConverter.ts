@@ -18,7 +18,7 @@ function * convert(ba: BufferAccess, settings: ConverterSettings): Generator<Out
   const blockProcessor = new KcBlockProcessor(hpp, settings);
 
   for (const fileDecodingResult of blockProcessor.files()) {
-    if (fileDecodingResult.status !== FileDecodingResultStatus.Error || settings.onError !== 'skipfile') {
+    if (fileDecodingResult.blocks.length > 0 && (fileDecodingResult.status !== FileDecodingResultStatus.Error || settings.onError !== 'skipfile')) {
       yield bufferAccessListToOutputFile(fileDecodingResult.blocks);
     }
   }
