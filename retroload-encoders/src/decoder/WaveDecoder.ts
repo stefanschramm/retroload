@@ -22,7 +22,9 @@ export class WaveDecoder implements SampleProvider {
   constructor(ba: BufferAccess, skip: number) {
     this.ba = ba;
     this.skip = skip;
-    Logger.debug(`Skipping ${this.skip} samples of input as requested. Following debug output will be relative to this position.`);
+    if (this.skip !== 0) {
+      Logger.debug(`Skipping ${this.skip} samples of input as requested. Following debug output will be relative to this position.`);
+    }
     if (!ba.containsDataAt(0, 'RIFF')) {
       throw new InputDataError('File does not seem to be a WAVE file.');
     }
