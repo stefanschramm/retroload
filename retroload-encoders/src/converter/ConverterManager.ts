@@ -22,6 +22,7 @@ export type ConverterDefinition = {
 export type OutputFile = {
   readonly proposedName: string | undefined;
   readonly data: BufferAccess;
+  readonly proposedExtension: string;
 };
 
 export type ConverterSettings = {

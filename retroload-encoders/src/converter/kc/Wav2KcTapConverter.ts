@@ -32,9 +32,9 @@ function bufferAccessListToOutputFile(blocks: BufferAccess[]): OutputFile {
     data.writeBa(block);
   }
   const filename = data.slice(0x14, 8).asAsciiString().trim();
-  const proposedName = `${restrictCharacters(filename)}.tap`;
+  const proposedName = restrictCharacters(filename);
 
-  return {proposedName, data};
+  return {proposedName, data, proposedExtension: 'tap'};
 }
 
 function restrictCharacters(value: string): string {

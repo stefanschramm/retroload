@@ -11,43 +11,24 @@ main()
   });
 
 async function main() {
-  /*
-TODO:
-- arguments
-   input formats (can be autodetected):
-   --from wav
-   --from csw
-
-   output formats:
-   --to kctap
-   --to kcsss
-
-  output path/filename/prefix:
-  -o output_dir/prefix
-  --no-proposed-name = number files instead of trying to use record names
-
-  error handling:
-  --on-error stop = cancel processing, output error position (default)
-  --on-error skipfile = ignore whole file
-  --on-error skipblock = ignore block, continue with next block
-  --on-error zerofill = fill block with zeros
-  --on-error partial = write partial block
-
-- statistics
-  - total files
-  - invalid blocks
-  - invalid files
-- (ASCII-)visualize wave on error (at --on-error stop)
-  */
+  // TODO / Nice to haves:
+  // - CSW as additional input format
+  // - kcsss (and many others) as additional output format
+  // - option to fix block number on read errors
+  // - additional statistics: total block count, invalid files/blocks
+  // - visualize WAVE samples of section around error as ASCII graph when --on-error was set to 'stop'
   const program = (new Command())
     .name('retroload-save')
     .description('Decode WAVE files of historical computers.')
-    .argument('<infile>', 'Path to WAVE file to analyze')
+    .argument('<infile>', 'Path to WAVE file to decode')
     .allowExcessArguments(false)
+    .option('-o <outpath>', 'Prefix (filename or complete path) for files to write', './')
     .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1')
-    .option('--on-error <errorhandling>', 'Error handling strategy', 'ignore')
-    .option('--to <outputtype>', 'Output format')
-    .option('--skip <samples>', 'Start processing of input data after skipping <samples> samples', '0');
+    .option('--on-error <errorhandling>', 'Error handling strategy (ignore, skipfile, stop)', 'ignore')
+    .option('--to <outputtype>', 'Output format') // TODO: list possible formats
+    .option('--skip <samples>', 'Start processing of input data after skipping <samples> samples', '0')
+    .option('--no-proposed-name', 'Just use numeric file names instead of file names from tape/archive.')
+    .option('--extension <extension>', 'Use specified file extension instead of the one proposed by the converter.');
   program.parse();
   const options = program.opts();
   const infile = program.args[0];
@@ -55,8 +36,9 @@ TODO:
   const outputFormat = (typeof options['to'] === 'string' ? options['to'] : undefined);
   if (outputFormat === undefined) {
     Logger.error('error: missing required argument \'to\'');
-    return;
+    process.exit(1);
   }
+  const outPathPrefix = typeof options['o'] === 'string' ? options['o'] : './';
   const converterSettings = getConverterSettings(options);
   const data = readInputFile(infile);
   const arrayBuffer = data.buffer.slice(
@@ -69,9 +51,13 @@ TODO:
   Logger.debug(`Processing ${infile}...`);
   let i = 0;
   for (const file of ConverterManager.convert(ba, 'wav', outputFormat, converterSettings)) {
-    Logger.info(file.proposedName ?? '');
+    const extension = typeof options['extension'] === 'string' ? options['extension'] : file.proposedExtension;
+    const fallbackName = `${i}.${extension}`;
+    const proposedName = file.proposedName === undefined ? fallbackName : `${file.proposedName}.${extension}`;
+    const fileName = options['proposedName'] ? proposedName : fallbackName;
+    Logger.info(fileName);
     Logger.debug(file.data.asHexDump());
-    writeOutputFile(`${i}.tap`, file.data.asUint8Array()); // TODO: Option for path/name(-prefix).
+    writeOutputFile(`${outPathPrefix}${fileName}`, file.data.asUint8Array()); // TODO: Option for path/name(-prefix).
     i++;
   }
   Logger.info(`Dumped ${i} file(s).`);
