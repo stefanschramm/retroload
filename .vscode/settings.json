@@ -7,10 +7,7 @@
   "editor.detectIndentation": false,
   "editor.indentSize": "tabSize",
   "eslint.workingDirectories": [
-    "retroload-basic",
-    "retroload-cli",
-    "retroload-common",
-    "retroload-encoders",
-    "retroload-examples"
+    "retroload-lib",
+    "retroload-cli"
   ]
 }

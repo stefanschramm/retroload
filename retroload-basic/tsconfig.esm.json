@@ -1,9 +1,0 @@
-{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist/esm",
-    "module": "es6"
-  },
-  "references": [{"path": "../retroload-common/tsconfig.esm.json"}]
-}
