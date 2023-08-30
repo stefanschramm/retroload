@@ -1,4 +1,4 @@
-import {TzxProcessor} from './TzxProcessor.js';
+import {TzxProcessor} from './tzx/TzxProcessor.js';
 import {ZxSpectrumTzxEncoder} from '../encoder/ZxSpectrumTzxEncoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';

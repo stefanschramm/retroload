@@ -1,7 +1,7 @@
-import {type BufferAccess} from '../../common/BufferAccess.js';
-import {type AbstractTzxEncoder} from '../encoder/AbstractTzxEncoder.js';
-import {InputDataError} from '../../common/Exceptions.js';
-import {Logger} from '../../common/logging/Logger.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {type AbstractTzxEncoder} from '../../encoder/AbstractTzxEncoder.js';
+import {InputDataError} from '../../../common/Exceptions.js';
+import {Logger} from '../../../common/logging/Logger.js';
 
 const tzxHeaderLength = 0x0a;
 

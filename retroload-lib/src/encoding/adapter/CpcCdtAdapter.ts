@@ -1,5 +1,5 @@
 import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
-import {TzxProcessor} from './TzxProcessor.js';
+import {TzxProcessor} from './tzx/TzxProcessor.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
