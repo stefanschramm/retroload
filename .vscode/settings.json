@@ -8,6 +8,6 @@
   "editor.indentSize": "tabSize",
   "eslint.workingDirectories": [
     "retroload-lib",
-    "retroload-cli"
+    "retroload"
   ]
 }
