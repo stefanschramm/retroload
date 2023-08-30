@@ -1,6 +1,6 @@
 // Default option values are not automatically used when running outside CLI and have to be specified explicitly.
 
-import {type OptionValues} from './Options.js';
+import {type OptionValues} from './encoding/Options.js';
 
 // The hashes are md5sums of the resulting WAVE files (when running retroload cli with -o option).
 export function getExamples() {
