@@ -2,7 +2,8 @@ import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const markerByte = 0x55;
 const blockTypeFull = 0xfc;
@@ -13,24 +14,21 @@ const dataBytesPerBlock = 128;
 const pilotIrgLength = 20000;
 const defaultIrgLength = 3000;
 
-export class AtariGenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return AtariEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'Atari (Generic data)';
-  }
+  name: 'Atari (Generic data)',
 
-  static override getInternalName(): string {
-    return 'atarigeneric';
-  }
+  internalName: 'atarigeneric',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: AtariEncoder.getTargetName(),
+
+  options: [],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
     const chunks = ba.chunks(dataBytesPerBlock);
@@ -61,8 +59,9 @@ export class AtariGenericAdapter extends AbstractAdapter {
     eofBlockBa.setUint8(131, calculateChecksum(eofBlockBa));
     e.recordIrg(defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
     e.recordBytes(eofBlockBa);
-  }
-}
+  },
+};
+export default definition;
 
 function calculateChecksum(ba: BufferAccess) {
   // 8 bit checksum with carry being added

@@ -1,35 +1,32 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileHeader = 'C64-TAPE-RAW';
 
 const defaultLongPulse = 2048;
 
-export class C64TapAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return C64Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'C64 .TAP-File';
-  }
+  name: 'C64 .TAP-File',
 
-  static override getInternalName() {
-    return 'c64tap';
-  }
+  internalName: 'c64tap',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: C64Encoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.tap$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
     const dataLength = header.getUint32Le(0x10);
@@ -57,5 +54,6 @@ export class C64TapAdapter extends AbstractAdapter {
       e.recordPulse(pulseLength);
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

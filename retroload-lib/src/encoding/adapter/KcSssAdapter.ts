@@ -1,41 +1,34 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {nameOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../../common/Exceptions.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;
 const maxFileNameLength = 8;
 
-export class KcSssAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return KcEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'KC .SSS-File';
-  }
+  name: 'KC .SSS-File',
 
-  static override getInternalName() {
-    return 'sss';
-  }
+  internalName: 'sss',
 
-  static override identify(filename: string, _ba: BufferAccess) {
+  targetName: KcEncoder.getTargetName(),
+
+  options: [
+    nameOption,
+  ],
+
+  identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.sss$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
-  }
+  },
 
-  static override getOptions() {
-    return [
-      nameOption,
-    ];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
     const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
@@ -68,5 +61,6 @@ export class KcSssAdapter extends AbstractAdapter {
     }
     e.recordDelimiter(); // it looks like this is needed for programs <= 2 blocks? (tested in jkcemu)
     e.end();
-  }
-}
+  },
+};
+export default definition;

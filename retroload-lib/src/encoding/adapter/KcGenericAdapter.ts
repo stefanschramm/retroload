@@ -4,7 +4,8 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {InvalidArgumentError} from '../../common/Exceptions.js';
 import {kcFirstBlockOption} from './options/KcOptions.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const maxFileNameLength = 8;
 
@@ -13,33 +14,26 @@ const maxFileNameLength = 8;
  * [2] KC 85/3 Systemhandbuch, p. 82 - 83
  * [3] KC 85/4 Systemhandbuch, p. 93 - 95
  */
-export class KcGenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return KcEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'KC (Generic)';
-  }
+  name: 'KC (Generic)',
 
-  static override getInternalName(): string {
-    return 'kcgeneric';
-  }
+  internalName: 'kcgeneric',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: KcEncoder.getTargetName(),
+
+  options: [
+    nameOption,
+    loadOption,
+    entryOption,
+    kcFirstBlockOption,
+  ],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions() {
-    return [
-      nameOption,
-      loadOption,
-      entryOption,
-      kcFirstBlockOption,
-    ];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const name = options.getArgument(nameOption);
     const nameComponents = name.split('.');
     if (nameComponents.length > 2) {
@@ -94,5 +88,6 @@ export class KcGenericAdapter extends AbstractAdapter {
       e.recordBlock(isLastBlock ? 0xff : blockId, chunks[blockId - 1]);
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

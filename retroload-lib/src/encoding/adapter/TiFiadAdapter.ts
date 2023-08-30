@@ -1,34 +1,28 @@
-import {AbstractAdapter, unidentifiable} from './AbstractAdapter.js';
+import {unidentifiable} from './AdapterDefinition.js';
 import {InputDataError} from '../../common/Exceptions.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {TiEncoder} from '../encoder/TiEncoder.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const blockSize = 64;
 
-export class TiFiadAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return TiEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'TI-99/4A .FIAD-File';
-  }
+  name: 'TI-99/4A .FIAD-File',
 
-  static override getInternalName() {
-    return 'fiad';
-  }
+  internalName: 'fiad',
 
-  static override identify(_filename: string, _ba: BufferAccess) {
+  targetName: TiEncoder.getTargetName(),
+
+  options: [],
+
+  identify(_filename: string, _ba: BufferAccess) {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions() {
-    return [];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     if (ba.length() < 2 * blockSize) {
       throw new InputDataError(`FIAD files need to be of a size at least ${2 * blockSize} bytes.`);
     }
@@ -46,5 +40,6 @@ export class TiFiadAdapter extends AbstractAdapter {
       e.recordBlock(block);
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

@@ -4,32 +4,26 @@ import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {TiEncoder} from '../encoder/TiEncoder.js';
 import {Logger} from '../../common/logging/Logger.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const blockSize = 64;
 
-export class TiGenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return TiEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'TI-99/4A (Generic)';
-  }
+  name: 'TI-99/4A (Generic)',
 
-  static override getInternalName(): string {
-    return 'tigeneric';
-  }
+  internalName: 'tigeneric',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: TiEncoder.getTargetName(),
+
+  options: [],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions() {
-    return [];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     if (ba.length() % blockSize !== 0) {
       Logger.info(`Length of data is not a multiple of ${blockSize} bytes. Last block will be padded with 0.`);
     }
@@ -44,5 +38,6 @@ export class TiGenericAdapter extends AbstractAdapter {
       e.recordBlock(block);
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

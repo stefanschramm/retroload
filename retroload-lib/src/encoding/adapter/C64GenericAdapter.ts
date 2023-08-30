@@ -3,7 +3,8 @@ import {loadOption, nameOption, shortpilotOption, type ArgumentOptionDefinition,
 import {InternalError, InvalidArgumentError} from '../../common/Exceptions.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const c64typeOption: ArgumentOptionDefinition<string> = {
   name: 'c64type',
@@ -17,33 +18,26 @@ const c64typeOption: ArgumentOptionDefinition<string> = {
   parse: (v) => v,
 };
 
-export class C64GenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return C64Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'C64 (Generic data)';
-  }
+  name: 'C64 (Generic data)',
 
-  static override getInternalName(): string {
-    return 'c64generic';
-  }
+  internalName: 'c64generic',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: C64Encoder.getTargetName(),
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions() {
-    return [
-      shortpilotOption, // (not available for .tap)
-      c64typeOption,
-      nameOption,
-      loadOption,
-    ];
-  }
+  options: [
+    shortpilotOption, // (not available for .tap)
+    c64typeOption,
+    nameOption,
+    loadOption,
+  ],
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const type: string = options.getArgument(c64typeOption);
     if (!['basic', 'data', 'prg'].includes(type)) {
       throw new InvalidArgumentError(c64typeOption.name, 'Option c64type is required and expected to be set to "basic", "data" or "prg".');
@@ -73,8 +67,9 @@ export class C64GenericAdapter extends AbstractAdapter {
         throw new InternalError('Got unknown type.');
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;
 
 function checkLoadAddress(loadAddress: number | undefined) {
   if (loadAddress === undefined) {

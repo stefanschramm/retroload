@@ -1,9 +1,10 @@
-import {AbstractAdapter, unidentifiable} from './AbstractAdapter.js';
+import {unidentifiable} from './AdapterDefinition.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {type ArgumentOptionDefinition, nameOption, type OptionContainer, type FlagOptionDefinition} from '../Options.js';
 import {InvalidArgumentError} from '../../common/Exceptions.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;
@@ -46,32 +47,25 @@ export const kcBasicProtectedOption: FlagOptionDefinition = {
 /**
  * https://hc-ddr.hucki.net/wiki/doku.php/z9001/kassettenformate
  */
-export class KcBasicGenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return KcEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'KC (Generic BASIC data)';
-  }
+  name: 'KC (Generic BASIC data)',
 
-  static override getInternalName() {
-    return 'kcbasic';
-  }
+  internalName: 'kcbasic',
 
-  static override identify(_filename: string, _ba: BufferAccess) {
+  targetName: KcEncoder.getTargetName(),
+
+  options: [
+    nameOption,
+    kcBasicTypeOption,
+    kcBasicProtectedOption,
+  ],
+
+  identify(_filename: string, _ba: BufferAccess) {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions() {
-    return [
-      nameOption,
-      kcBasicTypeOption,
-      kcBasicProtectedOption,
-    ];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
     const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
@@ -110,5 +104,6 @@ export class KcBasicGenericAdapter extends AbstractAdapter {
       e.recordSilenceMs(1500);
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

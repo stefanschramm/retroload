@@ -1,11 +1,11 @@
 import {ElectronEncoder} from '../encoder/ElectronEncoder.js';
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {inflate} from 'pako';
 import {InputDataError} from '../../common/Exceptions.js';
 import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileHeader = 'UEF File!\x00';
 const compressedFileHeader = '\x1f\x8b';
@@ -15,27 +15,24 @@ const compressedFileHeader = '\x1f\x8b';
  *
  * http://electrem.emuunlim.com/UEFSpecs.html
  */
-export class ElectronUefAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return ElectronEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'Acorn Electron .UEF-File';
-  }
+  name: 'Acorn Electron .UEF-File',
 
-  static override getInternalName() {
-    return 'uef';
-  }
+  internalName: 'uef',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: ElectronEncoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.uef/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader) || ba.containsDataAt(0, compressedFileHeader),
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const uefBa = uncompressIfRequired(ba);
 
     if (!uefBa.containsDataAt(0, fileHeader)) {
@@ -85,8 +82,9 @@ export class ElectronUefAdapter extends AbstractAdapter {
     }
 
     e.end();
-  }
-}
+  },
+};
+export default definition;
 
 function uncompressIfRequired(ba: BufferAccess) {
   return ba.containsDataAt(0, compressedFileHeader) ? BufferAccess.createFromUint8Array(inflate(ba.asUint8Array())) : ba;

@@ -1,33 +1,30 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {Z1013Encoder} from '../encoder/Z1013Encoder.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type OptionContainer} from '../Options.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const headerLength = 0x20;
 
-export class Z1013Z80Adapter extends AbstractAdapter {
-  static override getTargetName() {
-    return Z1013Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'Z1013 .Z80-File (Headersave)';
-  }
+  name: 'Z1013 .Z80-File (Headersave)',
 
-  static override getInternalName() {
-    return 'z80';
-  }
+  internalName: 'z80',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: Z1013Encoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.z80$/i).exec(filename) !== null,
       header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const header = ba.slice(0, headerLength);
     const data = ba.slice(headerLength);
     const loadAddress = header.getUint16Le(0x00);
@@ -40,5 +37,6 @@ export class Z1013Z80Adapter extends AbstractAdapter {
     e.begin();
     e.recordData(data);
     e.end();
-  }
-}
+  },
+};
+export default definition;

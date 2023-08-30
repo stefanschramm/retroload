@@ -4,38 +4,32 @@ import {ElectronEncoder} from '../encoder/ElectronEncoder.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const maxFileNameLength = 10;
 const maxBlockSize = 256;
 
-export class ElectronGenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return ElectronEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'Acorn Electron (Generic data)';
-  }
+  name: 'Acorn Electron (Generic data)',
 
-  static override getInternalName(): string {
-    return 'electrongeneric';
-  }
+  internalName: 'electrongeneric',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: ElectronEncoder.getTargetName(),
+
+  options: [
+    nameOption, // 1 - 10 characters
+    loadOption,
+    entryOption,
+    shortpilotOption,
+  ],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions() {
-    return [
-      nameOption, // 1 - 10 characters
-      loadOption,
-      entryOption,
-      shortpilotOption,
-    ];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
@@ -82,8 +76,9 @@ export class ElectronGenericAdapter extends AbstractAdapter {
 
     e.recordPilot(shortpilot ? 1.5 : 5.3);
     e.end();
-  }
-}
+  },
+};
+export default definition;
 
 /**
  * https://stackoverflow.com/a/75806068

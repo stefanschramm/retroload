@@ -1,43 +1,36 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {InputDataError} from '../../common/Exceptions.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {kcFirstBlockOption} from './options/KcOptions.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileBlockSize = 128;
 
 /**
  * KCC files contain the tape header block and file data without block numbers and checksums.
  */
-export class KcKccAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return KcEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'KC .KCC-File';
-  }
+  name: 'KC .KCC-File',
 
-  static override getInternalName() {
-    return 'kcc';
-  }
+  internalName: 'kcc',
 
-  static override identify(filename: string, _ba: BufferAccess) {
+  targetName: KcEncoder.getTargetName(),
+
+  options: [
+    kcFirstBlockOption,
+  ],
+
+  identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.kcc$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
-  }
+  },
 
-  static override getOptions() {
-    return [
-      kcFirstBlockOption,
-    ];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const firstBlockNumber = options.getArgument(kcFirstBlockOption);
 
     if (ba.length() % fileBlockSize !== 0) {
@@ -57,5 +50,6 @@ export class KcKccAdapter extends AbstractAdapter {
       e.recordBlock(blockNumber, blocks[i]);
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

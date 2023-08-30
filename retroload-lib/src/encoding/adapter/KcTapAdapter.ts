@@ -1,10 +1,10 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {KcEncoder} from '../encoder/KcEncoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type OptionContainer} from '../Options.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {InputDataError} from '../../common/Exceptions.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 
@@ -12,27 +12,24 @@ const fileHeaderLength = 16;
 const blockSize = 128;
 const fileBlockSize = 1 + blockSize; // 1 byte block number
 
-export class KcTapAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return KcEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'KC .TAP-File';
-  }
+  name: 'KC .TAP-File',
 
-  static override getInternalName() {
-    return 'kctap';
-  }
+  internalName: 'kctap',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: KcEncoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.tap$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const dataBa = ba.slice(fileHeaderLength);
 
     if (dataBa.length() === 0) {
@@ -60,5 +57,6 @@ export class KcTapAdapter extends AbstractAdapter {
       e.recordBlock(blockNumber, blockData);
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

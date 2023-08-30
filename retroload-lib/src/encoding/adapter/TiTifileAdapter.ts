@@ -1,9 +1,9 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {TiEncoder} from '../encoder/TiEncoder.js';
 import {Logger} from '../../common/logging/Logger.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileHeader = '\x07TIFILES';
 const sectorSize = 0x100;
@@ -12,31 +12,24 @@ const blockSize = 64;
 /**
  * https://www.ninerpedia.org/wiki/TIFILES_format
  */
-export class TiTifileAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return TiEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'TI-99/4A .TIFILE-File';
-  }
+  name: 'TI-99/4A .TIFILE-File',
 
-  static override getInternalName() {
-    return 'tifile';
-  }
+  internalName: 'tifile',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: TiEncoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.(tifile|tfi)/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
-  }
+  },
 
-  static override getOptions() {
-    return [];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const sectorCount = ba.getUint16Be(0x08);
     const flags = ba.getUint8(0x0a);
     const recordsPerSector = ba.getUint8(0x0b);
@@ -65,5 +58,6 @@ export class TiTifileAdapter extends AbstractAdapter {
       }
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

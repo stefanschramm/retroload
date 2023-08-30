@@ -1,19 +1,20 @@
-import {Z1013GenericAdapter} from './Z1013GenericAdapter.js';
+import Z1013GenericAdapter from './Z1013GenericAdapter.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
-export class Z1013Z13Adapter extends Z1013GenericAdapter {
-  static override getName() {
-    return 'Z1013 .Z13-File';
-  }
+const definition: AdapterDefinition = {
 
-  static override getInternalName() {
-    return 'z13';
-  }
+  ...Z1013GenericAdapter,
 
-  static override identify(filename: string, _ba: BufferAccess) {
+  name: 'Z1013 .Z13-File',
+
+  internalName: 'z13',
+
+  identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.z13$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
-  }
-}
+  },
+};
+export default definition;

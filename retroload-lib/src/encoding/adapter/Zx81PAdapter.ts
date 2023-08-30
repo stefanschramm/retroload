@@ -1,38 +1,32 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {Zx81Encoder} from '../encoder/Zx81Encoder.js';
-import {type OptionDefinition, type OptionContainer, nameOption} from '../Options.js';
+import {type OptionContainer, nameOption} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {InvalidArgumentError} from '../../common/Exceptions.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const defaultName = ' ';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export class Zx81PAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return Zx81Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'ZX81 .P-File';
-  }
+  name: 'ZX81 .P-File',
 
-  static override getInternalName() {
-    return 'zx81p';
-  }
+  internalName: 'zx81p',
 
-  static override identify(filename: string, _ba: BufferAccess) {
+  targetName: Zx81Encoder.getTargetName(),
+
+  options: [
+    nameOption,
+  ],
+
+  identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.p$/i).exec(filename) !== null,
       header: undefined, // no specific header
     };
-  }
+  },
 
-  static override getOptions(): OptionDefinition[] {
-    return [nameOption];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const name = options.getArgument(nameOption);
     const e = new Zx81Encoder(recorder, options);
     e.begin();
@@ -41,8 +35,9 @@ export class Zx81PAdapter extends AbstractAdapter {
     }
     e.recordBytes(ba);
     e.end();
-  }
-}
+  },
+};
+export default definition;
 
 /**
  * Map file name to ZX 81 charset

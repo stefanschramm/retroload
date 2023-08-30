@@ -1,33 +1,30 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {ZxSpectrumTzxEncoder} from '../encoder/ZxSpectrumTzxEncoder.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 /**
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
-export class ZxSpectrumTapAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return ZxSpectrumTzxEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'ZX Spectrum .TAP-File';
-  }
+  name: 'ZX Spectrum .TAP-File',
 
-  static override getInternalName() {
-    return 'zxspectrumtap';
-  }
+  internalName: 'zxspectrumtap',
 
-  static override identify(filename: string, _ba: BufferAccess) {
+  targetName: ZxSpectrumTzxEncoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, _ba: BufferAccess) {
     return {
       filename: (/^.*\.tap/i).exec(filename) !== null,
       header: undefined,
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new ZxSpectrumTzxEncoder(recorder, options);
     e.begin();
     let i = 0;
@@ -41,5 +38,6 @@ export class ZxSpectrumTapAdapter extends AbstractAdapter {
       i += dataLength;
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

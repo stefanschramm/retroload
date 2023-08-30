@@ -1,40 +1,33 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {InputDataError} from '../../common/Exceptions.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {TiEncoder} from '../encoder/TiEncoder.js';
 import {Logger} from '../../common/logging/Logger.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 /**
  * A .TITape archive can contain several files. They will be appended one after another.
  * When playing, it's probably required to press pause in between the individual files.
  */
-export class TiTitapeAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return TiEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'TI-99/4A .TITape-File';
-  }
+  name: 'TI-99/4A .TITape-File',
 
-  static override getInternalName() {
-    return 'titape';
-  }
+  internalName: 'titape',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: TiEncoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.titape$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, 'TI-TAPE'),
     };
-  }
+  },
 
-  static override getOptions() {
-    return [];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const length = ba.getUint32Le(0x0c);
     const dataLength = ba.getUint16Le(0x10);
     const filesBa = ba.slice(0x10);
@@ -59,5 +52,6 @@ export class TiTitapeAdapter extends AbstractAdapter {
       filesBaOffset += 4 + fileLength;
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

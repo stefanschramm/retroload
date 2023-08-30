@@ -1,35 +1,33 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {CpcTzxEncoder} from '../encoder/CpcTzxEncoder.js';
 import {TzxProcessor} from './TzxProcessor.js';
 import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileHeader = 'ZXTape!\x1a';
 
-export class CpcCdtAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return CpcTzxEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'CPC .CDT-File';
-  }
+  name: 'CPC .CDT-File',
 
-  static override getInternalName() {
-    return 'cdt';
-  }
+  internalName: 'cdt',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: CpcTzxEncoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.cdt/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new CpcTzxEncoder(recorder, options);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);
-  }
-}
+  },
+};
+export default definition;

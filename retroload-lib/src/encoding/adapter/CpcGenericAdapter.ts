@@ -3,7 +3,8 @@ import {entryOption, loadOption, nameOption, type OptionContainer} from '../Opti
 import {InternalError, InvalidArgumentError} from '../../common/Exceptions.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;
@@ -14,35 +15,28 @@ const maxFileNameLength = 16;
 const headerRecordSyncCharacter = 0x2c;
 const dataRecordSyncCharacter = 0x16;
 
-export class CpcGenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return CpcTzxEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'CPC (Generic data)';
-  }
+  name: 'CPC (Generic data)',
 
-  static override getInternalName(): string {
-    return 'cpcgeneric';
-  }
+  internalName: 'cpcgeneric',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: CpcTzxEncoder.getTargetName(),
+
+  options: [
+    nameOption,
+    loadOption,
+    entryOption,
+  ],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
-
-  static override getOptions() {
-    return [
-      nameOption,
-      loadOption,
-      entryOption,
-    ];
-  }
+  },
 
   /**
    * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
    */
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
@@ -87,8 +81,9 @@ export class CpcGenericAdapter extends AbstractAdapter {
       e.recordDataBlock(dataRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x09c4});
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;
 
 function createHeaderRecord(headerBa: BufferAccess) {
   if (headerBa.length() !== dataBytesPerSegment) {

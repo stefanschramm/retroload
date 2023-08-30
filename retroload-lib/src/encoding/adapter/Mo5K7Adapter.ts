@@ -1,36 +1,33 @@
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {Mo5Encoder} from '../encoder/Mo5Encoder.js';
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {InputDataError} from '../../common/Exceptions.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type OptionContainer} from '../Options.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 // The number of 0x01 in the header seems to vary.
 // By definition it should be 16, but many images have more and some less.
 const fileHeader = [0x01, 0x01, 0x01, 0x01];
 
-export class Mo5K7Adapter extends AbstractAdapter {
-  static override getTargetName() {
-    return Mo5Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'MO5 .K7-File';
-  }
+  name: 'MO5 .K7-File',
 
-  static override getInternalName() {
-    return 'k7';
-  }
+  internalName: 'k7',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: Mo5Encoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.k7/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new Mo5Encoder(recorder, options);
     e.begin();
     let i = 0;
@@ -79,5 +76,6 @@ export class Mo5K7Adapter extends AbstractAdapter {
       i += blockToRecord.length();
     }
     e.end();
-  }
-}
+  },
+};
+export default definition;

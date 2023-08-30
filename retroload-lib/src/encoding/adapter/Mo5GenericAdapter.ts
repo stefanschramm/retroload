@@ -1,9 +1,10 @@
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {InvalidArgumentError} from '../../common/Exceptions.js';
-import {type OptionDefinition, nameOption, type ArgumentOptionDefinition, type OptionContainer} from '../Options.js';
+import {nameOption, type ArgumentOptionDefinition, type OptionContainer} from '../Options.js';
 import {Mo5Encoder} from '../encoder/Mo5Encoder.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const maxFileNameLength = 11;
 
@@ -36,32 +37,25 @@ const modeOption: ArgumentOptionDefinition<number> = {
   parse: (v) => v === '' ? fileModeBinary : parseInt(v, 16),
 };
 
-export class Mo5GenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return Mo5Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'MO5 (Generic data)';
-  }
+  name: 'MO5 (Generic data)',
 
-  static override getInternalName(): string {
-    return 'mo5generic';
-  }
+  internalName: 'mo5generic',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: Mo5Encoder.getTargetName(),
+
+  options: [
+    nameOption,
+    typeOption,
+    modeOption,
+  ],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions(): OptionDefinition[] {
-    return [
-      nameOption,
-      typeOption,
-      modeOption,
-    ];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const filename = options.getArgument(nameOption);
     if (filename.length > maxFileNameLength) {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
@@ -84,8 +78,9 @@ export class Mo5GenericAdapter extends AbstractAdapter {
     }
     e.recordEndBlock(createBlock(blockTypeEnd, BufferAccess.create(0)));
     e.end();
-  }
-}
+  },
+};
+export default definition;
 
 function createBlock(blockType: number, blockDataBa: BufferAccess): BufferAccess {
   const blockBa = BufferAccess.create(16 + 2 + 1 + blockDataBa.length() + 2);

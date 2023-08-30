@@ -2,29 +2,28 @@ import {type BufferAccess} from '../../common/BufferAccess.js';
 import {Z1013Encoder} from '../encoder/Z1013Encoder.js';
 import {type OptionContainer} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
-export class Z1013GenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return Z1013Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'Z1013 (Generic data)';
-  }
+  name: 'Z1013 (Generic data)',
 
-  static override getInternalName(): string {
-    return 'z1013generic';
-  }
+  internalName: 'z1013generic',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: Z1013Encoder.getTargetName(),
+
+  options: [],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new Z1013Encoder(recorder, options);
     e.begin();
     e.recordData(ba);
     e.end();
-  }
-}
+  },
+};
+export default definition;

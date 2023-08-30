@@ -1,34 +1,31 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
 import {InternalError} from '../../common/Exceptions.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type OptionContainer} from '../Options.js';
+import {type AdapterDefinition, type FormatIdentification} from './AdapterDefinition.js';
 
 const fileHeader = 'FUJI';
 
-export class AtariCasAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return AtariEncoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getInternalName() {
-    return 'ataricas';
-  }
+  name: 'Atari .CAS-File',
 
-  static override getName() {
-    return 'Atari .CAS-File';
-  }
+  internalName: 'ataricas',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: AtariEncoder.getTargetName(),
+
+  options: [],
+
+  identify(filename: string, ba: BufferAccess): FormatIdentification {
     return {
       filename: (/^.*\.cas/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
-  }
+  },
 
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
     const e = new AtariEncoder(recorder, options);
     e.setDefaultBaudrate();
     let i = 0;
@@ -59,5 +56,7 @@ export class AtariCasAdapter extends AbstractAdapter {
         // TODO: Implement other block types: fsk, pwms, pwmc, pwmd, pwml
       }
     }
-  }
-}
+  },
+
+};
+export default definition;

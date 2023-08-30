@@ -1,42 +1,35 @@
-import {AbstractAdapter} from './AbstractAdapter.js';
 import {C64Encoder} from '../encoder/C64Encoder.js';
 import {shortpilotOption, type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
 // Usually 'C64 tape image file' but might be different
 const fileHeader = 'C64';
 
-export class C64T64Adapter extends AbstractAdapter {
-  static override getTargetName() {
-    return C64Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'C64 .T64-File';
-  }
+  name: 'C64 .T64-File',
 
-  static override getInternalName() {
-    return 't64';
-  }
+  internalName: 't64',
 
-  static override identify(filename: string, ba: BufferAccess) {
+  targetName: C64Encoder.getTargetName(),
+
+  options: [
+    shortpilotOption, // (not available for .tap)
+  ],
+
+  identify(filename: string, ba: BufferAccess) {
     return {
       filename: (/^.*\.t64$/i).exec(filename) !== null,
       header: ba.containsDataAt(0, fileHeader),
     };
-  }
-
-  static override getOptions() {
-    return [
-      shortpilotOption, // (not available for .tap)
-    ];
-  }
+  },
 
   /**
    * http://unusedino.de/ec64/technical/formats/t64.html
    */
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const e = new C64Encoder(recorder, options);
 
     const header = ba.slice(0, 0x40);
@@ -62,5 +55,6 @@ export class C64T64Adapter extends AbstractAdapter {
     }
 
     e.end();
-  }
-}
+  },
+};
+export default definition;

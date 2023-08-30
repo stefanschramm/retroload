@@ -3,33 +3,27 @@ import {loadOption, nameOption, type OptionContainer} from '../Options.js';
 import {InvalidArgumentError} from '../../common/Exceptions.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {AbstractAdapter, unidentifiable, type FormatIdentification} from './AbstractAdapter.js';
+import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
+import {type AdapterDefinition} from './AdapterDefinition.js';
 
-export class Lc80GenericAdapter extends AbstractAdapter {
-  static override getTargetName() {
-    return Lc80Encoder.getTargetName();
-  }
+const definition: AdapterDefinition = {
 
-  static override getName() {
-    return 'LC80 (Generic data)';
-  }
+  name: 'LC80 (Generic data)',
 
-  static override getInternalName(): string {
-    return 'lc80generic';
-  }
+  internalName: 'lc80generic',
 
-  static override identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  targetName: Lc80Encoder.getTargetName(),
+
+  options: [
+    nameOption,
+    loadOption,
+  ],
+
+  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
     return unidentifiable;
-  }
+  },
 
-  static override getOptions() {
-    return [
-      nameOption,
-      loadOption,
-    ];
-  }
-
-  static override encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const fileNumber = parseInt(options.getArgument(nameOption), 16);
     if (isNaN(fileNumber) || fileNumber < 0 || fileNumber > 0xffff) {
       throw new InvalidArgumentError('name', 'Option name is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 0001');
@@ -46,5 +40,6 @@ export class Lc80GenericAdapter extends AbstractAdapter {
     e.recordHeader(fileNumber, loadAddress, endAddress);
     e.recordData(ba);
     e.end();
-  }
-}
+  },
+};
+export default definition;

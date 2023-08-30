@@ -13,7 +13,7 @@ main()
   });
 
 async function main() {
-  const machineFormatList = AdapterManager.getAllAdapters().map((a) => a.getTargetName() + '/' + a.getInternalName()).join(', ');
+  const machineFormatList = AdapterManager.getAllAdapters().map((a) => a.targetName + '/' + a.internalName).join(', ');
   const program = (new Command())
     .name('retroload')
     .description('Play 8 bit homecomputer tape images or convert them to WAVE files.')
