@@ -1,0 +1,25 @@
+{
+  "name": "retroload",
+  "version": "0.0.1",
+  "description": "RetroLoad.com command line interface",
+  "author": "Stefan Schramm",
+  "email": "mail@stefanschramm.net",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "main": "src/esm/retroload.js",
+  "files": ["dist/"],
+  "scripts": {
+    "lint": "eslint src/",
+    "test": "echo 'no tests configured for retroload-cli'"
+  },
+  "bin": {
+    "retroload": "./bin/retroload.js",
+    "retroload-tokenizer": "./bin/retroload-tokenizer.js",
+    "retroload-save": "./bin/retroload-save.js"
+  },
+  "dependencies": {
+    "commander": "^10.0.0",
+    "retroload-lib": "^0.0.1"
+  }
+}

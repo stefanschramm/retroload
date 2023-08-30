@@ -1,14 +1,11 @@
 # retroload
 
-[RetroLoad.com](https://retroload.com/) is a web application for converting tape images of historical 8 bit computers into sound for loading them on real devices using an audio line cable or cassette adapter.
+[RetroLoad.com](https://retroload.com/) is a web application for converting tape images of historical computers into sound for loading them on real devices using an audio line cable or cassette adapter.
 
-This repository contains
+This repository contains the npm packages
 
-- **retroload-basic**, some experiments for BASIC tokenization
-- **retroload-cli**, a command line interface for converting tape images to WAVE files or playing them using the speaker module
-- **retroload-common**, common helper class(es)
-- **retroload-encoders**, library containing the actual code for encoding (used by retroload-cli and [RetroLoad.com](https://retroload.com/))
-- **retroload-examples**, a collection of example tape files that have successfully been converted and tested on real machines including their build scripts (BASIC or Assembler). These examples are used by retroload-encoder's unit tests to prevent regressions.
+- **retroload**, a command line interface (CLI) for converting tape images to WAVE files or playing them using the speaker module,
+- **retroload-lib**, the fundamental library used by the CLI and RetroLoad.com
 
 **Project state:** A lot is still work in progress. Some of the (more complex) tape archive formats are only partly supported.
 
@@ -21,7 +18,7 @@ Since the retroload packages are not yet published to the npm registry, they cur
     cd retroload
     npm ci # install dependencies
     npm run build # calls TypeScript "compiler"
-    sudo npm link retroload-cli/ # the "/" is important!
+    sudo npm link retroload/ # the "/" is important!
 
 Now, the retroload CLI should be available in your path:
 
@@ -31,7 +28,7 @@ Later you can remove the symlinks by
 
     sudo npm unlink retroload-cli -g
 
-## Using retroload-cli
+## Using retroload CLI
 
 A list of available command line options can be shown using `retroload --help`.
 
@@ -41,7 +38,7 @@ A list of available command line options can be shown using `retroload --help`.
 
 Convert an MSX tape archive into an audio file named example.wav:
 
-    retroload retroload-examples/formats/msx_cas_binary/rl.cas -o example.wav
+    retroload retroload-lib/examples/formats/msx_cas_binary/rl.cas -o example.wav
 
 retroload will try to automatically determine the input format by its content and file extension. For formats that are not automatically detected, the `--format` and/or `--machine` options need to be specified.
 
@@ -51,7 +48,7 @@ When the `-o` option is omitted, retroload automatically tries to play the gener
 
 ## Example collection
 
-[./retroload-examples/formats](./retroload-examples/formats) contains minimal example tape archives of different formats for different machines. Some of them, listed in [index.js](./retroload-examples/index.js), have successfully been loaded to real machines and can be used for testing. If the example files won't load on your machine, it's unlikely that any other tape archive will successfully load using retroload.
+[./retroload-lib/examples/formats](./retroload-lib/examples/formats) contains minimal example tape archives of different formats for different machines. Some of them, listed in [Examples.ts](./retroload-lib/src/Examples.ts), have successfully been loaded to real machines and can be used for testing. If the example files won't load on your machine, it's unlikely that any other tape archive will successfully load using retroload.
 
 ### Rebuilding examples
 
@@ -59,7 +56,7 @@ There is a Dockerfile that prepares an environment in which the examples can be 
 
 Rebuilding all examples:
 
-    cd retroload-examples
+    cd retroload-lib/examples
     docker build -t retroload-examples .
     docker run -v "$(pwd)/formats:/formats" retroload-examples
 

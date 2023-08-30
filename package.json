@@ -2,11 +2,8 @@
   "name": "retroload",
   "private": true,
   "workspaces": [
-    "retroload-basic",
-    "retroload-common",
-    "retroload-cli",
-    "retroload-encoders",
-    "retroload-examples"
+    "retroload-lib",
+    "retroload"
   ],
   "scripts": {
     "build": "tsc --build -v",
