@@ -40,12 +40,8 @@ async function main() {
   }
   const outPathPrefix = typeof options['o'] === 'string' ? options['o'] : './';
   const converterSettings = getConverterSettings(options);
-  const data = readInputFile(infile);
-  const arrayBuffer = data.buffer.slice(
-    data.byteOffset,
-    data.byteOffset + data.byteLength,
-  );
-  const ba = new BufferAccess(arrayBuffer);
+  const buffer = readInputFile(infile);
+  const ba = BufferAccess.createFromNodeBuffer(buffer);
   Logger.debug(`Output format: ${outputFormat}`);
   Logger.debug(`Error handling method: ${converterSettings.onError}`);
   Logger.debug(`Processing ${infile}...`);

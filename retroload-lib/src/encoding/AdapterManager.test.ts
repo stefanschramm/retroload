@@ -44,12 +44,8 @@ describe('Encoding pipeline', () => {
 
 function encodeAndHash(file: string, options: OptionValues) {
   const recorder = new WaveRecorder();
-  const data = fs.readFileSync(file);
-  const arrayBuffer = data.buffer.slice(
-    data.byteOffset,
-    data.byteOffset + data.byteLength,
-  );
-  const ba = new BufferAccess(arrayBuffer);
+  const buffer = fs.readFileSync(file);
+  const ba = BufferAccess.createFromNodeBuffer(buffer);
   if (!AdapterManager.encode(recorder, file, ba, options)) {
     Logger.error('Unable to decode ' + file);
     return false;
