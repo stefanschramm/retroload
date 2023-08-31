@@ -1,4 +1,4 @@
-import {type SampleProvider} from '../../decoder/WaveDecoder.js';
+import {type SampleProvider} from '../../decoding/decoder/WaveDecoder.js';
 
 export class SampleProviderMock implements SampleProvider {
   bitsPerSample = 8;
