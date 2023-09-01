@@ -43,14 +43,10 @@ async function main() {
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
   Logger.setVerbosity(parseInt(typeof options['verbosity'] === 'string' ? options['verbosity'] : '1', 10));
   const playback = undefined === outfile;
-  const data = readInputFile(infile);
+  const buffer = readInputFile(infile);
   const recorder = new WaveRecorder();
   const speakerWrapper = playback ? (await SpeakerWrapper.create(recorder.sampleRate, recorder.bitsPerSample, recorder.channels)) : undefined;
-  const arrayBuffer = data.buffer.slice(
-    data.byteOffset,
-    data.byteOffset + data.byteLength,
-  );
-  const ba = new BufferAccess(arrayBuffer);
+  const ba = BufferAccess.createFromNodeBuffer(buffer);
 
   Logger.debug(`Processing ${infile}...`);
 

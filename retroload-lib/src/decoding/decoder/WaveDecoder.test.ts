@@ -66,10 +66,5 @@ describe('WaveDecoder', () => {
 });
 
 function getFixture(): BufferAccess {
-  const data = Buffer.from(fixture, 'base64');
-  const arrayBuffer = data.buffer.slice(
-    data.byteOffset,
-    data.byteOffset + data.byteLength,
-  );
-  return new BufferAccess(arrayBuffer);
+  return BufferAccess.createFromNodeBuffer(Buffer.from(fixture, 'base64'));
 }

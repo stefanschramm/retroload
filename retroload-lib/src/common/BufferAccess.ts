@@ -20,11 +20,20 @@ export class BufferAccess {
     return new BufferAccess(uint8Array.buffer, uint8Array.byteOffset, uint8Array.byteLength);
   }
 
+  static createFromNodeBuffer(buffer: Buffer): BufferAccess {
+    const arrayBuffer = buffer.buffer.slice(
+      buffer.byteOffset,
+      buffer.byteOffset + buffer.byteLength,
+    );
+
+    return new BufferAccess(arrayBuffer);
+  }
+
   cursor: number;
   view: DataView;
   ui8a: Uint8Array;
 
-  constructor(buffer: ArrayBufferLike, offset = 0, length: (number | undefined) = undefined) {
+  private constructor(buffer: ArrayBufferLike, offset = 0, length: (number | undefined) = undefined) {
     this.cursor = 0;
     this.view = new DataView(buffer, offset, length ?? buffer.byteLength);
     this.ui8a = new Uint8Array(buffer, offset, length ?? buffer.byteLength);

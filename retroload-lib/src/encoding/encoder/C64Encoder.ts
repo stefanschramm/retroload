@@ -73,12 +73,12 @@ export class C64Encoder extends AbstractEncoder {
 
   recordSyncChain() {
     const syncChain = new Uint8Array([0x89, 0x88, 0x87, 0x86, 0x85, 0x84, 0x83, 0x82, 0x81]);
-    this.recordBytes(new BufferAccess(syncChain.buffer));
+    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
   }
 
   recordSyncChainRepeated() {
     const syncChain = new Uint8Array([0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01]);
-    this.recordBytes(new BufferAccess(syncChain.buffer));
+    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
   }
 
   override recordByte(byte: number) {
