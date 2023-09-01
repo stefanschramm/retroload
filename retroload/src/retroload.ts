@@ -5,7 +5,16 @@ import {WaveRecorder, AdapterManager, Exception, Logger} from 'retroload-lib';
 import fs from 'fs';
 import {Command} from 'commander';
 import {type OptionDefinition} from 'retroload-lib';
-import {SpeakerWrapper} from './SpeakerWrapper.js';
+import {SpeakerWrapper} from './player/SpeakerWrapper.js';
+import {AplayWrapper} from './player/AplayWrapper.js';
+import {type PlayerWrapper} from './player/PlayerWrapper.js';
+import {SoxWrapper} from './player/SoxWrapper.js';
+
+const playerWrapperPriority = [
+  SoxWrapper,
+  AplayWrapper,
+  SpeakerWrapper,
+];
 
 main()
   .catch((err) => {
@@ -42,10 +51,8 @@ async function main() {
   const infile = program.args[0];
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
   Logger.setVerbosity(parseInt(typeof options['verbosity'] === 'string' ? options['verbosity'] : '1', 10));
-  const playback = undefined === outfile;
   const buffer = readInputFile(infile);
   const recorder = new WaveRecorder();
-  const speakerWrapper = playback ? (await SpeakerWrapper.create(recorder.sampleRate, recorder.bitsPerSample, recorder.channels)) : undefined;
   const ba = BufferAccess.createFromNodeBuffer(buffer);
 
   Logger.debug(`Processing ${infile}...`);
@@ -60,18 +67,18 @@ async function main() {
       Logger.error(e.message);
       process.exit(1);
     } else {
-      throw e;
+      throw e; // show full stack trace for unexpected errors
     }
   }
 
-  if (playback) {
-    if (speakerWrapper === undefined) {
-      Logger.error('Speaker module not found.');
-      process.exit(1);
-    }
-    await speakerWrapper.play(recorder.getRawBuffer());
+  if (undefined === outfile) {
+    // play
+    const playerWrapper = await getPlayerWrapper(recorder);
+    await playerWrapper.play(recorder.getRawBuffer());
+    Logger.info('Finished.');
     process.exit(0);
   } else {
+    // save
     writeOutputFile(outfile, recorder.getBuffer());
     process.exit(0);
   }
@@ -85,7 +92,7 @@ function readInputFile(path: string) {
   try {
     return fs.readFileSync(path);
   } catch {
-    console.error(`Error: Unable to read ${path}.`);
+    Logger.error(`Error: Unable to read ${path}.`);
     process.exit(1);
   }
 }
@@ -94,8 +101,32 @@ function writeOutputFile(path: string, data: Uint8Array) {
   try {
     fs.writeFileSync(path, data);
   } catch {
-    console.error(`Error: Unable to write output file ${path}`);
+    Logger.error(`Error: Unable to write output file ${path}`);
     process.exit(1);
   }
 }
 
+async function getPlayerWrapper(recorder: WaveRecorder): Promise<PlayerWrapper> {
+  for (const wrapper of playerWrapperPriority) {
+    // eslint-disable-next-line no-await-in-loop
+    const pw = await wrapper.create(recorder.sampleRate, recorder.bitsPerSample, recorder.channels);
+    if (pw !== undefined) {
+      return pw;
+    }
+  }
+
+  const msg = `
+  No player found. retroload supports the following options for playing audio:
+  
+  speaker library:
+  Install it using "npm install speaker". To install (and build) it, you may need to install additional system packages like build-essential and libasound2-dev.
+  
+  aplay:
+  Usually part of the "alsa-utils" package. Try installing it using "apt-get install alsa-utils" or "yum install alsa-utils".
+  
+  (SoX) play:
+  Part of the SoX package. Try installing it using "apt-get install sox" or "yum installs sox".
+  `;
+  Logger.error(msg);
+  process.exit(1);
+}

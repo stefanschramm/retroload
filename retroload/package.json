@@ -11,7 +11,7 @@
   "files": ["dist/"],
   "scripts": {
     "lint": "eslint src/",
-    "test": "echo 'no tests configured for retroload-cli'"
+    "test": "echo 'no tests configured for retroload'"
   },
   "bin": {
     "retroload": "./bin/retroload.js",
