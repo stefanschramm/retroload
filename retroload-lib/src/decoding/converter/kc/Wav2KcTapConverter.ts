@@ -5,6 +5,7 @@ import {KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
 import {FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../decoder/StreamingSampleToHalfPeriodConverter.js';
 import {LowPassFilter} from '../../decoder/LowPassFilter.js';
+import {Logger} from '../../../common/logging/Logger.js';
 
 export const wav2KcTapConverter: ConverterDefinition = {
   from: 'wav',
@@ -13,9 +14,10 @@ export const wav2KcTapConverter: ConverterDefinition = {
 };
 
 function * convert(ba: BufferAccess, settings: ConverterSettings): Generator<OutputFile> {
-  let sampleProvider: SampleProvider = new WaveDecoder(ba, settings.skip);
+  let sampleProvider: SampleProvider = new WaveDecoder(ba, settings.skip, settings.channel);
   sampleProvider = new LowPassFilter(sampleProvider, 11025);
-  // sampleProvider = new HighPassFilter(sampleProvider, 5);
+  // high pass filtering doesn't seem to improve decoding (or is the implementation buggy?) :/
+  // sampleProvider = new HighPassFilter(sampleProvider, 25);
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
   const hpp = new KcHalfPeriodProcessor(streamingHalfPeriodProvider);
   const blockProcessor = new KcBlockProcessor(hpp, settings);
@@ -25,6 +27,8 @@ function * convert(ba: BufferAccess, settings: ConverterSettings): Generator<Out
       yield bufferAccessListToOutputFile(fileDecodingResult.blocks);
     }
   }
+
+  Logger.debug(`Total successful blocks: ${blockProcessor.getSuccessfulBlockCount()}`);
 }
 
 function bufferAccessListToOutputFile(blocks: BufferAccess[]): OutputFile {
@@ -34,7 +38,8 @@ function bufferAccessListToOutputFile(blocks: BufferAccess[]): OutputFile {
   for (const block of blocks) {
     data.writeBa(block);
   }
-  const filename = data.slice(0x14, 8).asAsciiString().trim();
+  const isBasicProgram = blocks[0].containsDataAt(0, '\x01\xd3\xd3\xd3') || blocks[0].containsDataAt(0, '\x01\xd7\xd7\xd7');
+  const filename = isBasicProgram ? blocks[0].slice(4, 8).asAsciiString().trim() : blocks[0].slice(1, 8).asAsciiString().trim();
   const proposedName = restrictCharacters(filename);
 
   return {proposedName, data, proposedExtension: 'tap'};

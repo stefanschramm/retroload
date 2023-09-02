@@ -4,14 +4,22 @@ import {BlockDecodingResultStatus, type KcHalfPeriodProcessor} from './KcHalfPer
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {DecodingError} from '../ConverterExceptions.js';
+import {formatPosition, type PositionProvider} from '../../../common/Positioning.js';
 
-export class KcBlockProcessor {
+/**
+ * Minimal expected gap between files in seconds (from end of previous block to begin of next block)
+ */
+const maximalIntraFileBlockGap = 1;
+
+export class KcBlockProcessor implements PositionProvider {
   private readonly blockProvider: KcHalfPeriodProcessor;
   private readonly settings: ConverterSettings;
 
   private blocks: BufferAccess[] = [];
   private errorOccured = false;
   private previousBlockNumber: number | undefined;
+  private previousBlockEndPositionSecond = 0;
+  private successfulBlocksCount = 0;
 
   constructor(blockProvider: KcHalfPeriodProcessor, settings: ConverterSettings) {
     this.blockProvider = blockProvider;
@@ -20,30 +28,45 @@ export class KcBlockProcessor {
 
   * files(): Generator<FileDecodingResult> {
     for (const decodingResult of this.blockProvider.blocks()) {
+      let errorInCurrentBlock = false;
       switch (decodingResult.status) {
         case BlockDecodingResultStatus.Complete:
+          this.successfulBlocksCount++;
           break;
         case BlockDecodingResultStatus.InvalidChecksum:
         case BlockDecodingResultStatus.Partial:
           if (this.settings.onError === 'stop') {
             throw new DecodingError('Stopping.');
           }
-          this.errorOccured = true;
+          errorInCurrentBlock = true;
           break;
         default:
           throw new Error('Unexpected BlockDecodingResultStatus.');
       }
 
-      // TODO: Check distance of block to the end of the previous and start a new file if it exceeds a certain threshold
       const blockNumber = decodingResult.data.getUint8(0);
-      if (this.blockNumberBelongsToNextFile(blockNumber)) {
+      if (this.blockBelongsToNextFile(blockNumber, decodingResult.blockBeginSeconds)) {
         yield this.finishFile();
       }
+      this.errorOccured = this.errorOccured || errorInCurrentBlock;
       this.blocks.push(decodingResult.data);
       this.previousBlockNumber = blockNumber;
+      this.previousBlockEndPositionSecond = decodingResult.blockEndSeconds;
     }
 
     yield this.finishFile();
+  }
+
+  public getSuccessfulBlockCount(): number {
+    return this.successfulBlocksCount;
+  }
+
+  public getCurrentPositionSample(): number {
+    return this.blockProvider.getCurrentPositionSample();
+  }
+
+  public getCurrentPositionSecond(): number {
+    return this.blockProvider.getCurrentPositionSecond();
   }
 
   private finishFile(): FileDecodingResult {
@@ -57,14 +80,15 @@ export class KcBlockProcessor {
     return result;
   }
 
-  private blockNumberBelongsToNextFile(blockNumber: number): boolean {
+  private blockBelongsToNextFile(blockNumber: number, currentPositionSecond: number): boolean {
     if (this.previousBlockNumber !== undefined) {
-      if (blockNumber <= this.previousBlockNumber) {
+      const gapLength = this.previousBlockEndPositionSecond - currentPositionSecond;
+      if (blockNumber <= this.previousBlockNumber || gapLength > maximalIntraFileBlockGap) {
         this.validateFirstBlockNumber(blockNumber);
         return true;
       }
       if (blockNumber > this.previousBlockNumber + 1 && blockNumber !== 0xff) {
-        Logger.info(`Warning: Missing block. Got block number ${hex8(blockNumber)} but expected was ${hex8(this.previousBlockNumber + 1)} or 0xff.`);
+        Logger.info(`${formatPosition(this)} Warning: Missing block. Got block number ${hex8(blockNumber)} but expected was ${hex8(this.previousBlockNumber + 1)} or 0xff.`);
       }
       return false;
     }
@@ -75,7 +99,7 @@ export class KcBlockProcessor {
 
   private validateFirstBlockNumber(blockNumber: number): void {
     if (blockNumber !== 0 && blockNumber !== 1) {
-      Logger.info(`Warning: Got first block with block number ${hex8(blockNumber)}`);
+      Logger.info(`${formatPosition(this)} Warning: Got first block with block number ${hex8(blockNumber)}`);
     }
   }
 }

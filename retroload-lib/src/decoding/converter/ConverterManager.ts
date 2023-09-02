@@ -26,11 +26,18 @@ export type OutputFile = {
 };
 
 export type ConverterSettings = {
+  /**
+   * What to do when errors occur
+   */
   onError: ErrorHandlingType;
   /**
    * Number of samples to skip in input
    */
   skip: number;
+  /**
+   * Channel to get samples from
+   */
+  channel: number | undefined;
 };
 
 export type ErrorHandlingType = 'stop' | 'skipfile' | 'ignore';

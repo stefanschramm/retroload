@@ -3,18 +3,19 @@ import {type HalfPeriodProvider} from '../../decoder/HalfPeriodProvider.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8} from '../../../common/Utils.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../ConverterExceptions.js';
+import {type PositionProvider, formatPosition} from '../../../common/Positioning.js';
 
 type FrequencyRange = [number, number];
 
 const one: FrequencyRange = [770, 1300];
 const delimiter: FrequencyRange = [500, 670];
 const zero: FrequencyRange = [1400, 2800];
-const minIntroPeriods = 50;
+const minIntroPeriods = 200;
 
 /**
  * Decode half periods into blocks.
  */
-export class KcHalfPeriodProcessor {
+export class KcHalfPeriodProcessor implements PositionProvider {
   private readonly halfPeriodProvider: HalfPeriodProvider;
   constructor(halfPeriodProvider: HalfPeriodProvider) {
     this.halfPeriodProvider = halfPeriodProvider;
@@ -37,11 +38,20 @@ export class KcHalfPeriodProcessor {
     } while (keepGoing);
   }
 
-  decodeBlockImpl(): BlockDecodingResult {
+  public getCurrentPositionSample() {
+    return this.halfPeriodProvider.getCurrentPositionSample();
+  }
+
+  public getCurrentPositionSecond() {
+    return this.halfPeriodProvider.getCurrentPositionSecond();
+  }
+
+  private decodeBlockImpl(): BlockDecodingResult {
     if (!this.findValidIntro()) {
       throw new EndOfInput();
     }
-    Logger.info(`${this.getFormattedPosition()} Reading block...`);
+    Logger.debug(`${formatPosition(this)} Reading block...`);
+    const blockBeginSeconds = this.getCurrentPositionSecond();
     const block = BufferAccess.create(130);
     for (let i = 0; i < 130; i++) {
       try {
@@ -53,7 +63,12 @@ export class KcHalfPeriodProcessor {
           if (i === 0) {
             throw new BlockStartNotFound();
           }
-          return new BlockDecodingResult(block.slice(0, 129), BlockDecodingResultStatus.Partial);
+          return new BlockDecodingResult(
+            block.slice(0, 129),
+            BlockDecodingResultStatus.Partial,
+            blockBeginSeconds,
+            this.getCurrentPositionSecond(),
+          );
         }
         throw e; // unknown exception
       }
@@ -66,12 +81,14 @@ export class KcHalfPeriodProcessor {
     if (!checksumCorrect) {
       Logger.error(`Warning: Invalid checksum for block ${blockNumber}! Read checksum: ${readChecksum}, Calculated checksum: ${calculatedChecksum}.`);
     }
-    Logger.debug(`${this.getFormattedPosition()} Finished reading block number 0x${blockNumber.toString(16).padStart(2, '0')}`);
+    Logger.debug(`${formatPosition(this)} Finished reading block number 0x${blockNumber.toString(16).padStart(2, '0')}`);
 
     // return slice with block number, but not checksum
     return new BlockDecodingResult(
       block.slice(0, 129),
       checksumCorrect ? BlockDecodingResultStatus.Complete : BlockDecodingResultStatus.InvalidChecksum,
+      blockBeginSeconds,
+      this.getCurrentPositionSecond(),
     );
   }
 
@@ -124,7 +141,7 @@ export class KcHalfPeriodProcessor {
     if (firstHalf === undefined || secondHalf === undefined) {
       return false;
     }
-    if (isNot(firstHalf, delimiter) || isNot(secondHalf, delimiter)) {
+    if (isNot((firstHalf + secondHalf) / 2, delimiter)) {
       return false;
     }
 
@@ -138,8 +155,8 @@ export class KcHalfPeriodProcessor {
     if (firstHalf === undefined || secondHalf === undefined) {
       return undefined;
     }
-    const isOne = is(firstHalf, one) && is(secondHalf, one);
-    const isZero = is(firstHalf, zero) && is(secondHalf, zero);
+    const isOne = is((firstHalf + secondHalf) / 2, one);
+    const isZero = is((firstHalf + secondHalf) / 2, zero);
 
     if (!isOne && !isZero) {
       return undefined;
@@ -151,24 +168,18 @@ export class KcHalfPeriodProcessor {
   private readByte(): number {
     const delimiter = this.readDelimiter();
     if (!delimiter) {
-      throw new DecodingError(`${this.getFormattedPosition()} Did not found a delimiter at half period.`);
+      throw new DecodingError(`${formatPosition(this)} Unable to find delimiter.`);
     }
     let byte = 0;
     for (let i = 0; i < 8; i++) {
       const bit = this.readBit();
       if (bit === undefined) {
-        throw new DecodingError(`${this.getFormattedPosition()} Unable to detect bit at half period.`);
+        throw new DecodingError(`${formatPosition(this)} Unable to detect bit.`);
       }
       byte |= ((bit ? 1 : 0) << i);
     }
 
     return byte;
-  }
-
-  private getFormattedPosition(): string {
-    const timestamp = secondsToTimestamp(this.halfPeriodProvider.getCurrentPositionSecond());
-    const samples = this.halfPeriodProvider.getCurrentPositionSample();
-    return `${timestamp} sample ${samples}`;
   }
 }
 
@@ -180,19 +191,12 @@ function isNot(value: number, range: FrequencyRange): boolean {
   return value < range[0] || value > range[1];
 }
 
-function secondsToTimestamp(totalSeconds: number): string {
-  const hours = Math.floor(totalSeconds / 3600).toString(10).padStart(2, '0');
-  totalSeconds %= 3600;
-  const minutes = Math.floor(totalSeconds / 60).toString(10).padStart(2, '0');
-  const seconds = (totalSeconds % 60).toFixed(4).padStart(7, '0');
-
-  return `${hours}:${minutes}:${seconds}`;
-}
-
 export class BlockDecodingResult {
   constructor(
     readonly data: BufferAccess,
     readonly status: BlockDecodingResultStatus,
+    readonly blockBeginSeconds: number,
+    readonly blockEndSeconds: number,
   ) {}
 }
 

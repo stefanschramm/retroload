@@ -24,9 +24,10 @@ async function main() {
     .allowExcessArguments(false)
     .option('-o <outpath>', 'Prefix (filename or complete path) for files to write', './')
     .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1')
-    .option('--on-error <errorhandling>', 'Error handling strategy (ignore, skipfile, stop)', 'ignore')
     .option('--to <outputtype>', 'Output format') // TODO: list possible formats
-    .option('--skip <samples>', 'Start processing of input data after skipping <samples> samples', '0')
+    .option('--on-error <errorhandling>', 'Error handling strategy (one of: ignore, skipfile, stop)', 'ignore')
+    .option('--channel <channel>', 'Use specified channel to get samples from, in case the input file has multiple channels. Numbering starts at 0.')
+    .option('--skip <samples>', 'Start processing of input data after skipping a specific number of samples', '0')
     .option('--no-proposed-name', 'Just use numeric file names instead of file names from tape/archive.')
     .option('--extension <extension>', 'Use specified file extension instead of the one proposed by the converter.');
   program.parse();
@@ -43,7 +44,7 @@ async function main() {
   const buffer = readInputFile(infile);
   const ba = BufferAccess.createFromNodeBuffer(buffer);
   Logger.debug(`Output format: ${outputFormat}`);
-  Logger.debug(`Error handling method: ${converterSettings.onError}`);
+  Logger.debug(`Settings: ${JSON.stringify(converterSettings)}`);
   Logger.debug(`Processing ${infile}...`);
   let i = 0;
   for (const file of ConverterManager.convert(ba, 'wav', outputFormat, converterSettings)) {
@@ -51,7 +52,7 @@ async function main() {
     const fallbackName = `${i}.${extension}`;
     const proposedName = file.proposedName === undefined ? fallbackName : `${file.proposedName}.${extension}`;
     const fileName = options['proposedName'] ? proposedName : fallbackName;
-    Logger.info(fileName);
+    Logger.info(`Writing file: ${fileName}`);
     Logger.debug(file.data.asHexDump());
     writeOutputFile(`${outPathPrefix}${fileName}`, file.data.asUint8Array()); // TODO: Option for path/name(-prefix).
     i++;
@@ -72,6 +73,7 @@ function getConverterSettings(options: OptionValues): ConverterManager.Converter
   return {
     onError: options['onError'],
     skip: parseInt(typeof options['skip'] === 'string' ? options['skip'] : '0', 10),
+    channel: typeof options['channel'] === 'string' ? parseInt(options['channel'], 10) : undefined,
   };
 }
 

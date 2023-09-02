@@ -18,8 +18,9 @@ export class WaveDecoder implements SampleProvider {
   readonly channels: number;
   readonly blockAlign: number;
   readonly dataLength: number;
+  readonly channel: number;
 
-  constructor(ba: BufferAccess, skip: number) {
+  constructor(ba: BufferAccess, skip: number, channel: number | undefined = undefined) {
     this.ba = ba;
     this.skip = skip;
     if (this.skip !== 0) {
@@ -33,9 +34,14 @@ export class WaveDecoder implements SampleProvider {
       throw new InputDataError('WAVE file is not in PCM format.');
     }
     this.channels = ba.getUint16Le(0x16);
-    if (this.channels > 1) {
-      Logger.info('Multiple channels detected. Will use first channel for decoding.');
+    if (channel === undefined) {
+      if (this.channels > 1) {
+        Logger.info('Multiple channels detected and no specific channel selected. Will use channel 0 for decoding.');
+      }
+    } else if (channel >= this.channels) {
+      throw new InputDataError(`Channel ${channel} was selected for decoding, but file only has ${this.channels} channels. Note: Channel numbering starts with 0.`);
     }
+    this.channel = channel ?? 0;
     this.sampleRate = ba.getUint32Le(0x18);
     this.bitsPerSample = ba.getUint16Le(0x22);
     this.blockAlign = this.ba.getUint16Le(0x20); // size of a frame in bytes
@@ -59,13 +65,13 @@ export class WaveDecoder implements SampleProvider {
       // Get data for first channel only.
       switch (this.bitsPerSample) {
         case 8:
-          yield dataBa.getUint8(i);
+          yield dataBa.getUint8(i + this.channel);
           continue;
         case 16:
-          yield dataBa.getUint16Le(i);
+          yield dataBa.getUint16Le(i + 2 * this.channel);
           continue;
         case 32:
-          yield dataBa.getUint32Le(i);
+          yield dataBa.getUint32Le(i + 4 * this.channel);
           continue;
         default:
           throw new InputDataError('Can only process 8, 16 or 32 bits per sample.');
