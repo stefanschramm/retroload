@@ -1,5 +1,5 @@
 import {Logger} from 'retroload-lib';
-import {spawn, spawnSync} from 'child_process';
+import {spawnSync} from 'child_process';
 import {type PlayerWrapper} from './PlayerWrapper.js';
 
 export class SoxWrapper implements PlayerWrapper {
@@ -25,11 +25,8 @@ export class SoxWrapper implements PlayerWrapper {
   async play(buffer: Uint8Array) {
     return new Promise((resolve) => {
       Logger.info('Playing via sox play...');
-      const play = spawn('play', ['-t', 'raw', '-r', this.sampleRate.toString(10), '-e', 'unsigned', '-b', '8', '-c', this.channels.toString(10), '-']);
-      play.stdin.write(buffer);
-      play.on('close', () => {
-        resolve(null);
-      });
+      spawnSync('play', ['-t', 'raw', '-r', this.sampleRate.toString(10), '-e', 'unsigned', '-b', '8', '-c', this.channels.toString(10), '-'], {input: buffer});
+      resolve(null);
     });
   }
 }

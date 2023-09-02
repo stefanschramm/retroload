@@ -1,5 +1,5 @@
 import {Logger} from 'retroload-lib';
-import {spawn, spawnSync} from 'child_process';
+import {spawnSync} from 'child_process';
 import {type PlayerWrapper} from './PlayerWrapper.js';
 
 export class AplayWrapper implements PlayerWrapper {
@@ -25,11 +25,8 @@ export class AplayWrapper implements PlayerWrapper {
   async play(buffer: Uint8Array) {
     return new Promise((resolve) => {
       Logger.info('Playing via aplay...');
-      const aplay = spawn('aplay', ['-r', this.sampleRate.toString(10), '-f', 'U8', '-c', this.channels.toString(10)]);
-      aplay.stdin.write(buffer);
-      aplay.on('close', () => {
-        resolve(null);
-      });
+      spawnSync('aplay', ['-r', this.sampleRate.toString(10), '-f', 'U8', '-c', this.channels.toString(10)], {input: buffer});
+      resolve(null);
     });
   }
 }
