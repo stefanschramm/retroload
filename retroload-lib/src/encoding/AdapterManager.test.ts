@@ -5,8 +5,8 @@ import {type OptionValues} from './Options.js';
 import {WaveRecorder} from './recorder/WaveRecorder.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
-import {getExamples} from '../Examples.js';
 import {BufferAccess} from '../common/BufferAccess.js';
+import examples, {getLocalPath} from '../Examples.js';
 
 // Disable log output for more readable test output
 Logger.setHandler(new NullLoggerHandler());
@@ -33,10 +33,10 @@ test('identify returns undefined for unknown formats', () => {
 });
 
 describe('Encoding pipeline', () => {
-  it.each(getExamples())(
+  it.each(examples)(
     'returns correct hash for example %s',
     (example) => {
-      const hash = encodeAndHash(example.getPath(), example.options);
+      const hash = encodeAndHash(getLocalPath(example), example.options);
       expect(hash).toBe(example.hash);
     },
   );
