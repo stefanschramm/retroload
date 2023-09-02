@@ -16,7 +16,7 @@
   "bin": {
     "retroload": "./bin/retroload.js",
     "retroload-tokenizer": "./bin/retroload-tokenizer.js",
-    "retroload-save": "./bin/retroload-save.js"
+    "retroload-dump": "./bin/retroload-dump.js"
   },
   "dependencies": {
     "commander": "^10.0.0",

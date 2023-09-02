@@ -30,6 +30,12 @@ async function main() {
     .option('--skip <samples>', 'Start processing of input data after skipping a specific number of samples', '0')
     .option('--no-proposed-name', 'Just use numeric file names instead of file names from tape/archive.')
     .option('--extension <extension>', 'Use specified file extension instead of the one proposed by the converter.');
+  program.exitOverride((err) => {
+    if (err.code === 'commander.missingArgument') {
+      program.outputHelp();
+    }
+    process.exit(err.exitCode);
+  });
   program.parse();
   const options = program.opts();
   const infile = program.args[0];
