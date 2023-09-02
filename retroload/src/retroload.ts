@@ -11,9 +11,9 @@ import {type PlayerWrapper} from './player/PlayerWrapper.js';
 import {SoxWrapper} from './player/SoxWrapper.js';
 
 const playerWrapperPriority = [
+  SpeakerWrapper,
   AplayWrapper,
   SoxWrapper,
-  SpeakerWrapper,
 ];
 
 main()
