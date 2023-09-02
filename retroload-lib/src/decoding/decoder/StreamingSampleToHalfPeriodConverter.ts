@@ -15,7 +15,7 @@ export class StreamingSampleToHalfPeriodConverter implements HalfPeriodProvider 
   constructor(sampleProvider: SampleProvider) {
     this.sampleRate = sampleProvider.sampleRate;
     this.generator = sampleProvider.getSamples();
-    this.offset = 1 << (sampleProvider.bitsPerSample - 1); // may be replaced by a sliding window high pass filter later
+    this.offset = 1 << (sampleProvider.bitsPerSample - 1);
     this.positive = this.generator.next().value > this.offset; // consume one sample to get initial polarity
   }
 
