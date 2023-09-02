@@ -54,7 +54,7 @@ async function main() {
     const fileName = options['proposedName'] ? proposedName : fallbackName;
     Logger.info(`Writing file: ${fileName}`);
     Logger.debug(file.data.asHexDump());
-    writeOutputFile(`${outPathPrefix}${fileName}`, file.data.asUint8Array()); // TODO: Option for path/name(-prefix).
+    writeOutputFile(`${outPathPrefix}${fileName}`, file.data.asUint8Array());
     i++;
   }
   Logger.info(`Dumped ${i} file(s).`);
