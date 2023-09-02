@@ -317,7 +317,7 @@ const examples: ExampleDefinition[] = [
 ];
 export default examples;
 
-type ExampleDefinition = {
+export type ExampleDefinition = {
   /**
    * Subdirectory in formats directory.
    */
@@ -347,8 +347,4 @@ export function getLocalPath(example: ExampleDefinition): string {
 
 export function getUrl(example: ExampleDefinition): string {
   return `https://github.com/stefanschramm/retroload/tree/main/retroload-lib/examples/formats/${example.dir}/${example.file}`;
-}
-
-export function getTestLabel(example: ExampleDefinition): string {
-  return `${example.dir}/${example.file}, options: ${JSON.stringify(example.options)}`;
 }

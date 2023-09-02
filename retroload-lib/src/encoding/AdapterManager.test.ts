@@ -6,7 +6,7 @@ import {WaveRecorder} from './recorder/WaveRecorder.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import {BufferAccess} from '../common/BufferAccess.js';
-import examples, {getLocalPath} from '../Examples.js';
+import examples, {type ExampleDefinition, getLocalPath} from '../Examples.js';
 
 // Disable log output for more readable test output
 Logger.setHandler(new NullLoggerHandler());
@@ -32,15 +32,19 @@ test('identify returns undefined for unknown formats', () => {
   expect(AdapterManager.identify('example.xyz', BufferAccess.create(128))).toEqual(undefined);
 });
 
-describe('Encoding pipeline', () => {
-  it.each(examples)(
-    'returns correct hash for example %s',
+describe('Encoding pipeline returns correct hashes', () => {
+  it.each(examples.map((e) => ({label: getTestLabel(e), definition: e})))(
+    'example $label',
     (example) => {
-      const hash = encodeAndHash(getLocalPath(example), example.options);
-      expect(hash).toBe(example.hash);
+      const hash = encodeAndHash(getLocalPath(example.definition), example.definition.options);
+      expect(hash).toBe(example.definition.hash);
     },
   );
 });
+
+function getTestLabel(example: ExampleDefinition): string {
+  return `${example.dir}/${example.file}, options: ${JSON.stringify(example.options)}`;
+}
 
 function encodeAndHash(file: string, options: OptionValues) {
   const recorder = new WaveRecorder();
