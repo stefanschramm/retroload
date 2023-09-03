@@ -1,7 +1,7 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {DecodingError} from '../ConverterExceptions.js';
+import {DecodingError} from '../../ConverterExceptions.js';
 import {formatPosition, type Position} from '../../../common/Positioning.js';
 import {type BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 

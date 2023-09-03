@@ -1,8 +1,8 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {type HalfPeriodProvider} from '../../decoder/HalfPeriodProvider.js';
+import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8, hex8} from '../../../common/Utils.js';
-import {BlockStartNotFound, DecodingError, EndOfInput} from '../ConverterExceptions.js';
+import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
 import {formatPosition} from '../../../common/Positioning.js';
 import {BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 

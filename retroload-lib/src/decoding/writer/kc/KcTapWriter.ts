@@ -1,21 +1,19 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {WaveDecoder} from '../../decoder/WaveDecoder.js';
-import {type OutputFile, type ConverterDefinition, type ConverterSettings} from '../ConverterManager.js';
 import {KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
 import {type FileDecodingResult, FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
-import {StreamingSampleToHalfPeriodConverter} from '../../decoder/StreamingSampleToHalfPeriodConverter.js';
-import {LowPassFilter} from '../../decoder/LowPassFilter.js';
+import {LowPassFilter} from '../../sample_provider/LowPassFilter.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {type SampleProvider} from '../../decoder/SampleProvider.js';
+import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
+import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
+import {type WriterDefinition, type ConverterSettings, type OutputFile} from '../../ConverterManager.js';
 
-export const wav2KcTapConverter: ConverterDefinition = {
-  from: 'wav',
+const definition: WriterDefinition = {
   to: 'kctap',
   convert,
 };
+export default definition;
 
-function * convert(ba: BufferAccess, settings: ConverterSettings): Generator<OutputFile> {
-  let sampleProvider: SampleProvider = new WaveDecoder(ba, settings.skip, settings.channel);
+function * convert(sampleProvider: SampleProvider, settings: ConverterSettings): Generator<OutputFile> {
   sampleProvider = new LowPassFilter(sampleProvider, 11025);
   // high pass filtering doesn't seem to improve decoding (or is the implementation buggy?) :/
   // sampleProvider = new HighPassFilter(sampleProvider, 25);

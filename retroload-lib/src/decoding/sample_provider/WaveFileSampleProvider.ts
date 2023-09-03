@@ -5,7 +5,7 @@ import {type SampleProvider} from './SampleProvider.js';
 
 const pcmFormatTag = 0x0001;
 
-export class WaveDecoder implements SampleProvider {
+export class WaveFileSampleProvider implements SampleProvider {
   readonly ba: BufferAccess;
   readonly skip: number;
   readonly sampleRate: number;

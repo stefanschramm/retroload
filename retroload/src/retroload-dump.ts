@@ -53,7 +53,7 @@ async function main() {
   Logger.debug(`Settings: ${JSON.stringify(converterSettings)}`);
   Logger.debug(`Processing ${infile}...`);
   let i = 0;
-  for (const file of ConverterManager.convert(ba, 'wav', outputFormat, converterSettings)) {
+  for (const file of ConverterManager.convertWav(ba, outputFormat, converterSettings)) {
     const extension = typeof options['extension'] === 'string' ? options['extension'] : file.proposedExtension;
     const fallbackName = `${i}.${extension}`;
     const proposedName = file.proposedName === undefined ? fallbackName : `${file.proposedName}.${extension}`;
@@ -67,7 +67,7 @@ async function main() {
 }
 
 function getConverterList(): string {
-  return ConverterManager.getAllConverters().map((c) => c.to).join(', ');
+  return ConverterManager.getAllWriters().map((c) => c.to).join(', ');
 }
 
 function getConverterSettings(options: OptionValues): ConverterManager.ConverterSettings {

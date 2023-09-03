@@ -1,4 +1,4 @@
-import {type SampleProvider} from '../../decoding/decoder/SampleProvider.js';
+import {type SampleProvider} from '../../decoding/sample_provider/SampleProvider.js';
 
 export class SampleProviderMock implements SampleProvider {
   bitsPerSample = 8;

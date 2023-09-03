@@ -1,5 +1,5 @@
 import {BufferAccess} from '../../common/BufferAccess.js';
-import {WaveDecoder} from './WaveDecoder.js';
+import {WaveFileSampleProvider} from './WaveFileSampleProvider.js';
 import {InputDataError} from '../../common/Exceptions.js';
 
 // 35 samples, 8 bit PCM, 1 channel, 44100 Hz sample rate, padded with one 0 byte, maximum amplitude square wave
@@ -13,16 +13,16 @@ import {InputDataError} from '../../common/Exceptions.js';
 
 const fixture = 'UklGRkgAAABXQVZFZm10IBAAAAABAAEARKwAAESsAAABAAgAZGF0YSMAAAD//////wAAAAAA//////8AAAAAAP//////AAAAAAD//////wA=';
 
-describe('WaveDecoder', () => {
+describe('WaveFileSampleProvider', () => {
   test('reads header and samples', () => {
-    const waveDecoder = new WaveDecoder(getFixture(), 0);
-    const generator = waveDecoder.getSamples();
+    const sp = new WaveFileSampleProvider(getFixture(), 0);
+    const generator = sp.getSamples();
 
     // Correct decoding of WAVE header
-    expect(waveDecoder.bitsPerSample).toBe(8);
-    expect(waveDecoder.channels).toBe(1);
-    expect(waveDecoder.sampleRate).toBe(44100);
-    expect(waveDecoder.dataLength).toBe(35);
+    expect(sp.bitsPerSample).toBe(8);
+    expect(sp.channels).toBe(1);
+    expect(sp.sampleRate).toBe(44100);
+    expect(sp.dataLength).toBe(35);
 
     // Individual samples
     const pattern = [[5, 0xff], [5, 0x00], [5, 0xff], [5, 0x00], [5, 0xff], [5, 0x00], [5, 0xff]];
@@ -41,8 +41,8 @@ describe('WaveDecoder', () => {
   });
 
   test('skips samples correctly', () => {
-    const waveDecoder = new WaveDecoder(getFixture(), 22);
-    const generator = waveDecoder.getSamples();
+    const sp = new WaveFileSampleProvider(getFixture(), 22);
+    const generator = sp.getSamples();
     const pattern = [[3, 0xff], [5, 0x00], [5, 0xff]];
     for (const p of pattern) {
       for (let i = 0; i < p[0]; i++) {
@@ -57,7 +57,7 @@ describe('WaveDecoder', () => {
     let exception: any;
     try {
       // eslint-disable-next-line no-new
-      new WaveDecoder(getFixture(), 35);
+      new WaveFileSampleProvider(getFixture(), 35);
     } catch (e) {
       exception = e;
     }

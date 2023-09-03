@@ -1,5 +1,5 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {DecodingError} from '../ConverterExceptions.js';
+import {DecodingError} from '../../ConverterExceptions.js';
 import {FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
 import {BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 
