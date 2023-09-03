@@ -18,13 +18,13 @@ async function main() {
   // - additional statistics: total block count, invalid files/blocks
   // - visualize WAVE samples of section around error as ASCII graph when --on-error was set to 'stop'
   const program = (new Command())
-    .name('retroload-save')
+    .name('retroload-dump')
     .description('Decode WAVE files of historical computers.')
     .argument('<infile>', 'Path to WAVE file to decode')
     .allowExcessArguments(false)
     .option('-o <outpath>', 'Prefix (filename or complete path) for files to write', './')
     .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1')
-    .option('--to <outputtype>', 'Output format') // TODO: list possible formats
+    .option('--to <outputtype>', `Output format (one of: ${getConverterList()})`)
     .option('--on-error <errorhandling>', 'Error handling strategy (one of: ignore, skipfile, stop)', 'ignore')
     .option('--channel <channel>', 'Use specified channel to get samples from, in case the input file has multiple channels. Numbering starts at 0.')
     .option('--skip <samples>', 'Start processing of input data after skipping a specific number of samples', '0')
@@ -64,6 +64,10 @@ async function main() {
     i++;
   }
   Logger.info(`Dumped ${i} file(s).`);
+}
+
+function getConverterList(): string {
+  return ConverterManager.getAllConverters().map((c) => c.to).join(', ');
 }
 
 function getConverterSettings(options: OptionValues): ConverterManager.ConverterSettings {

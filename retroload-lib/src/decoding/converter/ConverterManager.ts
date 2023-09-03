@@ -13,6 +13,10 @@ export function convert(ba: BufferAccess, from: string, to: string, settings: Co
   return availableConverters[0].convert(ba, settings);
 }
 
+export function getAllConverters(): ConverterDefinition[] {
+  return converters;
+}
+
 export type ConverterDefinition = {
   from: string;
   to: string;
