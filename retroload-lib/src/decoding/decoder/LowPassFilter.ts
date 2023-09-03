@@ -1,4 +1,4 @@
-import {type SampleProvider} from './WaveDecoder.js';
+import {type SampleProvider} from './SampleProvider.js';
 
 export class LowPassFilter implements SampleProvider {
   public readonly sampleRate: number;

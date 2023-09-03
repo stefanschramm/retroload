@@ -1,6 +1,6 @@
 import {type Position} from '../../common/Positioning.js';
 import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
-import {type SampleProvider} from './WaveDecoder.js';
+import {type SampleProvider} from './SampleProvider.js';
 
 export class AveragingSampleToHalfPeriodConverter implements HalfPeriodProvider {
   private readonly sampleProvider: SampleProvider;

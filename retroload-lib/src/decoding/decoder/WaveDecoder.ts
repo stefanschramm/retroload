@@ -1,14 +1,9 @@
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {InputDataError} from '../../common/Exceptions.js';
 import {Logger} from '../../common/logging/Logger.js';
+import {type SampleProvider} from './SampleProvider.js';
 
 const pcmFormatTag = 0x0001;
-
-export type SampleProvider = {
-  readonly sampleRate: number;
-  readonly bitsPerSample: number;
-  getSamples(): Generator<number>;
-};
 
 export class WaveDecoder implements SampleProvider {
   readonly ba: BufferAccess;

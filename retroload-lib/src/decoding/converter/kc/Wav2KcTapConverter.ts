@@ -1,11 +1,12 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {type SampleProvider, WaveDecoder} from '../../decoder/WaveDecoder.js';
+import {WaveDecoder} from '../../decoder/WaveDecoder.js';
 import {type OutputFile, type ConverterDefinition, type ConverterSettings} from '../ConverterManager.js';
 import {KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
 import {type FileDecodingResult, FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../decoder/StreamingSampleToHalfPeriodConverter.js';
 import {LowPassFilter} from '../../decoder/LowPassFilter.js';
 import {Logger} from '../../../common/logging/Logger.js';
+import {type SampleProvider} from '../../decoder/SampleProvider.js';
 
 export const wav2KcTapConverter: ConverterDefinition = {
   from: 'wav',
