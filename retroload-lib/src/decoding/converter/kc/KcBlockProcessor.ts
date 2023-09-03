@@ -2,7 +2,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {DecodingError} from '../ConverterExceptions.js';
-import {formatPosition, type PositionProvider} from '../../../common/Positioning.js';
+import {formatPosition, type Position} from '../../../common/Positioning.js';
 import {BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 
 /**
@@ -10,11 +10,11 @@ import {BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider
  */
 const maximalIntraFileBlockGap = 1;
 
-export class KcBlockProcessor implements PositionProvider {
+export class KcBlockProcessor {
   private blocks: BufferAccess[] = [];
   private errorOccured = false;
   private previousBlockNumber: number | undefined;
-  private previousBlockEndPositionSecond = 0;
+  private previousBlockEnd: Position = {seconds: 0, samples: 0};
   private successfulBlocksCount = 0;
 
   constructor(
@@ -41,13 +41,13 @@ export class KcBlockProcessor implements PositionProvider {
       }
 
       const blockNumber = decodingResult.data.getUint8(0);
-      if (this.blockBelongsToNextFile(blockNumber, decodingResult.blockBeginSeconds)) {
+      if (this.blockBelongsToNextFile(blockNumber, decodingResult.blockBegin)) {
         yield this.finishFile();
       }
       this.errorOccured = this.errorOccured || errorInCurrentBlock;
       this.blocks.push(decodingResult.data);
       this.previousBlockNumber = blockNumber;
-      this.previousBlockEndPositionSecond = decodingResult.blockEndSeconds;
+      this.previousBlockEnd = decodingResult.blockEnd;
     }
 
     yield this.finishFile();
@@ -55,14 +55,6 @@ export class KcBlockProcessor implements PositionProvider {
 
   public getSuccessfulBlockCount(): number {
     return this.successfulBlocksCount;
-  }
-
-  public getCurrentPositionSample(): number {
-    return this.blockProvider.getCurrentPositionSample();
-  }
-
-  public getCurrentPositionSecond(): number {
-    return this.blockProvider.getCurrentPositionSecond();
   }
 
   private finishFile(): FileDecodingResult {
@@ -76,26 +68,26 @@ export class KcBlockProcessor implements PositionProvider {
     return result;
   }
 
-  private blockBelongsToNextFile(blockNumber: number, currentPositionSecond: number): boolean {
+  private blockBelongsToNextFile(blockNumber: number, currentPosition: Position): boolean {
     if (this.previousBlockNumber !== undefined) {
-      const gapLength = this.previousBlockEndPositionSecond - currentPositionSecond;
+      const gapLength = this.previousBlockEnd.seconds - currentPosition.seconds;
       if (blockNumber <= this.previousBlockNumber || gapLength > maximalIntraFileBlockGap) {
-        this.validateFirstBlockNumber(blockNumber);
+        this.validateFirstBlockNumber(blockNumber, currentPosition);
         return true;
       }
       if (blockNumber > this.previousBlockNumber + 1 && blockNumber !== 0xff) {
-        Logger.info(`${formatPosition(this)} Warning: Missing block. Got block number ${hex8(blockNumber)} but expected was ${hex8(this.previousBlockNumber + 1)} or 0xff.`);
+        Logger.info(`${formatPosition(currentPosition)} Warning: Missing block. Got block number ${hex8(blockNumber)} but expected was ${hex8(this.previousBlockNumber + 1)} or 0xff.`);
       }
       return false;
     }
 
-    this.validateFirstBlockNumber(blockNumber);
+    this.validateFirstBlockNumber(blockNumber, currentPosition);
     return false;
   }
 
-  private validateFirstBlockNumber(blockNumber: number): void {
+  private validateFirstBlockNumber(blockNumber: number, currentPosition: Position): void {
     if (blockNumber !== 0 && blockNumber !== 1) {
-      Logger.info(`${formatPosition(this)} Warning: Got first block with block number ${hex8(blockNumber)}`);
+      Logger.info(`${formatPosition(currentPosition)} Warning: Got first block with block number ${hex8(blockNumber)}`);
     }
   }
 }

@@ -1,3 +1,5 @@
+import {type Position} from '../../common/Positioning.js';
+
 export type HalfPeriodProvider = {
   /**
    * @returns Frequency value (Hz) of next half period
@@ -7,6 +9,5 @@ export type HalfPeriodProvider = {
    * rewind cursor to previous half period
    */
   rewindOne(): void;
-  getCurrentPositionSecond(): number;
-  getCurrentPositionSample(): number;
+  getPosition(): Position;
 };

@@ -1,12 +1,10 @@
-export type PositionProvider = {
-  getCurrentPositionSample(): number;
-  getCurrentPositionSecond(): number;
+export type Position = {
+  samples: number;
+  seconds: number;
 };
 
-export function formatPosition(pp: PositionProvider): string {
-  const timestamp = secondsToTimestamp(pp.getCurrentPositionSecond());
-  const samples = pp.getCurrentPositionSample();
-  return `${timestamp} sample ${samples}`;
+export function formatPosition(p: Position): string {
+  return `${secondsToTimestamp(p.seconds)} sample ${p.samples}`;
 }
 
 function secondsToTimestamp(totalSeconds: number): string {

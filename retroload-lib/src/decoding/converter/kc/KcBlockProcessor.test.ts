@@ -25,7 +25,7 @@ describe('KcBlockProcessor', () => {
       blockDecodingResult(0x01, BlockDecodingResultStatus.Complete),
       blockDecodingResult(0x02, BlockDecodingResultStatus.Complete),
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
-      blockDecodingResult(0x01, BlockDecodingResultStatus.Complete),
+      blockDecodingResult(0x01, BlockDecodingResultStatus.Complete), // first block of second file
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
     ]);
 
@@ -116,14 +116,6 @@ class KcBlockProviderMock implements KcBlockProvider {
     private readonly blockDecodingResults: BlockDecodingResult[],
   ) {}
 
-  getCurrentPositionSample(): number {
-    return 0;
-  }
-
-  getCurrentPositionSecond(): number {
-    return 0;
-  }
-
   * blocks(): Generator<BlockDecodingResult> {
     for (const bdr of this.blockDecodingResults) {
       yield bdr;
@@ -137,5 +129,5 @@ function blockDecodingResult(
 ): BlockDecodingResult {
   const ba = BufferAccess.create(129);
   ba.setUint8(0, blockId);
-  return new BlockDecodingResult(ba, result, 0, 1);
+  return new BlockDecodingResult(ba, result, {samples: 0, seconds: 0}, {samples: 1, seconds: 1});
 }

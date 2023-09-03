@@ -1,3 +1,4 @@
+import {type Position} from '../../common/Positioning.js';
 import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 import {type SampleProvider} from './WaveDecoder.js';
 
@@ -38,12 +39,12 @@ export class StreamingSampleToHalfPeriodConverter implements HalfPeriodProvider 
     return this.getHalfPeriod();
   }
 
-  public getCurrentPositionSecond(): number {
-    return this.getCurrentPositionSample() / this.sampleRate;
-  }
-
-  public getCurrentPositionSample(): number {
-    return this.rewound ? this.previousPosition : this.generatorPosition;
+  public getPosition(): Position {
+    const samples = this.rewound ? this.previousPosition : this.generatorPosition;
+    return {
+      samples,
+      seconds: samples / this.sampleRate,
+    };
   }
 
   private getHalfPeriod(): number | undefined {

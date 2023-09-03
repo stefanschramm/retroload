@@ -1,3 +1,4 @@
+import {type Position} from '../../common/Positioning.js';
 import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 import {type SampleProvider} from './WaveDecoder.js';
 
@@ -24,12 +25,12 @@ export class AveragingSampleToHalfPeriodConverter implements HalfPeriodProvider 
     return this.halfPeriods[this.cursor++];
   }
 
-  public getCurrentPositionSecond(): number {
-    return this.getCurrentPositionSample() / this.sampleProvider.sampleRate;
-  }
-
-  public getCurrentPositionSample(): number {
-    return (this.cursor === 0) ? 0 : this.halfPeriodPositions[this.cursor - 1];
+  public getPosition(): Position {
+    const samples = (this.cursor === 0) ? 0 : this.halfPeriodPositions[this.cursor - 1];
+    return {
+      samples,
+      seconds: samples / this.sampleProvider.sampleRate,
+    };
   }
 
   private loadHalfPeriods(): void {

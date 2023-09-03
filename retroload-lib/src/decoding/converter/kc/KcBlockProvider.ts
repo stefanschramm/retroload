@@ -1,8 +1,7 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {type Position} from '../../../common/Positioning.js';
 
 export type KcBlockProvider = {
-  getCurrentPositionSample(): number;
-  getCurrentPositionSecond(): number;
   blocks(): Generator<BlockDecodingResult>;
 };
 
@@ -10,8 +9,8 @@ export class BlockDecodingResult {
   constructor(
     readonly data: BufferAccess,
     readonly status: BlockDecodingResultStatus,
-    readonly blockBeginSeconds: number,
-    readonly blockEndSeconds: number,
+    readonly blockBegin: Position,
+    readonly blockEnd: Position,
   ) {}
 }
 
