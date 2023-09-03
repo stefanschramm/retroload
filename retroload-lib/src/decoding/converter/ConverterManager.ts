@@ -1,5 +1,6 @@
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {UsageError} from '../../common/Exceptions.js';
+import {type Position} from '../../common/Positioning.js';
 import {converters} from './ConverterProvider.js';
 
 export function convert(ba: BufferAccess, from: string, to: string, settings: ConverterSettings): Generator <OutputFile> {
@@ -27,6 +28,8 @@ export type OutputFile = {
   readonly proposedName: string | undefined;
   readonly data: BufferAccess;
   readonly proposedExtension: string;
+  readonly begin: Position;
+  readonly end: Position;
 };
 
 export type ConverterSettings = {

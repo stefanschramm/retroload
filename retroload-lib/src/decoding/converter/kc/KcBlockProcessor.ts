@@ -3,7 +3,7 @@ import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {DecodingError} from '../ConverterExceptions.js';
 import {formatPosition, type Position} from '../../../common/Positioning.js';
-import {BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
+import {type BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 
 /**
  * Minimal expected gap between files in seconds (from end of previous block to begin of next block)
@@ -11,7 +11,7 @@ import {BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider
 const maximalIntraFileBlockGap = 1;
 
 export class KcBlockProcessor {
-  private blocks: BufferAccess[] = [];
+  private blocks: BlockDecodingResult[] = [];
   private errorOccured = false;
   private previousBlockNumber: number | undefined;
   private previousBlockEnd: Position = {seconds: 0, samples: 0};
@@ -45,7 +45,7 @@ export class KcBlockProcessor {
         yield this.finishFile();
       }
       this.errorOccured = this.errorOccured || errorInCurrentBlock;
-      this.blocks.push(decodingResult.data);
+      this.blocks.push(decodingResult);
       this.previousBlockNumber = blockNumber;
       this.previousBlockEnd = decodingResult.blockEnd;
     }
@@ -59,8 +59,10 @@ export class KcBlockProcessor {
 
   private finishFile(): FileDecodingResult {
     const result = new FileDecodingResult(
-      this.blocks,
+      this.blocks.map((bdr) => bdr.data),
       this.errorOccured ? FileDecodingResultStatus.Error : FileDecodingResultStatus.Success,
+      this.blocks[0].blockBegin,
+      this.blocks[this.blocks.length - 1].blockEnd,
     );
     this.blocks = [];
     this.errorOccured = false;
@@ -96,6 +98,8 @@ export class FileDecodingResult {
   constructor(
     readonly blocks: BufferAccess[],
     readonly status: FileDecodingResultStatus,
+    readonly begin: Position,
+    readonly end: Position,
   ) {}
 }
 

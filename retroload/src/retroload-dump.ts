@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {BufferAccess} from 'retroload-lib';
+import {BufferAccess, formatPosition} from 'retroload-lib';
 import {ConverterManager, Logger} from 'retroload-lib';
 import fs from 'fs';
 import {Command, type OptionValues} from 'commander';
@@ -58,7 +58,7 @@ async function main() {
     const fallbackName = `${i}.${extension}`;
     const proposedName = file.proposedName === undefined ? fallbackName : `${file.proposedName}.${extension}`;
     const fileName = options['proposedName'] ? proposedName : fallbackName;
-    Logger.info(`Writing file: ${fileName}`);
+    Logger.info(`Writing file: ${fileName} (position in input: ${formatPosition(file.begin)} - ${formatPosition(file.end)})`);
     Logger.debug(file.data.asHexDump());
     writeOutputFile(`${outPathPrefix}${fileName}`, file.data.asUint8Array());
     i++;
