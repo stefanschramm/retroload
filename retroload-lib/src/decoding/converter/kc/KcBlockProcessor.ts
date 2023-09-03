@@ -1,5 +1,4 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type ConverterSettings} from '../ConverterManager.js';
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {DecodingError} from '../ConverterExceptions.js';
@@ -12,19 +11,16 @@ import {BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider
 const maximalIntraFileBlockGap = 1;
 
 export class KcBlockProcessor implements PositionProvider {
-  private readonly blockProvider: KcBlockProvider;
-  private readonly settings: ConverterSettings;
-
   private blocks: BufferAccess[] = [];
   private errorOccured = false;
   private previousBlockNumber: number | undefined;
   private previousBlockEndPositionSecond = 0;
   private successfulBlocksCount = 0;
 
-  constructor(blockProvider: KcBlockProvider, settings: ConverterSettings) {
-    this.blockProvider = blockProvider;
-    this.settings = settings;
-  }
+  constructor(
+    private readonly blockProvider: KcBlockProvider,
+    private readonly stopOnError: boolean,
+  ) {}
 
   * files(): Generator<FileDecodingResult> {
     for (const decodingResult of this.blockProvider.blocks()) {
@@ -35,7 +31,7 @@ export class KcBlockProcessor implements PositionProvider {
           break;
         case BlockDecodingResultStatus.InvalidChecksum:
         case BlockDecodingResultStatus.Partial:
-          if (this.settings.onError === 'stop') {
+          if (this.stopOnError) {
             throw new DecodingError('Stopping.');
           }
           errorInCurrentBlock = true;

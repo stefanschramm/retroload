@@ -1,5 +1,5 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {type ConverterSettings} from '../ConverterManager.js';
+import {DecodingError} from '../ConverterExceptions.js';
 import {FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
 import {BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 
@@ -10,9 +10,7 @@ describe('KcBlockProcessor', () => {
       blockDecodingResult(0x02, BlockDecodingResultStatus.Complete),
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
     ]);
-    const settings: ConverterSettings = {onError: 'stop', skip: 0, channel: undefined};
-
-    const files = [...(new KcBlockProcessor(blockProvider, settings)).files()];
+    const files = [...(new KcBlockProcessor(blockProvider, true)).files()];
 
     expect(files.length).toBe(1);
     expect(files[0].blocks.length).toBe(3);
@@ -30,9 +28,8 @@ describe('KcBlockProcessor', () => {
       blockDecodingResult(0x01, BlockDecodingResultStatus.Complete),
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
     ]);
-    const settings: ConverterSettings = {onError: 'stop', skip: 0, channel: undefined};
 
-    const files = [...(new KcBlockProcessor(blockProvider, settings)).files()];
+    const files = [...(new KcBlockProcessor(blockProvider, true)).files()];
 
     expect(files.length).toBe(2);
     expect(files[0].blocks.length).toBe(3);
@@ -47,9 +44,8 @@ describe('KcBlockProcessor', () => {
       blockDecodingResult(0x02, BlockDecodingResultStatus.Partial),
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
     ]);
-    const settings: ConverterSettings = {onError: 'ignore', skip: 0, channel: undefined};
 
-    const files = [...(new KcBlockProcessor(blockProvider, settings)).files()];
+    const files = [...(new KcBlockProcessor(blockProvider, false)).files()];
 
     expect(files.length).toBe(1);
     expect(files[0].blocks.length).toBe(3);
@@ -65,9 +61,8 @@ describe('KcBlockProcessor', () => {
       blockDecodingResult(0x02, BlockDecodingResultStatus.InvalidChecksum),
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
     ]);
-    const settings: ConverterSettings = {onError: 'ignore', skip: 0, channel: undefined};
 
-    const files = [...(new KcBlockProcessor(blockProvider, settings)).files()];
+    const files = [...(new KcBlockProcessor(blockProvider, false)).files()];
 
     expect(files.length).toBe(1);
     expect(files[0].blocks.length).toBe(3);
@@ -75,6 +70,44 @@ describe('KcBlockProcessor', () => {
     expect(files[0].blocks[0].getUint8(0)).toBe(1);
     expect(files[0].blocks[1].getUint8(0)).toBe(2);
     expect(files[0].blocks[2].getUint8(0)).toBe(0xff);
+  });
+
+  test('Stops if one block was only partialy loaded and stopping was requested', () => {
+    const blockProvider = new KcBlockProviderMock([
+      blockDecodingResult(0x01, BlockDecodingResultStatus.Complete),
+      blockDecodingResult(0x02, BlockDecodingResultStatus.Partial),
+      blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
+    ]);
+
+    let catched: any;
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      const files = [...(new KcBlockProcessor(blockProvider, true)).files()];
+    } catch (e) {
+      catched = e;
+    }
+    expect(catched).toBeInstanceOf(DecodingError);
+    expect(catched.message).toBe('Stopping.');
+  });
+
+  test('Stops if one block had an invalid checksum and stopping was requested', () => {
+    const blockProvider = new KcBlockProviderMock([
+      blockDecodingResult(0x01, BlockDecodingResultStatus.Complete),
+      blockDecodingResult(0x02, BlockDecodingResultStatus.InvalidChecksum),
+      blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
+    ]);
+
+    let catched: any;
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      const files = [...(new KcBlockProcessor(blockProvider, true)).files()];
+    } catch (e) {
+      catched = e;
+    }
+    expect(catched).toBeInstanceOf(DecodingError);
+    expect(catched.message).toBe('Stopping.');
   });
 });
 

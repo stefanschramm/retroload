@@ -20,7 +20,7 @@ function * convert(ba: BufferAccess, settings: ConverterSettings): Generator<Out
   // sampleProvider = new HighPassFilter(sampleProvider, 25);
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
   const hpp = new KcHalfPeriodProcessor(streamingHalfPeriodProvider);
-  const blockProcessor = new KcBlockProcessor(hpp, settings);
+  const blockProcessor = new KcBlockProcessor(hpp, settings.onError === 'stop');
 
   for (const fileDecodingResult of blockProcessor.files()) {
     if (fileDecodingResult.blocks.length > 0 && (fileDecodingResult.status !== FileDecodingResultStatus.Error || settings.onError !== 'skipfile')) {
