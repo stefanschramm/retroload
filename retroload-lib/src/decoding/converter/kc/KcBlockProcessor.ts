@@ -1,10 +1,10 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type ConverterSettings} from '../ConverterManager.js';
-import {BlockDecodingResultStatus, type KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {DecodingError} from '../ConverterExceptions.js';
 import {formatPosition, type PositionProvider} from '../../../common/Positioning.js';
+import {BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 
 /**
  * Minimal expected gap between files in seconds (from end of previous block to begin of next block)
@@ -12,7 +12,7 @@ import {formatPosition, type PositionProvider} from '../../../common/Positioning
 const maximalIntraFileBlockGap = 1;
 
 export class KcBlockProcessor implements PositionProvider {
-  private readonly blockProvider: KcHalfPeriodProcessor;
+  private readonly blockProvider: KcBlockProvider;
   private readonly settings: ConverterSettings;
 
   private blocks: BufferAccess[] = [];
@@ -21,7 +21,7 @@ export class KcBlockProcessor implements PositionProvider {
   private previousBlockEndPositionSecond = 0;
   private successfulBlocksCount = 0;
 
-  constructor(blockProvider: KcHalfPeriodProcessor, settings: ConverterSettings) {
+  constructor(blockProvider: KcBlockProvider, settings: ConverterSettings) {
     this.blockProvider = blockProvider;
     this.settings = settings;
   }
