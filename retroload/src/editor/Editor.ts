@@ -22,6 +22,7 @@ export class Editor implements InputActionListener, ViewWidthChangeListener {
   }
 
   public run(): void {
+    this.state.viewWidth = this.view.getViewWidth();
     this.loadVisibleSamples();
     this.inputHandler.run();
     this.view.redraw();
@@ -114,6 +115,9 @@ export class Editor implements InputActionListener, ViewWidthChangeListener {
 
   public onViewWidthChange(newWidth: number): void {
     this.state.viewWidth = newWidth;
+    // TODO: repositioning of viewOffset required?
+    this.loadVisibleSamples(); // TODO: delay?
+    this.view.redraw();
   }
 
   private loadVisibleSamples(): void {
