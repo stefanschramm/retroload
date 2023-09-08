@@ -60,7 +60,7 @@ export class View {
 
     // x-axis
     this.terminal.cursorTo(offsetX, offsetY + Math.floor(height / 2));
-    this.terminal.write('-'.repeat(visibleDataWidth));
+    this.terminal.write(`${colorMuted}${'-'.repeat(visibleDataWidth)}${colorReset}`);
 
     // y-axis
     for (let y = 0; y < height; y++) {

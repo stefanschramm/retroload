@@ -4,15 +4,16 @@ export type InputActionListener = {
   quit(): void;
   save(): void;
   goTo(): void;
-  goLeft(): void;
-  goRight(): void;
-  extendEditRangeLeft(): void;
-  extendEditRangeRight(): void;
+  changePosition(direction: Direction): void;
+  changePage(direction: Direction): void;
+  modifySelection(direction: Direction): void;
   increaseAmplitude(): void;
   decreaseAmplitude(): void;
   reload(): void;
-  unknownKey(_keyName: string): void;
+  unknownKey(keyName: string): void;
 };
+
+export type Direction = -1 | 1;
 
 export class InputHandler {
   constructor(
@@ -42,18 +43,24 @@ export class InputHandler {
           this.listener.goTo();
           break;
         case 'left':
-          if (key.shift) {
-            this.listener.extendEditRangeLeft();
+          if (key.shift === true) {
+            this.listener.modifySelection(-1);
           } else {
-            this.listener.goLeft();
+            this.listener.changePosition(-1);
           }
           break;
         case 'right':
-          if (key.shift) {
-            this.listener.extendEditRangeRight();
+          if (key.shift === true) {
+            this.listener.modifySelection(1);
           } else {
-            this.listener.goRight();
+            this.listener.changePosition(1);
           }
+          break;
+        case 'pageup':
+          this.listener.changePage(-1);
+          break;
+        case 'pagedown':
+          this.listener.changePage(1);
           break;
         case 'up':
           this.listener.increaseAmplitude();

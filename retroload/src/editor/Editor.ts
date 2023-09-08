@@ -1,28 +1,38 @@
 import {View, type ViewWidthChangeListener} from './View.js';
-import {type EditorState} from './EditorState.js';
-import {type InputActionListener, InputHandler} from './InputHandler.js';
-import {WavFile} from './WavFile.js';
+import {SelectionStart, type EditorState} from './EditorState.js';
+import {type InputActionListener, InputHandler, type Direction} from './InputHandler.js';
+import {type WavFile} from './WavFile.js';
 
 export class Editor implements InputActionListener, ViewWidthChangeListener {
   private readonly view: View;
   private readonly inputHandler: InputHandler;
   private readonly state: EditorState;
-  private readonly file = new WavFile();
 
-  constructor() {
+  constructor(
+    private readonly file: WavFile,
+  ) {
     this.state = {
       viewOffset: 0,
       editRange: [40, 40],
       samples: [],
       changes: {},
       viewWidth: 100,
+      selectionStart: SelectionStart.NONE,
     };
     this.view = new View(process.stdout, this.state, this);
     this.inputHandler = new InputHandler(process.stdin, this);
   }
 
-  public run(): void {
+  public run(goTo: number | undefined): void {
     this.state.viewWidth = this.view.getViewWidth();
+    if (goTo !== undefined) {
+      if (goTo > this.file.sampleCount || goTo < 0) {
+        throw new Error(`Unable to go to sample ${goTo} because it's out of range. File has ${this.file.sampleCount} samples.`);
+      }
+      this.state.viewOffset = goTo - Math.ceil(this.state.viewWidth / 2); // TODO: check for position < 0
+      this.state.editRange[0] = goTo;
+      this.state.editRange[1] = goTo;
+    }
     this.loadVisibleSamples();
     this.inputHandler.run();
     this.view.redraw();
@@ -40,6 +50,7 @@ export class Editor implements InputActionListener, ViewWidthChangeListener {
     }
     this.file.write(this.state.changes);
     this.state.changes = {};
+    this.reload();
     this.view.setStatus('Changes have been written.');
     this.view.redraw();
   }
@@ -50,43 +61,34 @@ export class Editor implements InputActionListener, ViewWidthChangeListener {
     this.view.redraw();
   }
 
-  public goLeft(): void {
+  public changePosition(direction: Direction): void {
+    this.state.editRange[0] += direction;
+    this.state.editRange[1] += direction;
+    if (this.state.selectionStart === SelectionStart.LEFT) {
+      this.state.editRange[1] = this.state.editRange[0];
+    } else if (this.state.selectionStart === SelectionStart.RIGHT) {
+      this.state.editRange[0] = this.state.editRange[1];
+    }
+    this.state.selectionStart = SelectionStart.NONE;
+    this.restrictRanges();
+    this.view.redraw();
+  }
+
+  public changePage(direction: Direction): void {
+    this.state.viewOffset += direction * this.state.viewWidth;
+    this.state.editRange[0] = Math.floor(this.state.viewOffset + this.state.viewWidth / 2);
     this.state.editRange[1] = this.state.editRange[0];
-    if (this.state.viewOffset > 0) {
-      this.state.viewOffset--;
-    }
-    if (this.state.editRange[0] > 0) {
-      this.state.editRange[0]--;
-      this.state.editRange[1]--;
-    }
+    this.restrictRanges();
     this.loadVisibleSamples();
     this.view.redraw();
   }
 
-  public goRight(): void {
-    this.state.editRange[0] = this.state.editRange[1];
-    if (this.state.viewOffset + this.state.viewWidth < this.file.sampleCount) {
-      this.state.viewOffset++;
+  public modifySelection(direction: Direction): void {
+    if (this.state.selectionStart === SelectionStart.NONE) {
+      this.state.selectionStart = direction === -1 ? SelectionStart.LEFT : SelectionStart.RIGHT;
     }
-    if (this.state.editRange[1] < this.file.sampleCount) {
-      this.state.editRange[0]++;
-      this.state.editRange[1]++;
-    }
-    this.loadVisibleSamples();
-    this.view.redraw();
-  }
-
-  public extendEditRangeLeft(): void {
-    if (this.state.editRange[0] > 0) {
-      this.state.editRange[0]--;
-    }
-    this.view.redraw();
-  }
-
-  public extendEditRangeRight(): void {
-    if (this.state.editRange[1] < this.file.sampleCount) {
-      this.state.editRange[1]++;
-    }
+    this.state.editRange[this.state.selectionStart] += direction;
+    this.restrictRanges();
     this.view.redraw();
   }
 
@@ -108,8 +110,8 @@ export class Editor implements InputActionListener, ViewWidthChangeListener {
     this.view.redraw();
   }
 
-  public unknownKey(_keyName: string): void {
-    this.view.setStatus('Unknown command. Valid commands: g(oto), q(uit), r(eload), s(ave)');
+  public unknownKey(keyName: string): void {
+    this.view.setStatus(`Unknown command (${keyName}). Valid commands: g(oto), q(uit), r(eload), s(ave)`);
     this.view.redraw();
   }
 
@@ -120,17 +122,26 @@ export class Editor implements InputActionListener, ViewWidthChangeListener {
     this.view.redraw();
   }
 
-  private loadVisibleSamples(): void {
-    this.state.samples = [];
-    // TODO: take care of this.file.sampleCount
-    for (let x = this.state.viewOffset; x < this.state.viewOffset + this.state.viewWidth; x++) {
-      this.state.samples.push(this.file.getSample(x));
+  private restrictRanges(): void {
+    if (this.state.editRange[0] > this.state.editRange[1]) {
+      this.state.editRange[0] = this.state.editRange[1];
     }
+    if (this.state.editRange[0] <= this.state.viewOffset) {
+      this.state.editRange[0] = this.state.viewOffset;
+    }
+    if (this.state.editRange[1] > this.state.viewOffset + this.state.viewWidth) {
+      // TODO: does not yet catch all situations
+      this.state.editRange[1] = this.state.viewOffset + this.state.viewWidth;
+    }
+  }
+
+  private loadVisibleSamples(): void {
+    this.state.samples = this.file.getSamples(this.state.viewOffset, Math.min(this.state.viewWidth, this.file.sampleCount));
   }
 
   private modifySamples(difference: number): void {
     for (let x = this.state.editRange[0]; x <= this.state.editRange[1]; x++) {
-      const previousValue = this.state.changes[x] ?? this.file.getSample(x); // TODO: use this.state.samples instead? or can we change invisible samples?
+      const previousValue = this.state.changes[x] ?? this.state.samples[this.state.viewOffset + x];
       let newValue = previousValue + difference;
       newValue = newValue > 0xff ? 0xff : newValue;
       newValue = newValue < 0 ? 0 : newValue;
@@ -145,11 +156,3 @@ export class Editor implements InputActionListener, ViewWidthChangeListener {
     return Object.keys(this.state.changes).length > 0;
   }
 }
-
-const e = new Editor();
-e.run();
-
-// arguments:
-// filename
-// -c <channel>
-// -g <sample> (go to sample)
