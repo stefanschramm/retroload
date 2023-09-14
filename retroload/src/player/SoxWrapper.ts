@@ -7,8 +7,11 @@ export class SoxWrapper implements PlayerWrapper {
     if (bitDepth !== 8) {
       return undefined;
     }
-    const regexp = /^play: +SoX /;
     const result = spawnSync('play', ['--help']);
+    if (result.error !== undefined) {
+      return undefined;
+    }
+    const regexp = /^play: +SoX /;
     if (!regexp.exec(result.stdout.toString())) {
       return undefined;
     }

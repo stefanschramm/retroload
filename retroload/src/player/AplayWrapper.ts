@@ -7,8 +7,11 @@ export class AplayWrapper implements PlayerWrapper {
     if (bitDepth !== 8) {
       return undefined;
     }
-    const regexp = /^Usage: aplay /;
     const result = spawnSync('aplay', ['--help']);
+    if (result.error !== undefined) {
+      return undefined;
+    }
+    const regexp = /^Usage: aplay /;
     if (!regexp.exec(result.stdout.toString())) {
       return undefined;
     }
