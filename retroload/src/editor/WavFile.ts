@@ -6,7 +6,7 @@ const pcmFormatTag = 0x0001;
 const dataOffset = 44;
 
 export class WavFile {
-  sampleCount: number;
+  private sampleCount: number;
   private file: number;
   private header: WavHeader;
 
@@ -20,6 +20,22 @@ export class WavFile {
     this.sampleCount = openResult.sampleCount;
   }
 
+  public getFileName(): string {
+    return this.fileName;
+  }
+
+  public getSampleCount(): number {
+    return this.sampleCount;
+  }
+
+  public getSampleRate(): number {
+    return this.header.sampleRate;
+  }
+
+  public getChannelCount(): number {
+    return this.header.channels;
+  }
+
   public getSamples(offset: number, sampleCount: number): number[] {
     const position = dataOffset + offset * this.header.blockAlign;
     const length = sampleCount * this.header.blockAlign;
@@ -28,7 +44,7 @@ export class WavFile {
     const ba = BufferAccess.createFromNodeBuffer(buffer);
     const samples = [];
     for (let i = 0; i < sampleCount; i++) {
-      samples.push(ba.getUint8(i + this.channel));
+      samples.push(ba.getUint8(i * this.header.blockAlign + this.channel));
     }
 
     return samples;
@@ -40,11 +56,13 @@ export class WavFile {
       if (xInt < 0 || xInt > this.sampleCount) {
         throw new Error(`Invalid changed sample position: ${xInt}`);
       }
-      const position = dataOffset + xInt * this.header.blockAlign;
+      const position = dataOffset + xInt * this.header.blockAlign + this.channel;
       const data = new Uint8Array([changes[xInt]]);
-      fs.writeSync(this.file, data, 0, 1, position);
+      const written = fs.writeSync(this.file, data, 0, 1, position);
+      if (written !== 1) {
+        throw new Error(`Write unsuccessfull. writeSync returned ${written}.`);
+      }
     }
-    this.reload();
   }
 
   public reload(): void {
