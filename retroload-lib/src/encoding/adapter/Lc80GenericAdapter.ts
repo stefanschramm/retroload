@@ -5,6 +5,8 @@ import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
+import {hex16} from '../../common/Utils.js';
+import {Logger} from '../../common/logging/Logger.js';
 
 const definition: AdapterDefinition = {
 
@@ -37,6 +39,7 @@ const definition: AdapterDefinition = {
     const e = new Lc80Encoder(recorder, options);
     e.begin();
     const endAddress = loadAddress + ba.length();
+    Logger.debug(`Writing header - File number/name: ${hex16(fileNumber)}, Load address: ${hex16(loadAddress)}, End address: ${hex16(endAddress)}`);
     e.recordHeader(fileNumber, loadAddress, endAddress);
     e.recordData(ba);
     e.end();
