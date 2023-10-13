@@ -6,8 +6,8 @@ import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExce
 import {type Position, formatPosition} from '../../../common/Positioning.js';
 import {isNot, type FrequencyRange, is} from '../../Frequency.js';
 
-const fShort: FrequencyRange = [1800, 2300];
-const fLong: FrequencyRange = [900, 1300];
+const fShort: FrequencyRange = [1300, 2300];
+const fLong: FrequencyRange = [600, 1300];
 const fSyncIntro = fLong;
 const fSyncMid = fShort;
 const minIntroSyncPeriods = 200;
@@ -124,6 +124,7 @@ export class Lc80HalfPeriodProcessor {
    * @returns sync length in half periods
    */
   private findSyncEnd(fSync: FrequencyRange): number {
+    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Finding sync end...`);
     let syncLength = 0;
     let f;
     do {
@@ -132,11 +133,13 @@ export class Lc80HalfPeriodProcessor {
         return syncLength;
       }
       syncLength++;
-      Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} f: ${f}...`);
+      // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} f: ${f}...`);
     } while (is(f, fSync));
-    this.halfPeriodProvider.rewindOne();
 
-    Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Sync length: ${syncLength}...`);
+    // TODO: Files from real LC 80 have one long half period here. Retroload currently does not generate this but generated WAVs are readable by LC 80.
+    // this.halfPeriodProvider.rewindOne();
+
+    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Sync length: ${syncLength} half periods`);
 
     return syncLength;
   }
@@ -145,15 +148,17 @@ export class Lc80HalfPeriodProcessor {
     // 0 bit: 12 * short + 3 * long
     // 1 bit: 6 * short + 6 * long
 
-    if (!this.readShortOscillations()) {
+    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Reading short half periods...`);
+    if (!this.readShortHalfPeriods()) {
       return undefined;
     }
 
-    // One long oscillation was swallowed by readShortOscillations - 2 are left in both cases.
-    if (!this.readOscillations(fLong, 2)) {
+    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Reading three long oscillations...`);
+    if (!this.readOscillations(fLong, 3)) {
       return undefined;
     }
 
+    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Reading determining oscillation...`);
     const oscillation = this.readOscillation();
     if (oscillation === undefined) {
       return undefined;
@@ -165,8 +170,8 @@ export class Lc80HalfPeriodProcessor {
     }
 
     const isOneBit = isLong;
-
     if (isOneBit) {
+      // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Reading two long oscillations...`);
       if (!this.readOscillations(fLong, 2)) {
         return undefined;
       }
@@ -175,7 +180,6 @@ export class Lc80HalfPeriodProcessor {
     // Actually we should rewind in else-case, but it's not necessary because there should be still enoguh short oscillations for reading the next bit left in input.
 
     // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Read ${isOneBit ? '1' : '0'} bit.`);
-
     return isOneBit;
   }
 
@@ -193,14 +197,16 @@ export class Lc80HalfPeriodProcessor {
     return true;
   }
 
-  private readShortOscillations(): boolean {
-    let oscillation: number | undefined;
+  private readShortHalfPeriods(): boolean {
+    let halfPeriod: number | undefined;
     do {
-      oscillation = this.readOscillation();
-      if (oscillation === undefined) {
+      halfPeriod = this.halfPeriodProvider.getNext();
+      if (halfPeriod === undefined) {
         return false;
       }
-    } while (is(oscillation, fShort));
+    } while (is(halfPeriod, fShort));
+
+    this.halfPeriodProvider.rewindOne();
 
     return true;
   }
@@ -216,9 +222,9 @@ export class Lc80HalfPeriodProcessor {
   }
 
   private readByte(): number {
+    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Reading start bit...`);
     const startBit = this.readBit();
     if (startBit !== false) {
-      console.log(startBit);
       throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect start bit.`);
     }
 
@@ -231,6 +237,7 @@ export class Lc80HalfPeriodProcessor {
       byte |= ((bit ? 1 : 0) << i);
     }
 
+    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Reading stop bit...`);
     const stopBit = this.readBit();
     if (stopBit !== true) {
       throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect stop bit.`);

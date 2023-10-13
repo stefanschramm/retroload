@@ -1,4 +1,3 @@
-import {LowPassFilter} from '../../sample_provider/LowPassFilter.js';
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
 import {type WriterDefinition, type ConverterSettings, type OutputFile} from '../../ConverterManager.js';
@@ -11,8 +10,6 @@ const definition: WriterDefinition = {
 export default definition;
 
 function * convert(sampleProvider: SampleProvider, settings: ConverterSettings): Generator<OutputFile> {
-  // TODO: Real recording has bad zero crossings.
-  sampleProvider = new LowPassFilter(sampleProvider, 11025);
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
 
   const hpp = new Lc80HalfPeriodProcessor(streamingHalfPeriodProvider);

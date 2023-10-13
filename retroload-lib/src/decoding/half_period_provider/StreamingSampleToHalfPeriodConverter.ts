@@ -16,7 +16,7 @@ export class StreamingSampleToHalfPeriodConverter implements HalfPeriodProvider 
   constructor(sampleProvider: SampleProvider) {
     this.sampleRate = sampleProvider.sampleRate;
     this.generator = sampleProvider.getSamples();
-    this.offset = 1 << (sampleProvider.bitsPerSample - 1);
+    this.offset = 1 << (sampleProvider.bitsPerSample - 1); // for 8 bitsPerSample: 0x80
     this.positive = this.generator.next().value > this.offset; // consume one sample to get initial polarity
   }
 
@@ -70,6 +70,12 @@ export class StreamingSampleToHalfPeriodConverter implements HalfPeriodProvider 
       this.endOfInput = true;
       return false;
     }
-    return this.positive === (next.value > this.offset);
+    const threshold = 10;
+    // hysteresis: ignore small changes around the offset (within threshold)
+    if (this.positive) {
+      return next.value > this.offset - threshold;
+    }
+
+    return next.value < this.offset + threshold;
   }
 }
