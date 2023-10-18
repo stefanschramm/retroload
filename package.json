@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "tsc --build -v",
-    "clean": "tsc --build --clean",
+    "clean": "rm -rf retroload/dist && rm -rf retroload-lib/dist && tsc --build --clean",
     "build-watch": "tsc --build -v --watch",
     "prepublishOnly": "npm run build"
   },
