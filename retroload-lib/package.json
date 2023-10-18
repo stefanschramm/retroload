@@ -1,6 +1,6 @@
 {
   "name": "retroload-lib",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "RetroLoad.com library",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
@@ -25,6 +25,6 @@
     "pako": "^2.1.0"
   },
   "devDependencies": {
-    "@types/pako": "^2.0.0"
+    "@types/pako": "^2.0.2"
   }
 }

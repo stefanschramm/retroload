@@ -1,6 +1,6 @@
 {
   "name": "retroload",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "RetroLoad.com command line interface",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
@@ -18,7 +18,7 @@
     "retroload-dump": "./bin/retroload-dump.js"
   },
   "dependencies": {
-    "commander": "^10.0.0",
-    "retroload-lib": "^0.0.1"
+    "commander": "^11.1.0",
+    "retroload-lib": "^0.0.3"
   }
 }
