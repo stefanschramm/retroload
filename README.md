@@ -26,7 +26,7 @@ Now, the retroload CLI should be available in your path:
 
 Later you can remove the symlinks by
 
-    sudo npm unlink retroload-cli -g
+    sudo npm unlink retroload -g
 
 ## Using retroload CLI
 
