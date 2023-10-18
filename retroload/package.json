@@ -5,7 +5,6 @@
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
   "license": "AGPL-3.0-only",
-  "private": true,
   "type": "module",
   "main": "src/esm/retroload.js",
   "files": ["dist/"],

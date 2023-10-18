@@ -1,11 +1,10 @@
 {
   "name": "retroload-lib",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "RetroLoad.com library",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
   "license": "AGPL-3.0-only",
-  "private": true,
   "type": "module",
   "exports": {
     "require": "./dist/cjs/index.js",
@@ -13,7 +12,9 @@
   },
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.js",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "lint": "eslint src/",
     "test": "jest",
