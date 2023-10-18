@@ -1,6 +1,6 @@
 {
   "name": "retroload",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "RetroLoad.com command line interface",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "commander": "^11.1.0",
-    "retroload-lib": "^0.0.3"
+    "retroload-lib": "^0.0.4"
   }
 }
