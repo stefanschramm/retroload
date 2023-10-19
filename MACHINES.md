@@ -1,4 +1,4 @@
-The following machines are used for testing the [examples](./retroload-examples/formats). The list is supposed to be an overview about the different methods to load tapes.
+The following machines are used for testing the [examples](./retroload-lib/examples/formats). The list is supposed to be an overview about the different methods to load tapes.
 
 The volume levels are just meant to be a rough orientation based on experiments (e.g. the ZX 81 wants a higher volume than the Acorn Electron).
 
