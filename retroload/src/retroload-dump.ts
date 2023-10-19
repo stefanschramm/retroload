@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import {BufferAccess, formatPosition} from 'retroload-lib';
-import {ConverterManager, Logger} from 'retroload-lib';
+import {BufferAccess, formatPosition, ConverterManager, Logger, version as libVersion} from 'retroload-lib';
 import fs from 'fs';
 import {Command, type OptionValues} from 'commander';
+import {version as cliVersion} from './version.js';
 
 main()
   .catch((err) => {
@@ -23,23 +23,19 @@ async function main() {
     .argument('<infile>', 'Path to WAVE file to decode')
     .allowExcessArguments(false)
     .option('-o <outpath>', 'Prefix (filename or complete path) for files to write', './')
-    .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1')
-    .option('--to <outputtype>', `Output format (one of: ${getConverterList()})`)
+    .option('-l, --loglevel <loglevel>', 'Verbosity of log output', '1')
+    .requiredOption('--to <outputtype>', `Output format (one of: ${getConverterList()})`)
     .option('--on-error <errorhandling>', 'Error handling strategy (one of: ignore, skipfile, stop)', 'ignore')
     .option('--channel <channel>', 'Use specified channel to get samples from, in case the input file has multiple channels. Numbering starts at 0.')
     .option('--skip <samples>', 'Start processing of input data after skipping a specific number of samples', '0')
     .option('--no-proposed-name', 'Just use numeric file names instead of file names from tape/archive.')
-    .option('--extension <extension>', 'Use specified file extension instead of the one proposed by the converter.');
-  program.exitOverride((err) => {
-    if (err.code === 'commander.missingArgument') {
-      program.outputHelp();
-    }
-    process.exit(err.exitCode);
-  });
+    .option('--extension <extension>', 'Use specified file extension instead of the one proposed by the converter.')
+    .version(`retroload: ${cliVersion}\nretroload-lib: ${libVersion}`)
+    .showHelpAfterError();
   program.parse();
   const options = program.opts();
   const infile = program.args[0];
-  Logger.setVerbosity(parseInt(typeof options['verbosity'] === 'string' ? options['verbosity'] : '1', 10));
+  Logger.setVerbosity(parseInt(typeof options['loglevel'] === 'string' ? options['loglevel'] : '1', 10));
   const outputFormat = (typeof options['to'] === 'string' ? options['to'] : undefined);
   if (outputFormat === undefined) {
     Logger.error('error: missing required argument \'to\'');

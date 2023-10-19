@@ -28,10 +28,13 @@
   "license": "AGPL-3.0-only",
   "type": "module",
   "main": "src/esm/retroload.js",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "lint": "eslint src/",
-    "test": "echo 'no tests configured for retroload'"
+    "test": "echo 'no tests configured for retroload'",
+    "updateVersion": "genversion --es6 -s src/version.ts"
   },
   "bin": {
     "retroload": "./bin/retroload.js",
@@ -41,5 +44,8 @@
   "dependencies": {
     "commander": "^11.1.0",
     "retroload-lib": "^0.0.5"
+  },
+  "devDependencies": {
+    "genversion": "^3.1.1"
   }
 }
