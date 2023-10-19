@@ -55,9 +55,9 @@ function encodeAndHash(file: string, options: OptionValues) {
     return false;
   }
 
-  return hash(recorder.getBuffer());
+  return hash(recorder.getBa());
 }
 
-function hash(data: Uint8Array) {
-  return crypto.createHash('md5').update(data).digest('hex');
+function hash(ba: BufferAccess) {
+  return crypto.createHash('md5').update(ba.asUint8Array()).digest('hex');
 }

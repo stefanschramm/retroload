@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-import {WaveRecorder, AdapterManager, Exception, Logger, BufferAccess, type OptionDefinition, version as libVersion} from 'retroload-lib';
-import fs from 'fs';
+import {WaveRecorder, AdapterManager, Exception, Logger, type OptionDefinition, version as libVersion} from 'retroload-lib';
 import {Command} from 'commander';
 import {type PlayerWrapper} from './player/PlayerWrapper.js';
 import {SpeakerWrapper} from './player/SpeakerWrapper.js';
 import {AplayWrapper} from './player/AplayWrapper.js';
 import {SoxWrapper} from './player/SoxWrapper.js';
 import {version as cliVersion} from './version.js';
+import {readFile, writeFile} from './Utils.js';
 
 const playerWrapperPriority = [
   SpeakerWrapper,
@@ -46,9 +46,8 @@ async function main() {
   const infile = program.args[0];
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
   Logger.setVerbosity(parseInt(typeof options['loglevel'] === 'string' ? options['loglevel'] : '1', 10));
-  const buffer = readInputFile(infile);
+  const ba = readFile(infile);
   const recorder = new WaveRecorder();
-  const ba = BufferAccess.createFromNodeBuffer(buffer);
 
   Logger.debug(`Processing ${infile}...`);
 
@@ -74,31 +73,13 @@ async function main() {
     process.exit(0);
   } else {
     // save
-    writeOutputFile(outfile, recorder.getBuffer());
+    writeFile(outfile, recorder.getBa());
     process.exit(0);
   }
 }
 
 function getCommanderFlagsString(optionDefinition: OptionDefinition) {
   return optionDefinition.type !== 'text' || optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
-}
-
-function readInputFile(path: string) {
-  try {
-    return fs.readFileSync(path);
-  } catch {
-    Logger.error(`Error: Unable to read ${path}.`);
-    process.exit(1);
-  }
-}
-
-function writeOutputFile(path: string, data: Uint8Array) {
-  try {
-    fs.writeFileSync(path, data);
-  } catch {
-    Logger.error(`Error: Unable to write output file ${path}`);
-    process.exit(1);
-  }
 }
 
 async function getPlayerWrapper(recorder: WaveRecorder): Promise<PlayerWrapper> {
