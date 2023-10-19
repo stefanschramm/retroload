@@ -4,29 +4,14 @@
 
 This repository contains the npm packages
 
-- **retroload**, a command line interface (CLI) for converting tape images to WAVE files or playing them using the speaker module,
+- **retroload**, a command line interface (CLI) for converting tape images to WAVE files or playing them,
 - **retroload-lib**, the fundamental library used by the CLI and RetroLoad.com
 
 **Project state:** A lot is still work in progress. Some of the (more complex) tape archive formats are only partly supported.
 
+## Installation from NPM registry
 
-## Installation from Git repository (development environment)
-
-Since the retroload packages are not yet published to the npm registry, they currently need to be installed from the code repository:
-
-    git clone https://github.com/stefanschramm/retroload.git
-    cd retroload
-    npm ci # install dependencies
-    npm run build # calls TypeScript "compiler"
-    sudo npm link retroload/ # the "/" is important!
-
-Now, the retroload CLI should be available in your path:
-
-    retroload --help
-
-Later you can remove the symlinks by
-
-    sudo npm unlink retroload -g
+    sudo npm install -g retroload
 
 ## Using retroload CLI
 
@@ -44,7 +29,7 @@ retroload will try to automatically determine the input format by its content an
 
 ### Playing tape archives directly
 
-When the `-o` option is omitted, retroload automatically tries to play the generated audio data using the [speaker library](https://www.npmjs.com/package/speaker).
+When the `-o` option is omitted, retroload automatically tries to play the generated audio data.
 
 ## Example collection
 
@@ -70,3 +55,16 @@ Or enter the container to build individual examples:
 
 If you want to build the examples without Docker, you can look up the Dockerfile for the required tools to be installed in your environment (assemblers, tape format converters).
 
+## Installation from Git repository (development environment)
+
+For development you can build and install retroload directly from the repository using npm link:
+
+    git clone https://github.com/stefanschramm/retroload.git
+    cd retroload
+    npm ci # install dependencies
+    npm run build # calls TypeScript "compiler"
+    sudo npm link retroload/ # the "/" is important!
+
+Later you can remove the symlinks by
+
+    sudo npm unlink retroload -g

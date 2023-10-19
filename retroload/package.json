@@ -1,9 +1,30 @@
 {
   "name": "retroload",
-  "version": "0.0.4",
-  "description": "RetroLoad.com command line interface",
+  "version": "0.0.5",
+  "description": "Command line utility for converting tape archive files of historical computers into sound for loading them on real devices",
+  "keywords": [
+    "sinclair",
+    "zxspectrum",
+    "kc85",
+    "z1013",
+    "lc80",
+    "atari",
+    "amstrad",
+    "cpc",
+    "robotron",
+    "commodore",
+    "c64",
+    "6502",
+    "6809",
+    "z80",
+    "8bit",
+    "vintagecomputing",
+    "retrocomputing"
+  ],
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
+  "homepage": "https://retroload.com/",
+  "repository": "github:stefanschramm/retroload",
   "license": "AGPL-3.0-only",
   "type": "module",
   "main": "src/esm/retroload.js",
@@ -19,6 +40,6 @@
   },
   "dependencies": {
     "commander": "^11.1.0",
-    "retroload-lib": "^0.0.4"
+    "retroload-lib": "^0.0.5"
   }
 }
