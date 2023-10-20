@@ -18,7 +18,7 @@ export class WaveRecorder implements RecorderInterface {
     this.data.push(mappedValue);
   }
 
-  getBuffer() {
+  getBa(): BufferAccess {
     const format = 1; // pcm
     const formatChunkSize = 16;
 
@@ -51,7 +51,7 @@ export class WaveRecorder implements RecorderInterface {
 
     ba.writeBa(BufferAccess.createFromUint8Array(this.getRawBuffer()));
 
-    return ba.asUint8Array();
+    return ba;
   }
 
   getRawBuffer() {

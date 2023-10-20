@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 
-import {BufferAccess} from 'retroload-lib';
-import {WaveRecorder, AdapterManager, Exception, Logger} from 'retroload-lib';
-import fs from 'fs';
+import {WaveRecorder, AdapterManager, Exception, Logger, type OptionDefinition, version as libVersion} from 'retroload-lib';
 import {Command} from 'commander';
-import {type OptionDefinition} from 'retroload-lib';
+import {type PlayerWrapper} from './player/PlayerWrapper.js';
 import {SpeakerWrapper} from './player/SpeakerWrapper.js';
 import {AplayWrapper} from './player/AplayWrapper.js';
-import {type PlayerWrapper} from './player/PlayerWrapper.js';
 import {SoxWrapper} from './player/SoxWrapper.js';
+import {version as cliVersion} from './version.js';
+import {readFile, writeFile} from './Utils.js';
 
 const playerWrapperPriority = [
   SpeakerWrapper,
@@ -25,13 +24,15 @@ async function main() {
   const machineFormatList = AdapterManager.getAllAdapters().map((a) => a.targetName + '/' + a.internalName).join(', ');
   const program = (new Command())
     .name('retroload')
-    .description('Play 8 bit homecomputer tape images or convert them to WAVE files.')
+    .description('Play tape archive files of historical computers for loading them on real devices or convert them to WAVE files.')
     .argument('infile', 'Path to file to play (default) or convert (when using -o <outfile> option)')
     .allowExcessArguments(false)
     .option('-o <outfile>', 'Generate WAVE file <outfile> instead of playback')
     .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), AdapterManager.formatOption.description)
     .option('-m, ' + getCommanderFlagsString(AdapterManager.machineOption), AdapterManager.machineOption.description)
-    .option('-v, --verbosity <verbosity>', 'Verbosity of log output', '1')
+    .option('-l, --loglevel <loglevel>', 'Verbosity of log output', '1')
+    .version(`retroload: ${cliVersion}\nretroload-lib: ${libVersion}`)
+    .showHelpAfterError()
     .addHelpText('after', `\nAvailable machine/format combinations: ${machineFormatList}`);
   // Options defined in adapters/encoders
   const allOptions = AdapterManager.getAllOptions();
@@ -39,21 +40,14 @@ async function main() {
   for (const option of allOptions) {
     program.option(getCommanderFlagsString(option), option.description);
   }
-  program.exitOverride((err) => {
-    if (err.code === 'commander.missingArgument') {
-      program.outputHelp();
-    }
-    process.exit(err.exitCode);
-  });
   program.parse();
 
   const options = program.opts();
   const infile = program.args[0];
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
-  Logger.setVerbosity(parseInt(typeof options['verbosity'] === 'string' ? options['verbosity'] : '1', 10));
-  const buffer = readInputFile(infile);
+  Logger.setVerbosity(parseInt(typeof options['loglevel'] === 'string' ? options['loglevel'] : '1', 10));
+  const ba = readFile(infile);
   const recorder = new WaveRecorder();
-  const ba = BufferAccess.createFromNodeBuffer(buffer);
 
   Logger.debug(`Processing ${infile}...`);
 
@@ -79,31 +73,13 @@ async function main() {
     process.exit(0);
   } else {
     // save
-    writeOutputFile(outfile, recorder.getBuffer());
+    writeFile(outfile, recorder.getBa());
     process.exit(0);
   }
 }
 
 function getCommanderFlagsString(optionDefinition: OptionDefinition) {
   return optionDefinition.type !== 'text' || optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
-}
-
-function readInputFile(path: string) {
-  try {
-    return fs.readFileSync(path);
-  } catch {
-    Logger.error(`Error: Unable to read ${path}.`);
-    process.exit(1);
-  }
-}
-
-function writeOutputFile(path: string, data: Uint8Array) {
-  try {
-    fs.writeFileSync(path, data);
-  } catch {
-    Logger.error(`Error: Unable to write output file ${path}`);
-    process.exit(1);
-  }
 }
 
 async function getPlayerWrapper(recorder: WaveRecorder): Promise<PlayerWrapper> {

@@ -6,10 +6,13 @@
     "retroload"
   ],
   "scripts": {
-    "build": "tsc --build -v",
+    "build": "npm run updateVersion && tsc --build -v",
     "clean": "rm -rf retroload/dist && rm -rf retroload-lib/dist && tsc --build --clean",
     "build-watch": "tsc --build -v --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "updateVersion": "npm run updateVersion --ws",
+    "test": "npm run test --ws",
+    "lint": "npm run lint --ws"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

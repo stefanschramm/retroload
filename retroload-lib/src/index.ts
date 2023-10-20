@@ -8,3 +8,4 @@ export * as ConverterManager from './decoding/ConverterManager.js';
 export {tokenizers as BasicTokenizers} from './tokenizing/TokenizerProvider.js';
 export {type OptionDefinition} from './encoding/Options.js';
 export {formatPosition, type Position} from './common/Positioning.js';
+export {version} from './version.js';
