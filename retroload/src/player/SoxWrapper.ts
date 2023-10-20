@@ -1,18 +1,13 @@
 import {Logger} from 'retroload-lib';
-import {spawnSync} from 'child_process';
 import {type PlayerWrapper} from './PlayerWrapper.js';
+import {playerExists, spawnPlayer} from './Utils.js';
 
 export class SoxWrapper implements PlayerWrapper {
   static async create(sampleRate: number, bitDepth: number, channels: number): Promise<SoxWrapper | undefined> {
     if (bitDepth !== 8) {
       return undefined;
     }
-    const result = spawnSync('play', ['--help']);
-    if (result.error !== undefined) {
-      return undefined;
-    }
-    const regexp = /^play: +SoX /;
-    if (!regexp.exec(result.stdout.toString())) {
+    if (!playerExists('play', ['--help'], /^play: +SoX /)) {
       return undefined;
     }
 
@@ -26,10 +21,7 @@ export class SoxWrapper implements PlayerWrapper {
   }
 
   async play(buffer: Uint8Array) {
-    return new Promise((resolve) => {
-      Logger.info('Playing via sox play...');
-      spawnSync('play', ['-t', 'raw', '-r', this.sampleRate.toString(10), '-e', 'unsigned', '-b', '8', '-c', this.channels.toString(10), '-'], {input: buffer});
-      resolve(null);
-    });
+    Logger.info('Playing via sox play...');
+    return spawnPlayer(buffer, 'play', ['-t', 'raw', '-r', this.sampleRate.toString(10), '-e', 'unsigned', '-b', '8', '-c', this.channels.toString(10), '-']);
   }
 }
