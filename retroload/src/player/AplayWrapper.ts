@@ -1,18 +1,13 @@
 import {Logger} from 'retroload-lib';
-import {spawnSync} from 'child_process';
 import {type PlayerWrapper} from './PlayerWrapper.js';
+import {playerExists, spawnPlayer} from './Utils.js';
 
 export class AplayWrapper implements PlayerWrapper {
   static async create(sampleRate: number, bitDepth: number, channels: number): Promise<AplayWrapper | undefined> {
     if (bitDepth !== 8) {
       return undefined;
     }
-    const result = spawnSync('aplay', ['--help']);
-    if (result.error !== undefined) {
-      return undefined;
-    }
-    const regexp = /^Usage: aplay /;
-    if (!regexp.exec(result.stdout.toString())) {
+    if (!playerExists('aplay', ['--help'], /^Usage: aplay /)) {
       return undefined;
     }
 
@@ -26,10 +21,7 @@ export class AplayWrapper implements PlayerWrapper {
   }
 
   async play(buffer: Uint8Array) {
-    return new Promise((resolve) => {
-      Logger.info('Playing via aplay...');
-      spawnSync('aplay', ['-r', this.sampleRate.toString(10), '-f', 'U8', '-c', this.channels.toString(10)], {input: buffer});
-      resolve(null);
-    });
+    Logger.info('Playing via aplay...');
+    return spawnPlayer(buffer, 'aplay', ['-r', this.sampleRate.toString(10), '-f', 'U8', '-c', this.channels.toString(10)]);
   }
 }
