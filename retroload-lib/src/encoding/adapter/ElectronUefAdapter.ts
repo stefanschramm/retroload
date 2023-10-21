@@ -88,7 +88,7 @@ const definition: AdapterDefinition = {
           e.recordGap(chunkBa.getUint16Le(0));
           break;
         case 0x0113: // change of base frequency
-          e.setBaseFrequency(chunkBa.getUint16Le(0));
+          e.setBaseFrequency(chunkBa.getFloat32Le(0));
           break;
         case 0x0116: // floating point gap
           e.recordSilenceMs(chunkBa.getUint16Le(0) * 1000);
