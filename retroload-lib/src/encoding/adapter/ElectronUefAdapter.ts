@@ -9,6 +9,13 @@ import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const fileHeader = 'UEF File!\x00';
 const compressedFileHeader = '\x1f\x8b';
+const targetMachines = [
+  'BBC Model A', // 0
+  'Electron', // 1
+  'BBC Model B', // ...
+  'BBC Master',
+  'Atom',
+];
 
 /**
  * Adapter for Acorn Electron UEF files
@@ -58,6 +65,13 @@ const definition: AdapterDefinition = {
         {
           const origin = chunkBa.slice(0, chunkBa.length() - 1).asAsciiString(); // remove trailing \0
           Logger.info(`Origin: ${origin}`);
+          break;
+        }
+        case 0x0005: // target machine chunk
+        {
+          const targetMachine = chunkBa.getUint8(0);
+          const targetMachineName = targetMachines[targetMachine];
+          Logger.info(`Target machine: ${targetMachine}` + (targetMachine === undefined ? '' : ` (${targetMachineName})`));
           break;
         }
         case 0x0100: // implicit start/stop bit tape data block
