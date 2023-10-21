@@ -90,6 +90,9 @@ const definition: AdapterDefinition = {
         case 0x0113: // change of base frequency
           e.setBaseFrequency(chunkBa.getUint16Le(0));
           break;
+        case 0x0116: // floating point gap
+          e.recordSilenceMs(chunkBa.getUint16Le(0) * 1000);
+          break;
         default:
           // TODO - try to support all 0x01xx (tape) chunks
           Logger.error(`Chunk type 0x${chunkType.toString(16)} not implemented.`);
