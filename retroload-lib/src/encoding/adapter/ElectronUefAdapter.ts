@@ -91,7 +91,7 @@ const definition: AdapterDefinition = {
           e.setBaseFrequency(chunkBa.getFloat32Le(0));
           break;
         case 0x0116: // floating point gap
-          e.recordSilenceMs(chunkBa.getUint16Le(0) * 1000);
+          e.recordSilenceMs(chunkBa.getFloat32Le(0) * 1000);
           break;
         default:
           // TODO - try to support all 0x01xx (tape) chunks
