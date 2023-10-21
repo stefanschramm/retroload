@@ -1,5 +1,5 @@
 import {AtariEncoder} from '../encoder/AtariEncoder.js';
-import {InternalError} from '../../common/Exceptions.js';
+import {InputDataError, InternalError} from '../../common/Exceptions.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
@@ -8,6 +8,11 @@ import {type AdapterDefinition, type FormatIdentification} from './AdapterDefini
 
 const fileHeader = 'FUJI';
 
+/**
+ * Adapter for Atari CAS files
+ *
+ * https://a8cas.sourceforge.net/format-cas.html
+ */
 const definition: AdapterDefinition = {
 
   name: 'Atari .CAS-File',
@@ -51,12 +56,24 @@ const definition: AdapterDefinition = {
         const data = chunkBa.slice(8, chunkLength);
         e.recordData(irgLength, data);
         i += 8 + chunkLength;
+      } else if (chunkBa.containsDataAt(0, 'fsk ')) {
+        throwUnimplementedError('fsk');
+      } else if (chunkBa.containsDataAt(0, 'pwms')) {
+        throwUnimplementedError('pwms');
+      } else if (chunkBa.containsDataAt(0, 'pwmc')) {
+        throwUnimplementedError('pwmc');
+      } else if (chunkBa.containsDataAt(0, 'pwmd')) {
+        throwUnimplementedError('pwmd');
+      } else if (chunkBa.containsDataAt(0, 'pwml')) {
+        throwUnimplementedError('pwml');
       } else {
-        throw new InternalError('Block type not implemented.');
-        // TODO: Implement other block types: fsk, pwms, pwmc, pwmd, pwml
+        throw new InputDataError('Encountered unknown chunk type.');
       }
     }
   },
-
 };
 export default definition;
+
+function throwUnimplementedError(blockType: string): void {
+  throw new InternalError(`Block type ${blockType} not implemented. Unable to convert this file.`);
+}
