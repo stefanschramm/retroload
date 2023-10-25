@@ -36,10 +36,28 @@ export class ElectronEncoder extends AbstractEncoder {
     this.recordSilenceMs(1000 / (2 * length * this.fBase));
   }
 
-  override recordByte(byte: number) {
+  override recordByte(byte: number, dataBits = 8, parity: ParitySetting = 'N', stopBits = 1) {
     this.recordBit(0); // start bit
-    super.recordByte(byte);
-    this.recordBit(1); // stop bit
+
+    // LSB first
+    let sum = 0;
+    for (let i = 0; i < dataBits; i += 1) {
+      const bit = ((byte & (1 << i)) === 0) ? 0 : 1;
+      sum += bit;
+      this.recordBit(bit);
+    }
+
+    // TODO: not sure, if parity, stopBits and dataBits is working correctly
+    if (parity === 'E') {
+      this.recordBit((sum % 2 === 0) ? 1 : 0);
+    } else if (parity === 'O') {
+      this.recordBit((sum % 2 === 0) ? 0 : 1);
+    }
+
+    // stop bits
+    for (let i = 0; i < stopBits; i++) {
+      this.recordBit(1);
+    }
   }
 
   recordBit(value: number) {
@@ -54,3 +72,5 @@ export class ElectronEncoder extends AbstractEncoder {
     this.fBase = f;
   }
 }
+
+export type ParitySetting = 'N' | 'E' | 'O';
