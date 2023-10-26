@@ -4,7 +4,8 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8, hex16} from '../../../common/Utils.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
 import {type Position, formatPosition} from '../../../common/Positioning.js';
-import {isNot, type FrequencyRange, is} from '../../Frequency.js';
+import {type FrequencyRange, is} from '../../Frequency.js';
+import {SyncFinder} from '../../SyncFinder.js';
 
 const fShort: FrequencyRange = [1300, 2300];
 const fLong: FrequencyRange = [600, 1300];
@@ -17,9 +18,11 @@ const minMidSyncPeriods = 10;
  * Decode half periods
  */
 export class Lc80HalfPeriodProcessor {
-  private readonly halfPeriodProvider: HalfPeriodProvider;
-  constructor(halfPeriodProvider: HalfPeriodProvider) {
-    this.halfPeriodProvider = halfPeriodProvider;
+  private readonly introSyncFinder: SyncFinder;
+  private readonly midSyncFinder: SyncFinder;
+  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+    this.introSyncFinder = new SyncFinder(this.halfPeriodProvider, fSyncIntro, minIntroSyncPeriods);
+    this.midSyncFinder = new SyncFinder(this.halfPeriodProvider, fSyncMid, minMidSyncPeriods);
   }
 
   * files(): Generator<FileDecodingResult> {
@@ -40,7 +43,7 @@ export class Lc80HalfPeriodProcessor {
   }
 
   private decodeFile(): FileDecodingResult {
-    if (!this.findValidSync(fSyncIntro, minIntroSyncPeriods)) {
+    if (!this.introSyncFinder.findSync()) {
       throw new EndOfInput();
     }
 
@@ -57,7 +60,7 @@ export class Lc80HalfPeriodProcessor {
 
     const dataBa = BufferAccess.create(dataLength);
 
-    if (!this.findValidSync(fSyncMid, minMidSyncPeriods)) {
+    if (!this.midSyncFinder.findSync()) {
       Logger.error(`${formatPosition(this.halfPeriodProvider.getPosition())} Error: Did not find mid sync.`);
       return new FileDecodingResult(
         dataBa,
@@ -69,6 +72,10 @@ export class Lc80HalfPeriodProcessor {
         endAddress,
       );
     }
+
+    // Files from real LC 80 seem to have one long half period here that needs to be skipped.
+    // Retroload currently does not generate this but generated WAVs are readable by LC 80.
+    this.halfPeriodProvider.getNext();
 
     // read data
     for (let i = 0; i < dataLength; i++) {
@@ -94,54 +101,6 @@ export class Lc80HalfPeriodProcessor {
       startAddress,
       endAddress,
     );
-  }
-
-  private findValidSync(fSync: FrequencyRange, minPeriods: number): boolean {
-    Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Searching for sync...`);
-    do {
-      if (!this.findSyncStart(fSync)) {
-        return false; // end reached
-      }
-    } while (this.findSyncEnd(fSync) < minPeriods);
-
-    return true;
-  }
-
-  private findSyncStart(fSync: FrequencyRange): boolean {
-    let f;
-    do {
-      f = this.halfPeriodProvider.getNext();
-      if (f === undefined) {
-        return false;
-      }
-    } while (isNot(f, fSync));
-    this.halfPeriodProvider.rewindOne();
-
-    return true;
-  }
-
-  /**
-   * @returns sync length in half periods
-   */
-  private findSyncEnd(fSync: FrequencyRange): number {
-    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Finding sync end...`);
-    let syncLength = 0;
-    let f;
-    do {
-      f = this.halfPeriodProvider.getNext();
-      if (f === undefined) {
-        return syncLength;
-      }
-      syncLength++;
-      // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} f: ${f}...`);
-    } while (is(f, fSync));
-
-    // TODO: Files from real LC 80 have one long half period here. Retroload currently does not generate this but generated WAVs are readable by LC 80.
-    // this.halfPeriodProvider.rewindOne();
-
-    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Sync length: ${syncLength} half periods`);
-
-    return syncLength;
   }
 
   private readBit(): boolean | undefined {

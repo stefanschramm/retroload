@@ -6,6 +6,7 @@ import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExce
 import {formatPosition} from '../../../common/Positioning.js';
 import {BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 import {is, type FrequencyRange, isNot} from '../../Frequency.js';
+import {SyncFinder} from '../../SyncFinder.js';
 
 const one: FrequencyRange = [770, 1300];
 const delimiter: FrequencyRange = [500, 670];
@@ -16,9 +17,9 @@ const minIntroPeriods = 200;
  * Decode half periods into blocks.
  */
 export class KcHalfPeriodProcessor implements KcBlockProvider {
-  private readonly halfPeriodProvider: HalfPeriodProvider;
-  constructor(halfPeriodProvider: HalfPeriodProvider) {
-    this.halfPeriodProvider = halfPeriodProvider;
+  private readonly syncFinder: SyncFinder;
+  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+    this.syncFinder = new SyncFinder(this.halfPeriodProvider, one, minIntroPeriods);
   }
 
   * blocks(): Generator<BlockDecodingResult> {
@@ -39,7 +40,7 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
   }
 
   private decodeBlock(): BlockDecodingResult {
-    if (!this.findValidIntro()) {
+    if (!this.syncFinder.findSync()) {
       throw new EndOfInput();
     }
     const blockBegin = this.halfPeriodProvider.getPosition();
@@ -83,47 +84,6 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
       blockBegin,
       blockEnd,
     );
-  }
-
-  private findValidIntro(): boolean {
-    do {
-      if (!this.findIntroStart()) {
-        return false; // end reached
-      }
-    } while (this.findIntroEnd() < minIntroPeriods);
-
-    return true;
-  }
-
-  private findIntroStart(): boolean {
-    let f;
-    do {
-      f = this.halfPeriodProvider.getNext();
-      if (f === undefined) {
-        return false;
-      }
-    } while (isNot(f, one));
-    this.halfPeriodProvider.rewindOne();
-
-    return true;
-  }
-
-  /**
-   * @returns intro length in half periods
-   */
-  private findIntroEnd(): number {
-    let introLength = 0;
-    let f;
-    do {
-      f = this.halfPeriodProvider.getNext();
-      if (f === undefined) {
-        return introLength;
-      }
-      introLength++;
-    } while (is(f, one));
-    this.halfPeriodProvider.rewindOne();
-
-    return introLength;
   }
 
   private readDelimiter(): boolean {

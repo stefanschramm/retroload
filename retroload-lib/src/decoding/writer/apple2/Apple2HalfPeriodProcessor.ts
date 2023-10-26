@@ -3,8 +3,9 @@ import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProv
 import {Logger} from '../../../common/logging/Logger.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
 import {type Position, formatPosition} from '../../../common/Positioning.js';
-import {isNot, type FrequencyRange, is} from '../../Frequency.js';
+import {type FrequencyRange, is} from '../../Frequency.js';
 import {hex8} from '../../../common/Utils.js';
+import {SyncFinder} from '../../SyncFinder.js';
 
 const fSyncIntro: FrequencyRange = [680, 930]; // 770 Hz
 // const fSyncEndFirstHalf: FrequencyRange = [1700, 2100]; // 2000 Hz
@@ -16,16 +17,22 @@ const fOne: FrequencyRange = [850, 1200]; // 1000 Hz
 const minIntroSyncPeriods = 200;
 
 export class Apple2HalfPeriodProcessor {
-  private readonly halfPeriodProvider: HalfPeriodProvider;
-  constructor(halfPeriodProvider: HalfPeriodProvider) {
-    this.halfPeriodProvider = halfPeriodProvider;
+  private readonly syncFinder: SyncFinder;
+  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+    this.syncFinder = new SyncFinder(this.halfPeriodProvider, fSyncIntro, minIntroSyncPeriods);
   }
 
   * files(): Generator<FileDecodingResult> {
     let keepGoing = true;
     do {
       try {
-        yield this.decodeFile();
+        const decodedFile = this.decodeRecord();
+        if (decodedFile.status === FileDecodingResultStatus.Success && decodedFile.data.length() === 2) {
+          const length = decodedFile.data.getUint16Le(0);
+          Logger.info(`Found a 2-byte long record that is probably a header for a basic record. Not outputting it. Recorded length value was: ${length}`);
+          continue;
+        }
+        yield decodedFile;
       } catch (e) {
         if (e instanceof BlockStartNotFound) {
           continue;
@@ -38,12 +45,14 @@ export class Apple2HalfPeriodProcessor {
     } while (keepGoing);
   }
 
-  private decodeFile(): FileDecodingResult {
-    if (!this.findValidSync(fSyncIntro, minIntroSyncPeriods)) {
-      throw new EndOfInput();
-    }
+  private decodeRecord(): FileDecodingResult {
+    do {
+      if (!(this.syncFinder.findSync())) {
+        throw new EndOfInput();
+      }
+    } while (!this.readSyncEndMarker());
 
-    const fileBegin = this.halfPeriodProvider.getPosition();
+    const recordBegin = this.halfPeriodProvider.getPosition();
 
     // read data
     const bytesRead = [];
@@ -55,7 +64,7 @@ export class Apple2HalfPeriodProcessor {
       bytesRead.push(byte);
     }
 
-    const fileEnd = this.halfPeriodProvider.getPosition();
+    const recordEnd = this.halfPeriodProvider.getPosition();
 
     const readChecksum = bytesRead.pop();
     if (readChecksum === undefined) {
@@ -65,74 +74,50 @@ export class Apple2HalfPeriodProcessor {
     const calculatedChecksum = calculateXorChecksum8(dataBa);
     const checksumCorrect = calculatedChecksum === readChecksum;
 
-    Logger.debug(dataBa.asHexDump());
-
     if (!checksumCorrect) {
-      Logger.error(`${formatPosition(fileEnd)} Warning: Invalid checksum! Read checksum: ${hex8(readChecksum)}, Calculated checksum: ${hex8(calculatedChecksum)}.`);
+      Logger.error(`${formatPosition(recordEnd)} Warning: Invalid checksum! Read checksum: ${hex8(readChecksum)}, Calculated checksum: ${hex8(calculatedChecksum)}.`);
     }
 
     return new FileDecodingResult(
       dataBa,
       checksumCorrect ? FileDecodingResultStatus.Success : FileDecodingResultStatus.Error,
-      fileBegin,
-      fileEnd,
+      recordBegin,
+      recordEnd,
     );
   }
 
-  private findValidSync(fSync: FrequencyRange, minPeriods: number): boolean {
-    Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Searching for sync...`);
-    do {
-      if (!this.findSyncStart(fSync)) {
-        return false; // end reached
-      }
-    } while (this.findSyncEnd(fSync) < minPeriods);
-
-    return true;
-  }
-
-  private findSyncStart(fSync: FrequencyRange): boolean {
-    let f;
-    do {
-      f = this.halfPeriodProvider.getNext();
-      if (f === undefined) {
-        return false;
-      }
-    } while (isNot(f, fSync));
-
-    return true;
-  }
-
-  /**
-   * @returns sync length in half periods
-   */
-  private findSyncEnd(fSync: FrequencyRange): number {
-    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Finding sync end...`);
-    let syncLength = 0;
-    let f;
-    do {
-      f = this.halfPeriodProvider.getNext();
-      if (f === undefined) {
-        return syncLength;
-      }
-      syncLength++;
-      // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} f: ${f}...`);
-    } while (is(f, fSync));
-
-    this.halfPeriodProvider.rewindOne();
+  private readSyncEndMarker(): boolean {
     const firstHalf = this.halfPeriodProvider.getNext();
     // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Sync end firstHalf: ${firstHalf ?? ''}...`);
     if (firstHalf === undefined || !is(firstHalf, fSyncEndFirstHalf)) {
-      return 0;
+      return false;
     }
 
     const secondHalf = this.halfPeriodProvider.getNext();
     // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Sync end secondHalf: ${secondHalf ?? ''}...`);
     if (secondHalf === undefined || !is(secondHalf, fSyncEndSecondHalf)) {
-      return 0;
+      return false;
     }
-    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Sync length: ${syncLength} half periods`);
 
-    return syncLength;
+    return true;
+  }
+
+  private readByte(): number | undefined {
+    let byte = 0;
+    for (let i = 0; i < 8; i++) {
+      const bit = this.readBit();
+      if (bit === undefined) {
+        if (i === 0) {
+          // At the beginning of a byte this is expected and means there are no more bytes to read.
+          return undefined;
+        }
+        // Within a byte seems to be a real decoding error.
+        throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect bit.`);
+      }
+      byte |= ((bit ? 1 : 0) << (7 - i)); // most significant bit arrives first
+    }
+
+    return byte;
   }
 
   private readBit(): boolean | undefined {
@@ -163,24 +148,6 @@ export class Apple2HalfPeriodProcessor {
     }
 
     return (firstHalf + secondHalf) / 2;
-  }
-
-  private readByte(): number | undefined {
-    let byte = 0;
-    for (let i = 0; i < 8; i++) {
-      const bit = this.readBit();
-      if (bit === undefined) {
-        if (i === 0) {
-          // At the beginning of a byte this is expected and means there are no more bytes to read.
-          return undefined;
-        }
-        // Within a byte seems to be a real decoding error.
-        throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect bit.`);
-      }
-      byte |= ((bit ? 1 : 0) << (7 - i)); // most significant bit arrives first
-    }
-
-    return byte;
   }
 }
 
