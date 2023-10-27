@@ -57,7 +57,7 @@ async function main() {
     const fallbackName = `${i}.${extension}`;
     const proposedName = file.proposedName === undefined ? fallbackName : `${file.proposedName}.${extension}`;
     const fileName = options['proposedName'] ? proposedName : fallbackName;
-    Logger.info(`Writing file: ${fileName} (position in input: ${formatPosition(file.begin)} - ${formatPosition(file.end)})`);
+    Logger.info(`Writing file: ${fileName} (${file.data.length()} bytes, position in input: ${formatPosition(file.begin)} - ${formatPosition(file.end)})`);
     Logger.debug(file.data.asHexDump());
     writeFile(`${outPathPrefix}${fileName}`, file.data);
     i++;
