@@ -3,7 +3,7 @@ import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProv
 import {Logger} from '../../../common/logging/Logger.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
 import {formatPosition} from '../../../common/Positioning.js';
-import {type FrequencyRange, is} from '../../Frequency.js';
+import {type FrequencyRange, is, avg, bitByFrequency} from '../../Frequency.js';
 import {calculateChecksum8Xor, hex8} from '../../../common/Utils.js';
 import {SyncFinder} from '../../SyncFinder.js';
 import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
@@ -131,32 +131,13 @@ export class Apple2HalfPeriodProcessor {
   }
 
   private readBit(): boolean | undefined {
-    const oscillation = this.readOscillation();
-    if (oscillation === undefined) {
+    const oscillationValue = avg(this.halfPeriodProvider.getNext(), this.halfPeriodProvider.getNext());
+    const isOne = bitByFrequency(oscillationValue, fZero, fOne);
+    if (isOne === undefined) {
+      Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to determine bit value. Frequency of oscillation was ${oscillationValue} Hz.`);
       return undefined;
     }
-    const isOne = is(oscillation, fOne);
-    const isZero = is(oscillation, fZero);
-    if (!isOne && !isZero) {
-      Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} undefined oscillation: ${oscillation}`);
-      return undefined;
-    }
-
-    // Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Bit: ${isOne ? '1' : '0'}`);
 
     return isOne;
-  }
-
-  /**
-   * Read and average 2 half periods for better precision
-   */
-  private readOscillation(): number | undefined {
-    const firstHalf = this.halfPeriodProvider.getNext();
-    const secondHalf = this.halfPeriodProvider.getNext();
-    if (firstHalf === undefined || secondHalf === undefined) {
-      return undefined;
-    }
-
-    return (firstHalf + secondHalf) / 2;
   }
 }

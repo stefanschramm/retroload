@@ -24,3 +24,13 @@ export enum BlockDecodingResultStatus {
    */
   Partial,
 }
+
+export function allBlocksSuccessful(blocks: BlockDecodingResult[]): boolean {
+  for (const block of blocks) {
+    if (block.status !== BlockDecodingResultStatus.Complete) {
+      return false;
+    }
+  }
+
+  return true;
+}
