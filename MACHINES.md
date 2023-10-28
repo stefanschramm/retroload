@@ -6,7 +6,7 @@ The volume levels are just meant to be a rough orientation based on experiments 
 
 Volume: 40 %
 
-Load and run program:
+Load and run BASIC program:
 
     CHAIN ""
 
@@ -14,6 +14,18 @@ or
 
     LOAD ""
     RUN
+
+Load data at a specific memory location `0x1000` (ignores data specified in tape header):
+
+    *LOAD "" 1000
+
+Call a binary program located at memory location `0x1000`:
+
+    CALL &1000
+
+Load and run a binary program (uses load and entry location from tape header):
+
+    *RUN
 
 # Atari 800 XL
 
@@ -27,7 +39,7 @@ Text (ATASCII) files:
 
 # C64, C64 C
 
-Load and run a basic program or machine language program with autostart loader:
+Load and run a BASIC program or machine language program with autostart loader:
 
     RUN ""
 
@@ -208,7 +220,7 @@ In case the program is not auto-starting:
 
 # ZX Spectrum+
 
-Basic programs can be loaded and started by
+BASIC programs can be loaded and started by
 
     LOAD ""
     RUN

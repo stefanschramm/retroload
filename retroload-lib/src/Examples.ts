@@ -14,6 +14,14 @@ const examples: ExampleDefinition[] = [
   },
   {
     dir: 'electron_generic',
+    file: 'rl.bin',
+    options: {format: 'electrongeneric', name: 'RL', load: '1000', entry: '1000', shortpilot: true},
+    hash: '9e22655910cec0ac1ae64066a13e913d',
+    instructions: '*RUN',
+    tests: ['2023-10-28 (Acorn Electron)'],
+  },
+  {
+    dir: 'electron_generic',
     file: 'rl.uef',
     options: {shortpilot: true},
     hash: 'e64e45d7c1f4d7fb2eaed067b05b5112',
