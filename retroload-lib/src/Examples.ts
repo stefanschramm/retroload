@@ -28,6 +28,18 @@ const examples: ExampleDefinition[] = [
     instructions: 'CHAIN ""',
     tests: ['2023-04-02 (Acorn Electron)'],
   },
+  // BASICODE
+  {
+    dir: 'basicode',
+    file: 'rl.txt',
+    options: {format: 'basicode'},
+    hash: '6adbadf4894d2ebb11636308671b64ad',
+    instructions: '',
+    tests: [
+      '2023-10-31 (KC 87 with BASICODE-3 Andreas and Uwe Zierott 1.4; bac87_sss.tap: 266bc6b3753b75230d89f046297e0f4d)',
+      '2023-10-31 (KC 85/4 with BASICODE-3C Andreas and Uwe Zierott, R. Wenzel 1.5; BAC854C.SSS: d48116eaeab75f01b31ba3515fd45615)',
+    ],
+  },
   // Atari 800 XL
   {
     dir: 'atari_cas',

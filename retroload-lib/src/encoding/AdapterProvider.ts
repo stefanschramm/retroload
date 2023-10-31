@@ -1,6 +1,7 @@
 import {type AdapterDefinition} from './adapter/AdapterDefinition.js';
 import AtariCasAdapter from './adapter/AtariCasAdapter.js';
 import AtariGenericAdapter from './adapter/AtariGenericAdapter.js';
+import BasicodeAdapter from './adapter/BasicodeAdapter.js';
 import C64GenericAdapter from './adapter/C64GenericAdapter.js';
 import C64P00Adapter from './adapter/C64P00Adapter.js';
 import C64PrgAdapter from './adapter/C64PrgAdapter.js';
@@ -34,6 +35,7 @@ import ZxSpectrumTzxAdapter from './adapter/ZxSpectrumTzxAdapter.js';
 export const adapters: AdapterDefinition[] = [
   AtariCasAdapter,
   AtariGenericAdapter,
+  BasicodeAdapter,
   C64GenericAdapter,
   C64P00Adapter,
   C64PrgAdapter,

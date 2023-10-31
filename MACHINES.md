@@ -101,6 +101,24 @@ BASIC ASCII listings can be loaded (within BASIC) using
 
     LOAD#1 "EXAMPLE"
 
+**BASICODE**
+
+The BASCODER bac87_sss.tap can be used to load and run BASICODE programs:
+
+    BASIC
+    CLOAD" "
+    *L
+
+Menu commands for BASICODE-3 Version 1.4 A. + U. Zierott:
+
+    * - BASICODE menu
+    *L - Load, translate and start
+    *A - Read ASCII file
+    *W - Save ASCII file
+    *T - Translate ASCII file --> BASIC
+    *C - Translate BASIC --> ASCI file
+    *K - List ASCII file
+
 # KC 85/3, KC 85/4
 
 Volume: 20 % (tested with KC 85/4)
@@ -118,7 +136,25 @@ For BASIC programs (.SSS files) the BASIC interpreter needs to be started first 
 
 For files having no (an empty) name can be loaded using `CLOAD" "` (note the space between the quotation marks).
 
-From within BASIC, `BLOAD` can be used to machine programs.
+From within BASIC, `BLOAD` can be used to load machine programs.
+
+**BASICODE**
+
+For KC 85/4 the BASCODER BAC854C.SSS can be used to load and run BASICODE programs:
+
+    BASIC
+    CLOAD" "
+    *L
+
+Menu commands for BASICODE-3C Version 1.5 KC 85/4 A. + U. Zierott, R. Wenzel:
+
+    * - BASICODE menu
+    *L - Load, translate and start
+    *A - Read ASCII file
+    *W - Save ASCII file
+    *T - Translate ASCII file --> BASIC
+    *C - Translate BASIC --> ASCI file
+    *K - List ASCII file
 
 # LC 80
 
