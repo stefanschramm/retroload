@@ -29,7 +29,7 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     const dataBa = ba.slice(fileHeaderLength);
 
     if (dataBa.length() === 0) {
@@ -48,7 +48,7 @@ const definition: AdapterDefinition = {
       Logger.info('Warning: Last block in TAP file does not have block number 0xff.');
     }
 
-    const e = new KcEncoder(recorder, options);
+    const e = new KcEncoder(recorder);
 
     e.begin();
     for (const blockBa of blocks) {

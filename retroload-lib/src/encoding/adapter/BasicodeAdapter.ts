@@ -33,7 +33,7 @@ const definition: AdapterDefinition = {
   },
 
   encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const e = new BasicodeEncoder(recorder, options);
+    const e = new BasicodeEncoder(recorder, options.isFlagSet(shortpilotOption));
     e.begin();
     if (options.isFlagSet(basicodeDataOption)) {
       e.recordBasicData(ba);

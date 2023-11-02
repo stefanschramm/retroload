@@ -2,7 +2,7 @@ import {AbstractEncoder} from './AbstractEncoder.js';
 import {InternalError} from '../../common/Exceptions.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {Logger} from '../../common/logging/Logger.js';
-import {SampleValue} from '../recorder/RecorderInterface.js';
+import {type RecorderInterface, SampleValue} from '../recorder/RecorderInterface.js';
 
 const palClockCycles = 985248;
 
@@ -21,6 +21,13 @@ const fileTypePrg = 0x03;
 export class C64Encoder extends AbstractEncoder {
   static override getTargetName() {
     return 'c64';
+  }
+
+  constructor(
+    recorder: RecorderInterface,
+    private readonly shortpilot = false,
+  ) {
+    super(recorder);
   }
 
   recordPulse(pulseLength: number) {
@@ -102,21 +109,21 @@ export class C64Encoder extends AbstractEncoder {
     this.recordByte(checkByte);
   }
 
-  recordBasic(startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
+  recordBasic(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
     // TODO: test
-    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa, shortpilot);
+    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa);
   }
 
-  recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
-    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa, shortpilot);
+  recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
+    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa);
   }
 
-  recordData(_filenameBuffer: string, _dataBa: BufferAccess, _shortpilot: boolean) {
+  recordData(_filenameBuffer: string, _dataBa: BufferAccess) {
     // TODO: implement + test
     throw new InternalError('recordData not implemented yet');
   }
 
-  recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess, shortpilot: boolean) {
+  recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
     const headerBa = BufferAccess.create(192);
     headerBa.writeUint8(fileType); // 1 byte: file type: prg or basic file
     headerBa.writeUint16Le(startAddress); // 2 bytes: start address
@@ -128,7 +135,7 @@ export class C64Encoder extends AbstractEncoder {
     Logger.debug(headerBa.asHexDump());
 
     // header
-    this.recordPilot(shortpilot ? 0x1a00 : 0x6a00);
+    this.recordPilot(this.shortpilot ? 0x1a00 : 0x6a00);
     this.recordSyncChain();
     this.recordDataWithCheckByte(headerBa);
     this.recordEndOfDataMarker();

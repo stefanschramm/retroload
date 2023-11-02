@@ -27,14 +27,14 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     const length = ba.getUint32Le(0x0c);
     const dataLength = ba.getUint16Le(0x10);
     const filesBa = ba.slice(0x10);
     if (filesBa.length() !== length) {
       Logger.info(`Data length field in header ${dataLength} does not match actual length of remaining data (${filesBa.length()}).`);
     }
-    const e = new TiEncoder(recorder, options);
+    const e = new TiEncoder(recorder);
     e.begin();
     let filesBaOffset = 0;
     while (filesBaOffset < filesBa.length()) {

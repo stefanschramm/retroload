@@ -28,7 +28,7 @@ const definition: AdapterDefinition = {
       throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
     }
 
-    const e = new TaEncoder(recorder, options);
+    const e = new TaEncoder(recorder);
     e.begin();
     e.recordFile(filename, ba);
     e.end();

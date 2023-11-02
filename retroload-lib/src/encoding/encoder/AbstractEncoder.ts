@@ -1,6 +1,5 @@
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {InternalError} from '../../common/Exceptions.js';
-import {type OptionContainer} from '../../encoding/Options.js';
 import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 /**
@@ -11,18 +10,16 @@ export abstract class AbstractEncoder {
     throw new InternalError('getTargetName() not implemented!');
   }
 
-  protected options: OptionContainer;
   protected readonly recorder: RecorderInterface;
   private phase: boolean;
 
-  constructor(recorder: RecorderInterface, options: OptionContainer) {
+  constructor(recorder: RecorderInterface) {
     this.recorder = recorder;
     /**
      * this.phase determines whether the next half oscillation is positive.
      * It's modified only when recording half oscillations.
      */
     this.phase = true;
-    this.options = options;
   }
 
   begin() {

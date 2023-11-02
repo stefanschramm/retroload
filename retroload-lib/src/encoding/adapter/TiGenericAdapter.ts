@@ -23,7 +23,7 @@ const definition: AdapterDefinition = {
     return unidentifiable;
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     if (ba.length() % blockSize !== 0) {
       Logger.info(`Length of data is not a multiple of ${blockSize} bytes. Last block will be padded with 0.`);
     }
@@ -31,7 +31,7 @@ const definition: AdapterDefinition = {
     if (blocks.length > 255) {
       throw new InputDataError('File contains too many blocks.');
     }
-    const e = new TiEncoder(recorder, options);
+    const e = new TiEncoder(recorder);
     e.begin();
     e.recordHeader(blocks.length);
     for (const block of blocks) {

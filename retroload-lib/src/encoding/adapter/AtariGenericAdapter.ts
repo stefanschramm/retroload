@@ -28,8 +28,8 @@ const definition: AdapterDefinition = {
     return unidentifiable;
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const e = new AtariEncoder(recorder, options);
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+    const e = new AtariEncoder(recorder);
     e.setDefaultBaudrate();
     const chunks = ba.chunks(dataBytesPerBlock);
     for (let blockId = 0; blockId < chunks.length; blockId++) {

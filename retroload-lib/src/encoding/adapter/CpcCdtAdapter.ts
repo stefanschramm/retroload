@@ -24,8 +24,8 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const e = new CpcTzxEncoder(recorder, options);
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+    const e = new CpcTzxEncoder(recorder);
     const tzxProcessor = new TzxProcessor(e);
     tzxProcessor.processTzx(ba);
   },

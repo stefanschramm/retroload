@@ -45,7 +45,7 @@ const definition: AdapterDefinition = {
     const load = options.getArgument(loadOption) ?? 0x0000;
     const entry = options.getArgument(entryOption) ?? 0x0000;
 
-    const e = new CpcTzxEncoder(recorder, options);
+    const e = new CpcTzxEncoder(recorder);
 
     const chunks = ba.chunks(dataBytesPerDataBlock);
 

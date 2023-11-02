@@ -22,7 +22,7 @@ const definition: AdapterDefinition = {
     return unidentifiable;
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     if (ba.length() < 2 * blockSize) {
       throw new InputDataError(`FIAD files need to be of a size at least ${2 * blockSize} bytes.`);
     }
@@ -33,7 +33,7 @@ const definition: AdapterDefinition = {
     if (blocks.length > 255) {
       throw new InputDataError('FIAD file contains too many blocks.');
     }
-    const e = new TiEncoder(recorder, options);
+    const e = new TiEncoder(recorder);
     e.begin();
     e.recordHeader(blocks.length);
     for (const block of blocks) {

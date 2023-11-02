@@ -29,7 +29,7 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     const sectorCount = ba.getUint16Be(0x08);
     const flags = ba.getUint8(0x0a);
     const recordsPerSector = ba.getUint8(0x0b);
@@ -43,7 +43,7 @@ const definition: AdapterDefinition = {
     if (sectors.length !== sectorCount) {
       Logger.info(`Remaining size of TIFILE does not match sector count as specified in the header (${sectorCount}). Remaining data is omitted.`);
     }
-    const e = new TiEncoder(recorder, options);
+    const e = new TiEncoder(recorder);
     e.begin();
     const fullSectorCount = eofOffest === 0 ? sectorCount : sectorCount - 1;
     const blocksInFullSectors = fullSectorCount * (sectorSize / blockSize);

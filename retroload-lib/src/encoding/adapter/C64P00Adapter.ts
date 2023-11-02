@@ -33,9 +33,9 @@ const definition: AdapterDefinition = {
     const fileName = ba.slice(8, 0x10);
     const loadAddress = ba.getUint16Le(0x1a);
     const data = ba.slice(0x1c);
-    const e = new C64Encoder(recorder, options);
+    const e = new C64Encoder(recorder, options.isFlagSet(shortpilotOption));
     e.begin();
-    e.recordPrg(loadAddress, fileName.asAsciiString(), data, options.isFlagSet(shortpilotOption));
+    e.recordPrg(loadAddress, fileName.asAsciiString(), data);
     e.end();
   },
 };

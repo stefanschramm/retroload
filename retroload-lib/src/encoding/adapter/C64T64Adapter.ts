@@ -30,7 +30,7 @@ const definition: AdapterDefinition = {
    * http://unusedino.de/ec64/technical/formats/t64.html
    */
   encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const e = new C64Encoder(recorder, options);
+    const e = new C64Encoder(recorder, options.isFlagSet(shortpilotOption));
 
     const header = ba.slice(0, 0x40);
     const entries = header.getUint16Le(0x24);
@@ -51,7 +51,7 @@ const definition: AdapterDefinition = {
       const containerOffset = entryInfo.getUint32Le(0x08);
       const filename = ba.slice(entryOffset + 0x10, 0x10);
       const entryData = ba.slice(containerOffset, dataLength);
-      e.recordPrg(loadAddress, filename.asAsciiString(), entryData, options.isFlagSet(shortpilotOption));
+      e.recordPrg(loadAddress, filename.asAsciiString(), entryData);
     }
 
     e.end();

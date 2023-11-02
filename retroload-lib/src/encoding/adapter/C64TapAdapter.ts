@@ -26,7 +26,7 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     const header = ba.slice(0, 0x14);
     const version = header.getUint8(0x0c);
     const dataLength = header.getUint32Le(0x10);
@@ -34,7 +34,7 @@ const definition: AdapterDefinition = {
     Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, '0')}, dataLength: ${dataLength}`);
 
     const data = ba.slice(header.length(), dataLength);
-    const e = new C64Encoder(recorder, options);
+    const e = new C64Encoder(recorder);
     e.begin();
     for (let i = 0; i < data.length(); i += 1) {
       const value = data.getUint8(i);

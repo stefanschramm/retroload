@@ -28,7 +28,7 @@ const definition: AdapterDefinition = {
 
   encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
     const name = options.getArgument(nameOption);
-    const e = new Zx81Encoder(recorder, options);
+    const e = new Zx81Encoder(recorder);
     e.begin();
     for (const byte of mapFileName(name.length === 0 ? defaultName : name)) {
       e.recordByte(byte);

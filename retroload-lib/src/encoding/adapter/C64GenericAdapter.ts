@@ -47,21 +47,20 @@ const definition: AdapterDefinition = {
     if (name.length > 16) {
       throw new InvalidArgumentError(nameOption.name, 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
     }
-    const shortpilot = options.isFlagSet(shortpilotOption);
 
-    const e = new C64Encoder(recorder, options);
+    const e = new C64Encoder(recorder, options.isFlagSet(shortpilotOption));
     e.begin();
     switch (type) {
       case 'basic':
         checkLoadAddress(loadAddress);
-        e.recordBasic(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba, shortpilot);
+        e.recordBasic(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
         break;
       case 'prg':
         checkLoadAddress(loadAddress);
-        e.recordPrg(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba, shortpilot);
+        e.recordPrg(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
         break;
       case 'data':
-        e.recordData(name.padEnd(16, ' '), ba, shortpilot);
+        e.recordData(name.padEnd(16, ' '), ba);
         break;
       default:
         throw new InternalError('Got unknown type.');

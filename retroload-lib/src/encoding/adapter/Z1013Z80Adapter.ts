@@ -24,7 +24,7 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     const header = ba.slice(0, headerLength);
     const data = ba.slice(headerLength);
     const loadAddress = header.getUint16Le(0x00);
@@ -33,7 +33,7 @@ const definition: AdapterDefinition = {
     const type = header.getUint8(0x0c);
     const name = ba.slice(0x10, 0x10).asAsciiString();
     Logger.log(`Filename: "${name}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
-    const e = new Z1013Encoder(recorder, options);
+    const e = new Z1013Encoder(recorder);
     e.begin();
     e.recordData(data);
     e.end();

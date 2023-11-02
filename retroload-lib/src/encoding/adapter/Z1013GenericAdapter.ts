@@ -19,8 +19,8 @@ const definition: AdapterDefinition = {
     return unidentifiable;
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const e = new Z1013Encoder(recorder, options);
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+    const e = new Z1013Encoder(recorder);
     e.begin();
     e.recordData(ba);
     e.end();

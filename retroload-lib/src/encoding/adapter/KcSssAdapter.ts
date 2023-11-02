@@ -47,7 +47,7 @@ const definition: AdapterDefinition = {
     const remainingDataBa = ba.slice(blockSize - headerSize);
     const remainingBlocks = Math.ceil(remainingDataBa.length() / blockSize);
 
-    const e = new KcEncoder(recorder, options);
+    const e = new KcEncoder(recorder);
 
     e.begin();
     e.recordBlock(1, firstBlockBa);

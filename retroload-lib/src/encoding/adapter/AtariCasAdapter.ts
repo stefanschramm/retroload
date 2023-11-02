@@ -30,8 +30,8 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
-    const e = new AtariEncoder(recorder, options);
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
+    const e = new AtariEncoder(recorder);
     e.setDefaultBaudrate();
     let i = 0;
     while (i < ba.length()) {

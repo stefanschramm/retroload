@@ -70,7 +70,7 @@ const definition: AdapterDefinition = {
     startBlockDataBa.writeUint8(filemode);
     startBlockDataBa.writeUint8(filemode);
 
-    const e = new Mo5Encoder(recorder, options);
+    const e = new Mo5Encoder(recorder);
     e.begin();
     e.recordStartBlock(createBlock(blockTypeStart, startBlockDataBa));
     for (const dataChunkBa of ba.chunks(254)) {

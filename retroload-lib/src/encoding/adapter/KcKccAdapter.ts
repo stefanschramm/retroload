@@ -41,7 +41,7 @@ const definition: AdapterDefinition = {
       throw new InputDataError('KCC file contains too many blocks.');
     }
 
-    const e = new KcEncoder(recorder, options);
+    const e = new KcEncoder(recorder);
 
     e.begin();
     for (let i = 0; i < blocks.length; i++) {

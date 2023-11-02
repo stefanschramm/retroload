@@ -27,8 +27,8 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const e = new Mo5Encoder(recorder, options);
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+    const e = new Mo5Encoder(recorder);
     e.begin();
     let i = 0;
     let blockType: number | undefined;

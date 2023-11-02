@@ -32,7 +32,7 @@ const definition: AdapterDefinition = {
     };
   },
 
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
     const uefBa = uncompressIfRequired(ba);
 
     if (!uefBa.containsDataAt(0, fileHeader)) {
@@ -43,7 +43,7 @@ const definition: AdapterDefinition = {
     const uefVersionMajor = uefBa.getUint8(11);
     Logger.info(`UEF Version: ${uefVersionMajor}.${uefVersionMinor}`);
 
-    const e = new ElectronEncoder(recorder, options);
+    const e = new ElectronEncoder(recorder);
     e.begin();
 
     let chunkOffset = 12;

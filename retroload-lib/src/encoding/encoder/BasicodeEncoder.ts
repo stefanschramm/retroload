@@ -1,7 +1,7 @@
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {hex8} from '../../common/Utils.js';
 import {Logger} from '../../common/logging/Logger.js';
-import {shortpilotOption} from '../Options.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {AbstractEncoder} from './AbstractEncoder.js';
 
 const fZero = 1200;
@@ -22,6 +22,13 @@ const etx = 0x03;
 export class BasicodeEncoder extends AbstractEncoder {
   static override getTargetName() {
     return 'basicode';
+  }
+
+  constructor(
+    recorder: RecorderInterface,
+    private readonly shortpilot = false,
+  ) {
+    super(recorder);
   }
 
   override begin() {
@@ -58,8 +65,7 @@ export class BasicodeEncoder extends AbstractEncoder {
   }
 
   private record(ba: BufferAccess, startMarker: number) {
-    const shortpilot = this.options.isFlagSet(shortpilotOption);
-    this.recordOscillations(fOne, fOne * (shortpilot ? 3 : 5));
+    this.recordOscillations(fOne, fOne * (this.shortpilot ? 3 : 5));
 
     let checksum = 0;
 

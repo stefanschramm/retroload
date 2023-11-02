@@ -41,7 +41,7 @@ const definition: AdapterDefinition = {
 
     const chunks = ba.chunks(maxBlockSize);
 
-    const e = new ElectronEncoder(recorder, options);
+    const e = new ElectronEncoder(recorder);
     e.begin();
 
     for (let block = 0; block < chunks.length; block++) {

@@ -78,7 +78,7 @@ const definition: AdapterDefinition = {
     firstBlockBa.writeUint16Le(end);
     firstBlockBa.writeUint16Le(entry);
 
-    const e = new KcEncoder(recorder, options);
+    const e = new KcEncoder(recorder);
     let blockId = firstBlockNumber;
     e.begin();
     e.recordBlock(blockId, firstBlockBa);

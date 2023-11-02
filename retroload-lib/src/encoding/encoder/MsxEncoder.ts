@@ -1,5 +1,5 @@
 import {AbstractEncoder} from './AbstractEncoder.js';
-import {type FlagOptionDefinition, shortpilotOption} from '../../encoding/Options.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fZero = 1200;
 const fOne = 2400;
@@ -8,14 +8,6 @@ const secondsShortSilence = 1.0;
 const secondsLongSilence = 2.0;
 const pulsesLongHeader = 16000;
 const pulsesShortHeader = 4000;
-
-const msxfastOption: FlagOptionDefinition = {
-  name: 'msxfast',
-  label: 'Fast baudrate',
-  description: 'MSX: Use 2400 baud instead of 1200 (faster loading, less reliable)',
-  type: 'bool',
-  common: false,
-};
 
 /**
  * Encoder for MSX
@@ -28,18 +20,22 @@ export class MsxEncoder extends AbstractEncoder {
     return 'msx';
   }
 
-  static getOptions() {
-    return [
-      shortpilotOption,
-      msxfastOption,
-    ];
+  private readonly baudrateFactor: number;
+
+  constructor(
+    recorder: RecorderInterface,
+    private readonly shortpilot = false,
+    fast = false,
+  ) {
+    super(recorder);
+    this.baudrateFactor = fast ? 2 : 1; // use 1200 or 2400 baud
   }
 
   recordHeader(long: boolean) {
     this.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
-    long = this.options.isFlagSet(shortpilotOption) ? false : long; // use short pulse if shortpilot option is set
+    long = this.shortpilot ? false : long; // use short pulse if shortpilot option is set
     const pulses = long ? pulsesLongHeader : pulsesShortHeader;
-    this.recordOscillations(fOne * this.getBaudrateFactor(), pulses);
+    this.recordOscillations(fOne * this.baudrateFactor, pulses);
   }
 
   override recordByte(byte: number) {
@@ -51,13 +47,9 @@ export class MsxEncoder extends AbstractEncoder {
 
   recordBit(value: number) {
     if (value) {
-      this.recordOscillations(fOne * this.getBaudrateFactor(), 2);
+      this.recordOscillations(fOne * this.baudrateFactor, 2);
     } else {
-      this.recordOscillations(fZero * this.getBaudrateFactor(), 1);
+      this.recordOscillations(fZero * this.baudrateFactor, 1);
     }
-  }
-
-  getBaudrateFactor() {
-    return this.options.isFlagSet(msxfastOption) ? 2 : 1; // use 1200 or 2400 baud
   }
 }

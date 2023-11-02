@@ -36,7 +36,7 @@ const definition: AdapterDefinition = {
       throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
     }
 
-    const e = new Lc80Encoder(recorder, options);
+    const e = new Lc80Encoder(recorder);
     e.begin();
     const endAddress = loadAddress + ba.length();
     Logger.debug(`Writing header - File number/name: ${hex16(fileNumber)}, Load address: ${hex16(loadAddress)}, End address: ${hex16(endAddress)}`);
