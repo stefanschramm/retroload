@@ -60,10 +60,7 @@ export type OptionValues = Record<string, string | boolean>;
  * Option container holds options passed to the adapters (command line options or form data from UI) and provides methods to access them by OptionDefinitions.
  */
 export class OptionContainer {
-  private readonly values: OptionValues;
-
-  constructor(values: OptionValues) {
-    this.values = values;
+  constructor(private readonly values: OptionValues) {
   }
 
   public getArgument<T>(optionDefinition: ArgumentOptionDefinition<T>): T {

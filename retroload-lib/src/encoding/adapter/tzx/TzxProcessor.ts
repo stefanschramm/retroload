@@ -11,21 +11,19 @@ const tzxHeaderLength = 0x0a;
  *  additional layer between adapter and encoder
  */
 export class TzxProcessor {
-  e: AbstractTzxEncoder;
-  constructor(encoder: AbstractTzxEncoder) {
-    this.e = encoder;
+  constructor(private readonly encoder: AbstractTzxEncoder) {
   }
 
   processTzx(ba: BufferAccess) {
     // TODO: get version offset: 0x08 length: 2
     let i = tzxHeaderLength;
-    this.e.begin();
+    this.encoder.begin();
     while (i < ba.length()) {
       const blockId = ba.getUint8(i++);
       const blockBa = ba.slice(i);
       i += this.processBlock(blockId, blockBa);
     }
-    this.e.end();
+    this.encoder.end();
   }
 
   processBlock(blockId: number, blockBa: BufferAccess) {
@@ -73,8 +71,8 @@ export class TzxProcessor {
     const dataLength = ba.getUint16Le(0x02);
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
-    this.e.recordDataBlock(blockDataBa, {
-      ...this.e.getStandardSpeedRecordOptions(),
+    this.encoder.recordDataBlock(blockDataBa, {
+      ...this.encoder.getStandardSpeedRecordOptions(),
       pauseLengthMs: ba.getUint16Le(0x00),
       pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223,
     });
@@ -88,7 +86,7 @@ export class TzxProcessor {
     const dataLength = ba.getUint8(0x0f) + ba.getUint8(0x10) * 2 ** 8 + ba.getUint8(0x11) * 2 ** 16;
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
-    this.e.recordDataBlock(blockDataBa, {
+    this.encoder.recordDataBlock(blockDataBa, {
       pilotPulseLength: ba.getUint16Le(0x00),
       syncFirstPulseLength: ba.getUint16Le(0x02),
       syncSecondPulseLength: ba.getUint16Le(0x04),
@@ -107,7 +105,7 @@ export class TzxProcessor {
     const pulseLength = ba.getUint16Le(0);
     const numberOfPulses = ba.getUint16Le(2);
     for (let i = 0; i < numberOfPulses; i++) {
-      this.e.recordPulse(pulseLength);
+      this.encoder.recordPulse(pulseLength);
     }
 
     return 4;
@@ -118,7 +116,7 @@ export class TzxProcessor {
     const numberOfPulses = ba.getUint8(0);
     for (let i = 0; i < numberOfPulses; i++) {
       const pulseLength = ba.getUint16Le(1 + 2 * i);
-      this.e.recordPulse(pulseLength);
+      this.encoder.recordPulse(pulseLength);
     }
 
     return 1 + 2 * numberOfPulses;
@@ -130,7 +128,7 @@ export class TzxProcessor {
     const dataLength = ba.getUint8(0x07) + ba.getUint8(0x08) * 2 ** 8 + ba.getUint8(0x09) * 2 ** 16;
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
-    this.e.recordPureDataBlock(blockDataBa, {
+    this.encoder.recordPureDataBlock(blockDataBa, {
       zeroBitPulseLength: ba.getUint16Le(0x00),
       oneBitPulseLength: ba.getUint16Le(0x02),
       lastByteUsedBits: ba.getUint8(0x04),
@@ -143,7 +141,7 @@ export class TzxProcessor {
   processPauseBlock(ba: BufferAccess) {
     // ID 0x20
     const length = ba.getUint16Le(0);
-    this.e.recordSilenceMs(length);
+    this.encoder.recordSilenceMs(length);
 
     return 2;
   }

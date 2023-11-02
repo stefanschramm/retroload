@@ -10,16 +10,13 @@ export abstract class AbstractEncoder {
     throw new InternalError('getTargetName() not implemented!');
   }
 
-  protected readonly recorder: RecorderInterface;
-  private phase: boolean;
+  /**
+   * this.phase determines whether the next half oscillation is positive.
+   * It's modified only when recording half oscillations.
+   */
+  private phase = true;
 
-  constructor(recorder: RecorderInterface) {
-    this.recorder = recorder;
-    /**
-     * this.phase determines whether the next half oscillation is positive.
-     * It's modified only when recording half oscillations.
-     */
-    this.phase = true;
+  constructor(protected readonly recorder: RecorderInterface) {
   }
 
   begin() {
