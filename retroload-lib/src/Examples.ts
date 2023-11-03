@@ -296,10 +296,10 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'zx81_p',
     file: 'rl.p',
-    options: {name: 'TEST'},
-    hash: '23457ea2403a1e38be2911868a5b8bf4',
+    options: {name: 'RL'},
+    hash: 'c69b949596cc6a158a229a4e3d6fb73a',
     instructions: 'LOAD""\nRUN',
-    tests: [], // TODO: use different example filename (RL) and test again on real hardware
+    tests: ['2023-11-03 OK (ZX 81)'],
   },
   // ZX Spectrum
   {
