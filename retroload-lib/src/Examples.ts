@@ -280,9 +280,9 @@ const examples: ExampleDefinition[] = [
     dir: 'z1013_z13',
     file: 'rl.z13',
     options: {},
-    hash: '34083eb0e8ee6f631e92a412c8926f71',
-    instructions: 'L 0100 018F\nJ 0100',
-    tests: [''],
+    hash: 'c218c1653624c4be23e93623217ea561',
+    instructions: 'L 1000 108F\nJ 1000',
+    tests: ['2023-11-03 OK (Z 1013)'],
   },
   {
     dir: 'z1013_z80',

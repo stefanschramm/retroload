@@ -235,10 +235,12 @@ If loading succeeds, but BASIC complains about an incorrect statment (and the pr
 
 # Z 1013
 
-The load command `L` takes the load and end address as hexadecimal numbers (here `0100` and `018F`) . `J` starts a program at the specified address (here `0100`).
+Volume: 40 % (using line cable)
 
-    L 0100 018F
-    J 0100
+The load command `L` takes the load and end address as hexadecimal numbers (here `1000` and `108F`) . `J` starts a program at the specified address (here `1000`).
+
+    L 1000 108F
+    J 1000
 
 # ZX 81
 

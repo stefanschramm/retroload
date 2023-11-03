@@ -2,10 +2,10 @@
 ; example program for Z 1013
 ; to be assembled using z80asm
 ;
-; Load: L 0100 018F
-; Run: J 0100
+; Load: L 1000 108F
+; Run: J 1000
 
-	OFFSET: equ 0x0100
+	OFFSET: equ 0x1000
 
 	OUTCH:  equ 0x00 ; OS routine
 
