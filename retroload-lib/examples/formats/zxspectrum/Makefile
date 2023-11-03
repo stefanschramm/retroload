@@ -1,14 +1,18 @@
 include ../Makefile.inc
 
-all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx
+all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx rl.bas rl.bin
 
 # https://github.com/weiju/zxtaputils
 %.tzx: %.tap
 	tzxmerge -o $@ $<
 
 # https://github.com/weiju/zxtaputils
-%.bas.tap: %.bas
+%.bas.tap: %.txt
 	bas2tap $< $@
+
+# https://github.com/weiju/zxtaputils
+%.bas: %.txt
+	bas2tap --format plain $< $@
 
 # https://github.com/weiju/zxtaputils
 %.bin.tap: %.bin
@@ -24,4 +28,4 @@ all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx
 	retroload -o $@ $<
 
 clean:
-	rm -f *.wav *.tap *.tzx *.bin
+	rm -f *.wav *.tap *.tzx *.bin *.bas

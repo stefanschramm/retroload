@@ -304,6 +304,30 @@ const examples: ExampleDefinition[] = [
   // ZX Spectrum
   {
     dir: 'zxspectrum',
+    file: 'rl.bas',
+    options: {format: 'zxspectrumgeneric', name: 'RL', zxtype: '0'},
+    hash: '1284a33c7f22528d35f0472bc20aee75',
+    instructions: 'LOAD ""\nRUN',
+    tests: ['2023-11-03 OK (ZX Spectrum+)'],
+  },
+  {
+    dir: 'zxspectrum',
+    file: 'number_array.dat', // contains a 1-dimensional array with 4 elements: 23, 41, 13, 37
+    options: {format: 'zxspectrumgeneric', name: 'RL', zxtype: '1'},
+    hash: '4b14148581938c3d8507e20786efa443',
+    instructions: 'LOAD "" DATA a()',
+    tests: ['2023-11-03 OK (ZX Spectrum+)'],
+  },
+  {
+    dir: 'zxspectrum',
+    file: 'rl.bin',
+    options: {format: 'zxspectrumgeneric', name: 'RL', load: '8000', zxtype: '3'},
+    hash: '84f3375e693b3c42bdfb0e46cbc656c0',
+    instructions: 'LOAD ""CODE\nPRINT USR 32768',
+    tests: ['2023-11-03 OK (ZX Spectrum+)'],
+  },
+  {
+    dir: 'zxspectrum',
     file: 'rl.bas.tap',
     options: {format: 'zxspectrumtap'},
     hash: '1a5cddb97fb7e433bc518fac58a5c8bc',

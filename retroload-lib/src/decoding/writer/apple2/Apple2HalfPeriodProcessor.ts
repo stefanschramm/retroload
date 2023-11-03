@@ -4,7 +4,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
 import {type Position, formatPosition} from '../../../common/Positioning.js';
 import {type FrequencyRange, is} from '../../Frequency.js';
-import {hex8} from '../../../common/Utils.js';
+import {calculateChecksum8Xor, hex8} from '../../../common/Utils.js';
 import {SyncFinder} from '../../SyncFinder.js';
 
 const fSyncIntro: FrequencyRange = [680, 930]; // 770 Hz
@@ -71,7 +71,7 @@ export class Apple2HalfPeriodProcessor {
       throw new EndOfInput();
     }
     const dataBa = BufferAccess.createFromUint8Array(new Uint8Array(bytesRead));
-    const calculatedChecksum = calculateXorChecksum8(dataBa);
+    const calculatedChecksum = calculateChecksum8Xor(dataBa);
     const checksumCorrect = calculatedChecksum === readChecksum;
 
     if (!checksumCorrect) {
@@ -149,16 +149,6 @@ export class Apple2HalfPeriodProcessor {
 
     return (firstHalf + secondHalf) / 2;
   }
-}
-
-export function calculateXorChecksum8(data: BufferAccess) {
-  let value = 0xff;
-
-  for (let i = 0; i < data.length(); i++) {
-    value ^= data.getUint8(i);
-  }
-
-  return value;
 }
 
 export class FileDecodingResult {

@@ -263,12 +263,21 @@ BASIC programs can be loaded and started by
     LOAD ""
     RUN
 
-(`J`, `"`, `"`, `ENTER`, ..., `R`, `ENTER`")
+(`J`, `"`, `"`, `ENTER`, ..., `R`, `ENTER`)
 
-Machine language programs can be started by
+Note: Some programs may start automatically after loading.
+
+Machine language programs can loaded by
 
     LOAD "" CODE
+
+(`J`, `"`, `"`, `EXTEND MODE`, `I`, `ENTER`)
+
+...and started by
+
     PRINT USR 32768
+
+(`P`, `EXTEND MODE`, `L`, `ENTER`)
 
 where `32768` is their entry address.
 
