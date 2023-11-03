@@ -256,10 +256,14 @@ In case the program is not auto-starting:
 
 # ZX Spectrum+
 
+Volume: 80 % (using line cable)
+
 BASIC programs can be loaded and started by
 
     LOAD ""
     RUN
+
+(`J`, `"`, `"`, `ENTER`, ..., `R`, `ENTER`")
 
 Machine language programs can be started by
 
