@@ -304,6 +304,14 @@ const examples: ExampleDefinition[] = [
   // ZX Spectrum
   {
     dir: 'zxspectrum',
+    file: 'rl.bin',
+    options: {format: 'zxspectrumgeneric', name: 'RL'},
+    hash: '84f3375e693b3c42bdfb0e46cbc656c0',
+    instructions: 'LOAD ""CODE\nPRINT USR 32768',
+    tests: ['2023-11-03 OK (ZX Spectrum+)'],
+  },
+  {
+    dir: 'zxspectrum',
     file: 'rl.bas.tap',
     options: {format: 'zxspectrumtap'},
     hash: '1a5cddb97fb7e433bc518fac58a5c8bc',

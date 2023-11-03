@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx
+all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx rl.bin
 
 # https://github.com/weiju/zxtaputils
 %.tzx: %.tap

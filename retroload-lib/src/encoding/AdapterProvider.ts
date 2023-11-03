@@ -29,6 +29,7 @@ import Z1013GenericAdapter from './adapter/Z1013GenericAdapter.js';
 import Z1013Z13Adapter from './adapter/Z1013Z13Adapter.js';
 import Z1013Z80Adapter from './adapter/Z1013Z80Adapter.js';
 import Zx81PAdapter from './adapter/Zx81PAdapter.js';
+import ZxSpectrumGenericAdapter from './adapter/ZxSpectrumGenericAdapter.js';
 import ZxSpectrumTapAdapter from './adapter/ZxSpectrumTapAdapter.js';
 import ZxSpectrumTzxAdapter from './adapter/ZxSpectrumTzxAdapter.js';
 
@@ -63,6 +64,7 @@ export const adapters: AdapterDefinition[] = [
   Z1013Z13Adapter,
   Z1013Z80Adapter,
   Zx81PAdapter,
+  ZxSpectrumGenericAdapter,
   ZxSpectrumTapAdapter,
   ZxSpectrumTzxAdapter,
 ];
