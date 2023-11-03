@@ -265,6 +265,8 @@ BASIC programs can be loaded and started by
 
 (`J`, `"`, `"`, `ENTER`, ..., `R`, `ENTER`)
 
+Note: Some programs may start automatically after loading.
+
 Machine language programs can loaded by
 
     LOAD "" CODE
