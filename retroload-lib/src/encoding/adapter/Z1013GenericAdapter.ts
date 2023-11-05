@@ -6,24 +6,22 @@ import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js'
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
 const definition: AdapterDefinition = {
-
   name: 'Z1013 (Generic data)',
-
   internalName: 'z1013generic',
-
   targetName: Z1013Encoder.getTargetName(),
-
   options: [],
-
-  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
-    return unidentifiable;
-  },
-
-  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
-    const e = new Z1013Encoder(recorder);
-    e.begin();
-    e.recordData(ba);
-    e.end();
-  },
+  identify,
+  encode,
 };
 export default definition;
+
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  return unidentifiable;
+}
+
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+  const e = new Z1013Encoder(recorder);
+  e.begin();
+  e.recordData(ba);
+  e.end();
+}

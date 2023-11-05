@@ -17,87 +17,85 @@ const typeOption: ArgumentOptionDefinition<number> = {
   parse: (v) => v === '' ? typeBinary : parseInt(v, 16),
 };
 
-const typeProgram = 0;
-const typeNumberArray = 1;
-const typeCharArray = 2;
-const typeBinary = 3;
-
 /**
  * https://faqwiki.zxnet.co.uk/wiki/Spectrum_tape_interface
  */
 const definition: AdapterDefinition = {
-
   name: 'ZX Spectrum (Generic data)',
-
   internalName: 'zxspectrumgeneric',
-
   targetName: ZxSpectrumTzxEncoder.getTargetName(),
-
   options: [
     nameOption,
     typeOption,
     loadOption,
   ],
-
-  identify(_filename: string, _ba: BufferAccess) {
-    return unidentifiable;
-  },
-
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const name = options.getArgument(nameOption);
-    const type = options.getArgument(typeOption);
-
-    let param1;
-    let param2;
-    switch (type) {
-      case typeProgram:
-        // Misusing the loadOption in this case for the autostart parameter (BASIC line number).
-        param1 = options.getArgument(loadOption) ?? 0x8000;
-        param2 = ba.length();
-        break;
-      case typeNumberArray:
-        param1 = 0x8100; // a()
-        param2 = 0x8000;
-        break;
-      case typeCharArray:
-        param1 = 0xc100; // a$()
-        param2 = 0x8000;
-        break;
-      case typeBinary:
-        param1 = options.getArgument(loadOption) ?? 0x8000;
-        param2 = 0x8000;
-        break;
-      default:
-        Logger.info(`Warning: The specified file type ${type} is not known. Known types: 0 (BASIC program), 1 (number array), 2 (string array), 3 (binary data)`);
-        param1 = 0x8000;
-        param2 = 0x8000;
-        break;
-    }
-    // The array names a() and a$() stored at the tape doesn't seem to matter.
-    // The computer uses the name specified on loading (LOAD "" CODE b()).
-
-    const e = new ZxSpectrumTzxEncoder(recorder);
-    e.begin();
-
-    const headerBlockBa = BufferAccess.create(19);
-    headerBlockBa.writeUint8(0x00); // marker byte
-    headerBlockBa.writeUint8(type);
-    headerBlockBa.writeAsciiString(name, 10, 0x20);
-    headerBlockBa.writeUint16Le(ba.length());
-    headerBlockBa.writeUint16Le(param1);
-    headerBlockBa.writeUint16Le(param2);
-    headerBlockBa.writeUint8(calculateChecksum8Xor(headerBlockBa.slice(0, 18)));
-
-    e.recordStandardSpeedDataBlock(headerBlockBa);
-
-    const dataBlockBa = BufferAccess.create(ba.length() + 2);
-    dataBlockBa.writeUint8(0xff); // marker byte
-    dataBlockBa.writeBa(ba);
-    dataBlockBa.writeUint8(calculateChecksum8Xor(dataBlockBa));
-
-    e.recordStandardSpeedDataBlock(dataBlockBa);
-
-    e.end();
-  },
+  identify,
+  encode,
 };
 export default definition;
+
+const typeProgram = 0;
+const typeNumberArray = 1;
+const typeCharArray = 2;
+const typeBinary = 3;
+
+function identify(_filename: string, _ba: BufferAccess) {
+  return unidentifiable;
+}
+
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  const name = options.getArgument(nameOption);
+  const type = options.getArgument(typeOption);
+
+  let param1;
+  let param2;
+  switch (type) {
+    case typeProgram:
+      // Misusing the loadOption in this case for the autostart parameter (BASIC line number).
+      param1 = options.getArgument(loadOption) ?? 0x8000;
+      param2 = ba.length();
+      break;
+    case typeNumberArray:
+      param1 = 0x8100; // a()
+      param2 = 0x8000;
+      break;
+    case typeCharArray:
+      param1 = 0xc100; // a$()
+      param2 = 0x8000;
+      break;
+    case typeBinary:
+      param1 = options.getArgument(loadOption) ?? 0x8000;
+      param2 = 0x8000;
+      break;
+    default:
+      Logger.info(`Warning: The specified file type ${type} is not known. Known types: 0 (BASIC program), 1 (number array), 2 (string array), 3 (binary data)`);
+      param1 = 0x8000;
+      param2 = 0x8000;
+      break;
+  }
+  // The array names a() and a$() stored at the tape doesn't seem to matter.
+  // The computer uses the name specified on loading (LOAD "" CODE b()).
+
+  const e = new ZxSpectrumTzxEncoder(recorder);
+  e.begin();
+
+  const headerBlockBa = BufferAccess.create(19);
+  headerBlockBa.writeUint8(0x00); // marker byte
+  headerBlockBa.writeUint8(type);
+  headerBlockBa.writeAsciiString(name, 10, 0x20);
+  headerBlockBa.writeUint16Le(ba.length());
+  headerBlockBa.writeUint16Le(param1);
+  headerBlockBa.writeUint16Le(param2);
+  headerBlockBa.writeUint8(calculateChecksum8Xor(headerBlockBa.slice(0, 18)));
+
+  e.recordStandardSpeedDataBlock(headerBlockBa);
+
+  const dataBlockBa = BufferAccess.create(ba.length() + 2);
+  dataBlockBa.writeUint8(0xff); // marker byte
+  dataBlockBa.writeBa(ba);
+  dataBlockBa.writeUint8(calculateChecksum8Xor(dataBlockBa));
+
+  e.recordStandardSpeedDataBlock(dataBlockBa);
+
+  e.end();
+}

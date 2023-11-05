@@ -6,12 +6,6 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
-const maxFileNameLength = 11;
-
-const blockTypeStart = 0x00;
-const blockTypeData = 0x01;
-const blockTypeEnd = 0xff;
-
 const fileTypeBasic = 0x00; // other types: 1 == data, 2 == binary
 const fileModeBinary = 0x00; // other modes: 0xff == text
 
@@ -38,49 +32,52 @@ const modeOption: ArgumentOptionDefinition<number> = {
 };
 
 const definition: AdapterDefinition = {
-
   name: 'MO5 (Generic data)',
-
   internalName: 'mo5generic',
-
   targetName: Mo5Encoder.getTargetName(),
-
   options: [
     nameOption,
     typeOption,
     modeOption,
   ],
-
-  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
-    return unidentifiable;
-  },
-
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const filename = options.getArgument(nameOption);
-    if (filename.length > maxFileNameLength) {
-      throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
-    }
-
-    const filetype = options.getArgument(typeOption);
-    const filemode = options.getArgument(modeOption);
-
-    const startBlockDataBa = BufferAccess.create(maxFileNameLength + 3);
-    startBlockDataBa.writeAsciiString(filename, maxFileNameLength, 0x20);
-    startBlockDataBa.writeUint8(filetype);
-    startBlockDataBa.writeUint8(filemode);
-    startBlockDataBa.writeUint8(filemode);
-
-    const e = new Mo5Encoder(recorder);
-    e.begin();
-    e.recordStartBlock(createBlock(blockTypeStart, startBlockDataBa));
-    for (const dataChunkBa of ba.chunks(254)) {
-      e.recordDataBlock(createBlock(blockTypeData, dataChunkBa));
-    }
-    e.recordEndBlock(createBlock(blockTypeEnd, BufferAccess.create(0)));
-    e.end();
-  },
+  identify,
+  encode,
 };
 export default definition;
+
+const maxFileNameLength = 11;
+const blockTypeStart = 0x00;
+const blockTypeData = 0x01;
+const blockTypeEnd = 0xff;
+
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  return unidentifiable;
+}
+
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  const filename = options.getArgument(nameOption);
+  if (filename.length > maxFileNameLength) {
+    throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
+  }
+
+  const filetype = options.getArgument(typeOption);
+  const filemode = options.getArgument(modeOption);
+
+  const startBlockDataBa = BufferAccess.create(maxFileNameLength + 3);
+  startBlockDataBa.writeAsciiString(filename, maxFileNameLength, 0x20);
+  startBlockDataBa.writeUint8(filetype);
+  startBlockDataBa.writeUint8(filemode);
+  startBlockDataBa.writeUint8(filemode);
+
+  const e = new Mo5Encoder(recorder);
+  e.begin();
+  e.recordStartBlock(createBlock(blockTypeStart, startBlockDataBa));
+  for (const dataChunkBa of ba.chunks(254)) {
+    e.recordDataBlock(createBlock(blockTypeData, dataChunkBa));
+  }
+  e.recordEndBlock(createBlock(blockTypeEnd, BufferAccess.create(0)));
+  e.end();
+}
 
 function createBlock(blockType: number, blockDataBa: BufferAccess): BufferAccess {
   const blockBa = BufferAccess.create(16 + 2 + 1 + blockDataBa.length() + 2);

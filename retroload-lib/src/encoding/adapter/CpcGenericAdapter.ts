@@ -6,6 +6,23 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
+/**
+ * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
+ */
+const definition: AdapterDefinition = {
+  name: 'CPC (Generic data)',
+  internalName: 'cpcgeneric',
+  targetName: CpcTzxEncoder.getTargetName(),
+  options: [
+    nameOption,
+    loadOption,
+    entryOption,
+  ],
+  identify,
+  encode,
+};
+export default definition;
+
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;
 const segmentsPerDataBlock = 8;
@@ -15,75 +32,56 @@ const maxFileNameLength = 16;
 const headerRecordSyncCharacter = 0x2c;
 const dataRecordSyncCharacter = 0x16;
 
-const definition: AdapterDefinition = {
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  return unidentifiable;
+}
 
-  name: 'CPC (Generic data)',
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  const filename = options.getArgument(nameOption);
+  if (filename.length > maxFileNameLength) {
+    throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
+  }
 
-  internalName: 'cpcgeneric',
+  const load = options.getArgument(loadOption) ?? 0x0000;
+  const entry = options.getArgument(entryOption) ?? 0x0000;
 
-  targetName: CpcTzxEncoder.getTargetName(),
+  const e = new CpcTzxEncoder(recorder);
 
-  options: [
-    nameOption,
-    loadOption,
-    entryOption,
-  ],
+  const chunks = ba.chunks(dataBytesPerDataBlock);
 
-  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
-    return unidentifiable;
-  },
+  e.begin();
+  for (let b = 0; b < chunks.length; b++) {
+    const chunk = chunks[b];
+    const isFirstBlock = b === 0;
+    const isLastBlock = b === (chunks.length - 1);
+    const blockDataLocation = load + b * dataBytesPerDataBlock;
 
-  /**
-   * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
-   */
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const filename = options.getArgument(nameOption);
-    if (filename.length > maxFileNameLength) {
-      throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
-    }
+    // header block
 
-    const load = options.getArgument(loadOption) ?? 0x0000;
-    const entry = options.getArgument(entryOption) ?? 0x0000;
+    const headerBa = BufferAccess.create(0x100);
+    headerBa.writeAsciiString(filename, maxFileNameLength, 0);
+    headerBa.writeUint8(b + 1); // block number
+    headerBa.writeUint8(isLastBlock ? 0xff : 0x00);
+    headerBa.writeUint8(fileTypeBinary);
+    headerBa.writeUint16Le(chunk.length());
+    headerBa.writeUint16Le(blockDataLocation);
+    headerBa.writeUint8(isFirstBlock ? 0xff : 0x00);
+    // user fields
+    headerBa.writeUint16Le(ba.length()); // logical length
+    headerBa.writeUint16Le(entry); // entry address
 
-    const e = new CpcTzxEncoder(recorder);
+    // Remaining bytes 28..63 stay unallocated. Rest of header segment is padded with zeros.
 
-    const chunks = ba.chunks(dataBytesPerDataBlock);
+    const headerRecordBa = createHeaderRecord(headerBa);
+    e.recordDataBlock(headerRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x000a});
 
-    e.begin();
-    for (let b = 0; b < chunks.length; b++) {
-      const chunk = chunks[b];
-      const isFirstBlock = b === 0;
-      const isLastBlock = b === (chunks.length - 1);
-      const blockDataLocation = load + b * dataBytesPerDataBlock;
+    // data block
 
-      // header block
-
-      const headerBa = BufferAccess.create(0x100);
-      headerBa.writeAsciiString(filename, maxFileNameLength, 0);
-      headerBa.writeUint8(b + 1); // block number
-      headerBa.writeUint8(isLastBlock ? 0xff : 0x00);
-      headerBa.writeUint8(fileTypeBinary);
-      headerBa.writeUint16Le(chunk.length());
-      headerBa.writeUint16Le(blockDataLocation);
-      headerBa.writeUint8(isFirstBlock ? 0xff : 0x00);
-      // user fields
-      headerBa.writeUint16Le(ba.length()); // logical length
-      headerBa.writeUint16Le(entry); // entry address
-
-      // Remaining bytes 28..63 stay unallocated. Rest of header segment is padded with zeros.
-
-      const headerRecordBa = createHeaderRecord(headerBa);
-      e.recordDataBlock(headerRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x000a});
-
-      // data block
-
-      const dataRecordBa = createDataRecord(chunk);
-      e.recordDataBlock(dataRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x09c4});
-    }
-    e.end();
-  },
-};
-export default definition;
+    const dataRecordBa = createDataRecord(chunk);
+    e.recordDataBlock(dataRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x09c4});
+  }
+  e.end();
+}
 
 function createHeaderRecord(headerBa: BufferAccess) {
   if (headerBa.length() !== dataBytesPerSegment) {

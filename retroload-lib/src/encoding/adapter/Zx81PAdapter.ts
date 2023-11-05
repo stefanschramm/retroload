@@ -5,39 +5,35 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {InvalidArgumentError} from '../../common/Exceptions.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
-const defaultName = ' ';
-
 const definition: AdapterDefinition = {
-
   name: 'ZX81 .P-File',
-
   internalName: 'zx81p',
-
   targetName: Zx81Encoder.getTargetName(),
-
-  options: [
-    nameOption,
-  ],
-
-  identify(filename: string, _ba: BufferAccess) {
-    return {
-      filename: (/^.*\.p$/i).exec(filename) !== null,
-      header: undefined, // no specific header
-    };
-  },
-
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const name = options.getArgument(nameOption);
-    const e = new Zx81Encoder(recorder);
-    e.begin();
-    for (const byte of mapFileName(name.length === 0 ? defaultName : name)) {
-      e.recordByte(byte);
-    }
-    e.recordBytes(ba);
-    e.end();
-  },
+  options: [nameOption],
+  identify,
+  encode,
 };
 export default definition;
+
+const defaultName = ' ';
+
+function identify(filename: string, _ba: BufferAccess) {
+  return {
+    filename: (/^.*\.p$/i).exec(filename) !== null,
+    header: undefined, // no specific header
+  };
+}
+
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  const name = options.getArgument(nameOption);
+  const e = new Zx81Encoder(recorder);
+  e.begin();
+  for (const byte of mapFileName(name.length === 0 ? defaultName : name)) {
+    e.recordByte(byte);
+  }
+  e.recordBytes(ba);
+  e.end();
+}
 
 /**
  * Map file name to ZX 81 charset

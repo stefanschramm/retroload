@@ -5,29 +5,27 @@ import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type OptionContainer} from '../Options.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
-const fileHeader = 'ZXTape!\x1a';
-
 const definition: AdapterDefinition = {
-
   name: 'ZX Spectrum .TZX-File',
-
   internalName: 'zxspectrumtzx',
-
   targetName: ZxSpectrumTzxEncoder.getTargetName(),
-
   options: [],
-
-  identify(filename: string, ba: BufferAccess) {
-    return {
-      filename: (/^.*\.tzx/i).exec(filename) !== null,
-      header: ba.containsDataAt(0, fileHeader),
-    };
-  },
-
-  encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
-    const e = new ZxSpectrumTzxEncoder(recorder);
-    const tzxProcessor = new TzxProcessor(e);
-    tzxProcessor.processTzx(ba);
-  },
+  identify,
+  encode,
 };
 export default definition;
+
+const fileHeader = 'ZXTape!\x1a';
+
+function identify(filename: string, ba: BufferAccess) {
+  return {
+    filename: (/^.*\.tzx/i).exec(filename) !== null,
+    header: ba.containsDataAt(0, fileHeader),
+  };
+}
+
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+  const e = new ZxSpectrumTzxEncoder(recorder);
+  const tzxProcessor = new TzxProcessor(e);
+  tzxProcessor.processTzx(ba);
+}

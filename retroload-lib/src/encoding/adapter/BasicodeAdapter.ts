@@ -13,34 +13,32 @@ const basicodeDataOption: FlagOptionDefinition = {
 };
 
 const definition: AdapterDefinition = {
-
   name: 'BASICODE (ASCII plain text)',
-
   internalName: 'basicode',
-
   targetName: BasicodeEncoder.getTargetName(),
-
   options: [
     shortpilotOption,
     basicodeDataOption,
   ],
-
-  identify(filename: string, _ba: BufferAccess): FormatIdentification {
-    return {
-      filename: (/^.*\.(bc2|asc|bc|bas)$/i).exec(filename) !== null,
-      header: undefined,
-    };
-  },
-
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const e = new BasicodeEncoder(recorder, options.isFlagSet(shortpilotOption));
-    e.begin();
-    if (options.isFlagSet(basicodeDataOption)) {
-      e.recordBasicData(ba);
-    } else {
-      e.recordBasicProgram(ba);
-    }
-    e.end();
-  },
+  identify,
+  encode,
 };
 export default definition;
+
+function identify(filename: string, _ba: BufferAccess): FormatIdentification {
+  return {
+    filename: (/^.*\.(bc2|asc|bc|bas)$/i).exec(filename) !== null,
+    header: undefined,
+  };
+}
+
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  const e = new BasicodeEncoder(recorder, options.isFlagSet(shortpilotOption));
+  e.begin();
+  if (options.isFlagSet(basicodeDataOption)) {
+    e.recordBasicData(ba);
+  } else {
+    e.recordBasicProgram(ba);
+  }
+  e.end();
+}

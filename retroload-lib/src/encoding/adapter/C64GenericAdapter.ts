@@ -19,56 +19,54 @@ const c64typeOption: ArgumentOptionDefinition<string> = {
 };
 
 const definition: AdapterDefinition = {
-
   name: 'C64 (Generic data)',
-
   internalName: 'c64generic',
-
   targetName: C64Encoder.getTargetName(),
-
-  identify(_filename: string, _ba: BufferAccess): FormatIdentification {
-    return unidentifiable;
-  },
-
   options: [
     shortpilotOption, // (not available for .tap)
     c64typeOption,
     nameOption,
     loadOption,
   ],
-
-  encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-    const type: string = options.getArgument(c64typeOption);
-    if (!['basic', 'data', 'prg'].includes(type)) {
-      throw new InvalidArgumentError(c64typeOption.name, 'Option c64type is required and expected to be set to "basic", "data" or "prg".');
-    }
-    const loadAddress = options.getArgument(loadOption);
-    const name = options.getArgument(nameOption);
-    if (name.length > 16) {
-      throw new InvalidArgumentError(nameOption.name, 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
-    }
-
-    const e = new C64Encoder(recorder, options.isFlagSet(shortpilotOption));
-    e.begin();
-    switch (type) {
-      case 'basic':
-        checkLoadAddress(loadAddress);
-        e.recordBasic(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
-        break;
-      case 'prg':
-        checkLoadAddress(loadAddress);
-        e.recordPrg(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
-        break;
-      case 'data':
-        e.recordData(name.padEnd(16, ' '), ba);
-        break;
-      default:
-        throw new InternalError('Got unknown type.');
-    }
-    e.end();
-  },
+  identify,
+  encode,
 };
 export default definition;
+
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
+  return unidentifiable;
+}
+
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  const type: string = options.getArgument(c64typeOption);
+  if (!['basic', 'data', 'prg'].includes(type)) {
+    throw new InvalidArgumentError(c64typeOption.name, 'Option c64type is required and expected to be set to "basic", "data" or "prg".');
+  }
+  const loadAddress = options.getArgument(loadOption);
+  const name = options.getArgument(nameOption);
+  if (name.length > 16) {
+    throw new InvalidArgumentError(nameOption.name, 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
+  }
+
+  const e = new C64Encoder(recorder, options.isFlagSet(shortpilotOption));
+  e.begin();
+  switch (type) {
+    case 'basic':
+      checkLoadAddress(loadAddress);
+      e.recordBasic(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
+      break;
+    case 'prg':
+      checkLoadAddress(loadAddress);
+      e.recordPrg(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
+      break;
+    case 'data':
+      e.recordData(name.padEnd(16, ' '), ba);
+      break;
+    default:
+      throw new InternalError('Got unknown type.');
+  }
+  e.end();
+}
 
 function checkLoadAddress(loadAddress: number | undefined) {
   if (loadAddress === undefined) {
