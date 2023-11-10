@@ -1,5 +1,6 @@
 import {AbstractEncoder} from './AbstractEncoder.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
+import {Logger} from '../../common/logging/Logger.js';
 
 const blockDataSize = 32;
 
@@ -33,6 +34,8 @@ export class Z1013Encoder extends AbstractEncoder {
     blockBa.writeUint16Le(blockNumber);
     blockBa.writeBa(blockDataBa);
     blockBa.writeUint16Le(calculateChecksum(blockBa.slice(0, blockBa.length() - 2)));
+
+    Logger.debug(blockBa.asHexDump());
 
     this.recordIntro();
     this.recordDelimiter();

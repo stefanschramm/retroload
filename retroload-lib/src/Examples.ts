@@ -277,20 +277,20 @@ const examples: ExampleDefinition[] = [
   },
   // Z 1013
   {
-    dir: 'z1013_z13',
+    dir: 'z1013',
     file: 'rl.z13',
     options: {},
     hash: 'c218c1653624c4be23e93623217ea561',
     instructions: 'L 1000 108F\nJ 1000',
-    tests: ['2023-11-03 OK (Z 1013)'],
+    tests: ['2023-11-10 OK (Z 1013)'],
   },
   {
-    dir: 'z1013_z80',
+    dir: 'z1013',
     file: 'rl.z80',
     options: {},
-    hash: '779a051a0ed4769462d24aded68a94b3',
-    instructions: 'L 0100 0200\nJ 0100',
-    tests: [],
+    hash: 'c218c1653624c4be23e93623217ea561',
+    instructions: 'L 1000 108F\nJ 1000',
+    tests: ['2023-11-10 OK (Z 1013)'],
   },
   // ZX 81
   {

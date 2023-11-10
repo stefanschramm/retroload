@@ -242,6 +242,10 @@ The load command `L` takes the load and end address as hexadecimal numbers (here
     L 1000 108F
     J 1000
 
+The monitor image does not change while loading.
+The sound can be heared on the TV when using the HF cable.
+After successful loading, the `#`-prompt is displayed.
+
 # ZX 81
 
 Volume: 60 % (using line cable)

@@ -5,6 +5,14 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type OptionContainer} from '../Options.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
+/**
+ * The .z80 adapter currently just strips the header and outputs the acutal
+ * data like from a .z13 (generic) file. Thus using headersave for loading
+ * is not possible and the ROM routines need to be used for loading, specifying
+ * the memory addresses manually.
+ *
+ * TODO: Implement option for enabling real headersave output.
+ */
 const definition: AdapterDefinition = {
   name: 'Z1013 .Z80-File (Headersave)',
   internalName: 'z80',
