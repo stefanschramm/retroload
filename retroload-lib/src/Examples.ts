@@ -287,10 +287,18 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'z1013',
     file: 'rl.z80',
-    options: {},
+    options: {z80noheadersave: true},
     hash: 'c218c1653624c4be23e93623217ea561',
     instructions: 'L 1000 108F\nJ 1000',
     tests: ['2023-11-10 OK (Z 1013)'],
+  },
+  {
+    dir: 'z1013',
+    file: 'rl.z80',
+    options: {},
+    hash: '36cf8a21270ff68ef9fd54f36a33989f',
+    instructions: 'L 1000 108F\nJ 1000',
+    tests: ['2023-11-12 OK (Z 1013 using Headersave 5.95)'],
   },
   // ZX 81
   {

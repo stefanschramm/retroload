@@ -2,22 +2,22 @@ import {Z1013Encoder} from '../encoder/Z1013Encoder.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
-import {type OptionContainer} from '../Options.js';
+import {type FlagOptionDefinition, type OptionContainer} from '../Options.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
-/**
- * The .z80 adapter currently just strips the header and outputs the acutal
- * data like from a .z13 (generic) file. Thus using headersave for loading
- * is not possible and the ROM routines need to be used for loading, specifying
- * the memory addresses manually.
- *
- * TODO: Implement option for enabling real headersave output.
- */
+const z80noHeadersave: FlagOptionDefinition = {
+  name: 'z80noheadersave',
+  label: 'No Headersave',
+  description: 'Z1013 Z80: Don\'t output headersave header and use normal block numbering for loading with the default monitor loader.',
+  common: false,
+  type: 'bool',
+};
+
 const definition: AdapterDefinition = {
   name: 'Z1013 .Z80-File (Headersave)',
   internalName: 'z80',
   targetName: Z1013Encoder.getTargetName(),
-  options: [],
+  options: [z80noHeadersave],
   identify,
   encode,
 };
@@ -32,17 +32,27 @@ function identify(filename: string, ba: BufferAccess) {
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
   const header = ba.slice(0, headerLength);
   const data = ba.slice(headerLength);
   const loadAddress = header.getUint16Le(0x00);
   const endAddress = header.getUint16Le(0x02);
   const startAddress = header.getUint16Le(0x04);
+  const expectedDataLength = endAddress - loadAddress + 1;
   const type = header.getUint8(0x0c);
   const name = ba.slice(0x10, 0x10).asAsciiString();
   Logger.log(`Filename: "${name}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
+  if (expectedDataLength > data.length()) {
+    Logger.error(`Warning: By headersave header ${expectedDataLength} data bytes are expected but Z80 file only contains ${data.length()} data bytes.`);
+  }
   const e = new Z1013Encoder(recorder);
   e.begin();
-  e.recordData(data);
+  if (options.isFlagSet(z80noHeadersave)) {
+    e.recordData(data);
+  } else {
+    e.recordBlock(0x00e0, header);
+    e.recordFirstIntro();
+    e.recordHeadersaveData(data, loadAddress);
+  }
   e.end();
 }

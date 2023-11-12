@@ -29,6 +29,18 @@ export class Z1013Encoder extends AbstractEncoder {
     }
   }
 
+  /**
+   * Instead of incrementing the block number by 1 for each block,
+   * Headersave uses the load address for each block as block number.
+   */
+  recordHeadersaveData(ba: BufferAccess, initialBlockNumber: number) {
+    let i = initialBlockNumber;
+    for (const blockBa of ba.chunks(blockDataSize)) {
+      this.recordBlock(i, blockBa);
+      i += blockDataSize;
+    }
+  }
+
   recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
     const blockBa = BufferAccess.create(2 + blockDataBa.length() + 2);
     blockBa.writeUint16Le(blockNumber);
