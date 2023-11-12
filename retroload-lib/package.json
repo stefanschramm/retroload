@@ -28,7 +28,7 @@
     "pako": "^2.1.0"
   },
   "devDependencies": {
-    "@types/pako": "^2.0.2",
+    "@types/pako": "^2.0.3",
     "genversion": "^3.1.1"
   }
 }
