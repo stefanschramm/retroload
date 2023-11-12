@@ -3,6 +3,9 @@ import {BufferAccess} from '../../common/BufferAccess.js';
 import {Logger} from '../../common/logging/Logger.js';
 
 const blockDataSize = 32;
+const fOne = 1280;
+const fZero = 2560;
+const fDelimiter = 640;
 
 /**
  * Encoder for Robotron Z 1013
@@ -20,12 +23,9 @@ export class Z1013Encoder extends AbstractEncoder {
   }
 
   recordData(ba: BufferAccess) {
-    const blocks = Math.ceil(ba.length() / blockDataSize);
-
-    // blocks
-    for (let i = 0; i < blocks; i++) {
-      const offset = i * blockDataSize;
-      this.recordBlock(i, ba.slice(offset, blockDataSize));
+    let i = 0;
+    for (const blockBa of ba.chunks(blockDataSize)) {
+      this.recordBlock(i++, blockBa);
     }
   }
 
@@ -43,22 +43,22 @@ export class Z1013Encoder extends AbstractEncoder {
   }
 
   recordFirstIntro() {
-    this.recordOscillations(640, 2000);
+    this.recordOscillations(fDelimiter, 2000);
   }
 
   recordIntro() {
-    this.recordOscillations(640, 7);
+    this.recordOscillations(fDelimiter, 7);
   }
 
   recordDelimiter() {
-    this.recordOscillations(1280, 1);
+    this.recordOscillations(fOne, 1);
   }
 
   recordBit(value: number) {
     if (value) {
-      this.recordHalfOscillation(1280);
+      this.recordHalfOscillation(fOne);
     } else {
-      this.recordOscillations(2560, 1);
+      this.recordOscillations(fZero, 1);
     }
   }
 }
