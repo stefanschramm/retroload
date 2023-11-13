@@ -4,9 +4,10 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8, hex8} from '../../../common/Utils.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
 import {formatPosition} from '../../../common/Positioning.js';
-import {BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
 import {is, type FrequencyRange, isNot} from '../../Frequency.js';
 import {SyncFinder} from '../../SyncFinder.js';
+import {type KcBlockProvider} from './KcBlockProvider.js';
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 
 const one: FrequencyRange = [770, 1300];
 const delimiter: FrequencyRange = [500, 670];

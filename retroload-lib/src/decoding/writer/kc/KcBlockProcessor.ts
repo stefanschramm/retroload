@@ -1,9 +1,10 @@
-import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {DecodingError} from '../../ConverterExceptions.js';
 import {formatPosition, type Position} from '../../../common/Positioning.js';
-import {type BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
+import {type KcBlockProvider} from './KcBlockProvider.js';
+import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
+import {type BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 
 /**
  * Minimal expected gap between files in seconds (from end of previous block to begin of next block)
@@ -41,13 +42,13 @@ export class KcBlockProcessor {
       }
 
       const blockNumber = decodingResult.data.getUint8(0);
-      if (this.blockBelongsToNextFile(blockNumber, decodingResult.blockBegin)) {
+      if (this.blockBelongsToNextFile(blockNumber, decodingResult.begin)) {
         yield this.finishFile();
       }
       this.errorOccured = this.errorOccured || errorInCurrentBlock;
       this.blocks.push(decodingResult);
       this.previousBlockNumber = blockNumber;
-      this.previousBlockEnd = decodingResult.blockEnd;
+      this.previousBlockEnd = decodingResult.end;
     }
 
     yield this.finishFile();
@@ -59,10 +60,10 @@ export class KcBlockProcessor {
 
   private finishFile(): FileDecodingResult {
     const result = new FileDecodingResult(
-      this.blocks.map((bdr) => bdr.data),
+      this.blocks,
       this.errorOccured ? FileDecodingResultStatus.Error : FileDecodingResultStatus.Success,
-      this.blocks[0].blockBegin,
-      this.blocks[this.blocks.length - 1].blockEnd,
+      this.blocks[0].begin,
+      this.blocks[this.blocks.length - 1].end,
     );
     this.blocks = [];
     this.errorOccured = false;
@@ -92,18 +93,4 @@ export class KcBlockProcessor {
       Logger.info(`${formatPosition(currentPosition)} Warning: Got first block with block number ${hex8(blockNumber)}`);
     }
   }
-}
-
-export class FileDecodingResult {
-  constructor(
-    readonly blocks: BufferAccess[],
-    readonly status: FileDecodingResultStatus,
-    readonly begin: Position,
-    readonly end: Position,
-  ) {}
-}
-
-export enum FileDecodingResultStatus {
-  Success,
-  Error,
 }

@@ -1,11 +1,12 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
-import {type FileDecodingResult, FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
 import {LowPassFilter} from '../../sample_provider/LowPassFilter.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
 import {type WriterDefinition, type ConverterSettings, type OutputFile} from '../../ConverterManager.js';
+import {KcBlockProcessor} from './KcBlockProcessor.js';
+import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 
 const definition: WriterDefinition = {
   to: 'kctap',
@@ -36,10 +37,11 @@ function bufferAccessListToOutputFile(fdr: FileDecodingResult): OutputFile {
   const data = BufferAccess.create(fileHeader.length + 129 * blocks.length);
   data.writeAsciiString(fileHeader);
   for (const block of fdr.blocks) {
-    data.writeBa(block);
+    data.writeBa(block.data);
   }
-  const isBasicProgram = blocks[0].containsDataAt(0, '\x01\xd3\xd3\xd3') || blocks[0].containsDataAt(0, '\x01\xd7\xd7\xd7');
-  const filename = isBasicProgram ? blocks[0].slice(4, 8).asAsciiString().trim() : blocks[0].slice(1, 8).asAsciiString().trim();
+  const firstBlockData = blocks[0].data;
+  const isBasicProgram = firstBlockData.containsDataAt(0, '\x01\xd3\xd3\xd3') || firstBlockData.containsDataAt(0, '\x01\xd7\xd7\xd7');
+  const filename = isBasicProgram ? firstBlockData.slice(4, 8).asAsciiString().trim() : firstBlockData.slice(1, 8).asAsciiString().trim();
   const proposedName = restrictCharacters(filename);
 
   return {proposedName, proposedExtension: 'tap', data, begin: fdr.begin, end: fdr.end};
