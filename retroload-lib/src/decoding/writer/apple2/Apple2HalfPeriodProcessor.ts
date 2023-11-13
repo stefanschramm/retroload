@@ -71,7 +71,7 @@ export class Apple2HalfPeriodProcessor {
       throw new EndOfInput();
     }
     const dataBa = BufferAccess.createFromUint8Array(new Uint8Array(bytesRead));
-    const calculatedChecksum = calculateChecksum8Xor(dataBa);
+    const calculatedChecksum = calculateChecksum8Xor(dataBa, 0xff);
     const checksumCorrect = calculatedChecksum === readChecksum;
 
     if (!checksumCorrect) {
