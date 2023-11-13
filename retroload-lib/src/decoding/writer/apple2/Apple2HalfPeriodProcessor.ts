@@ -2,10 +2,12 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
-import {type Position, formatPosition} from '../../../common/Positioning.js';
+import {formatPosition} from '../../../common/Positioning.js';
 import {type FrequencyRange, is} from '../../Frequency.js';
 import {calculateChecksum8Xor, hex8} from '../../../common/Utils.js';
 import {SyncFinder} from '../../SyncFinder.js';
+import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 
 const fSyncIntro: FrequencyRange = [680, 930]; // 770 Hz
 // const fSyncEndFirstHalf: FrequencyRange = [1700, 2100]; // 2000 Hz
@@ -27,8 +29,8 @@ export class Apple2HalfPeriodProcessor {
     do {
       try {
         const decodedFile = this.decodeRecord();
-        if (decodedFile.status === FileDecodingResultStatus.Success && decodedFile.data.length() === 2) {
-          const length = decodedFile.data.getUint16Le(0);
+        if (decodedFile.status === FileDecodingResultStatus.Success && decodedFile.blocks[0].data.length() === 2) {
+          const length = decodedFile.blocks[0].data.getUint16Le(0);
           Logger.info(`Found a 2-byte long record that is probably a header for a basic record. Not outputting it. Recorded length value was: ${length}`);
           continue;
         }
@@ -71,7 +73,7 @@ export class Apple2HalfPeriodProcessor {
       throw new EndOfInput();
     }
     const dataBa = BufferAccess.createFromUint8Array(new Uint8Array(bytesRead));
-    const calculatedChecksum = calculateChecksum8Xor(dataBa);
+    const calculatedChecksum = calculateChecksum8Xor(dataBa, 0xff);
     const checksumCorrect = calculatedChecksum === readChecksum;
 
     if (!checksumCorrect) {
@@ -79,7 +81,15 @@ export class Apple2HalfPeriodProcessor {
     }
 
     return new FileDecodingResult(
-      dataBa,
+      [
+        // Files are not made out of blocks. Just dummy-wrapping it.
+        new BlockDecodingResult(
+          dataBa,
+          checksumCorrect ? BlockDecodingResultStatus.Complete : BlockDecodingResultStatus.InvalidChecksum,
+          recordBegin,
+          recordEnd,
+        ),
+      ],
       checksumCorrect ? FileDecodingResultStatus.Success : FileDecodingResultStatus.Error,
       recordBegin,
       recordEnd,
@@ -149,18 +159,4 @@ export class Apple2HalfPeriodProcessor {
 
     return (firstHalf + secondHalf) / 2;
   }
-}
-
-export class FileDecodingResult {
-  constructor(
-    readonly data: BufferAccess,
-    readonly status: FileDecodingResultStatus,
-    readonly begin: Position,
-    readonly end: Position,
-  ) {}
-}
-
-export enum FileDecodingResultStatus {
-  Success,
-  Error,
 }

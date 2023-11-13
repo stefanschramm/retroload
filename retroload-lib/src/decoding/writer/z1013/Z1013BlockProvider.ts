@@ -1,7 +1,6 @@
 import {type BlockDecodingResult} from '../BlockDecodingResult.js';
 
-export type KcBlockProvider = {
+export type Z1013BlockProvider = {
   blocks(): Generator<BlockDecodingResult>;
 };
 export {BlockDecodingResult};
-

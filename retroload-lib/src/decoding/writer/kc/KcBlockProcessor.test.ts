@@ -1,7 +1,9 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {DecodingError} from '../../ConverterExceptions.js';
-import {FileDecodingResultStatus, KcBlockProcessor} from './KcBlockProcessor.js';
-import {BlockDecodingResult, BlockDecodingResultStatus, type KcBlockProvider} from './KcBlockProvider.js';
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {FileDecodingResultStatus} from '../FileDecodingResult.js';
+import {KcBlockProcessor} from './KcBlockProcessor.js';
+import {type KcBlockProvider} from './KcBlockProvider.js';
 
 describe('KcBlockProcessor', () => {
   test('Generates a single file from a single file dump', () => {
@@ -15,9 +17,9 @@ describe('KcBlockProcessor', () => {
     expect(files.length).toBe(1);
     expect(files[0].blocks.length).toBe(3);
     expect(files[0].status).toBe(FileDecodingResultStatus.Success);
-    expect(files[0].blocks[0].getUint8(0)).toBe(1);
-    expect(files[0].blocks[1].getUint8(0)).toBe(2);
-    expect(files[0].blocks[2].getUint8(0)).toBe(0xff);
+    expect(files[0].blocks[0].data.getUint8(0)).toBe(1);
+    expect(files[0].blocks[1].data.getUint8(0)).toBe(2);
+    expect(files[0].blocks[2].data.getUint8(0)).toBe(0xff);
   });
 
   test('Generates two files from a multiple file dump', () => {
@@ -50,9 +52,9 @@ describe('KcBlockProcessor', () => {
     expect(files.length).toBe(1);
     expect(files[0].blocks.length).toBe(3);
     expect(files[0].status).toBe(FileDecodingResultStatus.Error);
-    expect(files[0].blocks[0].getUint8(0)).toBe(1);
-    expect(files[0].blocks[1].getUint8(0)).toBe(2);
-    expect(files[0].blocks[2].getUint8(0)).toBe(0xff);
+    expect(files[0].blocks[0].data.getUint8(0)).toBe(1);
+    expect(files[0].blocks[1].data.getUint8(0)).toBe(2);
+    expect(files[0].blocks[2].data.getUint8(0)).toBe(0xff);
   });
 
   test('Marks a file as broken if one block had an invalid checksum', () => {
@@ -67,9 +69,9 @@ describe('KcBlockProcessor', () => {
     expect(files.length).toBe(1);
     expect(files[0].blocks.length).toBe(3);
     expect(files[0].status).toBe(FileDecodingResultStatus.Error);
-    expect(files[0].blocks[0].getUint8(0)).toBe(1);
-    expect(files[0].blocks[1].getUint8(0)).toBe(2);
-    expect(files[0].blocks[2].getUint8(0)).toBe(0xff);
+    expect(files[0].blocks[0].data.getUint8(0)).toBe(1);
+    expect(files[0].blocks[1].data.getUint8(0)).toBe(2);
+    expect(files[0].blocks[2].data.getUint8(0)).toBe(0xff);
   });
 
   test('Stops if one block was only partialy loaded and stopping was requested', () => {

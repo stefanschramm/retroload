@@ -5,7 +5,7 @@ import {Logger} from '../../common/logging/Logger.js';
 const blockDataSize = 32;
 const fOne = 1280;
 const fZero = 2560;
-const fDelimiter = 640;
+const fSync = 640;
 
 /**
  * Encoder for Robotron Z 1013
@@ -55,11 +55,11 @@ export class Z1013Encoder extends AbstractEncoder {
   }
 
   recordFirstIntro() {
-    this.recordOscillations(fDelimiter, 2000);
+    this.recordOscillations(fSync, 2000);
   }
 
   recordIntro() {
-    this.recordOscillations(fDelimiter, 7);
+    this.recordOscillations(fSync, 7);
   }
 
   recordDelimiter() {
