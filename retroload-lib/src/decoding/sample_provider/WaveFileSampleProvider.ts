@@ -15,6 +15,8 @@ export class WaveFileSampleProvider implements SampleProvider {
   readonly dataLength: number;
   readonly channel: number;
 
+  private readonly dataChunkOffset: number;
+
   constructor(ba: BufferAccess, skip: number, channel: number | undefined = undefined) {
     this.ba = ba;
     this.skip = skip;
@@ -24,6 +26,8 @@ export class WaveFileSampleProvider implements SampleProvider {
     if (!ba.containsDataAt(0, 'RIFF')) {
       throw new InputDataError('File does not seem to be a WAVE file.');
     }
+    const fmtHeaderLength = ba.getUint32Le(0x10);
+    this.dataChunkOffset = 0x14 + fmtHeaderLength;
     const formatTag = ba.getUint16Le(0x14);
     if (formatTag !== pcmFormatTag) {
       throw new InputDataError('WAVE file is not in PCM format.');
@@ -41,12 +45,12 @@ export class WaveFileSampleProvider implements SampleProvider {
     this.bitsPerSample = ba.getUint16Le(0x22);
     this.blockAlign = this.ba.getUint16Le(0x20); // size of a frame in bytes
     Logger.debug(`Format: PCM, Channels: ${this.channels}, Sample Rate: ${this.sampleRate}, Bits per sample: ${this.bitsPerSample}`);
-    if (!ba.containsDataAt(0x24, 'data')) {
+    if (!ba.containsDataAt(this.dataChunkOffset, 'data')) {
       throw new InputDataError('Unable to find data block of WAVE file.');
     }
-    this.dataLength = this.ba.getUint32Le(0x28);
+    this.dataLength = this.ba.getUint32Le(this.dataChunkOffset + 4);
     // File might be padded with 0, so it's OK when buffer size exceeds this.dataLength.
-    if (this.dataLength > this.ba.length() - 44) {
+    if (this.dataLength > this.ba.length() - this.dataChunkOffset + 8) {
       Logger.info('Unexpected data length.');
     }
     if (this.skip * this.blockAlign >= this.dataLength) {
@@ -55,7 +59,7 @@ export class WaveFileSampleProvider implements SampleProvider {
   }
 
   public * getSamples(): Generator<number> {
-    const dataBa = this.ba.slice(0x2c);
+    const dataBa = this.ba.slice(this.dataChunkOffset + 8);
     for (let i = this.skip * this.blockAlign; i < this.dataLength; i += this.blockAlign) {
       // Get data for first channel only.
       switch (this.bitsPerSample) {
