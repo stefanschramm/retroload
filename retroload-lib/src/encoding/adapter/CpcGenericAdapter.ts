@@ -5,6 +5,7 @@ import {BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
+import {calculateCrc16Ccitt} from '../../common/Utils.js';
 
 /**
  * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
@@ -91,7 +92,7 @@ function createHeaderRecord(headerBa: BufferAccess) {
   const headerRecordBa = BufferAccess.create(headerRecordSize);
   headerRecordBa.writeUint8(headerRecordSyncCharacter); // synchronisation character
   headerRecordBa.writeBa(headerBa); // data
-  headerRecordBa.writeUint16Be(calculateSegmentCrc(headerBa)); // crc checksum
+  headerRecordBa.writeUint16Be(calculateCrc16Ccitt(headerBa)); // crc checksum
   headerRecordBa.writeUint32Le(0xffffffff); // trailer
 
   return headerRecordBa;
@@ -108,32 +109,9 @@ function createDataRecord(dataBa: BufferAccess) {
   dataRecordBa.writeUint8(dataRecordSyncCharacter); // synchronisation character
   for (const segmentData of segments) {
     dataRecordBa.writeBa(segmentData); // data
-    dataRecordBa.writeUint16Be(calculateSegmentCrc(segmentData)); // crc checksum
+    dataRecordBa.writeUint16Be(calculateCrc16Ccitt(segmentData)); // crc checksum
   }
   dataRecordBa.writeUint32Le(0xffffffff); // trailer
 
   return dataRecordBa;
-}
-
-/**
- * https://gist.github.com/chitchcock/5112270?permalink_comment_id=3834064#gistcomment-3834064
- */
-function calculateSegmentCrc(ba: BufferAccess): number {
-  const polynomial = 0x1021;
-  let crc = 0xffff;
-  for (let n = 0; n < ba.length(); n++) {
-    const b = ba.getUint8(n);
-    for (let i = 0; i < 8; i++) {
-      const bit = (b >> (7 - i) & 1) === 1;
-      const c15 = (crc >> 15 & 1) === 1;
-      crc <<= 1;
-      if (c15 !== bit) {
-        crc ^= polynomial;
-      }
-    }
-  }
-
-  crc &= 0xffff;
-
-  return crc ^ 0xffff; // The negation is not part of the actual CRC16-CCITT code.
 }
