@@ -37,7 +37,7 @@ function bufferAccessListToOutputFile(fdr: FileDecodingResult): OutputFile {
   const data = BufferAccess.create(fileHeader.length + 129 * blocks.length);
   data.writeAsciiString(fileHeader);
   for (const block of fdr.blocks) {
-    data.writeBa(block.data);
+    data.writeBa(block.data.slice(0, 129)); // remove checksum
   }
   const firstBlockData = blocks[0].data;
   const isBasicProgram = firstBlockData.containsDataAt(0, '\x01\xd3\xd3\xd3') || firstBlockData.containsDataAt(0, '\x01\xd7\xd7\xd7');

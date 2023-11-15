@@ -4,14 +4,14 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8, hex8} from '../../../common/Utils.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
 import {formatPosition} from '../../../common/Positioning.js';
-import {is, type FrequencyRange, isNot} from '../../Frequency.js';
+import {type FrequencyRange, isNot, avg, bitByFrequency} from '../../Frequency.js';
 import {SyncFinder} from '../../SyncFinder.js';
 import {type KcBlockProvider} from './KcBlockProvider.js';
 import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 
-const one: FrequencyRange = [770, 1300];
-const delimiter: FrequencyRange = [500, 670];
-const zero: FrequencyRange = [1400, 2800];
+const fOne: FrequencyRange = [770, 1300];
+const fDelimiter: FrequencyRange = [500, 670];
+const fZero: FrequencyRange = [1400, 2800];
 const minIntroPeriods = 200;
 
 /**
@@ -20,7 +20,7 @@ const minIntroPeriods = 200;
 export class KcHalfPeriodProcessor implements KcBlockProvider {
   private readonly syncFinder: SyncFinder;
   constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
-    this.syncFinder = new SyncFinder(this.halfPeriodProvider, one, minIntroPeriods);
+    this.syncFinder = new SyncFinder(this.halfPeriodProvider, fOne, minIntroPeriods);
   }
 
   * blocks(): Generator<BlockDecodingResult> {
@@ -58,7 +58,7 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
             throw new BlockStartNotFound();
           }
           return new BlockDecodingResult(
-            block.slice(0, 129),
+            block,
             BlockDecodingResultStatus.Partial,
             blockBegin,
             this.halfPeriodProvider.getPosition(),
@@ -80,7 +80,7 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
 
     // return slice with block number, but not checksum
     return new BlockDecodingResult(
-      block.slice(0, 129),
+      block,
       checksumCorrect ? BlockDecodingResultStatus.Complete : BlockDecodingResultStatus.InvalidChecksum,
       blockBegin,
       blockEnd,
@@ -89,31 +89,21 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
 
   private readDelimiter(): boolean {
     // check full oscillation
-    const firstHalf = this.halfPeriodProvider.getNext();
-    const secondHalf = this.halfPeriodProvider.getNext();
-
-    if (firstHalf === undefined || secondHalf === undefined) {
-      return false;
-    }
-    if (isNot((firstHalf + secondHalf) / 2, delimiter)) {
+    const oscillationValue = avg(this.halfPeriodProvider.getNext(), this.halfPeriodProvider.getNext());
+    if (oscillationValue === undefined || isNot(oscillationValue, fDelimiter)) {
       return false;
     }
 
     return true;
   }
 
-  private readBit(): boolean | undefined {
+  private readBit(): boolean {
     // check full oscillation
-    const firstHalf = this.halfPeriodProvider.getNext();
-    const secondHalf = this.halfPeriodProvider.getNext();
-    if (firstHalf === undefined || secondHalf === undefined) {
-      return undefined;
-    }
-    const isOne = is((firstHalf + secondHalf) / 2, one);
-    const isZero = is((firstHalf + secondHalf) / 2, zero);
+    const oscillationValue = avg(this.halfPeriodProvider.getNext(), this.halfPeriodProvider.getNext());
+    const isOne = bitByFrequency(oscillationValue, fZero, fOne);
 
-    if (!isOne && !isZero) {
-      return undefined;
+    if (isOne === undefined) {
+      throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect bit.`);
     }
 
     return isOne;
@@ -126,11 +116,7 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
     }
     let byte = 0;
     for (let i = 0; i < 8; i++) {
-      const bit = this.readBit();
-      if (bit === undefined) {
-        throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect bit.`);
-      }
-      byte |= ((bit ? 1 : 0) << i);
+      byte |= ((this.readBit() ? 1 : 0) << i);
     }
 
     return byte;
