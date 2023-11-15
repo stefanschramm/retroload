@@ -6,11 +6,11 @@ import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecoding
 
 const definition: DecoderDefinition = {
   format: 'apple2generic',
-  decode: convert,
+  decode,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
+function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
 
   const hpp = new Apple2HalfPeriodProcessor(streamingHalfPeriodProvider);

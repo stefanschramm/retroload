@@ -10,11 +10,11 @@ import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecoding
 
 const definition: DecoderDefinition = {
   format: 'kctap',
-  decode: convert,
+  decode,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
+function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   sampleProvider = new LowPassFilter(sampleProvider, 11025);
   // high pass filtering doesn't seem to improve decoding (or is the implementation buggy?) :/
   // sampleProvider = new HighPassFilter(sampleProvider, 25);

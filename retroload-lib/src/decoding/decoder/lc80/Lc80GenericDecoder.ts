@@ -5,11 +5,11 @@ import {type FileDecodingResult, FileDecodingResultStatus, Lc80HalfPeriodProcess
 
 const definition: DecoderDefinition = {
   format: 'lc80generic',
-  decode: convert,
+  decode,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
+function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
 
   const hpp = new Lc80HalfPeriodProcessor(streamingHalfPeriodProvider);

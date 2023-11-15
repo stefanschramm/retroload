@@ -8,11 +8,11 @@ import {Z1013HalfPeriodProcessor} from './Z1013HalfPeriodProcessor.js';
 
 const definition: DecoderDefinition = {
   format: 'z1013generic',
-  decode: convert,
+  decode,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
+function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
   const bp = new Z1013BlockProcessor(new Z1013HalfPeriodProcessor(streamingHalfPeriodProvider));
   for (const fdr of bp.files()) {

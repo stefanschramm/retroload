@@ -7,11 +7,11 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 
 const definition: DecoderDefinition = {
   format: 'pcgeneric',
-  decode: convert,
+  decode,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
+function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
   const blockProcessor = new PcBlockProcessor(streamingHalfPeriodProvider);
   for (const fileDecodingResult of blockProcessor.files()) {
