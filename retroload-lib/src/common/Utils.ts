@@ -9,6 +9,15 @@ export function calculateChecksum8(data: BufferAccess) {
   return sum;
 }
 
+export function calculateChecksum16Le(data: BufferAccess) {
+  let sum = 0;
+  for (let i = 0; i < data.length(); i += 2) {
+    sum = (sum + data.getUint16Le(i)) & 0xffff;
+  }
+
+  return sum;
+}
+
 export function calculateChecksum8Xor(ba: BufferAccess, initial = 0x00) {
   let sum = initial;
   for (let i = 0; i < ba.length(); i++) {
