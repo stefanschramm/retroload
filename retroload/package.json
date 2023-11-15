@@ -39,7 +39,7 @@
   "bin": {
     "retroload": "./bin/retroload.js",
     "retroload-tokenizer": "./bin/retroload-tokenizer.js",
-    "retroload-dump": "./bin/retroload-dump.js"
+    "retroload-decode": "./bin/retroload-decode.js"
   },
   "dependencies": {
     "commander": "^11.1.0",
