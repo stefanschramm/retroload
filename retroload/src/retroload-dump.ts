@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {formatPosition, ConverterManager, Logger, version as libVersion} from 'retroload-lib';
+import {formatPosition, Logger, version as libVersion, DecoderManager} from 'retroload-lib';
 import {Command, type OptionValues} from 'commander';
 import {version as cliVersion} from './version.js';
 import {readFile, writeFile} from './Utils.js';
@@ -24,12 +24,12 @@ async function main() {
     .allowExcessArguments(false)
     .option('-o <outpath>', 'Prefix (filename or complete path) for files to write', './')
     .option('-l, --loglevel <loglevel>', 'Verbosity of log output', '1')
-    .requiredOption('--to <outputtype>', `Output format (one of: ${getConverterList()})`)
+    .requiredOption('--format <format>', `Output format (one of: ${getDecoderList()})`)
     .option('--on-error <errorhandling>', 'Error handling strategy (one of: ignore, skipfile, stop)', 'ignore')
     .option('--channel <channel>', 'Use specified channel to get samples from, in case the input file has multiple channels. Numbering starts at 0.')
     .option('--skip <samples>', 'Start processing of input data after skipping a specific number of samples', '0')
     .option('--no-proposed-name', 'Just use numeric file names instead of file names from tape/archive.')
-    .option('--extension <extension>', 'Use specified file extension instead of the one proposed by the converter.')
+    .option('--extension <extension>', 'Use specified file extension instead of the one proposed by the decoder.')
     .version(`retroload: ${cliVersion}\nretroload-lib: ${libVersion}`)
     .showHelpAfterError();
   program.parse();
@@ -37,22 +37,22 @@ async function main() {
   const options = program.opts();
   const infile = program.args[0];
   Logger.setVerbosity(parseInt(typeof options['loglevel'] === 'string' ? options['loglevel'] : '1', 10));
-  const outputFormat = (typeof options['to'] === 'string' ? options['to'] : undefined);
+  const outputFormat = (typeof options['format'] === 'string' ? options['format'] : undefined);
   if (outputFormat === undefined) {
     // should actually be catched by commander because of requiredOption
-    Logger.error('error: missing required argument \'to\'');
+    Logger.error('error: missing required argument \'format\'');
     process.exit(1);
   }
   const outPathPrefix = typeof options['o'] === 'string' ? options['o'] : './';
-  const converterSettings = getConverterSettings(options);
+  const decoderSettings = getDecoderSettings(options);
   const ba = readFile(infile);
 
   Logger.debug(`Output format: ${outputFormat}`);
-  Logger.debug(`Settings: ${JSON.stringify(converterSettings)}`);
+  Logger.debug(`Settings: ${JSON.stringify(decoderSettings)}`);
   Logger.debug(`Processing ${infile}...`);
 
   let i = 0;
-  for (const file of ConverterManager.convertWav(ba, outputFormat, converterSettings)) {
+  for (const file of DecoderManager.decodeWav(ba, outputFormat, decoderSettings)) {
     const extension = typeof options['extension'] === 'string' ? options['extension'] : file.proposedExtension;
     const fallbackName = `${i}.${extension}`;
     const proposedName = file.proposedName === undefined ? fallbackName : `${file.proposedName}.${extension}`;
@@ -65,11 +65,11 @@ async function main() {
   Logger.info(`Dumped ${i} file(s).`);
 }
 
-function getConverterList(): string {
-  return ConverterManager.getAllWriters().map((c) => c.to).join(', ');
+function getDecoderList(): string {
+  return DecoderManager.getAllDecoders().map((c) => c.format).join(', ');
 }
 
-function getConverterSettings(options: OptionValues): ConverterManager.ConverterSettings {
+function getDecoderSettings(options: OptionValues): DecoderManager.DecoderSettings {
   if (typeof options['onError'] !== 'string') {
     Logger.error('error: invalid value for argument \'on-error\'');
     process.exit(1);

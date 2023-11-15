@@ -3,34 +3,34 @@ import {InternalError, UsageError} from '../common/Exceptions.js';
 import {type Position} from '../common/Positioning.js';
 import {type SampleProvider} from './sample_provider/SampleProvider.js';
 import {WaveFileSampleProvider} from './sample_provider/WaveFileSampleProvider.js';
-import WriterProvider from './writer/WriterProvider.js';
+import DecoderProvider from './decoder/DecoderProvider.js';
 
-export function convertWav(ba: BufferAccess, to: string, settings: ConverterSettings): Generator <OutputFile> {
-  const writer = getWriter(to);
+export function decodeWav(ba: BufferAccess, format: string, settings: DecoderSettings): Generator <OutputFile> {
+  const decoder = getDecoder(format);
   const reader = new WaveFileSampleProvider(ba, settings.skip, settings.channel);
 
-  return writer.convert(reader, settings);
+  return decoder.decode(reader, settings);
 }
 
-function getWriter(to: string): WriterDefinition {
-  const availableWriters = WriterProvider.filter((c) => c.to === to);
-  if (availableWriters.length === 0) {
-    throw new UsageError(`No converter for output format "${to}" found.`);
+function getDecoder(format: string): DecoderDefinition {
+  const availableDecoders = DecoderProvider.filter((c) => c.format === format);
+  if (availableDecoders.length === 0) {
+    throw new UsageError(`No decoder for output format "${format}" found.`);
   }
-  if (availableWriters.length > 1) {
-    throw new InternalError('Multiple writers for same output format found.');
+  if (availableDecoders.length > 1) {
+    throw new InternalError('Multiple decoders for same output format found.');
   }
 
-  return availableWriters[0];
+  return availableDecoders[0];
 }
 
-export function getAllWriters(): WriterDefinition[] {
-  return WriterProvider;
+export function getAllDecoders(): DecoderDefinition[] {
+  return DecoderProvider;
 }
 
-export type WriterDefinition = {
-  to: string;
-  convert(sampleProvider: SampleProvider, settings: ConverterSettings): Generator<OutputFile>;
+export type DecoderDefinition = {
+  format: string;
+  decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile>;
 };
 
 export type OutputFile = {
@@ -41,7 +41,7 @@ export type OutputFile = {
   readonly end: Position;
 };
 
-export type ConverterSettings = {
+export type DecoderSettings = {
   /**
    * What to do when errors occur
    */

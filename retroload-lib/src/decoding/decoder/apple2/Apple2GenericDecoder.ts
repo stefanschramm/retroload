@@ -1,16 +1,16 @@
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type WriterDefinition, type ConverterSettings, type OutputFile} from '../../ConverterManager.js';
+import {type DecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
 import {Apple2HalfPeriodProcessor} from './Apple2HalfPeriodProcessor.js';
 import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 
-const definition: WriterDefinition = {
-  to: 'apple2generic',
-  convert,
+const definition: DecoderDefinition = {
+  format: 'apple2generic',
+  decode: convert,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: ConverterSettings): Generator<OutputFile> {
+function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
 
   const hpp = new Apple2HalfPeriodProcessor(streamingHalfPeriodProvider);

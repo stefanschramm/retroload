@@ -4,17 +4,17 @@ import {LowPassFilter} from '../../sample_provider/LowPassFilter.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type WriterDefinition, type ConverterSettings, type OutputFile} from '../../ConverterManager.js';
+import {type DecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
 import {KcBlockProcessor} from './KcBlockProcessor.js';
 import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 
-const definition: WriterDefinition = {
-  to: 'kctap',
-  convert,
+const definition: DecoderDefinition = {
+  format: 'kctap',
+  decode: convert,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: ConverterSettings): Generator<OutputFile> {
+function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   sampleProvider = new LowPassFilter(sampleProvider, 11025);
   // high pass filtering doesn't seem to improve decoding (or is the implementation buggy?) :/
   // sampleProvider = new HighPassFilter(sampleProvider, 25);

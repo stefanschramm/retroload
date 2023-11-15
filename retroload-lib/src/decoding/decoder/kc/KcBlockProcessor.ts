@@ -1,6 +1,6 @@
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {DecodingError} from '../../ConverterExceptions.js';
+import {DecodingError} from '../../DecoderExceptions.js';
 import {formatPosition, type Position} from '../../../common/Positioning.js';
 import {type KcBlockProvider} from './KcBlockProvider.js';
 import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';

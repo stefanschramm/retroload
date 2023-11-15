@@ -1,15 +1,15 @@
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type WriterDefinition, type ConverterSettings, type OutputFile} from '../../ConverterManager.js';
+import {type DecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
 import {type FileDecodingResult, FileDecodingResultStatus, Lc80HalfPeriodProcessor} from './Lc80HalfPeriodProcessor.js';
 
-const definition: WriterDefinition = {
-  to: 'lc80generic',
-  convert,
+const definition: DecoderDefinition = {
+  format: 'lc80generic',
+  decode: convert,
 };
 export default definition;
 
-function * convert(sampleProvider: SampleProvider, settings: ConverterSettings): Generator<OutputFile> {
+function * convert(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
 
   const hpp = new Lc80HalfPeriodProcessor(streamingHalfPeriodProvider);

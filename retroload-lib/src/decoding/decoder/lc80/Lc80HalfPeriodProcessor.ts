@@ -2,7 +2,7 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8, hex16} from '../../../common/Utils.js';
-import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
+import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
 import {type Position, formatPosition} from '../../../common/Positioning.js';
 import {type FrequencyRange, is} from '../../Frequency.js';
 import {SyncFinder} from '../../SyncFinder.js';
