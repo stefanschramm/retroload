@@ -16,7 +16,7 @@ export enum BlockDecodingResultStatus {
    */
   Complete,
   /**
-   * A complete block has been read, but it's checksum was incorrect.
+   * A complete block has been read, but its checksum was incorrect.
    */
   InvalidChecksum,
   /**
