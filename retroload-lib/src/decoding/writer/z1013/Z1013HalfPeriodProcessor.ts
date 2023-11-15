@@ -1,5 +1,6 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {formatPosition} from '../../../common/Positioning.js';
+import {calculateChecksum16Le} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../ConverterExceptions.js';
 import {type FrequencyRange, bitByFrequency, oscillationIs} from '../../Frequency.js';
@@ -53,7 +54,7 @@ export class Z1013HalfPeriodProcessor implements Z1013BlockProvider {
     const fileEnd = this.halfPeriodProvider.getPosition();
 
     const readChecksum = blockBa.getUint16Le(34);
-    const calculatedChecksum = calculateChecksum(blockBa.slice(0, blockBa.length() - 2));
+    const calculatedChecksum = calculateChecksum16Le(blockBa.slice(0, blockBa.length() - 2));
     const checksumCorrect = calculatedChecksum === readChecksum;
     if (!checksumCorrect) {
       Logger.error(`${formatPosition(fileEnd)} Warning: Invalid checksum! Read checksum: ${readChecksum}, Calculated checksum: ${calculatedChecksum}.`);
@@ -97,14 +98,4 @@ export class Z1013HalfPeriodProcessor implements Z1013BlockProvider {
 
     return false;
   }
-}
-
-function calculateChecksum(ba: BufferAccess) {
-  let checkSum = 0;
-  for (let i = 0; i < ba.length(); i += 2) {
-    const word = ba.getUint16Le(i);
-    checkSum = (checkSum + word) & 0xffff;
-  }
-
-  return checkSum;
 }

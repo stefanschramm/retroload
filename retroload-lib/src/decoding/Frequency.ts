@@ -8,16 +8,25 @@ export function isNot(value: number, range: FrequencyRange): boolean {
   return value < range[0] || value > range[1];
 }
 
+/**
+ * Average 2 half periods for better precision
+ */
+export function avg(value1: number | undefined, value2: number | undefined): number | undefined {
+  if (value1 === undefined || value2 === undefined) {
+    return undefined;
+  }
+
+  return (value1 + value2) / 2;
+}
+
 export function oscillationIs(
   firstHalfValue: number | undefined,
   secondHalfValue: number | undefined,
   range: FrequencyRange,
 ): boolean | undefined {
-  if (firstHalfValue === undefined || secondHalfValue === undefined) {
-    return undefined;
-  }
+  const avgValue = avg(firstHalfValue, secondHalfValue);
 
-  return is((firstHalfValue + secondHalfValue) / 2, range);
+  return avgValue === undefined ? undefined : is(avgValue, range);
 }
 
 export function bitByFrequency(value: number | undefined, rangeZero: FrequencyRange, rangeOne: FrequencyRange): boolean | undefined {
