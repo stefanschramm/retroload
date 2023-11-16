@@ -116,6 +116,14 @@ const examples: ExampleDefinition[] = [
   },
   {
     dir: 'c64',
+    file: 'rl.t64',
+    options: {shortpilot: true, c64machine: 'vic20pal'},
+    hash: '5fce0058fc846d054c4f1f3766ee79be',
+    instructions: 'LOAD\nSYS 4352',
+    tests: ['2023-11-16 OK (VIC 20)'],
+  },
+  {
+    dir: 'c64',
     file: 'rl.tap',
     options: {},
     hash: 'ecba52a4a6a2e894c3473590b77890dc',
