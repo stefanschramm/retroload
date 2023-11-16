@@ -8,7 +8,7 @@ export const c64machineOption: ArgumentOptionDefinition<string> = {
   description: 'C64: Machine type. Possible types: c64pal, c64ntsc, vic20pal, vic20ntsc. Default: c64pal',
   argument: 'machine',
   required: false,
-  common: false,
+  common: true,
   type: 'text',
   enum: c64machineTypes,
   parse: (v) => v === '' ? 'c64pal' : v,

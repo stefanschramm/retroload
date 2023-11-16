@@ -84,6 +84,22 @@ const examples: ExampleDefinition[] = [
   },
   {
     dir: 'c64',
+    file: 'rl.prg',
+    options: {c64machine: 'vic20pal'},
+    hash: 'd4defe85cde1ac9104a93ab51617c702',
+    instructions: 'LOAD\nSYS 4352',
+    tests: ['2023-11-16 OK (VIC 20)'],
+  },
+  {
+    dir: 'c64',
+    file: 'rl.prg',
+    options: {c64machine: 'vic20pal', shortpilot: true},
+    hash: '8f07427ff48c14e09ca2f6257349bfe1',
+    instructions: 'LOAD\nSYS 4352',
+    tests: ['2023-11-16 OK (VIC 20)'],
+  },
+  {
+    dir: 'c64',
     file: 'rl.t64',
     options: {shortpilot: false},
     hash: '9a59e4a22a9bc475cb0bb3eb405dd260',
