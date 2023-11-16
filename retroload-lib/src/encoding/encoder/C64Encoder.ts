@@ -3,8 +3,14 @@ import {InternalError} from '../../common/Exceptions.js';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type RecorderInterface, SampleValue} from '../recorder/RecorderInterface.js';
+import {type C64MachineType} from '../adapter/options/C64Options.js';
 
-const palClockCycles = 985248;
+const clockCycleMap: Record<C64MachineType, number> = {
+  c64pal: 985248,
+  c64ntsc: 1022727,
+  vic20pal: 1108405,
+  vic20ntsc: 1022727,
+};
 
 const fileTypeBasic = 0x01;
 // const fileTypeSeqFileDataBlock = 0x02;
@@ -23,16 +29,20 @@ export class C64Encoder extends AbstractEncoder {
     return 'c64';
   }
 
+  private readonly clockCycles;
+
   constructor(
     recorder: RecorderInterface,
     private readonly shortpilot = false,
+    machineType: C64MachineType = 'c64pal',
   ) {
     super(recorder);
+    this.clockCycles = clockCycleMap[machineType];
   }
 
-  recordPulse(pulseLength: number) {
+  public recordPulse(pulseLength: number) {
     // Note: The .tap file adapter uses recordPulse directly.
-    const samples = Math.ceil((0.5 * this.recorder.sampleRate * pulseLength) / palClockCycles);
+    const samples = Math.ceil((0.5 * this.recorder.sampleRate * pulseLength) / this.clockCycles);
     for (const value of [SampleValue.High, SampleValue.Low]) {
       for (let j = 0; j < samples; j += 1) {
         this.recorder.pushSample(value);

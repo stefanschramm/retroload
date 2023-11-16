@@ -98,6 +98,14 @@ const examples: ExampleDefinition[] = [
     instructions: 'LOAD\n<space>\nSYS 4352',
     tests: ['2022-11-16 OK (C64 C)'],
   },
+  {
+    dir: 'c64',
+    file: 'rl.tap',
+    options: {c64machine: 'vic20pal'},
+    hash: 'cbea8b44c914cf6e7c7ea802cd3892f4',
+    instructions: 'LOAD\nSYS 4352',
+    tests: ['2023-11-16 OK (VIC 20)'],
+  },
   // CPC 464
   {
     dir: 'cpc',

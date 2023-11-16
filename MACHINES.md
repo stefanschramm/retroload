@@ -37,7 +37,9 @@ Text (ATASCII) files:
 
     ENTER "C:"
 
-# C64, C64 C
+# C64, C64 C, VIC 20/VC 20
+
+Volume VIC 20: 40 % (using cassette adapter side B)
 
 Load and run a BASIC program or machine language program with autostart loader:
 
@@ -50,6 +52,9 @@ Load and run machine language program (prg)
     SYS 4352
 
 4353 (0x1100) is the entry address of the program in memory.
+
+For C64 etc. any key has to be pressed as soon as the "FOUND"-message is shown.
+The VIC 20 will automatically load the first record found.
 
 # CPC 464
 
