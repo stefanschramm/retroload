@@ -18,6 +18,10 @@ const fileTypePrg = 0x03;
 // const fileTypeSeqFileHeader = 0x04;
 // const fileTypeEndOfTapeMarker = 0x05;
 
+const pulseShort = 8 * 0x2f;
+const pulseMedium = 8 * 0x42;
+const pulseLong = 8 * 0x56;
+
 /**
  * Encoder for C64 and VIC-20
  *
@@ -50,52 +54,28 @@ export class C64Encoder extends AbstractEncoder {
     }
   }
 
-  recordShortPulse() {
-    this.recordPulse(8 * 0x2f);
+  public recordBasic(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
+    // TODO: test
+    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa);
   }
 
-  recordMediumPulse() {
-    this.recordPulse(8 * 0x42);
+  public recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
+    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa);
   }
 
-  recordLongPulse() {
-    this.recordPulse(8 * 0x56);
+  public recordData(_filenameBuffer: string, _dataBa: BufferAccess) {
+    // TODO: implement + test
+    throw new InternalError('recordData not implemented yet');
   }
 
-  recordBit(value: number) {
+  override recordBit(value: number) {
     if (value) {
-      this.recordMediumPulse();
-      this.recordShortPulse();
+      this.recordPulse(pulseMedium);
+      this.recordPulse(pulseShort);
     } else {
-      this.recordShortPulse();
-      this.recordMediumPulse();
+      this.recordPulse(pulseShort);
+      this.recordPulse(pulseMedium);
     }
-  }
-
-  recordNewDataMarker() {
-    this.recordLongPulse();
-    this.recordMediumPulse();
-  }
-
-  recordEndOfDataMarker() {
-    this.recordLongPulse();
-    this.recordShortPulse();
-  }
-
-  recordPilot(pulses: number) {
-    for (let i = 0; i < pulses; i++) {
-      this.recordShortPulse();
-    }
-  }
-
-  recordSyncChain() {
-    const syncChain = new Uint8Array([0x89, 0x88, 0x87, 0x86, 0x85, 0x84, 0x83, 0x82, 0x81]);
-    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
-  }
-
-  recordSyncChainRepeated() {
-    const syncChain = new Uint8Array([0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01]);
-    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
   }
 
   override recordByte(byte: number) {
@@ -109,7 +89,33 @@ export class C64Encoder extends AbstractEncoder {
     this.recordBit(checkBit);
   }
 
-  recordDataWithCheckByte(dataBa: BufferAccess) {
+  private recordNewDataMarker() {
+    this.recordPulse(pulseLong);
+    this.recordPulse(pulseMedium);
+  }
+
+  private recordEndOfDataMarker() {
+    this.recordPulse(pulseLong);
+    this.recordPulse(pulseShort);
+  }
+
+  private recordPilot(pulses: number) {
+    for (let i = 0; i < pulses; i++) {
+      this.recordPulse(pulseShort);
+    }
+  }
+
+  private recordSyncChain() {
+    const syncChain = new Uint8Array([0x89, 0x88, 0x87, 0x86, 0x85, 0x84, 0x83, 0x82, 0x81]);
+    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
+  }
+
+  private recordSyncChainRepeated() {
+    const syncChain = new Uint8Array([0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01]);
+    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
+  }
+
+  private recordDataWithCheckByte(dataBa: BufferAccess) {
     let checkByte = 0;
     for (let i = 0; i < dataBa.length(); i++) {
       const byte = dataBa.getUint8(i);
@@ -119,21 +125,7 @@ export class C64Encoder extends AbstractEncoder {
     this.recordByte(checkByte);
   }
 
-  recordBasic(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
-    // TODO: test
-    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa);
-  }
-
-  recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
-    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa);
-  }
-
-  recordData(_filenameBuffer: string, _dataBa: BufferAccess) {
-    // TODO: implement + test
-    throw new InternalError('recordData not implemented yet');
-  }
-
-  recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
+  private recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
     const headerBa = BufferAccess.create(192);
     headerBa.writeUint8(fileType); // 1 byte: file type: prg or basic file
     headerBa.writeUint16Le(startAddress); // 2 bytes: start address
