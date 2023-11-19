@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {WaveRecorder, AdapterManager, Exception, Logger, type OptionDefinition, version as libVersion} from 'retroload-lib';
+import {WaveRecorder, AdapterManager, Exception, Logger, version as libVersion, type PublicOptionDefinition} from 'retroload-lib';
 import {Command} from 'commander';
 import {type PlayerWrapper} from './player/PlayerWrapper.js';
 import {SpeakerWrapper} from './player/SpeakerWrapper.js';
@@ -78,7 +78,7 @@ async function main() {
   }
 }
 
-function getCommanderFlagsString(optionDefinition: OptionDefinition) {
+function getCommanderFlagsString(optionDefinition: PublicOptionDefinition) {
   return optionDefinition.type !== 'text' || optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
 }
 

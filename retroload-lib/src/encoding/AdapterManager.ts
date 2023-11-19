@@ -8,10 +8,10 @@ import {
 import {type BufferAccess} from '../common/BufferAccess.js';
 import {adapters as providedAdapters} from './AdapterProvider.js';
 import {Logger} from '../common/logging/Logger.js';
-import {OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
+import {OptionContainer, type PublicOptionDefinition, type OptionValues} from './Options.js';
 import {type RecorderInterface} from './recorder/RecorderInterface.js';
 import {type ArgumentOptionDefinition} from './Options.js';
-import {type AdapterDefinition} from './adapter/AdapterDefinition.js';
+import {type PublicAdapterDefinition, type AdapterDefinition} from './adapter/AdapterDefinition.js';
 
 export const formatOption: ArgumentOptionDefinition<string | undefined> = {
   name: 'format',
@@ -59,7 +59,12 @@ export function encode(recorder: RecorderInterface, filename: string, dataBa: Bu
   return encodeWithAdapter(recorder, adapter, dataBa, optionValues);
 }
 
-export function encodeWithAdapter(recorder: RecorderInterface, adapter: AdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}) {
+export function encodeWith(recorder: RecorderInterface, adapterDefinition: PublicAdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}) {
+  const adapter = providedAdapters.filter((a) => a.internalName === adapterDefinition.internalName)[0];
+  return encodeWithAdapter(recorder, adapter, dataBa, optionValues);
+}
+
+function encodeWithAdapter(recorder: RecorderInterface, adapter: AdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}) {
   const optionContainer = new OptionContainer(optionValues);
   const requiredOptions = adapter.options.filter((o) => o.type !== 'bool' && o.required);
   const missingOptions = requiredOptions.filter((o) => optionValues[o.name] === undefined);
@@ -77,7 +82,7 @@ export function encodeWithAdapter(recorder: RecorderInterface, adapter: AdapterD
 /**
  * Identify tape file and return matching adapter
  */
-export function identify(filename: string, dataBa: BufferAccess) : (AdapterDefinition | undefined) {
+export function identify(filename: string, dataBa: BufferAccess) : (PublicAdapterDefinition | undefined) {
   try {
     return autodetectAdapter(providedAdapters, filename, dataBa);
   } catch (e) {
@@ -88,12 +93,12 @@ export function identify(filename: string, dataBa: BufferAccess) : (AdapterDefin
   }
 }
 
-export function getAllAdapters() {
+export function getAllAdapters(): PublicAdapterDefinition[] {
   return providedAdapters;
 }
 
-export function getAllOptions() {
-  const options: OptionDefinition[] = [];
+export function getAllOptions(): PublicOptionDefinition[] {
+  const options: PublicOptionDefinition[] = [];
   const optionKeys: string[] = [];
   for (const adapter of providedAdapters) {
     for (const option of adapter.options) {

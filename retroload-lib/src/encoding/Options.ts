@@ -32,7 +32,7 @@ export type FlagOptionDefinition = BaseOption & {
 /**
  * Option with argument that parses to type T
  */
-export type ArgumentOptionDefinition<T> = BaseOption & {
+export type PublicArgumentOptionDefinition = BaseOption & {
   type: 'text';
   /**
    * List of possible values for options of 'text' type. Will render as dropdown in GUI implementations.
@@ -46,11 +46,16 @@ export type ArgumentOptionDefinition<T> = BaseOption & {
    * Wether the option is required for the adapter
    */
   required: boolean;
+};
+
+export type ArgumentOptionDefinition<T> = PublicArgumentOptionDefinition & {
   /**
    * Function that validates and parses the option. Can throw exceptions on parsing errors. Will receive empty string if option was not set.
    */
   parse: (value: string) => T;
 };
+
+export type PublicOptionDefinition = OptionDefinition | PublicArgumentOptionDefinition;
 
 export type OptionDefinition = FlagOptionDefinition | ArgumentOptionDefinition<any>;
 

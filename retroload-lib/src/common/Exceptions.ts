@@ -1,4 +1,4 @@
-import {type OptionDefinition} from '../encoding/Options';
+import {type PublicOptionDefinition} from '../encoding/Options';
 
 /**
  * Error that is usually caused by invalid usage
@@ -38,7 +38,7 @@ export class TargetMachineNotFoundError extends UsageError {
 }
 
 export class MissingOptionsError extends UsageError {
-  constructor(missingOptions: OptionDefinition[]) {
+  constructor(missingOptions: PublicOptionDefinition[]) {
     const optionList = missingOptions.map((o) => o.name);
     super(`The following options are required: ${optionList.join(', ')}`);
   }

@@ -6,6 +6,7 @@ export * as AdapterManager from './encoding/AdapterManager.js';
 export * as Exception from './common/Exceptions.js';
 export * as DecoderManager from './decoding/DecoderManager.js';
 export {tokenizers as BasicTokenizers} from './tokenizing/TokenizerProvider.js';
-export {type OptionDefinition} from './encoding/Options.js';
+export {type PublicOptionDefinition} from './encoding/Options.js';
 export {formatPosition, type Position} from './common/Positioning.js';
 export {version} from './version.js';
+export type {PublicAdapterDefinition} from './encoding/adapter/AdapterDefinition.js';
