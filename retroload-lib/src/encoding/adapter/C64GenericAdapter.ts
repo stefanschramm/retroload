@@ -7,16 +7,32 @@ import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js'
 import {type AdapterDefinition} from './AdapterDefinition.js';
 import {c64machineOption} from './options/C64Options.js';
 
-const c64typeOption: ArgumentOptionDefinition<string> = {
+enum C64Type {
+  basic = 'basic',
+  data = 'data',
+  prg = 'prg',
+}
+
+type C64TypeStrings = keyof typeof C64Type;
+const c64TypeList = Object.keys(C64Type).join(', ');
+
+const c64typeOption: ArgumentOptionDefinition<C64Type> = {
   name: 'c64type',
   label: 'C64 file type',
-  description: 'C64: File type. Possible types: basic, data, prg',
+  description: `C64: File type. Possible types: ${c64TypeList}`,
   argument: 'type',
   required: true,
   common: false,
   type: 'text',
-  enum: ['basic', 'data', 'prg'],
-  parse: (v) => v,
+  enum: Object.keys(C64Type),
+  parse(v) {
+    const vCasted = v as C64TypeStrings;
+    if (!Object.keys(C64Type).includes(vCasted)) {
+      throw new InvalidArgumentError(c64typeOption.name, `Option c64type is required and expected to be one of the following values: ${c64TypeList}`);
+    }
+
+    return C64Type[vCasted];
+  },
 };
 
 const definition: AdapterDefinition = {
@@ -24,7 +40,7 @@ const definition: AdapterDefinition = {
   internalName: 'c64generic',
   targetName: C64Encoder.getTargetName(),
   options: [
-    shortpilotOption, // (not available for .tap)
+    shortpilotOption,
     c64typeOption,
     nameOption,
     loadOption,
@@ -40,10 +56,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
 }
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-  const type: string = options.getArgument(c64typeOption);
-  if (!['basic', 'data', 'prg'].includes(type)) {
-    throw new InvalidArgumentError(c64typeOption.name, 'Option c64type is required and expected to be set to "basic", "data" or "prg".');
-  }
+  const type = options.getArgument(c64typeOption);
   const loadAddress = options.getArgument(loadOption);
   const name = options.getArgument(nameOption);
   if (name.length > 16) {
@@ -56,15 +69,15 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   );
   e.begin();
   switch (type) {
-    case 'basic':
+    case C64Type.basic:
       checkLoadAddress(loadAddress);
       e.recordBasic(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
       break;
-    case 'prg':
+    case C64Type.prg:
       checkLoadAddress(loadAddress);
       e.recordPrg(loadAddress ?? 0x1100, name.padEnd(16, ' '), ba);
       break;
-    case 'data':
+    case C64Type.data:
       e.recordData(name.padEnd(16, ' '), ba);
       break;
     default:
