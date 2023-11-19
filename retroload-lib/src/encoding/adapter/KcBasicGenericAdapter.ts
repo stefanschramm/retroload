@@ -6,30 +6,34 @@ import {InvalidArgumentError} from '../../common/Exceptions.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
 
-const typeMap = {
-  program: 0xd3,
-  data: 0xd4,
-  ascii: 0xd5,
-};
+enum KcBasicType {
+  program = 'program',
+  data = 'data',
+  ascii = 'ascii',
+}
+const kcBasicTypeDefault = KcBasicType.program;
+type KcBasicTypeString = keyof typeof KcBasicType;
+const kcBasicTypeList = Object.keys(KcBasicType).join(', ');
 
-const kcBasicTypeOption: ArgumentOptionDefinition<string> = {
+const kcBasicTypeOption: ArgumentOptionDefinition<KcBasicType> = {
   name: 'kcbasictype',
   label: 'BASIC data type',
-  description: `KC BASIC: Type of BASIC data to be loaded. Possible types: ${Object.keys(typeMap).join(', ')}`,
+  description: `KC BASIC: Type of BASIC data to be loaded. Possible types: ${kcBasicTypeList}. Default: ${kcBasicTypeDefault}`,
   argument: 'type',
   common: false,
   required: false,
   type: 'text',
-  enum: Object.keys(typeMap),
+  enum: Object.keys(KcBasicType),
   parse(v) {
-    if (v === undefined || v === '') {
-      return 'program';
+    if (v === '') {
+      return KcBasicType.program;
     }
-    if (!Object.keys(typeMap).includes(v)) {
-      throw new InvalidArgumentError(this.name, `Option ${this.name} is expected to be one of: ${Object.keys(typeMap).join(', ')}`);
+    const vCasted = v as KcBasicTypeString;
+    if (Object.keys(KcBasicType).includes(v)) {
+      return KcBasicType[vCasted];
     }
 
-    return v;
+    throw new InvalidArgumentError(this.name, `Option ${this.name} is expected to be one of: ${kcBasicTypeList}`);
   },
 };
 
@@ -61,6 +65,11 @@ export default definition;
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;
 const maxFileNameLength = 8;
+const typeMap = {
+  program: 0xd3,
+  data: 0xd4,
+  ascii: 0xd5,
+};
 
 function identify(_filename: string, _ba: BufferAccess) {
   return unidentifiable;
@@ -73,7 +82,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
   }
   const copyProtected = options.isFlagSet(kcBasicProtectedOption);
-  const basicType = options.getArgument(kcBasicTypeOption) as keyof typeof typeMap;
+  const basicType = options.getArgument(kcBasicTypeOption);
   const typeByte: number = typeMap[basicType] + (copyProtected ? 0x04 : 0x00);
 
   const firstBlockBa = BufferAccess.create(128);

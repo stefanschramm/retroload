@@ -8,7 +8,7 @@ export enum C64MachineType {
   vic20ntsc = 'vic20ntsc',
 }
 const c64MachineTypeDefault = C64MachineType.c64pal;
-type C64MachineTypeStrings = keyof typeof C64MachineType;
+type C64MachineTypeString = keyof typeof C64MachineType;
 const c64MachineTypeList = Object.keys(C64MachineType).join(', ');
 
 export const c64machineOption: ArgumentOptionDefinition<C64MachineType> = {
@@ -24,7 +24,7 @@ export const c64machineOption: ArgumentOptionDefinition<C64MachineType> = {
     if (v === '') {
       return c64MachineTypeDefault;
     }
-    const vCasted = v as C64MachineTypeStrings;
+    const vCasted = v as C64MachineTypeString;
     if (Object.keys(C64MachineType).includes(vCasted)) {
       return C64MachineType[vCasted];
     }
