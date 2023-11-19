@@ -20,6 +20,7 @@ import Lc80GenericAdapter from './adapter/Lc80GenericAdapter.js';
 import Mo5GenericAdapter from './adapter/Mo5GenericAdapter.js';
 import Mo5K7Adapter from './adapter/Mo5K7Adapter.js';
 import MsxCasAdapter from './adapter/MsxCasAdapter.js';
+import MsxGenericAdapter from './adapter/MsxGenericAdapter.js';
 import TaGenericAdapter from './adapter/TaGenericAdapter.js';
 import TiFiadAdapter from './adapter/TiFiadAdapter.js';
 import TiGenericAdapter from './adapter/TiGenericAdapter.js';
@@ -55,6 +56,7 @@ export const adapters: AdapterDefinition[] = [
   Mo5GenericAdapter,
   Mo5K7Adapter,
   MsxCasAdapter,
+  MsxGenericAdapter,
   TaGenericAdapter,
   TiFiadAdapter,
   TiGenericAdapter,

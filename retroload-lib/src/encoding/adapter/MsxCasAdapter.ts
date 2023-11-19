@@ -2,16 +2,9 @@ import {MsxEncoder} from '../encoder/MsxEncoder.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
-import {shortpilotOption, type OptionContainer, type FlagOptionDefinition} from '../Options.js';
+import {shortpilotOption, type OptionContainer} from '../Options.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
-
-const msxfastOption: FlagOptionDefinition = {
-  name: 'msxfast',
-  label: 'Fast baudrate',
-  description: 'MSX: Use 2400 baud instead of 1200 (faster loading, less reliable)',
-  type: 'bool',
-  common: false,
-};
+import {msxfastOption} from './options/MsxOptions.js';
 
 const definition: AdapterDefinition = {
   name: 'MSX .CAS-File',

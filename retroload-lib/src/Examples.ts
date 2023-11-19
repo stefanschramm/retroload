@@ -257,9 +257,17 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_binary',
+    dir: 'msx_binary',
     file: 'rl.cas',
     options: {shortpilot: true, msxfast: true},
+    hash: '1eaa89c87bad3f9a4a900a028db83c64',
+    instructions: 'bload"cas:",r',
+    tests: ['2022-11-29 OK (Philips VG-8020)'],
+  },
+  {
+    dir: 'msx_binary',
+    file: 'rl.bin',
+    options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', load: '8000', entry: '8000'},
     hash: '1eaa89c87bad3f9a4a900a028db83c64',
     instructions: 'bload"cas:",r',
     tests: ['2022-11-29 OK (Philips VG-8020)'],
