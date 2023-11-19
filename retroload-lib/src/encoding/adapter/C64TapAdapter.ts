@@ -4,7 +4,7 @@ import {type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
-import {type C64MachineType, c64machineOption} from './options/C64Options.js';
+import {c64machineOption} from './options/C64Options.js';
 
 const definition: AdapterDefinition = {
   name: 'C64 .TAP-File',
@@ -33,10 +33,12 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
 
   Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, '0')}, dataLength: ${dataLength}`);
 
-  const machineType = options.getArgument(c64machineOption) as C64MachineType;
-
   const data = ba.slice(header.length(), dataLength);
-  const e = new C64Encoder(recorder, undefined, machineType);
+  const e = new C64Encoder(
+    recorder,
+    undefined,
+    options.getArgument(c64machineOption),
+  );
   e.begin();
   for (let i = 0; i < data.length(); i += 1) {
     const value = data.getUint8(i);

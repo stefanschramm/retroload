@@ -5,6 +5,7 @@ import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from './AdapterDefinition.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
+import {c64machineOption} from './options/C64Options.js';
 
 const c64typeOption: ArgumentOptionDefinition<string> = {
   name: 'c64type',
@@ -27,6 +28,7 @@ const definition: AdapterDefinition = {
     c64typeOption,
     nameOption,
     loadOption,
+    c64machineOption,
   ],
   identify,
   encode,
@@ -47,8 +49,11 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   if (name.length > 16) {
     throw new InvalidArgumentError(nameOption.name, 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
   }
-
-  const e = new C64Encoder(recorder, options.isFlagSet(shortpilotOption));
+  const e = new C64Encoder(
+    recorder,
+    options.isFlagSet(shortpilotOption),
+    options.getArgument(c64machineOption),
+  );
   e.begin();
   switch (type) {
     case 'basic':

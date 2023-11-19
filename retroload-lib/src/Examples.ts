@@ -68,6 +68,14 @@ const examples: ExampleDefinition[] = [
   },
   {
     dir: 'c64',
+    file: 'rl.bin',
+    options: {machine: 'c64', c64type: 'prg', load: '1100', c64machine: 'vic20pal'},
+    hash: 'd4defe85cde1ac9104a93ab51617c702',
+    instructions: 'LOAD\nSYS 4352',
+    tests: ['2023-11-16 OK (VIC 20)'],
+  },
+  {
+    dir: 'c64',
     file: 'rl.p00',
     options: {shortpilot: true},
     hash: '8f3bf1bfd24a2881680bb7f5f94d13c8',

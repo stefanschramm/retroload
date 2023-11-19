@@ -3,7 +3,7 @@ import {shortpilotOption, type OptionContainer} from '../Options.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from './AdapterDefinition.js';
-import {type C64MachineType, c64machineOption} from './options/C64Options.js';
+import {c64machineOption} from './options/C64Options.js';
 
 const definition: AdapterDefinition = {
   name: 'C64 .T64-File',
@@ -29,8 +29,11 @@ function identify(filename: string, ba: BufferAccess) {
  * http://unusedino.de/ec64/technical/formats/t64.html
  */
 function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
-  const machineType = options.getArgument(c64machineOption) as C64MachineType;
-  const e = new C64Encoder(recorder, options.isFlagSet(shortpilotOption), machineType);
+  const e = new C64Encoder(
+    recorder,
+    options.isFlagSet(shortpilotOption),
+    options.getArgument(c64machineOption),
+  );
 
   const header = ba.slice(0, 0x40);
   const entries = header.getUint16Le(0x24);
