@@ -19,16 +19,8 @@
 
 ; basic program (ascii)
 DATA_START:
-	dm	"10 PRINT \"---------------------------------\"\r\n"
-	dm	"20 PRINT\r\n"
-	dm	"30 PRINT \"RETROLOAD.COM\"\r\n"
-	dm	"40 PRINT\r\n"
-	dm	"50 PRINT \"EXAMPLE FOR MSX (ASCII)\"\r\n"
-	dm	"60 PRINT\r\n"
-	dm	"70 PRINT \"LOADED AND EXECUTED!\"\r\n"
-	dm	"80 PRINT\r\n"
-	dm	"90 PRINT \"---------------------------------\"\r\n"
-	dm	"100 PRINT CHR$(7)" ; bell
+
+  incbin "rl.txt"
 
 ; end of block, pad data to 256 bytes
 	ds	0x100 + DATA_START - $, 0x1a
