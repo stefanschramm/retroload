@@ -217,7 +217,7 @@ const examples: ExampleDefinition[] = [
   },
   // MSX
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {},
     hash: '5e974eb15ce8afd589e4dbfcdc3f27aa',
@@ -225,7 +225,7 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {msxfast: true},
     hash: 'd335600c14352b04bd2c062e71787b3c',
@@ -233,7 +233,7 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {shortpilot: true},
     hash: 'a3636befc559622203caadd1b8790bfb',
@@ -241,7 +241,7 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {shortpilot: true, msxfast: true},
     hash: 'b3f77adb22af24070301010796206ae2',
@@ -249,7 +249,7 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_basic',
+    dir: 'msx_basic',
     file: 'rl.cas',
     options: {shortpilot: true, msxfast: true},
     hash: 'dc4d7cbcc29679936312ae7eabc27624',
