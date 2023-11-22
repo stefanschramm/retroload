@@ -5,6 +5,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {msxfastOption} from './MsxOptions.js';
+import {MsxType, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
 
 const definition: AdapterDefinition = {
   name: 'MSX .CAS-File',
@@ -21,15 +22,14 @@ export default definition;
 
 const blockHeader = [0x1f, 0xa6, 0xde, 0xba, 0xcc, 0x13, 0x7d, 0x74];
 
-const typeHeaderLength = 10;
-const headerTypes = {
-  binary: Array(typeHeaderLength).fill(0xd0),
-  basic: Array(typeHeaderLength).fill(0xd3),
-  ascii: Array(typeHeaderLength).fill(0xea),
+const typeHeaders = {
+  binary: Array(typeHeaderLength).fill(typeHeaderMap[MsxType.binary]),
+  basic: Array(typeHeaderLength).fill(typeHeaderMap[MsxType.basic]),
+  ascii: Array(typeHeaderLength).fill(typeHeaderMap[MsxType.ascii]),
 };
 
 function determineType(dataBa: BufferAccess, offset: number) {
-  for (const [type, header] of Object.entries(headerTypes)) {
+  for (const [type, header] of Object.entries(typeHeaders)) {
     if (dataBa.containsDataAt(offset, header)) {
       return type;
     }

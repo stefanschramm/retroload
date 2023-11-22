@@ -1,38 +1,11 @@
 import {MsxEncoder} from './MsxEncoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {shortpilotOption, type OptionContainer, loadOption, nameOption, entryOption, type ArgumentOptionDefinition} from '../../Options.js';
+import {shortpilotOption, type OptionContainer, loadOption, nameOption, entryOption} from '../../Options.js';
 import {unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
-import {msxfastOption} from './MsxOptions.js';
+import {MsxType, msxTypeOption, msxfastOption} from './MsxOptions.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
-
-enum MsxType {
-  binary = 'binary',
-  basic = 'basic',
-  ascii = 'ascii',
-}
-
-type MsxTypeStrings = keyof typeof MsxType;
-const msxTypeList = Object.keys(MsxType).join(', ');
-
-const msxTypeOption: ArgumentOptionDefinition<MsxType> = {
-  name: 'msxtype',
-  label: 'MSX file type',
-  description: `MSX: File type. Possible types: ${msxTypeList}`,
-  argument: 'type',
-  required: true,
-  common: false,
-  type: 'text',
-  enum: Object.keys(MsxType),
-  parse(v) {
-    const vCasted = v as MsxTypeStrings;
-    if (!Object.keys(MsxType).includes(vCasted)) {
-      throw new InvalidArgumentError(msxTypeOption.name, `Option msxtype is required and expected to be one of the following values: ${msxTypeList}`);
-    }
-
-    return MsxType[vCasted];
-  },
-};
+import {maxNameLength, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
 
 const definition: AdapterDefinition = {
   name: 'MSX (Generic binary)',
@@ -50,14 +23,6 @@ const definition: AdapterDefinition = {
   encode,
 };
 export default definition;
-
-const typeHeaderMap: Record<MsxType, number> = {
-  [MsxType.binary]: 0xd0,
-  [MsxType.basic]: 0xd3,
-  [MsxType.ascii]: 0xea,
-};
-const typeHeaderLength = 10;
-const maxNameLength = 6;
 
 function identify(_filename: string, _ba: BufferAccess) {
   return unidentifiable;
