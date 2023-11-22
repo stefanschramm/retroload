@@ -4,7 +4,7 @@ import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
-import {c64machineOption} from '../options/C64Options.js';
+import {c64machineOption} from './C64Options.js';
 
 const definition: AdapterDefinition = {
   name: 'C64 .TAP-File',

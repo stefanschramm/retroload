@@ -4,7 +4,7 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
-import {msxfastOption} from '../options/MsxOptions.js';
+import {msxfastOption} from './MsxOptions.js';
 
 const definition: AdapterDefinition = {
   name: 'MSX .CAS-File',

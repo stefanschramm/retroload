@@ -3,7 +3,7 @@ import {InputDataError} from '../../../common/Exceptions.js';
 import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {kcFirstBlockOption} from '../options/KcOptions.js';
+import {kcFirstBlockOption} from './KcOptions.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**

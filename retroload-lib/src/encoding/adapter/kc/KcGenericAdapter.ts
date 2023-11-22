@@ -3,7 +3,7 @@ import {entryOption, loadOption, nameOption, type OptionContainer} from '../../O
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {KcEncoder} from './KcEncoder.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
-import {kcFirstBlockOption} from '../options/KcOptions.js';
+import {kcFirstBlockOption} from './KcOptions.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 

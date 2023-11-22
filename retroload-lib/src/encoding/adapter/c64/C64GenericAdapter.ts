@@ -5,7 +5,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
-import {c64machineOption} from '../options/C64Options.js';
+import {c64machineOption} from './C64Options.js';
 
 enum C64Type {
   basic = 'basic',

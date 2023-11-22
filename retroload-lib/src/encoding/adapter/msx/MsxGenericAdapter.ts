@@ -3,7 +3,7 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer, loadOption, nameOption, entryOption, type ArgumentOptionDefinition} from '../../Options.js';
 import {unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
-import {msxfastOption} from '../options/MsxOptions.js';
+import {msxfastOption} from './MsxOptions.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
 
 enum MsxType {

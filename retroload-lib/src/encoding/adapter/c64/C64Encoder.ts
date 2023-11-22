@@ -3,7 +3,7 @@ import {InternalError} from '../../../common/Exceptions.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface, SampleValue} from '../../recorder/RecorderInterface.js';
-import {C64MachineType} from '../options/C64Options.js';
+import {C64MachineType} from './C64Options.js';
 
 const clockCycleMap: Record<C64MachineType, number> = {
   c64pal: 985248,
