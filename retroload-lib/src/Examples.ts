@@ -217,7 +217,7 @@ const examples: ExampleDefinition[] = [
   },
   // MSX
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {},
     hash: '5e974eb15ce8afd589e4dbfcdc3f27aa',
@@ -225,7 +225,7 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {msxfast: true},
     hash: 'd335600c14352b04bd2c062e71787b3c',
@@ -233,7 +233,7 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {shortpilot: true},
     hash: 'a3636befc559622203caadd1b8790bfb',
@@ -241,7 +241,7 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_ascii',
+    dir: 'msx_ascii',
     file: 'rl.cas',
     options: {shortpilot: true, msxfast: true},
     hash: 'b3f77adb22af24070301010796206ae2',
@@ -249,9 +249,25 @@ const examples: ExampleDefinition[] = [
     tests: ['2022-11-29 OK (Philips VG-8020)'],
   },
   {
-    dir: 'msx_cas_basic',
+    dir: 'msx_ascii',
+    file: 'rl.txt',
+    options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', msxtype: 'ascii'},
+    hash: 'b3f77adb22af24070301010796206ae2',
+    instructions: 'run"cas:"',
+    tests: ['2022-11-29 OK (Philips VG-8020)'],
+  },
+  {
+    dir: 'msx_basic',
     file: 'rl.cas',
     options: {shortpilot: true, msxfast: true},
+    hash: 'dc4d7cbcc29679936312ae7eabc27624',
+    instructions: 'cload\nrun',
+    tests: ['2022-11-29 OK (Philips VG-8020)'],
+  },
+  {
+    dir: 'msx_basic',
+    file: 'rl.bas',
+    options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', msxtype: 'basic'},
     hash: 'dc4d7cbcc29679936312ae7eabc27624',
     instructions: 'cload\nrun',
     tests: ['2022-11-29 OK (Philips VG-8020)'],
@@ -267,7 +283,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'msx_binary',
     file: 'rl.bin',
-    options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', load: '8000', entry: '8000'},
+    options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', load: '8000', entry: '8000', msxtype: 'binary'},
     hash: '1eaa89c87bad3f9a4a900a028db83c64',
     instructions: 'bload"cas:",r',
     tests: ['2022-11-29 OK (Philips VG-8020)'],

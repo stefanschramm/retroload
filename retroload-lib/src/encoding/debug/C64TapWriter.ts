@@ -1,4 +1,4 @@
-import {C64Encoder} from '../encoder/C64Encoder.js';
+import {C64Encoder} from '../adapter/c64/C64Encoder.js';
 import * as fs from 'fs';
 
 /**

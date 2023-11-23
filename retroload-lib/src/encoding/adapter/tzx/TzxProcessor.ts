@@ -1,5 +1,5 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type AbstractTzxEncoder} from '../../encoder/AbstractTzxEncoder.js';
+import {type AbstractTzxEncoder} from '../AbstractTzxEncoder.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
 
