@@ -1,5 +1,4 @@
 import {AbstractEncoder} from '../AbstractEncoder.js';
-import {InternalError} from '../../../common/Exceptions.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface, SampleValue} from '../../recorder/RecorderInterface.js';
@@ -13,9 +12,9 @@ const clockCycleMap: Record<C64MachineType, number> = {
 };
 
 const fileTypeBasic = 0x01;
-// const fileTypeSeqFileDataBlock = 0x02;
+const fileTypeSeqFileDataBlock = 0x02;
 const fileTypePrg = 0x03;
-// const fileTypeSeqFileHeader = 0x04;
+const fileTypeSeqFileHeader = 0x04;
 // const fileTypeEndOfTapeMarker = 0x05;
 
 const pulseShort = 8 * 0x2f;
@@ -63,9 +62,53 @@ export class C64Encoder extends AbstractEncoder {
     this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa);
   }
 
-  public recordData(_filenameBuffer: string, _dataBa: BufferAccess) {
-    // TODO: implement + test
-    throw new InternalError('recordData not implemented yet');
+  public recordData(filenameBuffer: string, dataBa: BufferAccess) {
+    const headerBa = BufferAccess.create(192);
+    headerBa.writeUint8(fileTypeSeqFileHeader); // 1 byte: file type: seq
+    headerBa.writeUint16Le(0xa000); // 2 bytes: start address (unused)
+    headerBa.writeUint16Le(0x0000); // 2 bytes: end address (unused)
+    headerBa.writeAsciiString(filenameBuffer); // 16 bytes: filename
+    headerBa.writeAsciiString(' '.repeat(171)); // 171 bytes: padding with spaces
+
+    Logger.debug('C64Encoder - recordData - header:');
+    Logger.debug(headerBa.asHexDump());
+
+    // header
+    this.recordPilot(this.shortpilot ? 0x1a00 : 0x6a00);
+    this.recordSyncChain();
+    this.recordDataWithCheckByte(headerBa);
+    this.recordEndOfDataMarker();
+    // header repeated
+    this.recordPilot(0x4f);
+    this.recordSyncChainRepeated();
+    this.recordDataWithCheckByte(headerBa);
+    this.recordEndOfDataMarker();
+
+    const dataWithZeroByte = BufferAccess.create(dataBa.length() + 1);
+    dataWithZeroByte.writeBa(dataBa);
+    dataWithZeroByte.writeUint8(0x00);
+
+    const chunks = dataWithZeroByte.chunksPadded(191, 0x20);
+    for (const chunk of chunks) {
+      const blockBa = BufferAccess.create(192);
+      blockBa.writeUint8(fileTypeSeqFileDataBlock);
+      blockBa.writeBa(chunk);
+
+      Logger.debug('C64Encoder - recordData - data:');
+      Logger.debug(blockBa.asHexDump());
+
+      // data
+      this.recordPilot(0x1a00);
+      this.recordSyncChain();
+      this.recordDataWithCheckByte(blockBa); // include end of data marker
+      this.recordEndOfDataMarker();
+      // data repeated
+      this.recordPilot(0x4f);
+      this.recordSyncChainRepeated();
+      this.recordDataWithCheckByte(blockBa); // include end of data marker
+      this.recordEndOfDataMarker();
+      this.recordPilot(0x4e);
+    }
   }
 
   override recordBit(value: number) {

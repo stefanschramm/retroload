@@ -146,6 +146,14 @@ const examples: ExampleDefinition[] = [
     instructions: 'LOAD\nSYS 4352',
     tests: ['2023-11-16 OK (VIC 20)'],
   },
+  {
+    dir: 'c64_data',
+    file: 'rl.txt',
+    options: {format: 'c64generic', c64type: 'data', name: 'RL', c64machine: 'vic20pal'},
+    hash: '9b0837ee42d75f2b024423d5a4c1fe68',
+    instructions: '10 OPEN 1,1,0,"RL"\n20 INPUT#1,A$\n30 PRINT A$\nRUN',
+    tests: ['2023-12-09 OK (VIC 20)'],
+  },
   // CPC 464
   {
     dir: 'cpc',
