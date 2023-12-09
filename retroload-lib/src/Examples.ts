@@ -52,7 +52,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'atari_generic',
     file: 'rl.atascii',
-    options: {machine: 'atari'},
+    options: {format: 'atarigeneric'},
     hash: '9f9c3073bd22e2fddde2e00128bb7f87',
     instructions: 'ENTER "C:"',
     tests: ['2023-01-20 OK (Atari 800 XL)'],
@@ -61,7 +61,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'c64',
     file: 'rl.bin',
-    options: {machine: 'c64', c64type: 'prg', load: '1100'},
+    options: {format: 'c64generic', c64type: 'prg', load: '1100'},
     hash: '1233722ffe4f62310c6777aaf606b5c2',
     instructions: 'LOAD\n<space>\nSYS 4352',
     tests: ['2023-01-29 OK (C64 C)'],
@@ -69,7 +69,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'c64',
     file: 'rl.bin',
-    options: {machine: 'c64', c64type: 'prg', load: '1100', c64machine: 'vic20pal'},
+    options: {format: 'c64generic', c64type: 'prg', load: '1100', c64machine: 'vic20pal'},
     hash: 'd4defe85cde1ac9104a93ab51617c702',
     instructions: 'LOAD\nSYS 4352',
     tests: ['2023-11-16 OK (VIC 20)'],
@@ -158,7 +158,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'cpc',
     file: 'rl.bin',
-    options: {machine: 'cpc', load: '2000', entry: '2000', name: 'RL'},
+    options: {format: 'cpcgeneric', load: '2000', entry: '2000', name: 'RL'},
     hash: '30d06c882c900ffb970dc6154e5b4141',
     instructions: 'RUN ""',
     tests: ['2023-02-11 OK (CPC 464)'],
@@ -209,7 +209,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'kc_basic_generic',
     file: 'rl.txt',
-    options: {name: 'RL', machine: 'kc', format: 'kcbasic', kcbasictype: 'ascii'},
+    options: {name: 'RL', format: 'kcbasic', kcbasictype: 'ascii'},
     hash: 'a971316b56ffe172a931455ce641819c',
     instructions: 'BASIC\n<return>\nLOAD#1 "RL"',
     tests: ['2023-07-19 OK (KC 87)'],
@@ -218,7 +218,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'lc80_bin',
     file: 'rl.bin',
-    options: {name: 'ffff', load: '2000', machine: 'lc80'},
+    options: {name: 'ffff', load: '2000', format: 'lc80generic'},
     hash: '3a92341af5d83050caf3112cf053d8d3',
     instructions: '<LD>FFFF<EX>\n<RES><ADR>2000<EX>',
     tests: ['2022-11-30 OK (LC 80)'],
@@ -309,7 +309,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'mo5_bas',
     file: 'rl.bas',
-    options: {machine: 'mo5', name: 'RL      BAS'},
+    options: {format: 'mo5generic', name: 'RL      BAS'},
     hash: '9bf6bd56b1ec9d85e7d6d72f7d87fece',
     instructions: 'LOAD"",R',
     tests: ['2023-04-16 OK (Thomson MO5)'],
@@ -325,7 +325,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'mo5_bin',
     file: 'rl.bin',
-    options: {machine: 'mo5', mo5type: '2', name: 'RL      BIN'},
+    options: {format: 'mo5generic', mo5type: '2', name: 'RL      BIN'},
     hash: '827ed65977d2264ea635a9d70a1e2a8c',
     instructions: 'LOADM"",,R',
     tests: ['2023-04-16 OK (Thomson MO5)'],
