@@ -22,7 +22,7 @@ export class Lc80Encoder extends AbstractEncoder {
   }
 
   override begin() {
-    super.begin();
+    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
     this.recordSeconds(fSyncIntro, syncIntroLength);
   }
 

@@ -20,7 +20,7 @@ export abstract class AbstractEncoder {
   }
 
   begin() {
-    this.recordSilence(this.recorder.sampleRate);
+    this.recordSilence(this.recorder.sampleRate / 2);
   }
 
   end() {

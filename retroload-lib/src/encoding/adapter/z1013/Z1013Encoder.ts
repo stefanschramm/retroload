@@ -17,8 +17,8 @@ export class Z1013Encoder extends AbstractEncoder {
     return 'z1013';
   }
 
-  override begin() {
-    super.begin();
+  public override begin() {
+    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
     this.recordFirstIntro();
   }
 

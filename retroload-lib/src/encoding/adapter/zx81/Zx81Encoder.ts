@@ -11,6 +11,10 @@ export class Zx81Encoder extends AbstractEncoder {
     return 'zx81';
   }
 
+  public override begin(): void {
+    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
+  }
+
   override recordByte(byte: number) {
     this.recordByteMsbFirst(byte);
   }

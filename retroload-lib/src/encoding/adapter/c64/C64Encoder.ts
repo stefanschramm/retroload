@@ -43,6 +43,10 @@ export class C64Encoder extends AbstractEncoder {
     this.clockCycles = clockCycleMap[machineType];
   }
 
+  public override begin() {
+    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
+  }
+
   public recordPulse(pulseLength: number) {
     // Note: The .tap file adapter uses recordPulse directly.
     const samples = Math.ceil((0.5 * this.recorder.sampleRate * pulseLength) / this.clockCycles);

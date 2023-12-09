@@ -31,6 +31,10 @@ export class MsxEncoder extends AbstractEncoder {
     this.baudrateFactor = fast ? 2 : 1; // use 1200 or 2400 baud
   }
 
+  override begin(): void {
+    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
+  }
+
   recordHeader(long: boolean) {
     this.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
     long = this.shortpilot ? false : long; // use short pulse if shortpilot option is set
