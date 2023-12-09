@@ -17,10 +17,6 @@ export class TiEncoder extends AbstractEncoder {
     return 'ti';
   }
 
-  override begin() {
-    this.recordSilence(this.recorder.sampleRate / 2);
-  }
-
   recordHeader(numberOfRecords: number) {
     for (let i = 0; i < 768; i++) {
       this.recordByte(0x00);

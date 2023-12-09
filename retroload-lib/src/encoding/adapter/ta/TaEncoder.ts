@@ -17,10 +17,6 @@ export class TaEncoder extends AbstractEncoder {
     return 'ta';
   }
 
-  override begin() {
-    this.recordSilence(this.recorder.sampleRate / 2);
-  }
-
   recordFile(filename: string, dataBa: BufferAccess) {
     const headerBa = BufferAccess.create(16);
     headerBa.writeAsciiString('', 10, 0xd3);

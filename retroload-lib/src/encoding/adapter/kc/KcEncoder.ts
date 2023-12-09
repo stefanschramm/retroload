@@ -26,7 +26,7 @@ export class KcEncoder extends AbstractEncoder {
   }
 
   override begin() {
-    this.recordSilence(this.recorder.sampleRate / 2);
+    super.begin();
     this.recordIntro();
   }
 

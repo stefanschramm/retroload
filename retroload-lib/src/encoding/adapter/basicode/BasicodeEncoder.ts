@@ -31,10 +31,6 @@ export class BasicodeEncoder extends AbstractEncoder {
     super(recorder);
   }
 
-  override begin() {
-    this.recordSilence(this.recorder.sampleRate / 2);
-  }
-
   override end() {
     this.recordSilence(this.recorder.sampleRate / 2);
   }
