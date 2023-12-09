@@ -4,6 +4,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
+import {c64TapfileHeader} from './C64TapAdapter.js';
 
 const definition: AdapterDefinition = {
   name: 'C64 .T64-File',
@@ -15,13 +16,13 @@ const definition: AdapterDefinition = {
 };
 export default definition;
 
-// Usually 'C64 tape image file' but might be different
+// Usually 'C64 tape image file' or 'C64S tape file' but might be different
 const fileHeader = 'C64';
 
 function identify(filename: string, ba: BufferAccess) {
   return {
     filename: (/^.*\.t64$/i).exec(filename) !== null,
-    header: ba.containsDataAt(0, fileHeader),
+    header: ba.containsDataAt(0, fileHeader) && !ba.containsDataAt(0, c64TapfileHeader),
   };
 }
 

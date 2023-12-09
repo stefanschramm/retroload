@@ -16,13 +16,13 @@ const definition: AdapterDefinition = {
 };
 export default definition;
 
-const fileHeader = 'C64-TAPE-RAW';
+export const c64TapfileHeader = 'C64-TAPE-RAW';
 const defaultLongPulse = 2048;
 
 function identify(filename: string, ba: BufferAccess) {
   return {
     filename: (/^.*\.tap$/i).exec(filename) !== null,
-    header: ba.containsDataAt(0, fileHeader),
+    header: ba.containsDataAt(0, c64TapfileHeader),
   };
 }
 
