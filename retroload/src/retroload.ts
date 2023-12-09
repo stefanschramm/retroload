@@ -21,7 +21,8 @@ main()
   });
 
 async function main() {
-  const machineFormatList = AdapterManager.getAllAdapters().map((a) => a.targetName + '/' + a.internalName).join(', ');
+  const formatNames = AdapterManager.getAllAdapters().map((a) => a.internalName);
+  formatNames.sort();
   const program = (new Command())
     .name('retroload')
     .description('Play tape archive files of historical computers for loading them on real devices or convert them to WAVE files.')
@@ -29,11 +30,10 @@ async function main() {
     .allowExcessArguments(false)
     .option('-o <outfile>', 'Generate WAVE file <outfile> instead of playback')
     .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), AdapterManager.formatOption.description)
-    .option('-m, ' + getCommanderFlagsString(AdapterManager.machineOption), AdapterManager.machineOption.description)
     .option('-l, --loglevel <loglevel>', 'Verbosity of log output', '1')
     .version(`retroload: ${cliVersion}\nretroload-lib: ${libVersion}`)
     .showHelpAfterError()
-    .addHelpText('after', `\nAvailable machine/format combinations: ${machineFormatList}`);
+    .addHelpText('after', `\nAvailable formats: ${formatNames.join(', ')}`);
   // Options defined in adapters/encoders
   const allOptions = AdapterManager.getAllOptions();
   allOptions.sort((a, b) => a.common && !b.common ? -1 : 0);

@@ -4,7 +4,6 @@ import {
   InternalError,
   InvalidArgumentError,
   MissingOptionsError,
-  TargetMachineNotFoundError,
   UsageError,
 } from './Exceptions.js';
 import {type ArgumentOptionDefinition} from '../encoding/Options.js';
@@ -28,11 +27,6 @@ describe('Instantiation of exceptions', () => {
   test('FormatNotFoundError', () => {
     const e = new FormatNotFoundError('exampleformat');
     expect(e).toBeInstanceOf(FormatNotFoundError);
-  });
-
-  test('TargetMachineNotFoundError', () => {
-    const e = new TargetMachineNotFoundError('examplemachine', 'exampleformat');
-    expect(e).toBeInstanceOf(TargetMachineNotFoundError);
   });
 
   test('MissingOptionsError', () => {

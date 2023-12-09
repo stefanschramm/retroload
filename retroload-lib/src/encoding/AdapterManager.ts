@@ -1,7 +1,6 @@
 import {
   FormatAutodetectionFailedError,
   FormatNotFoundError,
-  TargetMachineNotFoundError,
   InternalError,
   MissingOptionsError,
 } from '../common/Exceptions.js';
@@ -25,33 +24,14 @@ export const formatOption: ArgumentOptionDefinition<string | undefined> = {
   enum: [...new Set(providedAdapters.map((a) => a.internalName))],
 };
 
-export const machineOption: ArgumentOptionDefinition<string | undefined> = {
-  name: 'machine',
-  label: 'Machine type',
-  description: 'Machine type to load data onto (can be used to limit format autodetection to a certain subset; not required when format is specified manually)',
-  common: false,
-  type: 'text',
-  argument: 'machine type',
-  required: false,
-  parse: (v) => v === '' ? undefined : v,
-  enum: [...new Set(providedAdapters.map((a) => a.targetName))],
-};
-
 export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, optionValues: OptionValues = {}) {
   const optionContainer = new OptionContainer(optionValues);
   const format = optionContainer.getArgument(formatOption);
-  const machine = optionContainer.getArgument(machineOption);
   let filteredAdapters = providedAdapters;
   if (format !== undefined) {
     filteredAdapters = filteredAdapters.filter((a) => a.internalName === format);
     if (filteredAdapters.length === 0) {
       throw new FormatNotFoundError(format);
-    }
-  }
-  if (machine !== undefined) {
-    filteredAdapters = filteredAdapters.filter((a) => a.targetName === machine);
-    if (filteredAdapters.length === 0) {
-      throw new TargetMachineNotFoundError(machine, format);
     }
   }
   const adapter = filteredAdapters.length === 1 ? filteredAdapters[0] : autodetectAdapter(filteredAdapters, filename, dataBa);

@@ -25,7 +25,7 @@ Convert an MSX tape archive into an audio file named example.wav:
 
     retroload retroload-lib/examples/formats/msx_cas_binary/rl.cas -o example.wav
 
-retroload will try to automatically determine the input format by its content and file extension. For formats that are not automatically detected, the `--format` and/or `--machine` options need to be specified.
+retroload will try to automatically determine the input format by its content and file extension. For formats that are not automatically detected, the `--format` option needs to be specified.
 
 ### Playing tape archives directly
 

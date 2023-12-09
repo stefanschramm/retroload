@@ -27,16 +27,6 @@ export class FormatNotFoundError extends UsageError {
   }
 }
 
-export class TargetMachineNotFoundError extends UsageError {
-  constructor(machine: string, format: string | undefined) {
-    if (format === undefined) {
-      super(`Specified machine type "${machine}" not found.`);
-    } else {
-      super(`Specified machine type "${machine}" not found for format "${format}".`);
-    }
-  }
-}
-
 export class MissingOptionsError extends UsageError {
   constructor(missingOptions: PublicOptionDefinition[]) {
     const optionList = missingOptions.map((o) => o.name);
