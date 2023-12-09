@@ -22,7 +22,7 @@ const fileHeader = 'C64';
 function identify(filename: string, ba: BufferAccess) {
   return {
     filename: (/^.*\.t64$/i).exec(filename) !== null,
-    header: ba.containsDataAt(0, fileHeader) && !ba.containsDataAt(0, c64TapfileHeader),
+    header: ba.containsDataAt(0, fileHeader) && !ba.containsDataAt(0, c64TapfileHeader) && !ba.containsDataAt(0, 'C64 CARTRIDGE'),
   };
 }
 
