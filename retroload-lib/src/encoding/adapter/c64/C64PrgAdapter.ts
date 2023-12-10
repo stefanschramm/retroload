@@ -1,15 +1,16 @@
-import {shortpilotOption, type OptionContainer} from '../../Options.js';
+import {shortpilotOption, type OptionContainer, nameOption} from '../../Options.js';
 import {C64Encoder} from './C64Encoder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
+import {InvalidArgumentError} from '../../../common/Exceptions.js';
 
 const definition: AdapterDefinition = {
   name: 'C64 .PRG-File',
   internalName: 'c64prg',
   targetName: C64Encoder.getTargetName(),
-  options: [shortpilotOption, c64machineOption],
+  options: [shortpilotOption, c64machineOption, nameOption],
   identify,
   encode,
 };
@@ -23,6 +24,10 @@ function identify(filename: string, _ba: BufferAccess) {
 }
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+  const name = options.getArgument(nameOption);
+  if (name.length > 16) {
+    throw new InvalidArgumentError(nameOption.name, 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');
+  }
   const header = ba.slice(0, 2);
   const loadAddress = header.getUint16Le(0);
   const data = ba.slice(2);
@@ -32,6 +37,6 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     options.getArgument(c64machineOption),
   );
   e.begin();
-  e.recordPrg(loadAddress, ' '.repeat(16), data);
+  e.recordPrg(loadAddress, name.padEnd(16, ' '), data);
   e.end();
 }

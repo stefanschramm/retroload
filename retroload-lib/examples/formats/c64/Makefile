@@ -26,7 +26,7 @@ emuprgc64: rl.prg
 # https://www.luigidifraia.com/software/#PRG_to_TAP_encapsulation_utility
 # https://www.luigidifraia.com/hosted/software/prg2tap-1.8-linux-x86_64-with-examples.tar.gz
 %.tap: %.prg
-	prg2tap $< $@
+	prg2tap -n "RL" $< $@
 
 %.p00: %.asm
 	$(65XX_ASM) -DMAKE_P00=1 $< -o $@

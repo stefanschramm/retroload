@@ -43,10 +43,6 @@ export class C64Encoder extends AbstractEncoder {
     this.clockCycles = clockCycleMap[machineType];
   }
 
-  public override begin() {
-    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
-  }
-
   public recordPulse(pulseLength: number) {
     // Note: The .tap file adapter uses recordPulse directly.
     const samples = Math.ceil((0.5 * this.recorder.sampleRate * pulseLength) / this.clockCycles);
@@ -57,13 +53,13 @@ export class C64Encoder extends AbstractEncoder {
     }
   }
 
-  public recordBasic(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
+  public recordBasic(startAddress: number, filename: string, dataBa: BufferAccess) {
     // TODO: test
-    this.recordBasicOrPrg(fileTypeBasic, startAddress, filenameBuffer, dataBa);
+    this.recordBasicOrPrg(fileTypeBasic, startAddress, filename, dataBa);
   }
 
-  public recordPrg(startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
-    this.recordBasicOrPrg(fileTypePrg, startAddress, filenameBuffer, dataBa);
+  public recordPrg(startAddress: number, filename: string, dataBa: BufferAccess) {
+    this.recordBasicOrPrg(fileTypePrg, startAddress, filename, dataBa);
   }
 
   public recordData(filenameBuffer: string, dataBa: BufferAccess) {
@@ -172,12 +168,12 @@ export class C64Encoder extends AbstractEncoder {
     this.recordByte(checkByte);
   }
 
-  private recordBasicOrPrg(fileType: number, startAddress: number, filenameBuffer: string, dataBa: BufferAccess) {
+  private recordBasicOrPrg(fileType: number, startAddress: number, filename: string, dataBa: BufferAccess) {
     const headerBa = BufferAccess.create(192);
     headerBa.writeUint8(fileType); // 1 byte: file type: prg or basic file
     headerBa.writeUint16Le(startAddress); // 2 bytes: start address
     headerBa.writeUint16Le(startAddress + dataBa.length()); // 2 bytes: end address
-    headerBa.writeAsciiString(filenameBuffer); // 16 bytes: filename
+    headerBa.writeAsciiString(filename); // 16 bytes: filename
     headerBa.writeAsciiString(' '.repeat(171)); // 171 bytes: padding with spaces
 
     Logger.debug('C64Encoder - recordBasicOrPrg - header:');
