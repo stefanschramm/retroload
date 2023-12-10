@@ -108,7 +108,7 @@ BASIC ASCII listings can be loaded (within BASIC) using
 
 **BASICODE**
 
-The BASCODER bac87_sss.tap can be used to load and run BASICODE programs:
+The BASCODER `bac87_sss.tap` can be used to load and run BASICODE programs:
 
     BASIC
     CLOAD" "
@@ -145,7 +145,7 @@ From within BASIC, `BLOAD` can be used to load machine programs.
 
 **BASICODE**
 
-For KC 85/4 the BASCODER BAC854C.SSS can be used to load and run BASICODE programs:
+For KC 85/4 the BASCODER `BAC854C.SSS` can be used to load and run BASICODE programs:
 
     BASIC
     CLOAD" "
@@ -175,6 +175,8 @@ The file name consist of 4 hexadecimal digits (here `FFFF`). After loading, the 
 
 # MSX - Philips VG 8020
 
+Volume: 40 %
+
 Programs can be loaded and started using one of the following methods:
 
     run "cas:"
@@ -187,6 +189,18 @@ or
 or
 
     bload "cas:",r
+
+**BASICODE**
+
+The BASCODER `BASICODE-3 (1987)(NOS)(NL).cas` can be used to load and run BASICODE programs.
+
+Load and run BASICODE-3:
+
+    bload"cas:",r
+
+Then the BASICODE audio can be loaded using schema `A` ("Basicode progr >>> Basicode 3 vertaler >>> Basic") and pressing `ESC`.
+The BASCODER will then exit to BASIC and the loaded program can be `run`.
+With `cmd` the menu can be entered.
 
 # TA alphatronic PC
 
