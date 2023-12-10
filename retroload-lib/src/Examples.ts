@@ -40,6 +40,7 @@ const examples: ExampleDefinition[] = [
     tests: [
       '2023-10-31 (KC 87 with BASICODE-3 Andreas and Uwe Zierott 1.4; bac87_sss.tap: 266bc6b3753b75230d89f046297e0f4d)',
       '2023-10-31 (KC 85/4 with BASICODE-3C Andreas and Uwe Zierott, R. Wenzel 1.5; BAC854C.SSS: d48116eaeab75f01b31ba3515fd45615)',
+      '2023-12-10 (C64 C with BASICODE 3 Version D-1 MvD 1988; prg: d7c0990f12499ad2c3d31539e0366712, Basicode 3 Version D-1 (DE).d64: 962b708b1f6b5ac720c25e7848f4d796',
     ],
   },
   // Atari 800 XL
