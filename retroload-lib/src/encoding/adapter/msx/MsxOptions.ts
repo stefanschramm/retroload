@@ -5,7 +5,7 @@ import {MsxType, msxTypeList, type MsxTypeStrings} from './MsxDefinitions.js';
 export const msxfastOption: FlagOptionDefinition = {
   name: 'msxfast',
   label: 'Fast baudrate',
-  description: 'MSX: Use 2400 baud instead of 1200 (faster loading, less reliable)',
+  description: 'Use 2400 baud instead of 1200 (faster loading, less reliable)',
   type: 'bool',
   common: true,
 };
@@ -13,7 +13,7 @@ export const msxfastOption: FlagOptionDefinition = {
 export const msxTypeOption: ArgumentOptionDefinition<MsxType> = {
   name: 'msxtype',
   label: 'MSX file type',
-  description: `MSX: File type. Possible types: ${msxTypeList}`,
+  description: `File type. Possible types: ${msxTypeList}`,
   argument: 'type',
   required: true,
   common: false,

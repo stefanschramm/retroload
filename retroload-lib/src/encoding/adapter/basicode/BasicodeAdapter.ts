@@ -7,7 +7,7 @@ import {type AdapterDefinition, type FormatIdentification} from '../AdapterDefin
 const basicodeDataOption: FlagOptionDefinition = {
   name: 'basicodedata',
   label: 'BASICODE data recording',
-  description: 'Record as BASICODE data (will split data into 1024 byte chunks and uses STH as start byte',
+  description: 'Record as data (will split data into 1024 byte chunks and uses STH as start byte',
   type: 'bool',
   common: false,
 };

@@ -6,9 +6,9 @@ import {type FlagOptionDefinition, type OptionContainer} from '../../Options.js'
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
 const z80noHeadersave: FlagOptionDefinition = {
-  name: 'z80noheadersave',
+  name: 'noheadersave',
   label: 'No Headersave',
-  description: 'Z1013 Z80: Don\'t output headersave header and use normal block numbering for loading with the default monitor loader.',
+  description: 'Don\'t output headersave header and use normal block numbering for loading with the default monitor loader.',
   common: false,
   type: 'bool',
 };

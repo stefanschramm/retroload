@@ -107,7 +107,7 @@ export const shortpilotOption: FlagOptionDefinition = {
 export const nameOption: ArgumentOptionDefinition<string> = {
   name: 'name',
   label: 'File name',
-  description: 'File name for tape record. Different machines have different constraints for file names.',
+  description: 'File name for tape record',
   argument: 'name',
   common: true,
   required: false,
@@ -118,7 +118,7 @@ export const nameOption: ArgumentOptionDefinition<string> = {
 export const loadOption: ArgumentOptionDefinition<number | undefined> = {
   name: 'load',
   label: 'Load address',
-  description: 'Address (hexadecimal 16-bit number) where to load the program to',
+  description: 'Address where to load the program to',
   argument: 'address',
   common: true,
   required: false,
@@ -139,7 +139,7 @@ export const loadOption: ArgumentOptionDefinition<number | undefined> = {
 export const entryOption: ArgumentOptionDefinition<number | undefined> = {
   name: 'entry',
   label: 'Entry address',
-  description: 'Address (hexadecimal 16-bit number) of entry point of program (in memory)',
+  description: 'Address of entry point of program (in memory)',
   argument: 'address',
   common: true,
   required: false,

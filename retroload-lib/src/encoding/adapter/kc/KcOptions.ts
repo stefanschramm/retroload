@@ -2,9 +2,9 @@ import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type ArgumentOptionDefinition} from '../../Options.js';
 
 export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
-  name: 'kcfirstblock',
+  name: 'firstblock',
   label: 'First block number',
-  description: 'KC: Number of first block. HC 900 and KC 85/2-4 use 1 while Z 9001, KC 85/1 and KC 87 use 0. Default: 1',
+  description: 'Number of first block. HC 900 and KC 85/2-4 use 1 while Z 9001, KC 85/1 and KC 87 use 0. Default: 1',
   argument: 'number',
   common: true,
   required: false,

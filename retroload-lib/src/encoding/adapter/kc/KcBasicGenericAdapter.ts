@@ -18,7 +18,7 @@ const kcBasicTypeList = Object.keys(KcBasicType).join(', ');
 const kcBasicTypeOption: ArgumentOptionDefinition<KcBasicType> = {
   name: 'kcbasictype',
   label: 'BASIC data type',
-  description: `KC BASIC: Type of BASIC data to be loaded. Possible types: ${kcBasicTypeList}. Default: ${kcBasicTypeDefault}`,
+  description: `Type of BASIC data to be loaded. Possible types: ${kcBasicTypeList}. Default: ${kcBasicTypeDefault}`,
   argument: 'type',
   common: false,
   required: false,
@@ -40,7 +40,7 @@ const kcBasicTypeOption: ArgumentOptionDefinition<KcBasicType> = {
 const kcBasicProtectedOption: FlagOptionDefinition = {
   name: 'kcbasicprotected',
   label: 'Protected flag',
-  description: 'KC BASIC: Enable "copy protection" (disables LISTing programs)',
+  description: 'Enable "copy protection" (disables LISTing programs)',
   common: false,
   type: 'bool',
 };
