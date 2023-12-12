@@ -42,7 +42,7 @@ export class CustomHelp extends Help {
       return adapterDetails;
     });
     if (adapterList.length > 0) {
-      output = output + '\nAvailable format adapters and their specific options:\n\n' + formatList(adapterList) + '\n';
+      output = output + '\nSupported formats and their specific options:\n\n' + formatList(adapterList) + '\n';
     }
 
     return output;

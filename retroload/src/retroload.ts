@@ -30,7 +30,7 @@ async function main() {
     .argument('infile', 'Path to file to play (default) or convert (when using -o <outfile> option)')
     .allowExcessArguments(false)
     .option('-o <outfile>', 'Generate WAVE file <outfile> instead of playback')
-    .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), `${AdapterManager.formatOption.description}. See list below for available formats.`)
+    .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), `${AdapterManager.formatOption.description}. See list below for supported formats.`)
     .option('-l, --loglevel <loglevel>', 'Verbosity of log output', '1')
     .version(`retroload: ${cliVersion}\nretroload-lib: ${libVersion}`)
     .showHelpAfterError();
