@@ -12,7 +12,7 @@ export const msxfastOption: FlagOptionDefinition = {
 
 export const msxTypeOption: ArgumentOptionDefinition<MsxType> = {
   name: 'msxtype',
-  label: 'MSX file type',
+  label: 'File type',
   description: `File type. Possible types: ${msxTypeList}`,
   argument: 'type',
   required: true,
