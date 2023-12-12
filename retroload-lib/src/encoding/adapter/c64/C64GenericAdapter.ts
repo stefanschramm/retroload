@@ -19,7 +19,7 @@ const c64TypeList = Object.keys(C64Type).join(', ');
 const c64typeOption: ArgumentOptionDefinition<C64Type> = {
   name: 'c64type',
   label: 'C64 file type',
-  description: `C64: File type. Possible types: ${c64TypeList}`,
+  description: `File type. Possible types: ${c64TypeList}`,
   argument: 'type',
   required: true,
   common: false,

@@ -9,7 +9,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 const typeOption: ArgumentOptionDefinition<number> = {
   name: 'zxtype',
   label: 'File type',
-  description: 'ZX Spectrum: File type. Known types: 0 = BASIC program, 1 = array of numbers, 2 = array of characters, 3 = binary program (default). Arrays will be assigned the names a() or a$().',
+  description: 'File type. Known types: 0 = BASIC program, 1 = array of numbers, 2 = array of characters, 3 = binary program (default). Arrays will be assigned the names a() or a$().',
   argument: 'type',
   required: false,
   common: false,

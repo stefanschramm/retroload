@@ -179,7 +179,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'kc851_tap',
     file: 'rl.com',
-    options: {format: 'kcgeneric', name: 'RL', load: '0300', entry: '0300', kcfirstblock: '0'},
+    options: {format: 'kcgeneric', name: 'RL', load: '0300', entry: '0300', firstblock: '0'},
     hash: '117e0758f5effea2aaff8a234797ea19',
     instructions: 'RL\n<return>',
     tests: ['2023-07-09 OK (KC 87)'],
@@ -347,7 +347,7 @@ const examples: ExampleDefinition[] = [
   {
     dir: 'z1013',
     file: 'rl.z80',
-    options: {z80noheadersave: true},
+    options: {noheadersave: true},
     hash: 'c218c1653624c4be23e93623217ea561',
     instructions: 'L 1000 108F\nJ 1000',
     tests: ['2023-11-10 OK (Z 1013)'],

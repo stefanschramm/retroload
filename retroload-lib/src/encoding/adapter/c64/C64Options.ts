@@ -14,7 +14,7 @@ const c64MachineTypeList = Object.keys(C64MachineType).join(', ');
 export const c64machineOption: ArgumentOptionDefinition<C64MachineType> = {
   name: 'c64machine',
   label: 'Machine',
-  description: `C64: Machine type. Possible types: ${c64MachineTypeList}. Default: ${c64MachineTypeDefault}`,
+  description: `Machine type. Possible types: ${c64MachineTypeList}. Default: ${c64MachineTypeDefault}`,
   argument: 'machine',
   required: false,
   common: true,

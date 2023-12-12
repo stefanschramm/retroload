@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 import {WaveRecorder, AdapterManager, Exception, Logger, version as libVersion, type PublicOptionDefinition} from 'retroload-lib';
-import {Command} from 'commander';
+import {Option} from 'commander';
 import {type PlayerWrapper} from './player/PlayerWrapper.js';
 import {SpeakerWrapper} from './player/SpeakerWrapper.js';
 import {AplayWrapper} from './player/AplayWrapper.js';
 import {SoxWrapper} from './player/SoxWrapper.js';
 import {version as cliVersion} from './version.js';
 import {readFile, writeFile} from './Utils.js';
+import {CustomCommand} from './help/CustomCommand.js';
 
 const playerWrapperPriority = [
   SpeakerWrapper,
@@ -23,22 +24,21 @@ main()
 async function main() {
   const formatNames = AdapterManager.getAllAdapters().map((a) => a.internalName);
   formatNames.sort();
-  const program = (new Command())
+  const program = (new CustomCommand(AdapterManager.getAllAdapters()))
     .name('retroload')
     .description('Play tape archive files of historical computers for loading them on real devices or convert them to WAVE files.')
     .argument('infile', 'Path to file to play (default) or convert (when using -o <outfile> option)')
     .allowExcessArguments(false)
     .option('-o <outfile>', 'Generate WAVE file <outfile> instead of playback')
-    .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), AdapterManager.formatOption.description)
+    .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), `${AdapterManager.formatOption.description}. See list below for supported formats.`)
     .option('-l, --loglevel <loglevel>', 'Verbosity of log output', '1')
     .version(`retroload: ${cliVersion}\nretroload-lib: ${libVersion}`)
-    .showHelpAfterError()
-    .addHelpText('after', `\nAvailable formats: ${formatNames.join(', ')}`);
+    .showHelpAfterError();
   // Options defined in adapters/encoders
   const allOptions = AdapterManager.getAllOptions();
   allOptions.sort((a, b) => a.common && !b.common ? -1 : 0);
   for (const option of allOptions) {
-    program.option(getCommanderFlagsString(option), option.description);
+    program.addOption(new Option(getCommanderFlagsString(option), option.description).hideHelp());
   }
   program.parse();
 
