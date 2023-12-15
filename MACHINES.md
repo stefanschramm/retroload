@@ -261,9 +261,15 @@ The load command `L` takes the load and end address as hexadecimal numbers (here
     L 1000 108F
     J 1000
 
-The monitor image does not change while loading.
-The sound can be heared on the TV when using the HF cable.
-After successful loading, the `#`-prompt is displayed.
+The monitor image does not change while loading. The sound can be heared on the TV when using the HF cable. After successful loading, the `#`-prompt is displayed.
+
+**Headersave**
+
+Headersave (.z80) files have an additional header containing the record name, start address, end address and entry address. To load these files, the Headersave program needs to exist in memory (either in ROM or loaded from tape).
+
+Headersave (e.g. `C.HEADERSAVE 5.95.z80`) can be loaded using `L 3C00 3FFF` and initialized by `J 3FEE`. Then .z80 files can be loaded using the `@L` command.
+
+As an alternative, RetroLoad allows removing the Headersave header using the `--noheadersave` option to allow the usage of standard monitor commands. Then the load and end addresses need to be specified manually to the `L` command and the entry address to the `J`command.
 
 # ZX 81
 
