@@ -18,7 +18,7 @@ export class Z1013Encoder extends AbstractEncoder {
   }
 
   public override begin() {
-    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
+    super.begin();
     this.recordFirstIntro();
   }
 
