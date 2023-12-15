@@ -215,9 +215,9 @@ const examples: ExampleDefinition[] = [
     dir: 'lc80_bin',
     file: 'rl.bin',
     options: {name: 'ffff', load: '2000', format: 'lc80generic'},
-    hash: '3a92341af5d83050caf3112cf053d8d3',
+    hash: '6ec4e27820649e0708f095b6d05a0b19',
     instructions: '<LD>FFFF<EX>\n<RES><ADR>2000<EX>',
-    tests: ['2022-11-30 OK (LC 80)'],
+    tests: ['2023-12-15 OK (LC 80)'],
   },
   // MSX
   {
