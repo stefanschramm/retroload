@@ -365,9 +365,9 @@ const examples: ExampleDefinition[] = [
     dir: 'zx81_p',
     file: 'rl.p',
     options: {name: 'RL'},
-    hash: 'c69b949596cc6a158a229a4e3d6fb73a',
+    hash: '4d84757fcc4f8b7599d82420e9523fea',
     instructions: 'LOAD""\nRUN',
-    tests: ['2023-11-03 OK (ZX 81)'],
+    tests: ['2023-12-15 OK (ZX 81)'],
   },
   // ZX Spectrum
   {

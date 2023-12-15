@@ -275,6 +275,8 @@ As an alternative, RetroLoad allows removing the Headersave header using the `--
 
 Volume: 60 % (using line cable)
 
+Load a BASIC program:
+
     LOAD ""
 
 (`J`, `Shift`+`P`, `Shift`+`P`, `New Line`)
