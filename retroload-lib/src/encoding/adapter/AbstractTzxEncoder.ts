@@ -17,10 +17,6 @@ const fCpu = 3500000;
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
 export abstract class AbstractTzxEncoder extends AbstractEncoder {
-  public override begin(): void {
-    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
-  }
-
   recordStandardSpeedDataBlock(blockDataBa: BufferAccess) {
     this.recordDataBlock(blockDataBa, {
       ...this.getStandardSpeedRecordOptions(),
