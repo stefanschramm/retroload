@@ -58,7 +58,7 @@ The VIC 20 will automatically load the first record found.
 
 # CPC 464
 
-Volume: 60 % (using cassette adapter)
+Volume: 60 % (using cassette adapter side A)
 
 Load from cassette and run:
 
