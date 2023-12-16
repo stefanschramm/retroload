@@ -155,17 +155,17 @@ const examples: ExampleDefinition[] = [
     dir: 'cpc',
     file: 'rl.bin',
     options: {format: 'cpcgeneric', load: '2000', entry: '2000', name: 'RL'},
-    hash: '30d06c882c900ffb970dc6154e5b4141',
+    hash: '2e567c9c44cd53585068bef5af5fa1ca',
     instructions: 'RUN ""',
-    tests: ['2023-02-11 OK (CPC 464)'],
+    tests: ['2023-12-16 OK (CPC 464)'],
   },
   {
     dir: 'cpc',
     file: 'rl.cdt',
     options: {},
-    hash: 'd08d4975fef3fb4bb78bb93224ca7ea3',
+    hash: '433789b4e8e504999575848927d96b89',
     instructions: 'RUN ""',
-    tests: ['2023-02-11 OK (CPC 464)'],
+    tests: ['2023-12-16 OK (CPC 464)'],
   },
   // KC 85/1, KC 87, Z 9001
   {
