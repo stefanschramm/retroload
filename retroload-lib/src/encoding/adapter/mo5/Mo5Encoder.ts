@@ -17,10 +17,6 @@ export class Mo5Encoder extends AbstractEncoder {
     return 'mo5';
   }
 
-  public override begin(): void {
-    this.recordSilence(this.recorder.sampleRate); // TODO: shorten
-  }
-
   recordStartBlock(ba: BufferAccess) {
     Logger.debug(ba.asHexDump());
     this.recordPilot(1);

@@ -209,7 +209,7 @@ With `cmd` the menu can be entered.
 
 # Thomson MO5
 
-Volume: 25 % (using cassette adapter)
+Volume: 25 % (using cassette adapter side B)
 
 Load and run BASIC program:
 
