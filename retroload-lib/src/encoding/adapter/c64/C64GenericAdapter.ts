@@ -38,7 +38,6 @@ const c64typeOption: ArgumentOptionDefinition<C64Type> = {
 const definition: AdapterDefinition = {
   name: 'C64 (Generic data)',
   internalName: 'c64generic',
-  targetName: C64Encoder.getTargetName(),
   options: [
     shortpilotOption,
     c64typeOption,

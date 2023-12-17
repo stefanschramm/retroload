@@ -1,15 +1,10 @@
 import {type BufferAccess} from '../../common/BufferAccess.js';
-import {InternalError} from '../../common/Exceptions.js';
 import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 /**
  * Base class for all encoders. Provides many methods commonly used.
  */
 export abstract class AbstractEncoder {
-  static getTargetName() {
-    throw new InternalError('getTargetName() not implemented!');
-  }
-
   /**
    * this.phase determines whether the next half oscillation is positive.
    * It's modified only when recording half oscillations.

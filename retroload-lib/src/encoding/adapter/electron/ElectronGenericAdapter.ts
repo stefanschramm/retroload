@@ -11,7 +11,6 @@ import {hex8} from '../../../common/Utils.js';
 const definition: AdapterDefinition = {
   name: 'Acorn Electron (Generic data)',
   internalName: 'electrongeneric',
-  targetName: ElectronEncoder.getTargetName(),
   options: [
     nameOption, // 1 - 10 characters
     loadOption,

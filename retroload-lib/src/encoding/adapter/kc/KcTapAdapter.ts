@@ -9,7 +9,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'KC .TAP-File',
   internalName: 'kctap',
-  targetName: KcEncoder.getTargetName(),
   options: [],
   identify,
   encode,

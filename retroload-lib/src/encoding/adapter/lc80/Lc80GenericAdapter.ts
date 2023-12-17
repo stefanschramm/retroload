@@ -11,7 +11,6 @@ import {Logger} from '../../../common/logging/Logger.js';
 const definition: AdapterDefinition = {
   name: 'LC80 (Generic data)',
   internalName: 'lc80generic',
-  targetName: Lc80Encoder.getTargetName(),
   options: [
     nameOption,
     loadOption,

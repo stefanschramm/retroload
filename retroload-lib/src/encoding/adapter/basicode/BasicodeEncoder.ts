@@ -20,10 +20,6 @@ const etx = 0x03;
  * - https://github.com/robhagemans/basicode/blob/master/BASICODE.rst
  */
 export class BasicodeEncoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'basicode';
-  }
-
   constructor(
     recorder: RecorderInterface,
     private readonly shortpilot = false,

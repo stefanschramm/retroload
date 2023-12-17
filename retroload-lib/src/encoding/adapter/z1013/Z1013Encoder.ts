@@ -13,10 +13,6 @@ const fSync = 640;
  * https://hc-ddr.hucki.net/wiki/doku.php/z1013/kassettenformate
  */
 export class Z1013Encoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'z1013';
-  }
-
   public override begin() {
     super.begin();
     this.recordFirstIntro();

@@ -13,7 +13,6 @@ import {calculateCrc16Ccitt} from '../../../common/Utils.js';
 const definition: AdapterDefinition = {
   name: 'CPC (Generic data)',
   internalName: 'cpcgeneric',
-  targetName: CpcTzxEncoder.getTargetName(),
   options: [
     nameOption,
     loadOption,

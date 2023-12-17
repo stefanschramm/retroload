@@ -13,10 +13,6 @@ const fOne = 1379;
  * https://www.unige.ch/medecine/nouspikel/ti99/cassette.htm
  */
 export class TiEncoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'ti';
-  }
-
   recordHeader(numberOfRecords: number) {
     for (let i = 0; i < 768; i++) {
       this.recordByte(0x00);

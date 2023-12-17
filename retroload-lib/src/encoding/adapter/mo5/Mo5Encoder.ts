@@ -13,10 +13,6 @@ const fOne = 1200;
  * http://dcmoto.free.fr/documentation/moniteur-mo5-casst/moniteur-mo5-casst_src.txt
  */
 export class Mo5Encoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'mo5';
-  }
-
   recordStartBlock(ba: BufferAccess) {
     Logger.debug(ba.asHexDump());
     this.recordPilot(1);

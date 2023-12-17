@@ -8,7 +8,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'CPC .CDT-File',
   internalName: 'cdt',
-  targetName: CpcTzxEncoder.getTargetName(),
   options: [],
   identify,
   encode,

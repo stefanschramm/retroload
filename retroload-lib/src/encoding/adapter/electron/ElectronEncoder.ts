@@ -8,10 +8,6 @@ const fBase = 1200;
  * https://beebwiki.mdfs.net/Acorn_cassette_format
  */
 export class ElectronEncoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'electron';
-  }
-
   recordPilot(length: number) {
     this.recordCarrier(fBase * 2 * length);
   }

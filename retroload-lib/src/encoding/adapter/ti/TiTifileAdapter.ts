@@ -11,7 +11,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'TI-99/4A .TIFILE-File',
   internalName: 'tifile',
-  targetName: TiEncoder.getTargetName(),
   options: [],
   identify,
   encode,

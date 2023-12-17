@@ -11,7 +11,6 @@ import {hex16} from '../../../common/Utils.js';
 const definition: AdapterDefinition = {
   name: 'MSX .CAS-File',
   internalName: 'msxcas',
-  targetName: MsxEncoder.getTargetName(),
   options: [
     shortpilotOption,
     msxfastOption,

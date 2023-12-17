@@ -12,7 +12,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'KC .KCC-File',
   internalName: 'kcc',
-  targetName: KcEncoder.getTargetName(),
   options: [kcFirstBlockOption],
   identify,
   encode,

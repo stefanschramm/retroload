@@ -4,10 +4,6 @@ import {AbstractTzxEncoder, type DataRecordOptions} from '../AbstractTzxEncoder.
  * Amstrad CPC-specific variant of the TzxEncoder (.cdt files)
  */
 export class CpcTzxEncoder extends AbstractTzxEncoder {
-  static override getTargetName() {
-    return 'cpc';
-  }
-
   getTzxCycleFactor() {
     return 40 / 35;
   }

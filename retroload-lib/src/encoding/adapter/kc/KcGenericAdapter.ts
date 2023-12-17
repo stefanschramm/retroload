@@ -15,7 +15,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'KC (Generic)',
   internalName: 'kcgeneric',
-  targetName: KcEncoder.getTargetName(),
   options: [
     nameOption,
     loadOption,

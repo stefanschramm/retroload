@@ -8,7 +8,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'ZX81 .P-File',
   internalName: 'zx81p',
-  targetName: Zx81Encoder.getTargetName(),
   options: [nameOption],
   identify,
   encode,

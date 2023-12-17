@@ -16,7 +16,6 @@ const fileHeader = 'FUJI';
 const definition: AdapterDefinition = {
   name: 'Atari .CAS-File',
   internalName: 'ataricas',
-  targetName: AtariEncoder.getTargetName(),
   options: [],
   identify,
   encode,

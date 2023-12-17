@@ -8,7 +8,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'Atari (Generic data)',
   internalName: 'atarigeneric',
-  targetName: AtariEncoder.getTargetName(),
   options: [],
   identify,
   encode,

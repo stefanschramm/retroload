@@ -16,7 +16,6 @@ import {hex16, hex32} from '../../../common/Utils.js';
 const definition: AdapterDefinition = {
   name: 'Acorn Electron .UEF-File',
   internalName: 'uef',
-  targetName: ElectronEncoder.getTargetName(),
   options: [],
   identify,
   encode,

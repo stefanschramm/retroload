@@ -8,7 +8,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'Z1013 (Generic data)',
   internalName: 'z1013generic',
-  targetName: Z1013Encoder.getTargetName(),
   options: [],
   identify,
   encode,

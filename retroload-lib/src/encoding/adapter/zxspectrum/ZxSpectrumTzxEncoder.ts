@@ -4,10 +4,6 @@ import {AbstractTzxEncoder, type DataRecordOptions} from '../AbstractTzxEncoder.
  * ZX Spectrum-specific variant of the AbstractTzxEncoder
  */
 export class ZxSpectrumTzxEncoder extends AbstractTzxEncoder {
-  static override getTargetName() {
-    return 'zxspectrum';
-  }
-
   getTzxCycleFactor() {
     return 1;
   }

@@ -10,7 +10,6 @@ import {hex8} from '../../../common/Utils.js';
 const definition: AdapterDefinition = {
   name: 'C64 .TAP-File',
   internalName: 'c64tap',
-  targetName: C64Encoder.getTargetName(),
   options: [c64machineOption],
   identify,
   encode,

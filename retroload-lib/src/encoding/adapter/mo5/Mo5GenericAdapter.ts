@@ -34,7 +34,6 @@ const modeOption: ArgumentOptionDefinition<number> = {
 const definition: AdapterDefinition = {
   name: 'MO5 (Generic data)',
   internalName: 'mo5generic',
-  targetName: Mo5Encoder.getTargetName(),
   options: [
     nameOption,
     typeOption,

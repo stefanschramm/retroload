@@ -10,7 +10,6 @@ import {maxNameLength, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.j
 const definition: AdapterDefinition = {
   name: 'MSX (Generic binary)',
   internalName: 'msxgeneric',
-  targetName: MsxEncoder.getTargetName(),
   options: [
     loadOption,
     nameOption,

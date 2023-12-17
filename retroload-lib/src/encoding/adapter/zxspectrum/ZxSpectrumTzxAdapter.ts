@@ -8,7 +8,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'ZX Spectrum .TZX-File',
   internalName: 'zxspectrumtzx',
-  targetName: ZxSpectrumTzxEncoder.getTargetName(),
   options: [],
   identify,
   encode,

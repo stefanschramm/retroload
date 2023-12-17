@@ -51,7 +51,6 @@ const kcBasicProtectedOption: FlagOptionDefinition = {
 const definition: AdapterDefinition = {
   name: 'KC (Generic BASIC data)',
   internalName: 'kcbasic',
-  targetName: KcEncoder.getTargetName(),
   options: [
     nameOption,
     kcBasicTypeOption,

@@ -8,7 +8,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'KC .SSS-File',
   internalName: 'sss',
-  targetName: KcEncoder.getTargetName(),
   options: [nameOption],
   identify,
   encode,

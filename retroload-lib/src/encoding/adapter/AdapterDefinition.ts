@@ -6,7 +6,6 @@ import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 export type PublicAdapterDefinition = {
   readonly name: string;
   readonly internalName: string;
-  readonly targetName: string;
   readonly options: PublicOptionDefinition[];
 };
 

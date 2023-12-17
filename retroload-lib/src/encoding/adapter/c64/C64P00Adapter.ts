@@ -8,7 +8,6 @@ import {c64machineOption} from './C64Options.js';
 const definition: AdapterDefinition = {
   name: 'C64 .P00-File',
   internalName: 'c64p00',
-  targetName: C64Encoder.getTargetName(),
   options: [shortpilotOption, c64machineOption],
   identify,
   encode,

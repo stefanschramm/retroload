@@ -28,10 +28,6 @@ const pulseLong = 8 * 0x56;
  * 64 intern (Angerhausen, Brückmann, Englisch, Gerits), 4th edition, p. 120 - 122
  */
 export class C64Encoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'c64';
-  }
-
   private readonly clockCycles;
 
   constructor(

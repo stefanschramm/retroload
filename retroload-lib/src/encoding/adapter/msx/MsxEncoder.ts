@@ -16,10 +16,6 @@ const pulsesShortHeader = 4000;
  * MSX Technical Data Book, p. 172 - 175
  */
 export class MsxEncoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'msx';
-  }
-
   private readonly baudrateFactor: number;
 
   constructor(

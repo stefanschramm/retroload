@@ -17,7 +17,6 @@ const z80noHeadersave: FlagOptionDefinition = {
 const definition: AdapterDefinition = {
   name: 'Z1013 .Z80-File (Headersave)',
   internalName: 'z80',
-  targetName: Z1013Encoder.getTargetName(),
   options: [z80noHeadersave],
   identify,
   encode,

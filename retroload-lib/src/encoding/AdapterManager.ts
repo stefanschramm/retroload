@@ -52,7 +52,7 @@ function encodeWithAdapter(recorder: RecorderInterface, adapter: AdapterDefiniti
     throw new MissingOptionsError(missingOptions);
   }
 
-  Logger.info('Format: ' + adapter.name + ', Target: ' + adapter.targetName);
+  Logger.info(`Format: ${adapter.name} (${adapter.internalName})`);
 
   adapter.encode(recorder, dataBa, optionContainer);
 

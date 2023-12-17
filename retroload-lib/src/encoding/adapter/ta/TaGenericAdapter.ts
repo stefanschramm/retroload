@@ -9,7 +9,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'TA alphatronic PC (BASIC/Generic data)',
   internalName: 'tageneric',
-  targetName: TaEncoder.getTargetName(),
   options: [nameOption],
   identify,
   encode,

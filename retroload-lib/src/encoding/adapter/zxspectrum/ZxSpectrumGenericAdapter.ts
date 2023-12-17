@@ -23,7 +23,6 @@ const typeOption: ArgumentOptionDefinition<number> = {
 const definition: AdapterDefinition = {
   name: 'ZX Spectrum (Generic data)',
   internalName: 'zxspectrumgeneric',
-  targetName: ZxSpectrumTzxEncoder.getTargetName(),
   options: [
     nameOption,
     typeOption,

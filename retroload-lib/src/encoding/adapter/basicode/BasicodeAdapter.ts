@@ -15,7 +15,6 @@ const basicodeDataOption: FlagOptionDefinition = {
 const definition: AdapterDefinition = {
   name: 'BASICODE (ASCII plain text)',
   internalName: 'basicode',
-  targetName: BasicodeEncoder.getTargetName(),
   options: [
     shortpilotOption,
     basicodeDataOption,

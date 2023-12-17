@@ -10,7 +10,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'TI-99/4A (Generic)',
   internalName: 'tigeneric',
-  targetName: TiEncoder.getTargetName(),
   options: [],
   identify,
   encode,

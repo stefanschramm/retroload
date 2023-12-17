@@ -9,7 +9,6 @@ import {c64TapfileHeader} from './C64TapAdapter.js';
 const definition: AdapterDefinition = {
   name: 'C64 .T64-File',
   internalName: 't64',
-  targetName: C64Encoder.getTargetName(),
   options: [shortpilotOption, c64machineOption],
   identify,
   encode,

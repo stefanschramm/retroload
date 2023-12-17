@@ -10,7 +10,6 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 const definition: AdapterDefinition = {
   name: 'ZX Spectrum .TAP-File',
   internalName: 'zxspectrumtap',
-  targetName: ZxSpectrumTzxEncoder.getTargetName(),
   options: [],
   identify,
   encode,

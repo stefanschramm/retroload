@@ -9,7 +9,6 @@ import {InvalidArgumentError} from '../../../common/Exceptions.js';
 const definition: AdapterDefinition = {
   name: 'C64 .PRG-File',
   internalName: 'c64prg',
-  targetName: C64Encoder.getTargetName(),
   options: [shortpilotOption, c64machineOption, nameOption],
   identify,
   encode,

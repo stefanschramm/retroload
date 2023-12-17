@@ -7,10 +7,6 @@ const bitPause = 0.0013; // s
  * Encoder for Sinclair ZX81
  */
 export class Zx81Encoder extends AbstractEncoder {
-  static override getTargetName() {
-    return 'zx81';
-  }
-
   override recordByte(byte: number) {
     this.recordByteMsbFirst(byte);
   }
