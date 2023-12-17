@@ -17,7 +17,7 @@ export class InputDataError extends UsageError {
 
 export class FormatAutodetectionFailedError extends UsageError {
   constructor() {
-    super('Unable to autodetect input file format. Please specify machine/format manually.');
+    super('Unable to autodetect input file format. Please specify format manually.');
   }
 }
 
