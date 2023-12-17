@@ -6,6 +6,9 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for KC .TAP files
+ */
 const definition: AdapterDefinition = {
   name: 'KC .TAP-File',
   internalName: 'kctap',

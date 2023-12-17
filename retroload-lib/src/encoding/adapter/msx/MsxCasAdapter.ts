@@ -8,6 +8,11 @@ import {msxfastOption} from './MsxOptions.js';
 import {MsxType, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
 import {hex16} from '../../../common/Utils.js';
 
+/**
+ * Adapter for MSX .CAS files
+ *
+ * https://www.msx.org/wiki/Emulation_related_file_formats#.CAS
+ */
 const definition: AdapterDefinition = {
   name: 'MSX .CAS-File',
   internalName: 'msxcas',

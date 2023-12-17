@@ -5,6 +5,9 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for ZX81 .P files
+ */
 const definition: AdapterDefinition = {
   name: 'ZX81 .P-File',
   internalName: 'zx81p',

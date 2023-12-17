@@ -5,6 +5,9 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for ZX Spectrum .TZX files
+ */
 const definition: AdapterDefinition = {
   name: 'ZX Spectrum .TZX-File',
   internalName: 'zxspectrumtzx',

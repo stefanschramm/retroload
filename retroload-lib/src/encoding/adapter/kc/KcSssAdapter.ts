@@ -5,6 +5,9 @@ import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for KC .SSS (BASIC) files
+ */
 const definition: AdapterDefinition = {
   name: 'KC .SSS-File',
   internalName: 'sss',

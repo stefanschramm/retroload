@@ -28,5 +28,3 @@ export const msxTypeOption: ArgumentOptionDefinition<MsxType> = {
     return MsxType[vCasted];
   },
 };
-export {MsxType};
-

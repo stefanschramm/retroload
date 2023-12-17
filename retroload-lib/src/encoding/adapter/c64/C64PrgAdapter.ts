@@ -6,6 +6,11 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 
+/**
+ * Adapter for C64 .PRG files
+ *
+ * http://fileformats.archiveteam.org/wiki/Commodore_64_binary_executable
+ */
 const definition: AdapterDefinition = {
   name: 'C64 .PRG-File',
   internalName: 'c64prg',

@@ -6,6 +6,11 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {c64TapfileHeader} from './C64TapAdapter.js';
 
+/**
+ * Adapter for C64 .T64 files
+ *
+ * http://unusedino.de/ec64/technical/formats/t64.html
+ */
 const definition: AdapterDefinition = {
   name: 'C64 .T64-File',
   internalName: 't64',
@@ -25,9 +30,6 @@ function identify(filename: string, ba: BufferAccess) {
   };
 }
 
-/**
- * http://unusedino.de/ec64/technical/formats/t64.html
- */
 function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
   const e = new C64Encoder(
     recorder,

@@ -8,9 +8,8 @@ export const maxFileNameLength = 6;
 /**
  * Encoder for TA alphatronic PC
  *
- * It uses Kansas City Standard.
- *
- * TODO: Generalize? Is the way of writing the header with file name the same on all KCS compatible systems?
+ * TA alphatronic PC Service-Handbuch, p. 58
+ * https://oldcomputers-ddns.org/public/pub/rechner/ta/alphatronic_pc-8/manual/ta_pc8_service_handbuch_(bw_ocr).pdf
  */
 export class TaEncoder extends AbstractEncoder {
   recordFile(filename: string, dataBa: BufferAccess) {

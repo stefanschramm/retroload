@@ -14,8 +14,11 @@ const z80noHeadersave: FlagOptionDefinition = {
   type: 'bool',
 };
 
+/**
+ * Adapter for Z 1013 .Z80 files (Headersave)
+ */
 const definition: AdapterDefinition = {
-  name: 'Z1013 .Z80-File (Headersave)',
+  name: 'Z 1013 .Z80-File (Headersave)',
   internalName: 'z80',
   options: [z80noHeadersave],
   identify,

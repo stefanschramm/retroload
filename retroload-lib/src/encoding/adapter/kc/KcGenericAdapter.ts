@@ -8,6 +8,8 @@ import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
+ * Generic adapter for KC data
+ *
  * [1] https://hc-ddr.hucki.net/wiki/doku.php/z9001/kassettenformate
  * [2] KC 85/3 Systemhandbuch, p. 82 - 83
  * [3] KC 85/4 Systemhandbuch, p. 93 - 95

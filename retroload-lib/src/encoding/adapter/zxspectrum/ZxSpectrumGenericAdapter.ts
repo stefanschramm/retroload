@@ -18,6 +18,8 @@ const typeOption: ArgumentOptionDefinition<number> = {
 };
 
 /**
+ * Adapter for generic data for ZX Spectrum
+ *
  * https://faqwiki.zxnet.co.uk/wiki/Spectrum_tape_interface
  */
 const definition: AdapterDefinition = {

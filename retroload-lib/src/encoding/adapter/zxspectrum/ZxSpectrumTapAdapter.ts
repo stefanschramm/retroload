@@ -5,6 +5,8 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
+ * Adapter for ZX Spectrum .TAP files
+ *
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
 const definition: AdapterDefinition = {

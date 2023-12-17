@@ -8,6 +8,9 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {hex16} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 
+/**
+ * Adapter for generic data for LC 80
+ */
 const definition: AdapterDefinition = {
   name: 'LC80 (Generic data)',
   internalName: 'lc80generic',

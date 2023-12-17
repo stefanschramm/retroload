@@ -9,7 +9,7 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {hex16, hex32} from '../../../common/Utils.js';
 
 /**
- * Adapter for Acorn Electron UEF files
+ * Adapter for Acorn Electron .UEF files
  *
  * http://electrem.emuunlim.com/UEFSpecs.html
  */

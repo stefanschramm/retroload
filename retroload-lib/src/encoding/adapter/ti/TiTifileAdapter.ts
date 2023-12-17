@@ -6,6 +6,8 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
+ * Adapter for TI-99/4A .TIFILE files
+ *
  * https://www.ninerpedia.org/wiki/TIFILES_format
  */
 const definition: AdapterDefinition = {

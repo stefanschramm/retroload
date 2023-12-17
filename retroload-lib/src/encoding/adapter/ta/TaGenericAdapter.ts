@@ -6,6 +6,9 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for generic data for TA alphatronic PC
+ */
 const definition: AdapterDefinition = {
   name: 'TA alphatronic PC (BASIC/Generic data)',
   internalName: 'tageneric',

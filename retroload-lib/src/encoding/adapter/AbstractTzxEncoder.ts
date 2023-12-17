@@ -8,8 +8,6 @@ const fCpu = 3500000;
 /**
  * Abstract Encoder class for .tzx files. Used for ZX Spectrum and Amstrad CPC (.cdt).
  *
- * Work in progress.
- *
  * Format description:
  * http://k1.spdns.de/Develop/Projects/zasm/Info/TZX%20format.html
  * https://www.cpcwiki.eu/index.php/Format:CDT_tape_image_file_format

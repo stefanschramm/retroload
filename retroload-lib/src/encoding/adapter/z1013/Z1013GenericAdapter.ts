@@ -5,8 +5,11 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for generic data for Z 1013
+ */
 const definition: AdapterDefinition = {
-  name: 'Z1013 (Generic data)',
+  name: 'Z 1013 (Generic data)',
   internalName: 'z1013generic',
   options: [],
   identify,

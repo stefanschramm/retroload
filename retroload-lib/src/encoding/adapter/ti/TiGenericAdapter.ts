@@ -7,6 +7,9 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for generic data for TI-99/4A
+ */
 const definition: AdapterDefinition = {
   name: 'TI-99/4A (Generic)',
   internalName: 'tigeneric',

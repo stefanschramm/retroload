@@ -7,6 +7,9 @@ import {type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
+/**
+ * Adapter for MO5 .K7 files
+ */
 const definition: AdapterDefinition = {
   name: 'MO5 .K7-File',
   internalName: 'k7',

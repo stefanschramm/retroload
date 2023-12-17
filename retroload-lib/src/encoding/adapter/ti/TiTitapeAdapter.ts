@@ -7,6 +7,8 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
+ * Adapter for TI-99/4A .TITape files
+ *
  * A .TITape archive can contain several files. They will be appended one after another.
  * When playing, it's probably required to press pause in between the individual files.
  */

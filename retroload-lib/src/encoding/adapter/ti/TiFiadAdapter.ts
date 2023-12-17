@@ -6,6 +6,9 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
+/**
+ * Adapter for TI-99/4A .FIAD files
+ */
 const definition: AdapterDefinition = {
   name: 'TI-99/4A .FIAD-File',
   internalName: 'fiad',

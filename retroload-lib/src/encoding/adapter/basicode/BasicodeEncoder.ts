@@ -12,7 +12,7 @@ const sth = 0x01;
 const etx = 0x03;
 
 /**
- * Encoder for LC 80
+ * Encoder for BASICODE
  *
  * Format description:
  * - The Chip Shop - Basicode 2 - p. 8

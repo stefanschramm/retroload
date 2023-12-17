@@ -5,6 +5,11 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 
+/**
+ * Adapter for C64 .P00 files
+ *
+ * http://unusedino.de/ec64/technical/formats/pc64.html
+ */
 const definition: AdapterDefinition = {
   name: 'C64 .P00-File',
   internalName: 'c64p00',
@@ -24,9 +29,6 @@ function identify(filename: string, ba: BufferAccess) {
   };
 }
 
-/**
- * http://unusedino.de/ec64/technical/formats/pc64.html
- */
 function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
   const fileName = ba.slice(8, 0x10);
   const loadAddress = ba.getUint16Le(0x1a);

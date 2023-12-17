@@ -28,6 +28,7 @@ export class TiEncoder extends AbstractEncoder {
     }
     Logger.debug('TiEncoder - recordBlock()');
     Logger.debug(blockDataBa.asHexDump());
+    const checksum = calculateChecksum8(blockDataBa);
     // every block is written twice
     for (let i = 0; i < 2; i++) {
       for (let j = 0; j < 8; j++) {
@@ -35,7 +36,7 @@ export class TiEncoder extends AbstractEncoder {
       }
       this.recordByte(0xff); // data mark
       this.recordBytes(blockDataBa);
-      this.recordByte(calculateChecksum8(blockDataBa));
+      this.recordByte(checksum);
     }
   }
 

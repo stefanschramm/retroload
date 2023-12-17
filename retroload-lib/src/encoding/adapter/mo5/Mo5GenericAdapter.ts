@@ -31,6 +31,9 @@ const modeOption: ArgumentOptionDefinition<number> = {
   parse: (v) => v === '' ? fileModeBinary : parseInt(v, 16),
 };
 
+/**
+ * Adapter for generic data for MO5
+ */
 const definition: AdapterDefinition = {
   name: 'MO5 (Generic data)',
   internalName: 'mo5generic',

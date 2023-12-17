@@ -7,6 +7,8 @@ import {kcFirstBlockOption} from './KcOptions.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
+ * Adapter for KC .KCC files
+ *
  * KCC files contain the tape header block and file data without block numbers and checksums.
  */
 const definition: AdapterDefinition = {

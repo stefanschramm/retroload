@@ -7,6 +7,11 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {hex8} from '../../../common/Utils.js';
 
+/**
+ * Adapter for C64 .TAP files
+ *
+ * https://www.c64-wiki.com/wiki/TAP
+ */
 const definition: AdapterDefinition = {
   name: 'C64 .TAP-File',
   internalName: 'c64tap',
