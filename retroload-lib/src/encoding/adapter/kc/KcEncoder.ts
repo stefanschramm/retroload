@@ -50,8 +50,11 @@ export class KcEncoder extends AbstractEncoder {
     this.recordOscillations(fOne, oscillationsIntro);
   }
 
-  recordBlockIntro() {
+  recordBlockIntro(appendSilence = false) {
     this.recordOscillations(fOne, oscillationsBlockIntro);
+    if (appendSilence) {
+      this.recordSilenceMs(1500);
+    }
   }
 
   recordDelimiter() {

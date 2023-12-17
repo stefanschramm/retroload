@@ -101,16 +101,14 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   e.begin();
   e.recordBlock(1, firstBlockBa);
   e.recordDelimiter();
-  e.recordBlockIntro(); // TODO: why is this required here?
-  e.recordSilenceMs(1500);
+  e.recordBlockIntro(true);
   for (let i = 0; i < remainingBlocks; i++) {
     const blockNumber = i + 2;
     const remainingBytes = remainingDataBa.length() - i * blockSize;
     const blockDataBa = remainingDataBa.slice(i * blockSize, Math.min(blockSize, remainingBytes));
     e.recordBlock(blockNumber, blockDataBa);
     e.recordDelimiter();
-    e.recordBlockIntro();
-    e.recordSilenceMs(1500);
+    e.recordBlockIntro(true);
   }
   e.end();
 }
