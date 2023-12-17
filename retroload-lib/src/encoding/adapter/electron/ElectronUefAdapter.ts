@@ -6,6 +6,7 @@ import {InputDataError} from '../../../common/Exceptions.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {hex16, hex32} from '../../../common/Utils.js';
 
 /**
  * Adapter for Acorn Electron UEF files
@@ -54,7 +55,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
   while (chunkOffset < uefBa.length()) {
     const chunkType = uefBa.getUint16Le(chunkOffset);
     const chunkLength = uefBa.getUint32Le(chunkOffset + 2);
-    Logger.debug(`Chunk - Offset: 0x${chunkOffset.toString(16)} Type: 0x${chunkType.toString(16)} Length: 0x${chunkLength.toString(16)}`);
+    Logger.debug(`Chunk - Offset: ${hex16(chunkOffset)} Type: ${hex16(chunkType)} Length: ${hex32(chunkLength)}`);
     const chunkBa = uefBa.slice(chunkOffset + 6, chunkLength);
     Logger.debug(chunkBa.asHexDump());
     switch (chunkType) {
@@ -69,7 +70,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
         break;
       case 0x0104: // defined tape format data block
         // TODO "Emulator authors seeking simplicity may ignore any chunk that deals with the tape wave form at pulse or cycle level and rationalise chunk &0104 to a whole number of stop bits while retaining 99.9% compatibility with real world UEFs."
-        Logger.error(`Chunk type 0x${chunkType.toString(16)} not implemented.`);
+        Logger.error(`Chunk type ${hex16(chunkType)} not implemented.`);
         break;
       case 0x0110: // carrier tone
         e.recordCarrier(chunkBa.getUint16Le(0));
@@ -79,7 +80,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
         break;
       default:
         // TODO - try to support all 0x01xx (tape) chunks
-        Logger.error(`Chunk type 0x${chunkType.toString(16)} not implemented.`);
+        Logger.error(`Chunk type ${hex16(chunkType)} not implemented.`);
     }
 
     chunkOffset += chunkLength + 6;

@@ -6,6 +6,7 @@ import {shortpilotOption, type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {msxfastOption} from './MsxOptions.js';
 import {MsxType, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
+import {hex16} from '../../../common/Utils.js';
 
 const definition: AdapterDefinition = {
   name: 'MSX .CAS-File',
@@ -58,7 +59,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
       i += blockHeader.length;
       const type = determineType(ba, i);
       const long = (['binary', 'basic', 'ascii'] as Array<string | undefined>).includes(type);
-      Logger.debug(`MsxCasAdapter - block header at\t0x' ${(blockHeaderPosition).toString(16).padStart(4, '0')}\t type: ${type!}`);
+      Logger.debug(`MsxCasAdapter - block header at\t' ${hex16(blockHeaderPosition)}\t type: ${type}`);
       e.recordHeader(long);
     }
     e.recordByte(ba.getUint8(i));

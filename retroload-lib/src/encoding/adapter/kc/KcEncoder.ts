@@ -2,7 +2,7 @@ import {AbstractEncoder} from '../AbstractEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {calculateChecksum8} from '../../../common/Utils.js';
+import {calculateChecksum8, hex8} from '../../../common/Utils.js';
 
 const fZero = 1950; // manual: 2400;
 const fOne = 1050; // manual: 1200;
@@ -39,7 +39,7 @@ export class KcEncoder extends AbstractEncoder {
 
     const checksum = calculateChecksum8(blockDataBa);
 
-    Logger.debug(`KcEncoder - recordBlock: blockNumber: 0x${blockNumber.toString(16).padStart(2, '0')}, checksum: 0x${checksum.toString(16).padStart(2, '0')}`);
+    Logger.debug(`KcEncoder - recordBlock: blockNumber: ${hex8(blockNumber)}, checksum: ${hex8(checksum)}`);
     Logger.debug(blockDataBa.asHexDump());
 
     const blockBa = BufferAccess.create(1 + blockSize + 1);

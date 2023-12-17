@@ -5,6 +5,7 @@ import {InputDataError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {hex8} from '../../../common/Utils.js';
 
 const definition: AdapterDefinition = {
   name: 'MO5 .K7-File',
@@ -49,7 +50,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
     }
     blockType = ba.getUint8(i + headerOffset + 2);
     const blockLengthField = ba.getUint8(i + headerOffset + 3);
-    Logger.debug(`Block type: 0x${blockType.toString(16)}, Block length field: 0x${blockLengthField.toString(16)}`);
+    Logger.debug(`Block type: ${hex8(blockType)}, Block length field: ${hex8(blockLengthField)}`);
     let blockToRecord: BufferAccess | undefined;
     switch (blockType) {
       case 0x00: // start block
@@ -68,7 +69,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
         e.recordEndBlock(blockToRecord);
         break;
       default:
-        throw new InputDataError(`Unknown blocktype: 0x${blockType.toString(16)}`);
+        throw new InputDataError(`Unknown blocktype: ${hex8(blockType)}`);
     }
     if (blockToRecord.length() === 0) {
       throw new InputDataError('Read invalid block size.'); // prevents infinite looping

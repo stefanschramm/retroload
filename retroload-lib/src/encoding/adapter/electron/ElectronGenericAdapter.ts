@@ -6,6 +6,7 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {hex8} from '../../../common/Utils.js';
 
 const definition: AdapterDefinition = {
   name: 'Acorn Electron (Generic data)',
@@ -67,7 +68,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     blockBa.writeBa(blockDataBa);
     blockBa.writeUint16Be(calculateCrc(blockDataBa));
 
-    Logger.debug(`Block 0x${block.toString(16).padStart(2, '0')}`);
+    Logger.debug(`Block ${hex8(block)}`);
     Logger.debug(blockBa.asHexDump());
 
     e.recordPilot(isFirstBlock ? (shortpilot ? 1.5 : 5.1) : 0.9);

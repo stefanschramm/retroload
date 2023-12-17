@@ -4,6 +4,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FlagOptionDefinition, type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {hex16, hex8} from '../../../common/Utils.js';
 
 const z80noHeadersave: FlagOptionDefinition = {
   name: 'noheadersave',
@@ -41,7 +42,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   const expectedDataLength = endAddress - loadAddress + 1;
   const type = header.getUint8(0x0c);
   const name = ba.slice(0x10, 0x10).asAsciiString();
-  Logger.log(`Filename: "${name}", Load address: 0x${loadAddress.toString(16)}, End address: 0x${endAddress.toString(16)}, Start address: 0x${startAddress.toString(16)}, Type: ${type.toString(16)}`);
+  Logger.log(`Filename: "${name}", Load address: ${hex16(loadAddress)}, End address: ${hex16(endAddress)}, Start address: 0x${hex16(startAddress)}, Type: ${hex8(type)}`);
   if (expectedDataLength > data.length()) {
     Logger.error(`Warning: By headersave header ${expectedDataLength} data bytes are expected but Z80 file only contains ${data.length()} data bytes.`);
   }

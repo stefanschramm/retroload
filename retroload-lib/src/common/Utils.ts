@@ -59,3 +59,7 @@ export function hex8(value: number): string {
 export function hex16(value: number): string {
   return `0x${value.toString(16).padStart(4, '0')}`;
 }
+
+export function hex32(value: number): string {
+  return `0x${value.toString(16).padStart(8, '0')}`;
+}

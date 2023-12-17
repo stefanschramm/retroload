@@ -5,6 +5,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
+import {hex8} from '../../../common/Utils.js';
 
 const definition: AdapterDefinition = {
   name: 'C64 .TAP-File',
@@ -31,7 +32,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   const version = header.getUint8(0x0c);
   const dataLength = header.getUint32Le(0x10);
 
-  Logger.debug(`C64TapAdapter - version: 0x${version.toString(16).padStart(2, '0')}, dataLength: ${dataLength}`);
+  Logger.debug(`C64TapAdapter - version: ${hex8(version)}, dataLength: ${dataLength}`);
 
   const data = ba.slice(header.length(), dataLength);
   const e = new C64Encoder(
