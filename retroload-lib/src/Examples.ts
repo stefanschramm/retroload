@@ -457,6 +457,10 @@ export function getLocalPath(example: ExampleDefinition): string {
   return `${__dirname}/../examples/formats/${example.dir}/${example.file}`;
 }
 
+export function getLocalPathByDirAndFile(dir: string, file: string): string {
+  return `${__dirname}/../examples/formats/${dir}/${file}`;
+}
+
 export function getUrl(example: ExampleDefinition): string {
   return `https://github.com/stefanschramm/retroload/tree/main/retroload-lib/examples/formats/${example.dir}/${example.file}`;
 }
