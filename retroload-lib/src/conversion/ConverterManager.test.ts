@@ -1,7 +1,7 @@
 import {getLocalPathByDirAndFile} from '../Examples.js';
 import {BufferAccess} from '../common/BufferAccess.js';
 import {type OptionValues} from '../encoding/Options.js';
-import {convert} from './ConverterManager.js';
+import {convert, getConverters} from './ConverterManager.js';
 import * as fs from 'fs';
 
 type TestDefinition = {
@@ -28,6 +28,10 @@ const formatTests: TestDefinition[] = [
     options: {load: '0300', entry: '0300', name: 'RL', kctype: 'COM'},
   },
 ];
+
+test('getConverters() returns non empty list', () => {
+  expect(getConverters().length).toBeGreaterThan(0);
+});
 
 describe('Formats are converted correctly', () => {
   it.each(formatTests.map((t: TestDefinition) => ({label: getTestLabel(t), definition: t})))(
