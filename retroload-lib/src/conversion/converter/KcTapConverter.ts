@@ -1,26 +1,59 @@
 import {BufferAccess} from '../../common/BufferAccess.js';
-import {type OptionContainer} from '../../encoding/Options.js';
+import {InvalidArgumentError} from '../../common/Exceptions.js';
+import {type ArgumentOptionDefinition, entryOption, loadOption, nameOption, type OptionContainer} from '../../encoding/Options.js';
 import {type ConverterDefinition} from './ConverterDefinition.js';
+
+const kctypeOption: ArgumentOptionDefinition<string | undefined> = {
+  name: 'kctype',
+  label: 'File type',
+  description: 'File type, 3 characters (default: COM)',
+  common: false,
+  required: false,
+  type: 'text',
+  parse(value: string) {
+    if (value === '') {
+      return undefined;
+    }
+    if (value.length !== 3) {
+      throw new InvalidArgumentError(this.name, `Option ${this.name} is expected have exactly 3 characters (example: COM).`);
+    }
+
+    return value;
+  },
+};
 
 const definition: ConverterDefinition = {
   name: 'KC .TAP-File',
   identifier: 'kctap',
-  options: [],
+  options: [
+    loadOption,
+    entryOption,
+    nameOption,
+  ],
   convert,
 };
 export default definition;
 
-function convert(data: BufferAccess, _options: OptionContainer): BufferAccess {
+const maxFileNameLength = 8;
+
+function convert(data: BufferAccess, options: OptionContainer): BufferAccess {
   const blocks = data.chunksPadded(128, 0x00);
   const outBa = BufferAccess.create(16 + (1 + blocks.length) * 129);
 
-  // TODO: use options
+  const loadAddress = options.getArgument(loadOption) ?? 0x0300;
+  const entryAddress = options.getArgument(entryOption) ?? 0xffff; // default: no auto start
+  const filename = options.getArgument(nameOption) ?? '';
+  const filetype = options.getArgument(kctypeOption) ?? 'COM';
+  if (filename.length > maxFileNameLength) {
+    throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
+  }
+
   const header = createHeader(
-    'RL',
-    'COM',
-    0x0300,
-    0x0300 + data.length() - 1,
-    0x0300,
+    filename,
+    filetype,
+    loadAddress,
+    loadAddress + data.length() - 1,
+    entryAddress,
   );
 
   // TAP header
@@ -43,7 +76,7 @@ function convert(data: BufferAccess, _options: OptionContainer): BufferAccess {
 function createHeader(name: string, fileType: string, loadAddress: number, endAddress: number, startAddress: number): BufferAccess {
   const header = BufferAccess.create(128);
 
-  header.writeAsciiString(name, 8, 0x00);
+  header.writeAsciiString(name, maxFileNameLength, 0x00);
   header.writeAsciiString(fileType);
   header.writeUint8(0x00); // reserved
   header.writeUint8(0x00); // reserved
