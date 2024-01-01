@@ -46,7 +46,7 @@ const examples: ExampleDefinition[] = [
   },
   // Atari 800 XL
   {
-    dir: 'atari_cas',
+    dir: 'atari_bin',
     file: 'rl.cas',
     options: {},
     hash: '8d36a2a696c7e27807c4d1f058fdec34',
