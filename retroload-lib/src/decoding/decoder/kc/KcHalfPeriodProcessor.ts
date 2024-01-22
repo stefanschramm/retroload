@@ -87,14 +87,12 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
     );
   }
 
-  private readDelimiter(): boolean {
+  private readDelimiter(): void {
     // check full oscillation
     const oscillationValue = avg(this.halfPeriodProvider.getNext(), this.halfPeriodProvider.getNext());
     if (oscillationValue === undefined || isNot(oscillationValue, fDelimiter)) {
-      return false;
+      throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to find delimiter. Read: ${oscillationValue} Hz Expected: ${fDelimiter[0]} Hz - ${fDelimiter[1]}.`);
     }
-
-    return true;
   }
 
   private readBit(): boolean {
@@ -103,17 +101,14 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
     const isOne = bitByFrequency(oscillationValue, fZero, fOne);
 
     if (isOne === undefined) {
-      throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect bit.`);
+      throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to detect bit. Read: ${oscillationValue} Hz Expected: ${fOne[0]} Hz - ${fOne[1]} Hz or ${fZero[0]} Hz - ${fZero[1]} Hz.`);
     }
 
     return isOne;
   }
 
   private readByte(): number {
-    const delimiter = this.readDelimiter();
-    if (!delimiter) {
-      throw new DecodingError(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to find delimiter.`);
-    }
+    this.readDelimiter();
     let byte = 0;
     for (let i = 0; i < 8; i++) {
       byte |= ((this.readBit() ? 1 : 0) << i);
