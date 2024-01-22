@@ -38,8 +38,9 @@
   },
   "bin": {
     "retroload": "./bin/retroload.js",
-    "retroload-tokenizer": "./bin/retroload-tokenizer.js",
-    "retroload-decode": "./bin/retroload-decode.js"
+    "retroload-convert": "./bin/retroload-convert.js",
+    "retroload-decode": "./bin/retroload-decode.js",
+    "retroload-tokenize": "./bin/retroload-tokenize.js"
   },
   "dependencies": {
     "commander": "^11.1.0",

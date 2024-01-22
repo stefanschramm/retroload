@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.cas
+all: rl.bin rl.cas
 
 # https://atari800.github.io/
 run: rl.cas
@@ -10,11 +10,11 @@ run: rl.cas
 	retroload $< -o $@
 
 # https://a8cas.sourceforge.net/
-%.cas: %.img
+%.cas: %.bin
 	a8cas-convert -f c -r $< $@
 
-%.img: %.asm
+%.bin: %.asm
 	$(65XX_ASM) $< -o $@
 
 clean:
-	rm -f *.wav *.cas *.img
+	rm -f *.wav *.cas *.bin

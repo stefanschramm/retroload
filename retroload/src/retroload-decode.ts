@@ -19,7 +19,7 @@ async function main() {
   // - visualize WAVE samples of section around error as ASCII graph when --on-error was set to 'stop'
   const program = (new Command())
     .name('retroload-decode')
-    .description('Decode WAVE files of historical computers.')
+    .description('Decode WAVE files of historical computers. (EXPERIMENTAL)')
     .argument('<infile>', 'Path to WAVE file to decode')
     .allowExcessArguments(false)
     .option('-o <outpath>', 'Prefix (filename or complete path) for files to write', './')

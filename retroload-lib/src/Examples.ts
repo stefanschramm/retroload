@@ -46,7 +46,7 @@ const examples: ExampleDefinition[] = [
   },
   // Atari 800 XL
   {
-    dir: 'atari_cas',
+    dir: 'atari_bin',
     file: 'rl.cas',
     options: {},
     hash: '8d36a2a696c7e27807c4d1f058fdec34',
@@ -455,6 +455,10 @@ export type ExampleDefinition = {
 
 export function getLocalPath(example: ExampleDefinition): string {
   return `${__dirname}/../examples/formats/${example.dir}/${example.file}`;
+}
+
+export function getLocalPathByDirAndFile(dir: string, file: string): string {
+  return `${__dirname}/../examples/formats/${dir}/${file}`;
 }
 
 export function getUrl(example: ExampleDefinition): string {

@@ -4,6 +4,7 @@ import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {calculateChecksum8WithCarry} from '../../../common/Utils.js';
 
 const definition: AdapterDefinition = {
   name: 'Atari (Generic data)',
@@ -45,7 +46,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
       blockBa.setUint8(130, chunkBa.length());
     }
 
-    blockBa.setUint8(131, calculateChecksum(blockBa));
+    blockBa.setUint8(131, calculateChecksum8WithCarry(blockBa));
     e.recordIrg((blockId === 0) ? pilotIrgLength : defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
     e.recordBytes(blockBa);
   }
@@ -55,20 +56,8 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
   eofBlockBa.writeUint8(markerByte);
   eofBlockBa.writeUint8(markerByte);
   eofBlockBa.writeUint8(blockTypeEndOfFile);
-  eofBlockBa.setUint8(131, calculateChecksum(eofBlockBa));
+  eofBlockBa.setUint8(131, calculateChecksum8WithCarry(eofBlockBa));
   e.recordIrg(defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
   e.recordBytes(eofBlockBa);
 }
 
-function calculateChecksum(ba: BufferAccess) {
-  // 8 bit checksum with carry being added
-  let sum = 0;
-  for (let i = 0; i < ba.length(); i++) {
-    sum += ba.getUint8(i);
-    if (sum > 255) {
-      sum = (sum & 0xff) + 1;
-    }
-  }
-
-  return sum;
-}

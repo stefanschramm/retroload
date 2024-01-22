@@ -27,6 +27,19 @@ export function calculateChecksum8Xor(ba: BufferAccess, initial = 0x00) {
   return sum;
 }
 
+export function calculateChecksum8WithCarry(ba: BufferAccess) {
+  // 8 bit checksum with carry being added
+  let sum = 0;
+  for (let i = 0; i < ba.length(); i++) {
+    sum += ba.getUint8(i);
+    if (sum > 255) {
+      sum = (sum & 0xff) + 1;
+    }
+  }
+
+  return sum;
+}
+
 /**
  * https://gist.github.com/chitchcock/5112270?permalink_comment_id=3834064#gistcomment-3834064
  *
