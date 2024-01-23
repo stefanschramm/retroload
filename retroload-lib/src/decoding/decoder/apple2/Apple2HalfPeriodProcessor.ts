@@ -3,11 +3,11 @@ import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProv
 import {Logger} from '../../../common/logging/Logger.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
 import {formatPosition} from '../../../common/Positioning.js';
-import {type FrequencyRange, is, avg, bitByFrequency} from '../../Frequency.js';
+import {type FrequencyRange, is, avg, bitByFrequency, isNot} from '../../Frequency.js';
 import {calculateChecksum8Xor, hex8} from '../../../common/Utils.js';
-import {SyncFinder} from '../../SyncFinder.js';
 import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {DynamicSyncFinder} from '../../DynamicSyncFinder.js';
 
 const fSyncIntro: FrequencyRange = [680, 930]; // 770 Hz
 // const fSyncEndFirstHalf: FrequencyRange = [1700, 2100]; // 2000 Hz
@@ -19,9 +19,9 @@ const fOne: FrequencyRange = [850, 1200]; // 1000 Hz
 const minIntroSyncPeriods = 200;
 
 export class Apple2HalfPeriodProcessor {
-  private readonly syncFinder: SyncFinder;
+  private readonly syncFinder: DynamicSyncFinder;
   constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
-    this.syncFinder = new SyncFinder(this.halfPeriodProvider, fSyncIntro, minIntroSyncPeriods);
+    this.syncFinder = new DynamicSyncFinder(this.halfPeriodProvider, minIntroSyncPeriods, 0.15);
   }
 
   * files(): Generator<FileDecodingResult> {
@@ -48,11 +48,17 @@ export class Apple2HalfPeriodProcessor {
   }
 
   private decodeRecord(): FileDecodingResult {
+    let syncResult;
     do {
-      if (!(this.syncFinder.findSync())) {
-        throw new EndOfInput();
-      }
+      do {
+        syncResult = this.syncFinder.findSync();
+        if (!syncResult) {
+          throw new EndOfInput();
+        }
+      } while (isNot(syncResult, fSyncIntro));
     } while (!this.readSyncEndMarker());
+
+    Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Detected end of sync sequence (${syncResult} Hz) with marker.`);
 
     const recordBegin = this.halfPeriodProvider.getPosition();
 
@@ -134,7 +140,7 @@ export class Apple2HalfPeriodProcessor {
     const oscillationValue = avg(this.halfPeriodProvider.getNext(), this.halfPeriodProvider.getNext());
     const isOne = bitByFrequency(oscillationValue, fZero, fOne);
     if (isOne === undefined) {
-      Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to determine bit value. Frequency of oscillation was ${oscillationValue} Hz.`);
+      Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Unable to determine bit value. Frequency of oscillation was ${oscillationValue} Hz. This might just be the end of the file.`);
       return undefined;
     }
 
