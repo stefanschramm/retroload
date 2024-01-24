@@ -51,6 +51,12 @@ export class BufferAccess {
     return this.ui8a;
   }
 
+  * bytes(): Generator<number> {
+    for (let i = 0; i < this.length(); i++) {
+      yield this.getUint8(i);
+    }
+  }
+
   /**
    * Return slice that references the same buffer
    */

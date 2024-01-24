@@ -17,6 +17,15 @@ test('createFromUint8Array', () => {
   expect(ba.asHexDump()).toBe('00000000  41 42 43                                          |ABC|');
 });
 
+test('bytes iterator', () => {
+  const data = new Uint8Array([0x41, 0x42, 0x43]);
+  const elements: number[] = [];
+  for (const b of data) {
+    elements.push(b);
+  }
+  expect(elements).toStrictEqual([0x41, 0x42, 0x43]);
+});
+
 test('asAsciiString', () => {
   const data = new Uint8Array([0x41, 0x42, 0x43]);
   const ba = BufferAccess.createFromUint8Array(data);

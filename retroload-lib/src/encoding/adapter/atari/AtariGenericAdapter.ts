@@ -63,8 +63,8 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
 function calculateChecksum(ba: BufferAccess) {
   // 8 bit checksum with carry being added
   let sum = 0;
-  for (let i = 0; i < ba.length(); i++) {
-    sum += ba.getUint8(i);
+  for (const byte of ba.bytes()) {
+    sum += byte;
     if (sum > 255) {
       sum = (sum & 0xff) + 1;
     }

@@ -2,8 +2,8 @@ import {type BufferAccess} from './BufferAccess.js';
 
 export function calculateChecksum8(data: BufferAccess) {
   let sum = 0;
-  for (let i = 0; i < data.length(); i++) {
-    sum = (sum + data.getUint8(i)) & 0xff;
+  for (const byte of data.bytes()) {
+    sum = (sum + byte) & 0xff;
   }
 
   return sum;
@@ -20,8 +20,8 @@ export function calculateChecksum16Le(data: BufferAccess) {
 
 export function calculateChecksum8Xor(ba: BufferAccess, initial = 0x00) {
   let sum = initial;
-  for (let i = 0; i < ba.length(); i++) {
-    sum ^= ba.getUint8(i);
+  for (const byte of ba.bytes()) {
+    sum ^= byte;
   }
 
   return sum;

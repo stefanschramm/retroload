@@ -35,8 +35,8 @@ export class Lc80Encoder extends AbstractEncoder {
   recordData(data: BufferAccess) {
     this.recordByte(calculateChecksum8(data));
     this.recordSeconds(fSyncMid, syncMidLength);
-    for (let i = 0; i < data.length(); i++) {
-      this.recordByte(data.getUint8(i));
+    for (const byte of data.bytes()) {
+      this.recordByte(byte);
     }
   }
 

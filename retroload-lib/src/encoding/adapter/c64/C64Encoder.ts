@@ -156,8 +156,7 @@ export class C64Encoder extends AbstractEncoder {
 
   private recordDataWithCheckByte(dataBa: BufferAccess) {
     let checkByte = 0;
-    for (let i = 0; i < dataBa.length(); i++) {
-      const byte = dataBa.getUint8(i);
+    for (const byte of dataBa.bytes()) {
       checkByte ^= byte;
       this.recordByte(byte);
     }

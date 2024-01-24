@@ -65,8 +65,7 @@ export class BasicodeEncoder extends AbstractEncoder {
     this.recordByte(startMarker);
 
     // ASCII bytes
-    for (let i = 0; i < ba.length(); i++) {
-      let asciiByte = ba.getUint8(i);
+    for (let asciiByte of ba.bytes()) {
       if (asciiByte === 0x0a) {
         // replace '\n' with '\r' as required by BASICODE
         asciiByte = 0x0d;

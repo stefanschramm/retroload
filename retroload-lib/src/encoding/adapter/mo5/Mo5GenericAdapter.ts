@@ -96,8 +96,8 @@ function createBlock(blockType: number, blockDataBa: BufferAccess): BufferAccess
 
 function calculateChecksum(data: BufferAccess) {
   let sum = 0;
-  for (let i = 0; i < data.length(); i++) {
-    sum += data.getUint8(i);
+  for (const byte of data.bytes()) {
+    sum += byte;
   }
 
   return 0x100 - (sum & 0xff);

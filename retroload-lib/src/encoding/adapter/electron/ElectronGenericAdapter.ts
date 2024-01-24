@@ -83,10 +83,12 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
  */
 function calculateCrc(ba: BufferAccess): number {
   let crc = 0;
-  for (let i = 0, t = 0; i < ba.length(); i++, crc &= 0xffff) {
-    t = (crc >> 8) ^ ba.getUint8(i);
+  let t = 0;
+  for (const byte of ba.bytes()) {
+    t = (crc >> 8) ^ byte;
     t ^= t >> 4;
     crc = (crc << 8) ^ (t << 12) ^ (t << 5) ^ t;
+    crc &= 0xffff;
   }
   return crc;
 }

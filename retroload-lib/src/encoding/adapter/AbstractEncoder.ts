@@ -33,8 +33,8 @@ export abstract class AbstractEncoder {
   }
 
   public recordBytes(dataBa: BufferAccess) {
-    for (let i = 0; i < dataBa.length(); i++) {
-      this.recordByte(dataBa.getUint8(i));
+    for (const byte of dataBa.bytes()) {
+      this.recordByte(byte);
     }
   }
 

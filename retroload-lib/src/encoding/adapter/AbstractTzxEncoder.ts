@@ -63,11 +63,10 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
     for (let i = 0; i < config.pilotPulses; i++) {
       this.recordPulse(config.pilotPulseLength);
     }
-    for (let i = 0; i < blockDataBa.length(); i++) {
+    for (const byte of blockDataBa.bytes()) {
       for (let j = 0; j < config.startBitCount; j++) {
         this.recordPulses(bitDuration[config.startBitValue], bitPulses[config.startBitValue]);
       }
-      const byte = blockDataBa.getUint8(i);
       for (let bit = 0; bit < 8; bit++) {
         const value = (config.msbFirst ? (byte >> (7 - bit)) : (byte >> bit)) & 1;
         this.recordPulses(bitDuration[value], bitPulses[value]);
