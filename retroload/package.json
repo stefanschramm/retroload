@@ -1,6 +1,6 @@
 {
   "name": "retroload",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Command line utility for converting tape archive files of historical computers into sound for loading them on real devices",
   "keywords": [
     "sinclair",
@@ -43,9 +43,9 @@
   },
   "dependencies": {
     "commander": "^11.1.0",
-    "retroload-lib": "^0.0.15"
+    "retroload-lib": "^0.0.16"
   },
   "devDependencies": {
-    "genversion": "^3.1.1"
+    "genversion": "^3.2.0"
   }
 }
