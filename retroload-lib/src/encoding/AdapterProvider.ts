@@ -21,6 +21,7 @@ import Mo5GenericAdapter from './adapter/mo5/Mo5GenericAdapter.js';
 import Mo5K7Adapter from './adapter/mo5/Mo5K7Adapter.js';
 import MsxCasAdapter from './adapter/msx/MsxCasAdapter.js';
 import MsxGenericAdapter from './adapter/msx/MsxGenericAdapter.js';
+import MsxTsxAdapter from './adapter/msx/MsxTsxAdapter.js';
 import TaGenericAdapter from './adapter/ta/TaGenericAdapter.js';
 import TiFiadAdapter from './adapter/ti/TiFiadAdapter.js';
 import TiGenericAdapter from './adapter/ti/TiGenericAdapter.js';
@@ -57,6 +58,7 @@ export const adapters: AdapterDefinition[] = [
   Mo5K7Adapter,
   MsxCasAdapter,
   MsxGenericAdapter,
+  MsxTsxAdapter,
   TaGenericAdapter,
   TiFiadAdapter,
   TiGenericAdapter,
