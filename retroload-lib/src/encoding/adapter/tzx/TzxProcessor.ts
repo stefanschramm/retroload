@@ -175,16 +175,19 @@ export class TzxProcessor {
 
   private processTextDescriptionBlock(ba: BufferAccess) {
     // ID 0x30
-    // For now just ignore block
     const length = ba.getUint8(0);
+    const textDescription = ba.slice(1, length).asAsciiString();
+    Logger.info(`TZX Text description: ${textDescription}`);
 
     return 1 + length;
   }
 
   private processMessageBlock(ba: BufferAccess) {
     // ID 0x31
-    // For now just ignore block
+    const messageDuration = ba.getUint8(0);
     const messageLength = ba.getUint8(1);
+    const message = ba.slice(2, length).asAsciiString();
+    Logger.info(`TZX Message (${messageDuration} s): ${message}`);
 
     return 2 + messageLength;
   }
