@@ -48,6 +48,10 @@ export class TzxProcessor {
         return this.processPureDataBlock(blockBa);
       case 0x20:
         return this.processPauseBlock(blockBa);
+      case 0x21:
+        return this.processGroupStartBlock(blockBa);
+      case 0x22:
+        return this.processGroupEndBlock(blockBa);
       case 0x30:
         return this.processTextDescriptionBlock(blockBa);
       case 0x31:
@@ -64,7 +68,6 @@ export class TzxProcessor {
         return this.processGlueBlock(blockBa);
       case 0x15: // Direct Recording
       case 0x18: // CSW Recording
-      case 0x21: // Group start
       case 0x3c: // ?
       case 0x79: // ?
         // I've seen these block types in .cdt files, but they're not implemented yet.
@@ -154,6 +157,22 @@ export class TzxProcessor {
     return 2;
   }
 
+  private processGroupStartBlock(ba: BufferAccess) {
+    // ID 0x21
+    const length = ba.getUint8(0x00);
+    const groupName = ba.slice(1, length).asAsciiString();
+    Logger.info(`TZX Group start: ${groupName}`);
+
+    return 1 + length;
+  }
+
+  private processGroupEndBlock(_ba: BufferAccess) {
+    // ID 0x22
+    Logger.info('TZX Group end.');
+
+    return 0;
+  }
+
   private processTextDescriptionBlock(ba: BufferAccess) {
     // ID 0x30
     // For now just ignore block
@@ -201,12 +220,6 @@ export class TzxProcessor {
     return 0x10 + 4 + length;
   }
 
-  private processGlueBlock(_ba: BufferAccess) {
-    // ID 0x5a
-    // Just ignore
-    return 9;
-  }
-
   /**
    * MSX / Kansas City Standard-like extension of TZX format (TSX)
    *
@@ -248,6 +261,12 @@ export class TzxProcessor {
     return 4 + length;
   }
 
+  private processGlueBlock(_ba: BufferAccess) {
+    // ID 0x5a
+    // Just ignore
+    return 9;
+  }
+
   /**
    * Skip unknown block type
    *
@@ -259,6 +278,8 @@ export class TzxProcessor {
    */
   private processUnknownBlock(ba: BufferAccess) {
     const length = ba.getUint32Le(0x00);
+    const data = ba.slice(1, length);
+    Logger.debug(data.asHexDump());
 
     return 4 + length;
   }
