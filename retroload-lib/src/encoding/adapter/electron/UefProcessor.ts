@@ -43,13 +43,8 @@ export class UefProcessor {
         Logger.info(`Chunk type ${hex16(chunkType)} (inlay scan) not implemented.`);
         break;
       case 0x0005: // target machine chunk
-      {
-        const targetMachine = chunkBa.getUint8(0);
-        const targetMachineName = targetMachines[targetMachine >> 4];
-        const keyConfig = targetMachine & 0x0f;
-        Logger.info(`Target machine: ${targetMachine}` + (targetMachine === undefined ? '' : ` (${targetMachineName}) Keyboard configuration: ${keyConfig}`));
+        this.processTargetMachineChunk(chunkBa);
         break;
-      }
       case 0x0006: // bit multiplexing information
         Logger.info(`Chunk type ${hex16(chunkType)} (bit multiplexing information) not implemented.`);
         break;
@@ -75,70 +70,29 @@ export class UefProcessor {
         Logger.error(`Chunk type ${hex16(chunkType)} (explicit tape data block) not implemented.`);
         break;
       case 0x0104: // defined tape format data block
-      {
-        Logger.info('TODO: Check if 0x0104 defined tape format data block works');
-        const dataBits = chunkBa.getUint8(0);
-        const parity = determineParitySetting(chunkBa.getUint8(1));
-        const stopBits = determineStopBits(chunkBa.getUint8(2));
-        Logger.debug(`Custom block: Data bits: ${dataBits} Parity: ${parity} Stop bits: ${stopBits}`);
-        const dataBa = chunkBa.slice(3);
-        for (let i = 0; i < dataBa.length(); i++) {
-          this.e.recordByte(dataBa.getUint8(i), dataBits, parity, stopBits); // TODO: check this stuff
-        }
+        this.processDefinedTapeFormatDataChunk(chunkBa);
         break;
-      }
       case 0x0110: // carrier tone
-      {
-        const oscillations = chunkBa.getUint16Le(0);
-        Logger.debug(`Carrier tone: ${oscillations} oscillations`);
-        this.e.recordCarrier(oscillations);
+        this.processCarrierToneChunk(chunkBa);
         break;
-      }
       case 0x0111: // carrier tone with dummy byte
-      {
-        const cyclesBefore = chunkBa.getUint16Le(0);
-        const cyclesAfter = chunkBa.getUint16Le(2);
-        Logger.debug(`Carrier tone with dummy byte. Cycles before: ${cyclesBefore} after: ${cyclesAfter}`);
-        this.e.recordCarrier(cyclesBefore);
-        this.e.recordByte(0xaa); // dummy byte
-        this.e.recordCarrier(cyclesAfter);
+        this.processCarrierToneWithDummyByteChunk(chunkBa);
         break;
-      }
       case 0x0112: // integer gap
-      {
-        const gap = chunkBa.getUint16Le(0);
-        Logger.debug(`Integer gap: ${gap}`);
-        this.e.recordGap(gap);
+        this.processIntegerGapChunk(chunkBa);
         break;
-      }
       case 0x0113: // change of base frequency
-      {
-        const frequency = chunkBa.getFloat32Le(0);
-        Logger.debug(`Base frequency change to: ${frequency} Hz`);
-        this.e.setBaseFrequency(frequency);
+        this.processChangeOfBaseFrequencyChunk(chunkBa);
         break;
-      }
       case 0x0114: // security cycles
-      {
-        // https://github.com/haerfest/uef/blob/master/uef2wave.py
-        const cycles = (chunkBa.getUint16Le(1) << 8) | chunkBa.getUint8(0); // 24 bit value
-        const firstCycleMode = String.fromCharCode(chunkBa.getUint8(3));
-        const lastCycleMode = String.fromCharCode(chunkBa.getUint8(4));
-        Logger.debug(`Security cycles: ${cycles} first: ${firstCycleMode} last: ${lastCycleMode}`);
-        // Logger.error(`Chunk type ${hex16(chunkType)} (security cycles) not implemented.`);
-        // TODO: test it
+        this.processSecurityCyclesChunk(chunkBa);
         break;
-      }
       case 0x0115: // phase change
         Logger.error(`Chunk type ${hex16(chunkType)} (phase change) not implemented.`);
         break;
       case 0x0116: // floating point gap
-      {
-        const gapS = chunkBa.getFloat32Le(0);
-        Logger.debug(`Floating point gap: ${gapS} s`);
-        this.e.recordSilenceMs(gapS * 1000);
+        this.processFloatingPointGapChunk(chunkBa);
         break;
-      }
       case 0x0117: // data encoding format change
         Logger.error(`Chunk type ${hex16(chunkType)} (data encoding format change) not implemented.`);
         break;
@@ -169,6 +123,68 @@ export class UefProcessor {
         Logger.error(`Chunk type ${hex16(chunkType)} not implemented.`);
         break;
     }
+  }
+
+  private processTargetMachineChunk(chunkBa: BufferAccess): void {
+    const targetMachine = chunkBa.getUint8(0);
+    const targetMachineName = targetMachines[targetMachine >> 4];
+    const keyConfig = targetMachine & 0x0f;
+    Logger.info(`Target machine: ${targetMachine}` + (targetMachine === undefined ? '' : ` (${targetMachineName}) Keyboard configuration: ${keyConfig}`));
+  }
+
+  private processDefinedTapeFormatDataChunk(chunkBa: BufferAccess): void {
+    Logger.info('TODO: Check if 0x0104 defined tape format data block works');
+    const dataBits = chunkBa.getUint8(0);
+    const parity = determineParitySetting(chunkBa.getUint8(1));
+    const stopBits = determineStopBits(chunkBa.getUint8(2));
+    Logger.debug(`Custom block: Data bits: ${dataBits} Parity: ${parity} Stop bits: ${stopBits}`);
+    const dataBa = chunkBa.slice(3);
+    for (let i = 0; i < dataBa.length(); i++) {
+      this.e.recordByte(dataBa.getUint8(i), dataBits, parity, stopBits); // TODO: check this stuff
+    }
+  }
+
+  private processCarrierToneChunk(chunkBa: BufferAccess): void {
+    const oscillations = chunkBa.getUint16Le(0);
+    Logger.debug(`Carrier tone: ${oscillations} oscillations`);
+    this.e.recordCarrier(oscillations);
+  }
+
+  private processCarrierToneWithDummyByteChunk(chunkBa: BufferAccess): void {
+    const cyclesBefore = chunkBa.getUint16Le(0);
+    const cyclesAfter = chunkBa.getUint16Le(2);
+    Logger.debug(`Carrier tone with dummy byte. Cycles before: ${cyclesBefore} after: ${cyclesAfter}`);
+    this.e.recordCarrier(cyclesBefore);
+    this.e.recordByte(0xaa); // dummy byte
+    this.e.recordCarrier(cyclesAfter);
+  }
+
+  private processIntegerGapChunk(chunkBa: BufferAccess): void {
+    const gap = chunkBa.getUint16Le(0);
+    Logger.debug(`Integer gap: ${gap}`);
+    this.e.recordGap(gap);
+  }
+
+  private processChangeOfBaseFrequencyChunk(chunkBa: BufferAccess): void {
+    const frequency = chunkBa.getFloat32Le(0);
+    Logger.debug(`Base frequency change to: ${frequency} Hz`);
+    this.e.setBaseFrequency(frequency);
+  }
+
+  private processSecurityCyclesChunk(chunkBa: BufferAccess): void {
+    // https://github.com/haerfest/uef/blob/master/uef2wave.py
+    const cycles = (chunkBa.getUint16Le(1) << 8) | chunkBa.getUint8(0); // 24 bit value
+    const firstCycleMode = String.fromCharCode(chunkBa.getUint8(3));
+    const lastCycleMode = String.fromCharCode(chunkBa.getUint8(4));
+    Logger.debug(`Security cycles: ${cycles} first: ${firstCycleMode} last: ${lastCycleMode}`);
+    // Logger.error(`Chunk type ${hex16(chunkType)} (security cycles) not implemented.`);
+    // TODO: test it
+  }
+
+  private processFloatingPointGapChunk(chunkBa: BufferAccess): void {
+    const gapS = chunkBa.getFloat32Le(0);
+    Logger.debug(`Floating point gap: ${gapS} s`);
+    this.e.recordSilenceMs(gapS * 1000);
   }
 }
 
