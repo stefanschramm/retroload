@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {WaveRecorder, AdapterManager, Exception, Logger, version as libVersion, type PublicOptionDefinition} from 'retroload-lib';
+import {WaveRecorder, AdapterManager, Exception, Logger, version as libVersion, type PublicOptionDefinition, type Annotation, formatPosition} from 'retroload-lib';
 import {Option} from 'commander';
 import {type PlayerWrapper} from './player/PlayerWrapper.js';
 import {SpeakerWrapper} from './player/SpeakerWrapper.js';
@@ -32,6 +32,7 @@ async function main() {
     .option('-o <outfile>', 'Generate WAVE file <outfile> instead of playback')
     .option('-f, ' + getCommanderFlagsString(AdapterManager.formatOption), `${AdapterManager.formatOption.description}. See list below for supported formats.`)
     .option('-l, --loglevel <loglevel>', 'Verbosity of log output', '1')
+    .option('-a, --annotations', 'Output annotations (if available)')
     .version(`retroload: ${cliVersion}\nretroload-lib: ${libVersion}`)
     .showHelpAfterError();
   // Options defined in adapters/encoders
@@ -63,6 +64,10 @@ async function main() {
     } else {
       throw e; // show full stack trace for unexpected errors
     }
+  }
+
+  if (options['annotations']) {
+    printAnnotations(recorder.getAnnotations());
   }
 
   if (undefined === outfile) {
@@ -105,4 +110,17 @@ async function getPlayerWrapper(recorder: WaveRecorder): Promise<PlayerWrapper> 
   `;
   Logger.error(msg);
   process.exit(1);
+}
+
+function printAnnotations(annotations: Annotation[], depth = 0) {
+  for (const annotation of annotations) {
+    const indentation = '  '.repeat(depth);
+    const range = annotation.end === undefined
+      ? formatPosition(annotation.begin)
+      : `${formatPosition(annotation.begin)} - ${formatPosition(annotation.end)}`;
+    const line = `${range} ${indentation}${annotation.label}\n`;
+    process.stdout.write(line);
+
+    printAnnotations(annotation.annotations, depth + 1);
+  }
 }

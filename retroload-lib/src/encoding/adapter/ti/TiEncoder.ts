@@ -14,12 +14,14 @@ const fOne = 1379;
  */
 export class TiEncoder extends AbstractEncoder {
   recordHeader(numberOfRecords: number) {
+    this.recorder.beginAnnotation('Header');
     for (let i = 0; i < 768; i++) {
       this.recordByte(0x00);
     }
     this.recordByte(0xff); // data mark
     this.recordByte(numberOfRecords);
     this.recordByte(numberOfRecords); // repeated
+    this.recorder.endAnnotation();
   }
 
   recordBlock(blockDataBa: BufferAccess) {
@@ -31,12 +33,14 @@ export class TiEncoder extends AbstractEncoder {
     const checksum = calculateChecksum8(blockDataBa);
     // every block is written twice
     for (let i = 0; i < 2; i++) {
+      this.recorder.beginAnnotation(i === 0 ? 'Data' : 'Data repeated');
       for (let j = 0; j < 8; j++) {
         this.recordByte(0x00);
       }
       this.recordByte(0xff); // data mark
       this.recordBytes(blockDataBa);
       this.recordByte(checksum);
+      this.recorder.endAnnotation();
     }
   }
 

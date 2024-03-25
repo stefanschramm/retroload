@@ -4,6 +4,7 @@ import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {hex8} from '../../../common/Utils.js';
 
 const definition: AdapterDefinition = {
   name: 'Atari (Generic data)',
@@ -32,6 +33,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
   e.setDefaultBaudrate();
   const chunks = ba.chunks(dataBytesPerBlock);
   for (let blockId = 0; blockId < chunks.length; blockId++) {
+    recorder.beginAnnotation(`Block ${hex8(blockId)}`);
     const chunkBa = chunks[blockId];
     const partialBlock = chunkBa.length() !== dataBytesPerBlock;
     const blockType = partialBlock ? blockTypePartial : blockTypeFull;
@@ -48,9 +50,11 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
     blockBa.setUint8(131, calculateChecksum(blockBa));
     e.recordIrg((blockId === 0) ? pilotIrgLength : defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
     e.recordBytes(blockBa);
+    recorder.endAnnotation();
   }
 
   // End of file block
+  recorder.beginAnnotation('Block EOF');
   const eofBlockBa = BufferAccess.create(132);
   eofBlockBa.writeUint8(markerByte);
   eofBlockBa.writeUint8(markerByte);
@@ -58,6 +62,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
   eofBlockBa.setUint8(131, calculateChecksum(eofBlockBa));
   e.recordIrg(defaultIrgLength); // TODO: create option (longer values are required for "ENTER-loading")
   e.recordBytes(eofBlockBa);
+  recorder.endAnnotation();
 }
 
 function calculateChecksum(ba: BufferAccess) {

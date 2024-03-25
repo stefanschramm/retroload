@@ -1,4 +1,5 @@
 import {BufferAccess} from '../../common/BufferAccess.js';
+import {AnnotationCollector, type Annotation} from './Annotations.js';
 import {SampleValue, type RecorderInterface} from './RecorderInterface.js';
 
 const dataMap: Record<SampleValue, number> = {
@@ -12,6 +13,7 @@ export class WaveRecorder implements RecorderInterface {
   sampleRate = 44100;
   bitsPerSample = 8;
   channels = 1;
+  private readonly annotationCollector = new AnnotationCollector();
 
   pushSample(value: SampleValue) {
     const mappedValue = dataMap[value];
@@ -56,5 +58,17 @@ export class WaveRecorder implements RecorderInterface {
 
   getRawBuffer() {
     return new Uint8Array(this.data);
+  }
+
+  beginAnnotation(label: string): void {
+    this.annotationCollector.beginAnnotation(label, {samples: this.data.length, seconds: this.data.length / this.sampleRate});
+  }
+
+  endAnnotation(): void {
+    this.annotationCollector.endAnnotation({samples: this.data.length, seconds: this.data.length / this.sampleRate});
+  }
+
+  getAnnotations(): Annotation[] {
+    return this.annotationCollector.getAnnotations();
   }
 }

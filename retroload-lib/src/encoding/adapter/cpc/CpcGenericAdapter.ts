@@ -5,7 +5,7 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
-import {calculateCrc16Ccitt} from '../../../common/Utils.js';
+import {calculateCrc16Ccitt, hex8} from '../../../common/Utils.js';
 
 /**
  * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
@@ -51,12 +51,16 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
 
   e.begin();
   for (let b = 0; b < chunks.length; b++) {
+    recorder.beginAnnotation(`Block ${hex8(b)}`);
+
     const chunk = chunks[b];
     const isFirstBlock = b === 0;
     const isLastBlock = b === (chunks.length - 1);
     const blockDataLocation = load + b * dataBytesPerDataBlock;
 
     // header block
+
+    recorder.beginAnnotation('Header');
 
     const headerBa = BufferAccess.create(0x100);
     headerBa.writeAsciiString(filename, maxFileNameLength, 0);
@@ -75,10 +79,18 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     const headerRecordBa = createHeaderRecord(headerBa);
     e.recordDataBlock(headerRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x000a});
 
+    recorder.endAnnotation(); // end of header
+
     // data block
+
+    recorder.beginAnnotation('Data');
 
     const dataRecordBa = createDataRecord(chunk);
     e.recordDataBlock(dataRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x09c4});
+
+    recorder.endAnnotation(); // end of data
+
+    recorder.endAnnotation(); // end of block
   }
   e.end();
 }

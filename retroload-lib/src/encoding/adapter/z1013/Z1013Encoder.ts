@@ -1,6 +1,7 @@
 import {AbstractEncoder} from '../AbstractEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
+import {hex16} from '../../../common/Utils.js';
 
 const blockDataSize = 32;
 const fOne = 1280;
@@ -38,6 +39,8 @@ export class Z1013Encoder extends AbstractEncoder {
   }
 
   recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
+    this.recorder.beginAnnotation(`Block ${hex16(blockNumber)}`);
+
     const blockBa = BufferAccess.create(2 + blockDataBa.length() + 2);
     blockBa.writeUint16Le(blockNumber);
     blockBa.writeBa(blockDataBa);
@@ -48,10 +51,14 @@ export class Z1013Encoder extends AbstractEncoder {
     this.recordIntro();
     this.recordDelimiter();
     this.recordBytes(blockBa);
+
+    this.recorder.endAnnotation();
   }
 
   recordFirstIntro() {
+    this.recorder.beginAnnotation('Sync');
     this.recordOscillations(fSync, 2000);
+    this.recorder.endAnnotation();
   }
 
   recordIntro() {

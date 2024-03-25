@@ -27,6 +27,8 @@ export class KcEncoder extends AbstractEncoder {
   }
 
   recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
+    this.recorder.beginAnnotation(`Block ${hex8(blockNumber)}`);
+
     if (blockDataBa.length() > blockSize) {
       throw new InputDataError('Block data exceeds length of 128 bytes');
     }
@@ -44,6 +46,8 @@ export class KcEncoder extends AbstractEncoder {
     blockBa.setUint8(blockSize + 1, checksum);
 
     this.recordBytes(blockBa);
+
+    this.recorder.endAnnotation();
   }
 
   recordIntro() {

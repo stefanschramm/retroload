@@ -4,7 +4,7 @@ export type Position = {
 };
 
 export function formatPosition(p: Position): string {
-  return `${secondsToTimestamp(p.seconds)} sample ${p.samples}`;
+  return `${secondsToTimestamp(p.seconds)} sample ${p.samples.toString().padStart(9, '0')}`;
 }
 
 function secondsToTimestamp(totalSeconds: number): string {

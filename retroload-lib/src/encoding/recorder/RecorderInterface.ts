@@ -1,6 +1,12 @@
+import {type Annotation} from './Annotations.js';
+
 export type RecorderInterface = {
-  pushSample: (value: SampleValue) => void;
   sampleRate: number;
+
+  pushSample(value: SampleValue): void;
+  beginAnnotation(label: string): void;
+  endAnnotation(): void;
+  getAnnotations(): Annotation[];
 };
 
 export enum SampleValue {

@@ -10,3 +10,4 @@ export {type PublicOptionDefinition} from './encoding/Options.js';
 export {formatPosition, type Position} from './common/Positioning.js';
 export {version} from './version.js';
 export type {PublicAdapterDefinition} from './encoding/adapter/AdapterDefinition.js';
+export type {Annotation} from './encoding/recorder/Annotations.js';

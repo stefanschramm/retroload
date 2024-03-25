@@ -37,7 +37,9 @@ export class BasicodeEncoder extends AbstractEncoder {
 
   public recordBasicData(ba: BufferAccess) {
     for (const chunkBa of ba.chunksPadded(1024, sth)) {
+      this.recorder.beginAnnotation('Chunk');
       this.record(chunkBa, sth);
+      this.recorder.endAnnotation();
     }
   }
 

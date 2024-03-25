@@ -15,21 +15,27 @@ const fOne = 1200;
 export class Mo5Encoder extends AbstractEncoder {
   recordStartBlock(ba: BufferAccess) {
     Logger.debug(ba.asHexDump());
+    this.recorder.beginAnnotation('Start block');
     this.recordPilot(1);
     this.recordBytes(ba);
     this.recordPilot(2);
+    this.recorder.endAnnotation();
   }
 
   recordDataBlock(ba: BufferAccess) {
     Logger.debug(ba.asHexDump());
+    this.recorder.beginAnnotation('Data block');
     this.recordPilot(0.2);
     this.recordBytes(ba);
+    this.recorder.endAnnotation();
   }
 
   recordEndBlock(ba: BufferAccess) {
     Logger.debug(ba.asHexDump());
+    this.recorder.beginAnnotation('End block');
     this.recordBytes(ba);
     this.recordPilot(1.5);
+    this.recorder.endAnnotation();
   }
 
   override recordByte(byte: number) {
