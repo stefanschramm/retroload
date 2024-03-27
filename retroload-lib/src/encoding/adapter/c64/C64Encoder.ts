@@ -171,33 +171,43 @@ export class C64Encoder extends AbstractEncoder {
     headerBa.writeAsciiString(filename); // 16 bytes: filename
     headerBa.writeAsciiString(' '.repeat(171)); // 171 bytes: padding with spaces
 
+    this.recorder.beginAnnotation('File');
+
     Logger.debug('C64Encoder - recordBasicOrPrg - header:');
     Logger.debug(headerBa.asHexDump());
 
-    // header
+    this.recorder.beginAnnotation('Header');
     this.recordPilot(this.shortpilot ? 0x1a00 : 0x6a00);
     this.recordSyncChain();
     this.recordDataWithCheckByte(headerBa);
     this.recordEndOfDataMarker();
-    // header repeated
+    this.recorder.endAnnotation();
+
+    this.recorder.beginAnnotation('Header repeated');
     this.recordPilot(0x4f);
     this.recordSyncChainRepeated();
     this.recordDataWithCheckByte(headerBa);
     this.recordEndOfDataMarker();
+    this.recorder.endAnnotation();
 
     Logger.debug('C64Encoder - recordBasicOrPrg - data:');
     Logger.debug(dataBa.asHexDump());
 
-    // data
+    this.recorder.beginAnnotation('Data');
     this.recordPilot(0x1a00);
     this.recordSyncChain();
     this.recordDataWithCheckByte(dataBa); // include end of data marker
     this.recordEndOfDataMarker();
-    // data repeated
+    this.recorder.endAnnotation();
+
+    this.recorder.beginAnnotation('Data repeated');
     this.recordPilot(0x4f);
     this.recordSyncChainRepeated();
     this.recordDataWithCheckByte(dataBa); // include end of data marker
     this.recordEndOfDataMarker();
     this.recordPilot(0x4e);
+    this.recorder.endAnnotation();
+
+    this.recorder.endAnnotation();
   }
 }

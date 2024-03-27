@@ -89,14 +89,18 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   headerBlockBa.writeUint16Le(param2);
   headerBlockBa.writeUint8(calculateChecksum8Xor(headerBlockBa.slice(0, 18)));
 
+  recorder.beginAnnotation('Header');
   e.recordStandardSpeedDataBlock(headerBlockBa);
+  recorder.endAnnotation();
 
   const dataBlockBa = BufferAccess.create(ba.length() + 2);
   dataBlockBa.writeUint8(0xff); // marker byte
   dataBlockBa.writeBa(ba);
   dataBlockBa.writeUint8(calculateChecksum8Xor(dataBlockBa));
 
+  recorder.beginAnnotation('Data');
   e.recordStandardSpeedDataBlock(dataBlockBa);
+  recorder.endAnnotation();
 
   e.end();
 }

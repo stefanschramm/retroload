@@ -45,6 +45,8 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   e.begin();
 
   for (let block = 0; block < chunks.length; block++) {
+    recorder.beginAnnotation(`Block ${block}`);
+
     const isFirstBlock = block === 0;
     const isLastBlock = block === chunks.length - 1;
     const blockDataBa = chunks[block];
@@ -72,6 +74,8 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
 
     e.recordPilot(isFirstBlock ? (shortpilot ? 1.5 : 5.1) : 0.9);
     e.recordBytes(blockBa);
+
+    recorder.endAnnotation();
   }
 
   e.recordPilot(shortpilot ? 1.5 : 5.3);

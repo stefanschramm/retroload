@@ -17,11 +17,15 @@ export class TaEncoder extends AbstractEncoder {
     headerBa.writeAsciiString('', 10, 0xd3);
     headerBa.writeAsciiString(filename, maxFileNameLength, 0);
 
+    this.recorder.beginAnnotation('Header');
     this.recordOscillations(fOne, 500);
     this.recordBytes(headerBa);
+    this.recorder.endAnnotation();
+    this.recorder.beginAnnotation('Data');
     this.recordOscillations(fOne, 500);
     this.recordBytes(dataBa);
     this.recordOscillations(fOne, 500);
+    this.recorder.endAnnotation();
   }
 
   override recordByte(byte: number) {
