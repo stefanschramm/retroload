@@ -27,7 +27,7 @@
   "repository": "github:stefanschramm/retroload",
   "license": "AGPL-3.0-only",
   "type": "module",
-  "main": "src/esm/retroload.js",
+  "main": "dist/esm/retroload.js",
   "files": [
     "dist/"
   ],
@@ -37,9 +37,9 @@
     "updateVersion": "genversion --es6 -s src/version.ts"
   },
   "bin": {
-    "retroload": "./bin/retroload.js",
-    "retroload-tokenizer": "./bin/retroload-tokenizer.js",
-    "retroload-decode": "./bin/retroload-decode.js"
+    "retroload": "./dist/esm/retroload.js",
+    "retroload-tokenizer": "./dist/esm/retroload-tokenizer.js",
+    "retroload-decode": "./dist/esm/retroload-decode.js"
   },
   "dependencies": {
     "commander": "^11.1.0",
