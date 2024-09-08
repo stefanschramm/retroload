@@ -1,4 +1,3 @@
-import {ElectronEncoder} from './ElectronEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {inflate} from 'pako';
@@ -43,8 +42,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
   const uefVersionMajor = uefBa.getUint8(11);
   Logger.info(`UEF Version: ${uefVersionMajor}.${uefVersionMinor}`);
 
-  const e = new ElectronEncoder(recorder);
-  const uefProcessor = new UefProcessor(e);
+  const uefProcessor = new UefProcessor(recorder);
   uefProcessor.processUef(uefBa);
 }
 

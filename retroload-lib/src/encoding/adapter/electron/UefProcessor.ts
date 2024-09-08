@@ -1,7 +1,8 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {hex16} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {type ParitySetting, type ElectronEncoder} from './ElectronEncoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {ElectronEncoder} from './ElectronEncoder.js';
 
 const targetMachines = [
   'BBC Model A', // 0
@@ -12,7 +13,10 @@ const targetMachines = [
 ];
 
 export class UefProcessor {
-  constructor(private readonly e: ElectronEncoder) {
+  private readonly e: ElectronEncoder;
+
+  constructor(private readonly r: RecorderInterface) {
+    this.e = new ElectronEncoder(this.r);
   }
 
   public processUef(uefBa: BufferAccess) {
@@ -24,12 +28,17 @@ export class UefProcessor {
       const chunkBa = uefBa.slice(chunkOffset + 6, chunkLength);
       Logger.debug(`Chunk - Offset: 0x${chunkOffset.toString(16)} Type: ${hex16(chunkType)} Length: ${hex16(chunkLength)}`);
       Logger.debug(chunkBa.asHexDump());
+      this.r.beginAnnotation(`Chunk ${hex16(chunkType)} @ 0x${chunkOffset.toString(16)}`);
       this.processChunk(chunkType, chunkBa);
+      this.r.endAnnotation();
       chunkOffset += chunkLength + 6;
     }
     this.e.end();
   }
 
+  /**
+   * http://electrem.emuunlim.com/UEFSpecs.html
+   */
   // eslint-disable-next-line complexity
   private processChunk(chunkType: number, chunkBa: BufferAccess): void {
     switch (chunkType) {
@@ -61,7 +70,7 @@ export class UefProcessor {
         Logger.info(`Chunk type ${hex16(chunkType)} (visible area) not implemented.`);
         break;
       case 0x0100: // implicit start/stop bit tape data block
-        this.e.recordBytes(chunkBa);
+        this.processImplicitTapeDataChunk(chunkBa);
         break;
       case 0x0101: // multiplexed data block
         Logger.error(`Chunk type ${hex16(chunkType)} (multiplexed data block) not implemented.`);
@@ -69,9 +78,9 @@ export class UefProcessor {
       case 0x0102: // explicit tape data block
         Logger.error(`Chunk type ${hex16(chunkType)} (explicit tape data block) not implemented.`);
         break;
-      case 0x0104: // defined tape format data block
-        this.processDefinedTapeFormatDataChunk(chunkBa);
-        break;
+      // case 0x0104: // defined tape format data block
+      //   this.processDefinedTapeFormatDataChunk(chunkBa);
+      //   break;
       case 0x0110: // carrier tone
         this.processCarrierToneChunk(chunkBa);
         break;
@@ -84,9 +93,9 @@ export class UefProcessor {
       case 0x0113: // change of base frequency
         this.processChangeOfBaseFrequencyChunk(chunkBa);
         break;
-      case 0x0114: // security cycles
-        this.processSecurityCyclesChunk(chunkBa);
-        break;
+      // case 0x0114: // security cycles
+      //   this.processSecurityCyclesChunk(chunkBa);
+      //   break;
       case 0x0115: // phase change
         Logger.error(`Chunk type ${hex16(chunkType)} (phase change) not implemented.`);
         break;
@@ -132,6 +141,19 @@ export class UefProcessor {
     Logger.info(`Target machine: ${targetMachine}` + (targetMachine === undefined ? '' : ` (${targetMachineName}) Keyboard configuration: ${keyConfig}`));
   }
 
+  private processImplicitTapeDataChunk(chunkBa: BufferAccess): void {
+    let annotation = '?';
+    if (chunkBa.getUint8(0) === 0x2a) {
+      const name = extractZeroTerminatedString(chunkBa.slice(1));
+      const blockNumber = chunkBa.getUint8(name.length + 10);
+      annotation = `${name} ${blockNumber}`;
+    }
+    this.r.beginAnnotation(annotation);
+    this.e.recordBytes(chunkBa);
+    this.r.endAnnotation();
+  }
+
+  /*
   private processDefinedTapeFormatDataChunk(chunkBa: BufferAccess): void {
     Logger.info('TODO: Check if 0x0104 defined tape format data block works');
     const dataBits = chunkBa.getUint8(0);
@@ -143,6 +165,7 @@ export class UefProcessor {
       this.e.recordByte(dataBa.getUint8(i), dataBits, parity, stopBits); // TODO: check this stuff
     }
   }
+  */
 
   private processCarrierToneChunk(chunkBa: BufferAccess): void {
     const oscillations = chunkBa.getUint16Le(0);
@@ -171,6 +194,7 @@ export class UefProcessor {
     this.e.setBaseFrequency(frequency);
   }
 
+  /*
   private processSecurityCyclesChunk(chunkBa: BufferAccess): void {
     // https://github.com/haerfest/uef/blob/master/uef2wave.py
     const cycles = (chunkBa.getUint16Le(1) << 8) | chunkBa.getUint8(0); // 24 bit value
@@ -180,6 +204,7 @@ export class UefProcessor {
     // Logger.error(`Chunk type ${hex16(chunkType)} (security cycles) not implemented.`);
     // TODO: test it
   }
+  */
 
   private processFloatingPointGapChunk(chunkBa: BufferAccess): void {
     const gapS = chunkBa.getFloat32Le(0);
@@ -192,6 +217,20 @@ function extractString(ba: BufferAccess): string {
   return ba.slice(0, ba.length() - 1).asAsciiString(); // remove trailing \0
 }
 
+function extractZeroTerminatedString(ba: BufferAccess): string {
+  let str = '';
+  for (let i = 0; i < ba.length(); i++) {
+    const c = ba.getUint8(i);
+    if (c === 0) {
+      break;
+    }
+    str += String.fromCharCode(c);
+  }
+
+  return str;
+}
+
+/*
 function determineParitySetting(c: number): ParitySetting {
   const str = String.fromCharCode(c);
   if (str !== 'N' && str !== 'E' && str !== 'O') {
@@ -214,3 +253,4 @@ function determineStopBits(n: number): number {
 
   return n;
 }
+*/
