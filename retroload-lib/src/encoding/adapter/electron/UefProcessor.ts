@@ -1,5 +1,5 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {hex16} from '../../../common/Utils.js';
+import {hex16, hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {ElectronEncoder} from './ElectronEncoder.js';
@@ -146,7 +146,7 @@ export class UefProcessor {
     if (chunkBa.getUint8(0) === 0x2a) {
       const name = extractZeroTerminatedString(chunkBa.slice(1));
       const blockNumber = chunkBa.getUint8(name.length + 10);
-      annotation = `${name} ${blockNumber}`;
+      annotation = `${name} ${hex8(blockNumber)}`;
     }
     this.r.beginAnnotation(annotation);
     this.e.recordBytes(chunkBa);
