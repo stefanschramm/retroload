@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "commander": "^11.1.0",
-    "retroload-lib": "^0.0.18"
+    "retroload-lib": "^0.0.20"
   },
   "devDependencies": {
     "genversion": "^3.2.0"
