@@ -1,6 +1,6 @@
 {
   "name": "retroload",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Command line utility for converting tape archive files of historical computers into sound for loading them on real devices",
   "keywords": [
     "sinclair",
