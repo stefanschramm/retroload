@@ -1,6 +1,8 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {AbstractEncoder} from '../AbstractEncoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {recordByteLsbFirst, recordBytes, type ByteRecorder} from '../ByteRecorder.js';
+import {Oscillator} from '../Oscillator.js';
 
 const fSpace = 3995;
 const fMark = 5327;
@@ -11,39 +13,49 @@ const defaultBaudrate = 600;
  *
  * https://www.atariarchives.org/dere/chaptC.php
  */
-export class AtariEncoder extends AbstractEncoder {
+export class AtariEncoder implements ByteRecorder {
   baudrate: number = defaultBaudrate;
 
-  setDefaultBaudrate() {
+  private readonly oscillator: Oscillator;
+
+  constructor(recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(recorder);
+  }
+
+  public setDefaultBaudrate(): void {
     this.baudrate = defaultBaudrate;
   }
 
-  setBaudrate(baudrate: number) {
+  public setBaudrate(baudrate: number): void {
     this.baudrate = baudrate;
   }
 
-  recordIrg(length: number) {
-    this.recordSeconds(fMark, length / 1000);
+  public recordIrg(length: number): void {
+    this.oscillator.recordSeconds(fMark, length / 1000);
   }
 
-  recordData(irgLength: number, data: BufferAccess) {
+  public recordData(irgLength: number, data: BufferAccess): void {
     Logger.debug('AtariEncoder - recordData');
     Logger.debug(data.asHexDump());
     this.recordIrg(irgLength);
     this.recordBytes(data);
   }
 
-  override recordByte(byte: number) {
+  public recordBytes(data: BufferAccess): void {
+    recordBytes(this, data);
+  }
+
+  public recordByte(byte: number): void {
     this.recordBit(0);
-    this.recordByteLsbFirst(byte);
+    recordByteLsbFirst(this, byte);
     this.recordBit(1);
   }
 
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordSeconds(fMark, 1 / this.baudrate);
+      this.oscillator.recordSeconds(fMark, 1 / this.baudrate);
     } else {
-      this.recordSeconds(fSpace, 1 / this.baudrate);
+      this.oscillator.recordSeconds(fSpace, 1 / this.baudrate);
     }
   }
 }
