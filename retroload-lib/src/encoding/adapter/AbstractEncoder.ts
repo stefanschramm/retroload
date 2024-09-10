@@ -1,87 +1,68 @@
 import {type BufferAccess} from '../../common/BufferAccess.js';
-import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {recordByteLsbFirst, recordByteMsbFirst, recordBytes, type ByteRecorder} from './ByteRecorder.js';
+import {Oscillator} from './Oscillator.js';
 
 /**
  * Base class for all encoders. Provides many methods commonly used.
+ *
+ * TODO: To be removed. Encoders should use Oscillator and implement ByteRecorder by themselves.
  */
-export abstract class AbstractEncoder {
-  /**
-   * this.phase determines whether the next half oscillation is positive.
-   * It's modified only when recording half oscillations.
-   */
-  private phase = true;
+export abstract class AbstractEncoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
 
   constructor(protected readonly recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(this.recorder);
   }
 
   public begin() {
-    this.recordSilence(this.recorder.sampleRate / 2);
+    this.oscillator.begin();
   }
 
   public end() {
-    this.recordSilence(this.recorder.sampleRate);
+    this.oscillator.end();
   }
 
   public recordSilence(samples: number) {
-    for (let j = 0; j < samples; j += 1) {
-      this.recorder.pushSample(SampleValue.Zero);
-    }
+    this.oscillator.recordSilence(samples);
   }
 
   public recordSilenceMs(lengthMs: number) {
-    this.recordSilence(lengthMs * this.recorder.sampleRate / 1000);
+    this.oscillator.recordSilenceMs(lengthMs);
   }
 
   public recordBytes(dataBa: BufferAccess) {
-    for (const byte of dataBa.bytes()) {
-      this.recordByte(byte);
-    }
+    recordBytes(this, dataBa);
   }
 
   public recordByte(byte: number) {
     // Default: LSB first
-    this.recordByteLsbFirst(byte);
+    recordByteLsbFirst(this, byte);
   }
 
+  public abstract recordBit(value: number): void;
+
   protected recordOscillations(frequency: number, oscillations: number) {
-    const samples = Math.floor(this.recorder.sampleRate / frequency / 2);
-    for (let i = 0; i < oscillations; i += 1) {
-      for (const value of (this.phase ? [SampleValue.High, SampleValue.Low] : [SampleValue.Low, SampleValue.High])) {
-        for (let j = 0; j < samples; j += 1) {
-          this.recorder.pushSample(value);
-        }
-      }
-    }
-    // (no need to toggle phase)
+    this.oscillator.recordOscillations(frequency, oscillations);
   }
 
   protected recordHalfOscillation(frequency: number) {
-    const samples = Math.floor(this.recorder.sampleRate / frequency / 2);
-    this.recordHalfOscillationSamples(samples);
+    this.oscillator.recordHalfOscillation(frequency);
   }
 
   protected recordHalfOscillationSamples(samples: number) {
-    for (let j = 0; j < samples; j += 1) {
-      this.recorder.pushSample(this.phase ? SampleValue.High : SampleValue.Low);
-    }
-    this.phase = !this.phase;
+    this.oscillator.recordHalfOscillationSamples(samples);
   }
 
   protected recordSeconds(frequency: number, seconds: number) {
-    this.recordOscillations(frequency, frequency * seconds);
+    this.oscillator.recordSeconds(frequency, seconds);
   }
 
   protected recordByteLsbFirst(byte: number) {
-    for (let i = 0; i < 8; i += 1) {
-      this.recordBit(((byte & (1 << i)) === 0) ? 0 : 1);
-    }
+    recordByteLsbFirst(this, byte);
   }
 
   protected recordByteMsbFirst(byte: number) {
-    for (let i = 7; i >= 0; i -= 1) {
-      this.recordBit(((byte & (1 << i)) === 0) ? 0 : 1);
-    }
+    recordByteMsbFirst(this, byte);
   }
-
-  protected abstract recordBit(value: number): void;
 }
