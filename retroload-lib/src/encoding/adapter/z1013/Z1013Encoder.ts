@@ -1,7 +1,9 @@
-import {AbstractEncoder} from '../AbstractEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {hex16} from '../../../common/Utils.js';
+import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {Oscillator} from '../Oscillator.js';
 
 const blockDataSize = 32;
 const fOne = 1280;
@@ -13,13 +15,23 @@ const fSync = 640;
  *
  * https://hc-ddr.hucki.net/wiki/doku.php/z1013/kassettenformate
  */
-export class Z1013Encoder extends AbstractEncoder {
-  public override begin() {
-    super.begin();
+export class Z1013Encoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
+
+  constructor(private readonly recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(this.recorder);
+  }
+
+  public begin(): void {
+    this.oscillator.begin();
     this.recordFirstIntro();
   }
 
-  recordData(ba: BufferAccess) {
+  public end(): void {
+    this.oscillator.end();
+  }
+
+  public recordData(ba: BufferAccess): void {
     let i = 0;
     for (const blockBa of ba.chunks(blockDataSize)) {
       this.recordBlock(i++, blockBa);
@@ -30,7 +42,7 @@ export class Z1013Encoder extends AbstractEncoder {
    * Instead of incrementing the block number by 1 for each block,
    * Headersave uses the load address for each block as block number.
    */
-  recordHeadersaveData(ba: BufferAccess, initialBlockNumber: number) {
+  public recordHeadersaveData(ba: BufferAccess, initialBlockNumber: number): void {
     let i = initialBlockNumber;
     for (const blockBa of ba.chunks(blockDataSize)) {
       this.recordBlock(i, blockBa);
@@ -38,7 +50,7 @@ export class Z1013Encoder extends AbstractEncoder {
     }
   }
 
-  recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
+  public recordBlock(blockNumber: number, blockDataBa: BufferAccess): void {
     this.recorder.beginAnnotation(`Block ${hex16(blockNumber)}`);
 
     const blockBa = BufferAccess.create(2 + blockDataBa.length() + 2);
@@ -50,31 +62,35 @@ export class Z1013Encoder extends AbstractEncoder {
 
     this.recordIntro();
     this.recordDelimiter();
-    this.recordBytes(blockBa);
+    recordBytes(this, blockBa);
 
     this.recorder.endAnnotation();
   }
 
-  recordFirstIntro() {
+  public recordFirstIntro(): void {
     this.recorder.beginAnnotation('Sync');
-    this.recordOscillations(fSync, 2000);
+    this.oscillator.recordOscillations(fSync, 2000);
     this.recorder.endAnnotation();
   }
 
-  recordIntro() {
-    this.recordOscillations(fSync, 7);
+  public recordByte(byte: number): void {
+    recordByteLsbFirst(this, byte);
   }
 
-  recordDelimiter() {
-    this.recordOscillations(fOne, 1);
-  }
-
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordHalfOscillation(fOne);
+      this.oscillator.recordHalfOscillation(fOne);
     } else {
-      this.recordOscillations(fZero, 1);
+      this.oscillator.recordOscillations(fZero, 1);
     }
+  }
+
+  private recordIntro(): void {
+    this.oscillator.recordOscillations(fSync, 7);
+  }
+
+  private recordDelimiter(): void {
+    this.oscillator.recordOscillations(fOne, 1);
   }
 }
 
