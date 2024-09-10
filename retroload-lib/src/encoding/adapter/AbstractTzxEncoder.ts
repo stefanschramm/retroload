@@ -1,7 +1,7 @@
-import {AbstractEncoder} from './AbstractEncoder.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
-import {InternalError} from '../../common/Exceptions.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {Oscillator} from './Oscillator.js';
 
 const fCpu = 3500000;
 
@@ -11,25 +11,43 @@ const fCpu = 3500000;
  * https://github.com/mamedev/mame/blob/master/src/lib/formats/tzx_cas.cpp
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
-export abstract class AbstractTzxEncoder extends AbstractEncoder {
-  public recordStandardSpeedDataBlock(blockDataBa: BufferAccess) {
+export abstract class AbstractTzxEncoder {
+  private readonly oscillator: Oscillator;
+
+  public constructor(private readonly recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(recorder);
+  }
+
+  public begin(): void {
+    this.oscillator.begin();
+  }
+
+  public end(): void {
+    this.oscillator.end();
+  }
+
+  public recordSilenceMs(lengthMs: number): void {
+    this.oscillator.recordSilenceMs(lengthMs);
+  }
+
+  public recordStandardSpeedDataBlock(blockDataBa: BufferAccess): void {
     this.recordDataBlock(blockDataBa, {
       ...this.getStandardSpeedRecordOptions(),
       pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223, // TODO: why?
     });
   }
 
-  public recordDataBlock(blockDataBa: BufferAccess, options: DataRecordOptions) {
+  public recordDataBlock(blockDataBa: BufferAccess, options: DataRecordOptions): void {
     const pilotSamples = this.tzxCyclesToSamples(options.pilotPulseLength);
     for (let i = 0; i < options.pilotPulses; i++) {
-      this.recordHalfOscillationSamples(pilotSamples);
+      this.oscillator.recordHalfOscillationSamples(pilotSamples);
     }
     this.recordPulse(options.syncFirstPulseLength);
     this.recordPulse(options.syncSecondPulseLength);
     this.recordPureDataBlock(blockDataBa, options);
   }
 
-  public recordPureDataBlock(blockDataBa: BufferAccess, options: PureDataRecordOptions) {
+  public recordPureDataBlock(blockDataBa: BufferAccess, options: PureDataRecordOptions): void {
     const zeroBitSamples = this.tzxCyclesToSamples(options.zeroBitPulseLength);
     const oneBitSamples = this.tzxCyclesToSamples(options.oneBitPulseLength);
 
@@ -41,17 +59,17 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
       let bits = (i === blockDataBa.length() - 1) ? options.lastByteUsedBits : 8;
       while (bits > 0) {
         const samples = ((byte & 0x80) === 0) ? zeroBitSamples : oneBitSamples;
-        this.recordHalfOscillationSamples(samples);
-        this.recordHalfOscillationSamples(samples);
+        this.oscillator.recordHalfOscillationSamples(samples);
+        this.oscillator.recordHalfOscillationSamples(samples);
         byte <<= 1;
         bits--;
       }
     }
 
-    this.recordSilenceMs(options.pauseLengthMs);
+    this.oscillator.recordSilenceMs(options.pauseLengthMs);
   }
 
-  public recordKansasCityLikeBlock(blockDataBa: BufferAccess, config: KansasCityLikeConfiguration) {
+  public recordKansasCityLikeBlock(blockDataBa: BufferAccess, config: KansasCityLikeConfiguration): void {
     const bitDuration = [
       config.zeroPulseLength,
       config.onePulseLength,
@@ -75,28 +93,24 @@ export abstract class AbstractTzxEncoder extends AbstractEncoder {
         this.recordPulses(bitDuration[config.stopBitValue], bitPulses[config.stopBitValue]);
       }
     }
-    this.recordSilenceMs(config.pauseAfterBlockMs);
+    this.oscillator.recordSilenceMs(config.pauseAfterBlockMs);
   }
 
-  public recordPulse(length: number) {
-    this.recordHalfOscillationSamples(this.tzxCyclesToSamples(length));
+  public recordPulse(length: number): void {
+    this.oscillator.recordHalfOscillationSamples(this.tzxCyclesToSamples(length));
   }
 
-  public recordPulses(length: number, count: number) {
+  public recordPulses(length: number, count: number): void {
     for (let i = 0; i < count; i++) {
-      this.recordHalfOscillationSamples(this.tzxCyclesToSamples(length));
+      this.oscillator.recordHalfOscillationSamples(this.tzxCyclesToSamples(length));
     }
-  }
-
-  public override recordBit(_value: number): void {
-    throw new InternalError('Call to recordBit not expected for TzxEncoders.');
   }
 
   public abstract getStandardSpeedRecordOptions(): DataRecordOptions;
 
   protected abstract getTzxCycleFactor(): number;
 
-  private tzxCyclesToSamples(cycles: number) {
+  private tzxCyclesToSamples(cycles: number): number {
     return Math.floor((0.5 + ((this.recorder.sampleRate / fCpu) * cycles)) * this.getTzxCycleFactor());
   }
 }
