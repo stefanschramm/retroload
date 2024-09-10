@@ -1,8 +1,10 @@
-import {AbstractEncoder} from '../AbstractEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8, hex8} from '../../../common/Utils.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {recordByteLsbFirst, recordBytes, type ByteRecorder} from '../ByteRecorder.js';
+import {Oscillator} from '../Oscillator.js';
 
 const fZero = 1950; // manual: 2400;
 const fOne = 1050; // manual: 1200;
@@ -20,13 +22,23 @@ const oscillationsBlockIntro = 200; // as in kcemu save_WAV.c; manual: 160
 /**
  * Encoder for KC 85/1 (and similar) and KC 85/4 (and similar)
  */
-export class KcEncoder extends AbstractEncoder {
-  override begin() {
-    super.begin();
+export class KcEncoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
+
+  constructor(private readonly recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(recorder);
+  }
+
+  begin(): void {
+    this.oscillator.begin();
     this.recordIntro();
   }
 
-  recordBlock(blockNumber: number, blockDataBa: BufferAccess) {
+  end(): void {
+    this.oscillator.end();
+  }
+
+  recordBlock(blockNumber: number, blockDataBa: BufferAccess): void {
     this.recorder.beginAnnotation(`Block ${hex8(blockNumber)}`);
 
     if (blockDataBa.length() > blockSize) {
@@ -50,31 +62,35 @@ export class KcEncoder extends AbstractEncoder {
     this.recorder.endAnnotation();
   }
 
-  recordIntro() {
-    this.recordOscillations(fOne, oscillationsIntro);
+  recordIntro(): void {
+    this.oscillator.recordOscillations(fOne, oscillationsIntro);
   }
 
-  recordBlockIntro(appendSilence = false) {
-    this.recordOscillations(fOne, oscillationsBlockIntro);
+  recordBlockIntro(appendSilence = false): void {
+    this.oscillator.recordOscillations(fOne, oscillationsBlockIntro);
     if (appendSilence) {
-      this.recordSilenceMs(1500);
+      this.oscillator.recordSilenceMs(1500);
     }
   }
 
-  recordDelimiter() {
-    this.recordOscillations(fDelimiter, 1);
+  recordDelimiter(): void {
+    this.oscillator.recordOscillations(fDelimiter, 1);
   }
 
-  override recordByte(byte: number) {
-    super.recordByte(byte);
+  recordBytes(bytes: BufferAccess): void {
+    recordBytes(this, bytes);
+  }
+
+  recordByte(byte: number): void {
+    recordByteLsbFirst(this, byte);
     this.recordDelimiter();
   }
 
-  recordBit(value: number) {
+  recordBit(value: number): void {
     if (value) {
-      this.recordOscillations(fOne, 1);
+      this.oscillator.recordOscillations(fOne, 1);
     } else {
-      this.recordOscillations(fZero, 1);
+      this.oscillator.recordOscillations(fZero, 1);
     }
   }
 }
