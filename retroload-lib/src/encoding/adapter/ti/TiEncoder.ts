@@ -1,8 +1,10 @@
-import {AbstractEncoder} from '../AbstractEncoder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {calculateChecksum8} from '../../../common/Utils.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {Oscillator} from '../Oscillator.js';
+import {type ByteRecorder, recordByteMsbFirst, recordBytes} from '../ByteRecorder.js';
 
 const fZero = 689.5;
 const fOne = 1379;
@@ -12,8 +14,22 @@ const fOne = 1379;
  *
  * https://www.unige.ch/medecine/nouspikel/ti99/cassette.htm
  */
-export class TiEncoder extends AbstractEncoder {
-  recordHeader(numberOfRecords: number) {
+export class TiEncoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
+
+  constructor(private readonly recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(this.recorder);
+  }
+
+  public begin(): void {
+    this.oscillator.begin();
+  }
+
+  public end(): void {
+    this.oscillator.end();
+  }
+
+  public recordHeader(numberOfRecords: number): void {
     this.recorder.beginAnnotation('Header');
     for (let i = 0; i < 768; i++) {
       this.recordByte(0x00);
@@ -24,7 +40,7 @@ export class TiEncoder extends AbstractEncoder {
     this.recorder.endAnnotation();
   }
 
-  recordBlock(blockDataBa: BufferAccess) {
+  public recordBlock(blockDataBa: BufferAccess): void {
     if (blockDataBa.length() !== 64) {
       throw new InputDataError('Block needs to be 64 bytes');
     }
@@ -38,21 +54,21 @@ export class TiEncoder extends AbstractEncoder {
         this.recordByte(0x00);
       }
       this.recordByte(0xff); // data mark
-      this.recordBytes(blockDataBa);
+      recordBytes(this, blockDataBa);
       this.recordByte(checksum);
       this.recorder.endAnnotation();
     }
   }
 
-  override recordByte(byte: number) {
-    this.recordByteMsbFirst(byte);
+  public recordByte(byte: number): void {
+    recordByteMsbFirst(this, byte);
   }
 
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordOscillations(fOne, 1);
+      this.oscillator.recordOscillations(fOne, 1);
     } else {
-      this.recordHalfOscillation(fZero);
+      this.oscillator.recordHalfOscillation(fZero);
     }
   }
 }
