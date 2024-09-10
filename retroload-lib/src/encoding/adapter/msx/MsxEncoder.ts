@@ -1,5 +1,7 @@
-import {AbstractEncoder} from '../AbstractEncoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {Oscillator} from '../Oscillator.js';
+import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
+import {type BufferAccess} from '../../../../dist/cjs/index.js';
 
 const fZero = 1200;
 const fOne = 2400;
@@ -15,37 +17,50 @@ const pulsesShortHeader = 4000;
  * https://www.msx.org/forum/semi-msx-talk/emulation/how-do-exactly-works-cas-format
  * MSX Technical Data Book, p. 172 - 175
  */
-export class MsxEncoder extends AbstractEncoder {
+export class MsxEncoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
   private readonly baudrateFactor: number;
 
   constructor(
-    recorder: RecorderInterface,
+    private readonly recorder: RecorderInterface,
     private readonly shortpilot = false,
     fast = false,
   ) {
-    super(recorder);
     this.baudrateFactor = fast ? 2 : 1; // use 1200 or 2400 baud
+    this.oscillator = new Oscillator(this.recorder);
+  }
+
+  public begin(): void {
+    this.oscillator.begin();
+  }
+
+  public end(): void {
+    this.oscillator.end();
   }
 
   recordHeader(long: boolean) {
-    this.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
+    this.oscillator.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
     long = this.shortpilot ? false : long; // use short pulse if shortpilot option is set
     const pulses = long ? pulsesLongHeader : pulsesShortHeader;
-    this.recordOscillations(fOne * this.baudrateFactor, pulses);
+    this.oscillator.recordOscillations(fOne * this.baudrateFactor, pulses);
   }
 
-  override recordByte(byte: number) {
+  public recordBytes(data: BufferAccess): void {
+    recordBytes(this, data);
+  }
+
+  public recordByte(byte: number): void {
     this.recordBit(0);
-    super.recordByte(byte);
+    recordByteLsbFirst(this, byte);
     this.recordBit(1);
     this.recordBit(1);
   }
 
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordOscillations(fOne * this.baudrateFactor, 2);
+      this.oscillator.recordOscillations(fOne * this.baudrateFactor, 2);
     } else {
-      this.recordOscillations(fZero * this.baudrateFactor, 1);
+      this.oscillator.recordOscillations(fZero * this.baudrateFactor, 1);
     }
   }
 }
