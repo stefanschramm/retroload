@@ -3,7 +3,7 @@ import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
-import {ZxSpectrumTzxEncoder} from '../zxspectrum/ZxSpectrumTzxEncoder.js';
+import {TzxEncoder} from '../TzxEncoder.js';
 
 const definition: AdapterDefinition = {
   name: 'MSX .TSX-File',
@@ -24,7 +24,7 @@ function identify(filename: string, ba: BufferAccess) {
 }
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
-  const e = new ZxSpectrumTzxEncoder(recorder); // Looks like the ZX Spectrum frequencies (cycle factor) simply work...
+  const e = TzxEncoder.createForZxSpectrum(recorder); // Looks like the ZX Spectrum frequencies (cycle factor) simply work...
   const tzxProcessor = new TzxProcessor(e);
   tzxProcessor.processTzx(ba);
 }

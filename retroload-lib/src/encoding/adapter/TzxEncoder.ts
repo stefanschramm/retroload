@@ -5,16 +5,63 @@ import {Oscillator} from './Oscillator.js';
 
 const fCpu = 3500000;
 
+// Amstrad CPC Constants (.cdt files)
+const cpcTzxCycleFactor = 40 / 35;
+export const cpcStandardSpeedRecordOptions: DataRecordOptions = {
+  pilotPulseLength: 0x091a,
+  syncFirstPulseLength: 0x048d,
+  syncSecondPulseLength: 0x048d,
+  zeroBitPulseLength: 0x048d,
+  oneBitPulseLength: 0x091a,
+  pilotPulses: 0x1000,
+  lastByteUsedBits: 8,
+  pauseLengthMs: 0x000a,
+};
+
+// ZX Spectrum constants
+const zxSpectrumCycleFactor = 1;
+const zxSpectrumStandardSpeedRecordOptions: DataRecordOptions = {
+  // ZX Spectrum defaults (for non-turbo-speed-data blocks)
+  pauseLengthMs: 1000,
+  pilotPulseLength: 2168,
+  syncFirstPulseLength: 667,
+  syncSecondPulseLength: 735,
+  zeroBitPulseLength: 855,
+  oneBitPulseLength: 1710,
+  lastByteUsedBits: 8,
+  pilotPulses: 8063,
+};
+
 /**
  * Abstract Encoder class used for ZX Spectrum (.tzx), Amstrad CPC (.cdt) and MSX (.tsx).
  *
  * https://github.com/mamedev/mame/blob/master/src/lib/formats/tzx_cas.cpp
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
-export abstract class AbstractTzxEncoder {
+export class TzxEncoder {
+  public static createForCpc(recorder: RecorderInterface): TzxEncoder {
+    return new TzxEncoder(
+      recorder,
+      cpcTzxCycleFactor,
+      cpcStandardSpeedRecordOptions,
+    );
+  }
+
+  public static createForZxSpectrum(recorder: RecorderInterface): TzxEncoder {
+    return new TzxEncoder(
+      recorder,
+      zxSpectrumCycleFactor,
+      zxSpectrumStandardSpeedRecordOptions,
+    );
+  }
+
   private readonly oscillator: Oscillator;
 
-  public constructor(private readonly recorder: RecorderInterface) {
+  public constructor(
+    private readonly recorder: RecorderInterface,
+    public readonly tzxCycleFactor: number,
+    public readonly standardSpeedRecordOptions: DataRecordOptions,
+  ) {
     this.oscillator = new Oscillator(recorder);
   }
 
@@ -32,7 +79,7 @@ export abstract class AbstractTzxEncoder {
 
   public recordStandardSpeedDataBlock(blockDataBa: BufferAccess): void {
     this.recordDataBlock(blockDataBa, {
-      ...this.getStandardSpeedRecordOptions(),
+      ...this.standardSpeedRecordOptions,
       pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223, // TODO: why?
     });
   }
@@ -106,12 +153,8 @@ export abstract class AbstractTzxEncoder {
     }
   }
 
-  public abstract getStandardSpeedRecordOptions(): DataRecordOptions;
-
-  protected abstract getTzxCycleFactor(): number;
-
   private tzxCyclesToSamples(cycles: number): number {
-    return Math.floor((0.5 + ((this.recorder.sampleRate / fCpu) * cycles)) * this.getTzxCycleFactor());
+    return Math.floor((0.5 + ((this.recorder.sampleRate / fCpu) * cycles)) * this.tzxCycleFactor);
   }
 }
 

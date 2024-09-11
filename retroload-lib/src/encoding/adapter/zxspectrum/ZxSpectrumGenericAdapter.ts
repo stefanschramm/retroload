@@ -1,10 +1,10 @@
-import {ZxSpectrumTzxEncoder} from './ZxSpectrumTzxEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type ArgumentOptionDefinition, nameOption, type OptionContainer, loadOption} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
 import {calculateChecksum8Xor} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
+import {TzxEncoder} from '../TzxEncoder.js';
 
 const typeOption: ArgumentOptionDefinition<number> = {
   name: 'zxtype',
@@ -77,7 +77,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   // The array names a() and a$() stored at the tape doesn't seem to matter.
   // The computer uses the name specified on loading (LOAD "" CODE b()).
 
-  const e = new ZxSpectrumTzxEncoder(recorder);
+  const e = TzxEncoder.createForZxSpectrum(recorder);
   e.begin();
 
   const headerBlockBa = BufferAccess.create(19);

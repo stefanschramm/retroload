@@ -1,9 +1,9 @@
 import {TzxProcessor} from '../tzx/TzxProcessor.js';
-import {ZxSpectrumTzxEncoder} from './ZxSpectrumTzxEncoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {TzxEncoder} from '../TzxEncoder.js';
 
 /**
  * Adapter for ZX Spectrum .TZX files
@@ -27,7 +27,7 @@ function identify(filename: string, ba: BufferAccess) {
 }
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
-  const e = new ZxSpectrumTzxEncoder(recorder);
+  const e = TzxEncoder.createForZxSpectrum(recorder);
   const tzxProcessor = new TzxProcessor(e);
   tzxProcessor.processTzx(ba);
 }
