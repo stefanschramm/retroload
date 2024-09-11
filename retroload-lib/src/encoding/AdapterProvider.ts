@@ -9,6 +9,7 @@ import C64T64Adapter from './adapter/c64/C64T64Adapter.js';
 import C64TapAdapter from './adapter/c64/C64TapAdapter.js';
 import CpcCdtAdapter from './adapter/cpc/CpcCdtAdapter.js';
 import CpcGenericAdapter from './adapter/cpc/CpcGenericAdapter.js';
+import CswAdapter from './adapter/csw/CswAdapter.js';
 import ElectronGenericAdapter from './adapter/electron/ElectronGenericAdapter.js';
 import ElectronUefAdapter from './adapter/electron/ElectronUefAdapter.js';
 import KcBasicGenericAdapter from './adapter/kc/KcBasicGenericAdapter.js';
@@ -46,6 +47,7 @@ export const adapters: AdapterDefinition[] = [
   C64TapAdapter,
   CpcCdtAdapter,
   CpcGenericAdapter,
+  CswAdapter,
   ElectronGenericAdapter,
   ElectronUefAdapter,
   KcBasicGenericAdapter,

@@ -7,7 +7,14 @@ export class Oscillator {
    */
   private phase = true;
 
-  public constructor(protected readonly recorder: RecorderInterface) {
+  public constructor(
+    protected readonly recorder: RecorderInterface,
+    /**
+     * Initial polarity of first half period to be recorded (true == high)
+     */
+    initialPolarity = true,
+  ) {
+    this.phase = initialPolarity;
   }
 
   public begin(): void {
