@@ -9,18 +9,18 @@ export class BufferAccess {
   /**
    * Create new buffer of length bytes and return an BufferAccess object referencing the new buffer.
    */
-  static create(length: number): BufferAccess {
+  public static create(length: number): BufferAccess {
     return new BufferAccess(new ArrayBuffer(length));
   }
 
   /**
    * Return BufferAccess referencing the buffer slice that is used by the passed Uint8Array
    */
-  static createFromUint8Array(uint8Array: Uint8Array): BufferAccess {
+  public static createFromUint8Array(uint8Array: Uint8Array): BufferAccess {
     return new BufferAccess(uint8Array.buffer, uint8Array.byteOffset, uint8Array.byteLength);
   }
 
-  static createFromNodeBuffer(buffer: Buffer): BufferAccess {
+  public static createFromNodeBuffer(buffer: Buffer): BufferAccess {
     const arrayBuffer = buffer.buffer.slice(
       buffer.byteOffset,
       buffer.byteOffset + buffer.byteLength,
@@ -29,9 +29,9 @@ export class BufferAccess {
     return new BufferAccess(arrayBuffer);
   }
 
-  cursor: number;
-  view: DataView;
-  ui8a: Uint8Array;
+  private cursor: number;
+  private readonly view: DataView;
+  private readonly ui8a: Uint8Array;
 
   private constructor(buffer: ArrayBufferLike, offset = 0, length: (number | undefined) = undefined) {
     this.cursor = 0;
@@ -39,19 +39,19 @@ export class BufferAccess {
     this.ui8a = new Uint8Array(buffer, offset, length ?? buffer.byteLength);
   }
 
-  length() {
+  public length() {
     return this.view.byteLength;
   }
 
-  rewind() {
+  public rewind() {
     this.cursor = 0;
   }
 
-  asUint8Array() {
+  public asUint8Array() {
     return this.ui8a;
   }
 
-  * bytes(): Generator<number> {
+  public * bytes(): Generator<number> {
     for (let i = 0; i < this.length(); i++) {
       yield this.getUint8(i);
     }
@@ -60,7 +60,7 @@ export class BufferAccess {
   /**
    * Return slice that references the same buffer
    */
-  slice(offset: number, length: number | undefined = undefined): BufferAccess {
+  public slice(offset: number, length: number | undefined = undefined): BufferAccess {
     if (offset >= this.view.byteLength) {
       throw new Error('Illegal offset.');
     }
@@ -79,7 +79,7 @@ export class BufferAccess {
    *
    * There will be no padding for the last chunk.
    */
-  chunks(chunkSize: number): BufferAccess[] {
+  public chunks(chunkSize: number): BufferAccess[] {
     if (chunkSize === 0) {
       throw new Error('Illegal chunk size.');
     }
@@ -96,7 +96,7 @@ export class BufferAccess {
    *
    * If the last chunk required padding, it will be a copy while the other chunks are always references.
    */
-  chunksPadded(chunkSize: number, padding = 0x00): BufferAccess[] {
+  public chunksPadded(chunkSize: number, padding = 0x00): BufferAccess[] {
     const unpaddedChunks = this.chunks(chunkSize);
     if (unpaddedChunks.length === 0) {
       return unpaddedChunks;
@@ -122,7 +122,7 @@ export class BufferAccess {
   /**
    * Return copy that references a new buffer
    */
-  copy(offset = 0, length = this.view.byteLength): BufferAccess {
+  public copy(offset = 0, length = this.view.byteLength): BufferAccess {
     if (offset >= this.view.byteLength) {
       throw new Error('Illegal offset.');
     }
@@ -136,7 +136,7 @@ export class BufferAccess {
     return ba;
   }
 
-  asHexDump(): string {
+  public asHexDump(): string {
     const printableCharsRegexp = /[^ -~]+$/g;
     const bytesPerRow = 16;
     const rows = Math.ceil(this.view.byteLength / bytesPerRow);
@@ -165,85 +165,85 @@ export class BufferAccess {
     return lines.join('\n');
   }
 
-  asAsciiString() {
+  public asAsciiString() {
     return (new TextDecoder()).decode(this.ui8a);
   }
 
-  setUint8(offset: number, i: number) {
+  public setUint8(offset: number, i: number) {
     this.view.setInt8(offset, i);
   }
 
-  writeUint8(i: number) {
+  public writeUint8(i: number) {
     this.view.setInt8(this.cursor, i);
     this.cursor += 1;
   }
 
-  getUint8(offset: number) {
+  public getUint8(offset: number) {
     return this.view.getUint8(offset);
   }
 
-  setUint16Le(offset: number, i: number) {
+  public setUint16Le(offset: number, i: number) {
     this.view.setInt16(offset, i, true);
   }
 
-  writeUint16Le(i: number) {
+  public writeUint16Le(i: number) {
     this.view.setInt16(this.cursor, i, true);
     this.cursor += 2;
   }
 
-  getUint16Le(offset: number) {
+  public getUint16Le(offset: number) {
     return this.view.getUint16(offset, true);
   }
 
-  setUint16Be(offset: number, i: number) {
+  public setUint16Be(offset: number, i: number) {
     this.view.setInt16(offset, i, false);
   }
 
-  writeUint16Be(i: number) {
+  public writeUint16Be(i: number) {
     this.view.setInt16(this.cursor, i, false);
     this.cursor += 2;
   }
 
-  getUint16Be(offset: number) {
+  public getUint16Be(offset: number) {
     return this.view.getUint16(offset, false);
   }
 
-  setUint32Le(offset: number, i: number) {
+  public setUint32Le(offset: number, i: number) {
     this.view.setInt32(offset, i, true);
   }
 
-  writeUint32Le(i: number) {
+  public writeUint32Le(i: number) {
     this.view.setInt32(this.cursor, i, true);
     this.cursor += 4;
   }
 
-  getUint32Le(offset: number) {
+  public getUint32Le(offset: number) {
     return this.view.getUint32(offset, true);
   }
 
-  setUint32Be(offset: number, i: number) {
+  public setUint32Be(offset: number, i: number) {
     this.view.setInt32(offset, i, false);
   }
 
-  writeUint32Be(i: number) {
+  public writeUint32Be(i: number) {
     this.view.setInt32(this.cursor, i, false);
     this.cursor += 4;
   }
 
-  getFloat32Le(offset: number) {
+  public getFloat32Le(offset: number) {
     return this.view.getFloat32(offset, true);
   }
 
-  setFloat32Le(offset: number, f: number) {
+  public setFloat32Le(offset: number, f: number) {
     this.view.setFloat32(offset, f, true);
   }
 
-  writeFloat32Le(f: number) {
+  public writeFloat32Le(f: number) {
     this.view.setFloat32(this.cursor, f, true);
     this.cursor += 4;
   }
 
-  setAsciiString(offset: number, string: string, paddingLength = 0, paddingCharCode = 0) {
+  public setAsciiString(offset: number, string: string, paddingLength = 0, paddingCharCode = 0) {
     for (let i = 0; i < string.length; i++) {
       this.view.setUint8(offset + i, string.charCodeAt(i));
     }
@@ -252,7 +252,7 @@ export class BufferAccess {
     }
   }
 
-  writeAsciiString(string: string, paddingLength = 0, paddingCharCode = 0) {
+  public writeAsciiString(string: string, paddingLength = 0, paddingCharCode = 0) {
     this.setAsciiString(this.cursor, string, paddingLength, paddingCharCode);
     this.cursor += Math.max(string.length, paddingLength);
   }
@@ -260,11 +260,11 @@ export class BufferAccess {
   /**
    * Copy the content of the passed BufferAccess into offset
    */
-  setBa(offset: number, sourceBa: BufferAccess) {
+  public setBa(offset: number, sourceBa: BufferAccess) {
     this.ui8a.set(sourceBa.asUint8Array(), offset);
   }
 
-  writeBa(sourceBa: BufferAccess) {
+  public writeBa(sourceBa: BufferAccess) {
     this.setBa(this.cursor, sourceBa);
     this.cursor += sourceBa.length();
   }
@@ -272,7 +272,7 @@ export class BufferAccess {
   /**
    * If needle is an empty string, true will be returned
    */
-  containsDataAt(offset: number, needle: string | number[]) {
+  public containsDataAt(offset: number, needle: string | number[]) {
     const isString = typeof needle === 'string';
     for (let i = 0; i < needle.length; i++) {
       if (offset + i >= this.view.byteLength) {

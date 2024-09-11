@@ -8,7 +8,7 @@ export class AveragingSampleToHalfPeriodConverter implements HalfPeriodProvider 
   private readonly halfPeriodPositions: number[] = [];
   private cursor = 0;
 
-  constructor(sampleProvider: SampleProvider) {
+  public constructor(sampleProvider: SampleProvider) {
     this.sampleProvider = sampleProvider;
     this.loadHalfPeriods();
   }

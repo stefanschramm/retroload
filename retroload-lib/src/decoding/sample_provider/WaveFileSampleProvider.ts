@@ -6,18 +6,18 @@ import {type SampleProvider} from './SampleProvider.js';
 const pcmFormatTag = 0x0001;
 
 export class WaveFileSampleProvider implements SampleProvider {
-  readonly ba: BufferAccess;
-  readonly skip: number;
-  readonly sampleRate: number;
-  readonly bitsPerSample: number;
-  readonly channels: number;
-  readonly blockAlign: number;
-  readonly dataLength: number;
-  readonly channel: number;
+  public readonly sampleRate: number;
+  public readonly bitsPerSample: number;
+  public readonly channels: number;
+  public readonly dataLength: number;
+  private readonly ba: BufferAccess;
+  private readonly skip: number;
+  private readonly blockAlign: number;
+  private readonly channel: number;
 
   private readonly dataChunkOffset: number;
 
-  constructor(ba: BufferAccess, skip: number, channel: number | undefined = undefined) {
+  public constructor(ba: BufferAccess, skip: number, channel: number | undefined = undefined) {
     this.ba = ba;
     this.skip = skip;
     if (this.skip !== 0) {

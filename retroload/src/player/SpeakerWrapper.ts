@@ -11,7 +11,7 @@ import stream from 'stream';
 import {type PlayerWrapper} from './PlayerWrapper.js';
 
 export class SpeakerWrapper implements PlayerWrapper {
-  static async create(sampleRate: number, bitDepth: number, channels: number): Promise<SpeakerWrapper | undefined> {
+  public static async create(sampleRate: number, bitDepth: number, channels: number): Promise<SpeakerWrapper | undefined> {
     try {
       // Dynamically try to load speaker module.
       // This way it doesn't need to be an actual dependency.
@@ -31,7 +31,7 @@ export class SpeakerWrapper implements PlayerWrapper {
     private readonly speaker: Speaker,
   ) {}
 
-  async play(buffer: Uint8Array) {
+  public async play(buffer: Uint8Array) {
     return new Promise((resolve) => {
       Logger.info('Playing via speaker library...');
       const s = new stream.PassThrough();

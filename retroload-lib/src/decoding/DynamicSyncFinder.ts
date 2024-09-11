@@ -9,7 +9,7 @@ export class DynamicSyncFinder {
    * @param minHalfPeriods minimal number of half periods so search for
    * @param maxRelativeDeviation maximum allowed relative deviation of frequency within sync
    */
-  constructor(
+  public constructor(
     private readonly halfPeriodProvider: HalfPeriodProvider,
     private readonly minHalfPeriods: number,
     private readonly maxRelativeDeviation = 0.1,

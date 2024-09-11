@@ -17,7 +17,8 @@ const rawBlockLength = 2 + 32 + 2;
 
 export class Z1013HalfPeriodProcessor implements Z1013BlockProvider {
   private readonly syncFinder: SyncFinder;
-  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+
+  public constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
     this.syncFinder = new SyncFinder(this.halfPeriodProvider, fSync, minIntroSyncPeriods);
   }
 

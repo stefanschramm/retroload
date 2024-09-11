@@ -3,7 +3,7 @@ import {type PlayerWrapper} from './PlayerWrapper.js';
 import {playerExists, spawnPlayer} from './Utils.js';
 
 export class SoxWrapper implements PlayerWrapper {
-  static async create(sampleRate: number, bitDepth: number, channels: number): Promise<SoxWrapper | undefined> {
+  public static async create(sampleRate: number, bitDepth: number, channels: number): Promise<SoxWrapper | undefined> {
     if (bitDepth !== 8) {
       return undefined;
     }
@@ -20,7 +20,7 @@ export class SoxWrapper implements PlayerWrapper {
   ) {
   }
 
-  async play(buffer: Uint8Array) {
+  public async play(buffer: Uint8Array) {
     Logger.info('Playing via sox play...');
     return spawnPlayer(buffer, 'play', ['-t', 'raw', '-r', this.sampleRate.toString(10), '-e', 'unsigned', '-b', '8', '-c', this.channels.toString(10), '-']);
   }

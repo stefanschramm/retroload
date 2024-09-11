@@ -17,7 +17,7 @@ const fOne = 1379;
 export class TiEncoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(private readonly recorder: RecorderInterface) {
+  public constructor(private readonly recorder: RecorderInterface) {
     this.oscillator = new Oscillator(this.recorder);
   }
 

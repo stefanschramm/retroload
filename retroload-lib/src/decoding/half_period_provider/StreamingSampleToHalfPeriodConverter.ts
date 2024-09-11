@@ -13,7 +13,7 @@ export class StreamingSampleToHalfPeriodConverter implements HalfPeriodProvider 
   private rewound = false;
   private endOfInput = false;
 
-  constructor(sampleProvider: SampleProvider) {
+  public constructor(sampleProvider: SampleProvider) {
     this.sampleRate = sampleProvider.sampleRate;
     this.generator = sampleProvider.getSamples();
     this.offset = 1 << (sampleProvider.bitsPerSample - 1); // for 8 bitsPerSample: 0x80

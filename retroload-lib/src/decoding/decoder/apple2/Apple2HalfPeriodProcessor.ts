@@ -20,11 +20,11 @@ const minIntroSyncPeriods = 200;
 
 export class Apple2HalfPeriodProcessor {
   private readonly syncFinder: DynamicSyncFinder;
-  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+  public constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
     this.syncFinder = new DynamicSyncFinder(this.halfPeriodProvider, minIntroSyncPeriods, 0.15);
   }
 
-  * files(): Generator<FileDecodingResult> {
+  public * files(): Generator<FileDecodingResult> {
     let keepGoing = true;
     do {
       try {

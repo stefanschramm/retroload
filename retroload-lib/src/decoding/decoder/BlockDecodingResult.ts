@@ -2,11 +2,11 @@ import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type Position} from '../../common/Positioning.js';
 
 export class BlockDecodingResult {
-  constructor(
-    readonly data: BufferAccess,
-    readonly status: BlockDecodingResultStatus,
-    readonly begin: Position,
-    readonly end: Position,
+  public constructor(
+    public readonly data: BufferAccess,
+    public readonly status: BlockDecodingResultStatus,
+    public readonly begin: Position,
+    public readonly end: Position,
   ) {}
 }
 

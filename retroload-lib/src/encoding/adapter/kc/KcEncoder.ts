@@ -25,20 +25,20 @@ const oscillationsBlockIntro = 200; // as in kcemu save_WAV.c; manual: 160
 export class KcEncoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(private readonly recorder: RecorderInterface) {
+  public constructor(private readonly recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 
-  begin(): void {
+  public begin(): void {
     this.oscillator.begin();
     this.recordIntro();
   }
 
-  end(): void {
+  public end(): void {
     this.oscillator.end();
   }
 
-  recordBlock(blockNumber: number, blockDataBa: BufferAccess): void {
+  public recordBlock(blockNumber: number, blockDataBa: BufferAccess): void {
     this.recorder.beginAnnotation(`Block ${hex8(blockNumber)}`);
 
     if (blockDataBa.length() > blockSize) {
@@ -62,31 +62,31 @@ export class KcEncoder implements ByteRecorder {
     this.recorder.endAnnotation();
   }
 
-  recordIntro(): void {
+  public recordIntro(): void {
     this.oscillator.recordOscillations(fOne, oscillationsIntro);
   }
 
-  recordBlockIntro(appendSilence = false): void {
+  public recordBlockIntro(appendSilence = false): void {
     this.oscillator.recordOscillations(fOne, oscillationsBlockIntro);
     if (appendSilence) {
       this.oscillator.recordSilenceMs(1500);
     }
   }
 
-  recordDelimiter(): void {
+  public recordDelimiter(): void {
     this.oscillator.recordOscillations(fDelimiter, 1);
   }
 
-  recordBytes(bytes: BufferAccess): void {
+  public recordBytes(bytes: BufferAccess): void {
     recordBytes(this, bytes);
   }
 
-  recordByte(byte: number): void {
+  public recordByte(byte: number): void {
     recordByteLsbFirst(this, byte);
     this.recordDelimiter();
   }
 
-  recordBit(value: number): void {
+  public recordBit(value: number): void {
     if (value) {
       this.oscillator.recordOscillations(fOne, 1);
     } else {

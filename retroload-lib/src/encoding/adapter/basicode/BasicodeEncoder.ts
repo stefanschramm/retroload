@@ -23,7 +23,7 @@ const etx = 0x03;
 export class BasicodeEncoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(
+  public constructor(
     private readonly recorder: RecorderInterface,
     private readonly shortpilot = false,
   ) {

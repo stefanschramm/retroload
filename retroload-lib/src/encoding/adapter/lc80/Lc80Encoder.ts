@@ -21,7 +21,7 @@ const syncEndLength = 2; // s
 export class Lc80Encoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(recorder: RecorderInterface) {
+  public constructor(recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 

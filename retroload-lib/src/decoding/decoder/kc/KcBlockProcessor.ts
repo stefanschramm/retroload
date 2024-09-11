@@ -18,12 +18,12 @@ export class KcBlockProcessor {
   private previousBlockEnd: Position = {seconds: 0, samples: 0};
   private successfulBlocksCount = 0;
 
-  constructor(
+  public constructor(
     private readonly blockProvider: KcBlockProvider,
     private readonly stopOnError: boolean,
   ) {}
 
-  * files(): Generator<FileDecodingResult> {
+  public * files(): Generator<FileDecodingResult> {
     for (const decodingResult of this.blockProvider.blocks()) {
       let errorInCurrentBlock = false;
       switch (decodingResult.status) {

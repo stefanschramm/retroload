@@ -15,6 +15,7 @@
       ],
       "rules": {
         "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/explicit-member-accessibility": "error",
         "no-bitwise": ["off"],
         "arrow-parens": ["error", "always"],
         "no-mixed-operators": ["off"],

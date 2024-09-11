@@ -38,15 +38,15 @@ const halfPeriods = [
 
 class DummyHalfPeriodProvider implements HalfPeriodProvider {
   private cursor = 0;
-  getNext(): number | undefined {
+  public getNext(): number | undefined {
     return halfPeriods[this.cursor++];
   }
 
-  rewindOne(): void {
+  public rewindOne(): void {
     this.cursor--;
   }
 
-  getPosition(): Position {
+  public getPosition(): Position {
     return {
       samples: this.cursor,
       seconds: this.cursor, // doesn't matter

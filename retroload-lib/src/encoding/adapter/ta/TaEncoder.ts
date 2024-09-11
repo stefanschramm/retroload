@@ -16,7 +16,7 @@ export const maxFileNameLength = 6;
 export class TaEncoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(private readonly recorder: RecorderInterface) {
+  public constructor(private readonly recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 

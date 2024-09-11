@@ -19,11 +19,12 @@ const minIntroPeriods = 200;
  */
 export class KcHalfPeriodProcessor implements KcBlockProvider {
   private readonly syncFinder: SyncFinder;
-  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+
+  public constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
     this.syncFinder = new SyncFinder(this.halfPeriodProvider, fOne, minIntroPeriods);
   }
 
-  * blocks(): Generator<BlockDecodingResult> {
+  public * blocks(): Generator<BlockDecodingResult> {
     let keepGoing = true;
     do {
       try {

@@ -17,7 +17,7 @@ const fOne = 1200;
 export class Mo5Encoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(private readonly recorder: RecorderInterface) {
+  public constructor(private readonly recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 

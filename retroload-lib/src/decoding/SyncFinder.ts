@@ -10,7 +10,7 @@ export class SyncFinder {
    * @param fSync accepted frequency range for sync half periods
    * @param minHalfPeriods minimal number of half periods so search for
    */
-  constructor(
+  public constructor(
     private readonly halfPeriodProvider: HalfPeriodProvider,
     private readonly fSync: FrequencyRange,
     private readonly minHalfPeriods: number,

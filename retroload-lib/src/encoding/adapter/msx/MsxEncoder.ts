@@ -21,7 +21,7 @@ export class MsxEncoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
   private readonly baudrateFactor: number;
 
-  constructor(
+  public constructor(
     private readonly recorder: RecorderInterface,
     private readonly shortpilot = false,
     fast = false,
@@ -38,7 +38,7 @@ export class MsxEncoder implements ByteRecorder {
     this.oscillator.end();
   }
 
-  recordHeader(long: boolean) {
+  public recordHeader(long: boolean) {
     this.oscillator.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
     long = this.shortpilot ? false : long; // use short pulse if shortpilot option is set
     const pulses = long ? pulsesLongHeader : pulsesShortHeader;

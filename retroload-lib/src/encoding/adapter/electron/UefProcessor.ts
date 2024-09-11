@@ -15,7 +15,7 @@ const targetMachines = [
 export class UefProcessor {
   private readonly e: ElectronEncoder;
 
-  constructor(private readonly r: RecorderInterface) {
+  public constructor(private readonly r: RecorderInterface) {
     this.e = new ElectronEncoder(this.r);
   }
 

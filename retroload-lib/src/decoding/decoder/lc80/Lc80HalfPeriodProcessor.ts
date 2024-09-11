@@ -20,12 +20,13 @@ const minMidSyncPeriods = 10;
 export class Lc80HalfPeriodProcessor {
   private readonly introSyncFinder: SyncFinder;
   private readonly midSyncFinder: SyncFinder;
-  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+
+  public constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
     this.introSyncFinder = new SyncFinder(this.halfPeriodProvider, fSyncIntro, minIntroSyncPeriods);
     this.midSyncFinder = new SyncFinder(this.halfPeriodProvider, fSyncMid, minMidSyncPeriods);
   }
 
-  * files(): Generator<FileDecodingResult> {
+  public * files(): Generator<FileDecodingResult> {
     let keepGoing = true;
     do {
       try {
@@ -209,14 +210,14 @@ export class Lc80HalfPeriodProcessor {
 }
 
 export class FileDecodingResult {
-  constructor(
-    readonly data: BufferAccess,
-    readonly status: FileDecodingResultStatus,
-    readonly begin: Position,
-    readonly end: Position,
-    readonly fileNumber: number,
-    readonly startAddress: number,
-    readonly endAddress: number,
+  public constructor(
+    public readonly data: BufferAccess,
+    public readonly status: FileDecodingResultStatus,
+    public readonly begin: Position,
+    public readonly end: Position,
+    public readonly fileNumber: number,
+    public readonly startAddress: number,
+    public readonly endAddress: number,
   ) {}
 }
 

@@ -18,7 +18,7 @@ const fSync = 640;
 export class Z1013Encoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(private readonly recorder: RecorderInterface) {
+  public constructor(private readonly recorder: RecorderInterface) {
     this.oscillator = new Oscillator(this.recorder);
   }
 

@@ -3,13 +3,13 @@ import {type CustomCommand} from './CustomCommand.js';
 import {type PublicOptionDefinition, type PublicAdapterDefinition} from 'retroload-lib/dist/cjs/index.js';
 
 export class CustomHelp extends Help {
-  constructor(
+  public constructor(
     private readonly adapters: PublicAdapterDefinition[],
   ) {
     super();
   }
 
-  override formatHelp(cmd: CustomCommand, helper: Help): string {
+  public override formatHelp(cmd: CustomCommand, helper: Help): string {
     const termWidth = helper.padWidth(cmd, helper);
     const helpWidth = helper.helpWidth ?? 80;
     const itemIndentWidth = 2;

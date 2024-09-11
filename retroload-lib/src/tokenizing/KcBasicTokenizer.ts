@@ -4,15 +4,15 @@ import {tokens} from './tokens/kc852.js';
 
 // TODO: Fix processing of REM / ! tokens (stop tokenizing, directly copy remaining line)
 export class KcBasicTokenizer {
-  static getName() {
+  public static getName() {
     return 'kc';
   }
 
-  static getExtension() {
+  public static getExtension() {
     return 'sss';
   }
 
-  static tokenize(str: string) {
+  public static tokenize(str: string) {
     const offset = 0x0401;
     const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, tokens, str);
 

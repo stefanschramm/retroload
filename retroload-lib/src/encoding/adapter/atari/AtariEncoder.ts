@@ -14,11 +14,11 @@ const defaultBaudrate = 600;
  * https://www.atariarchives.org/dere/chaptC.php
  */
 export class AtariEncoder implements ByteRecorder {
-  baudrate: number = defaultBaudrate;
+  private baudrate: number = defaultBaudrate;
 
   private readonly oscillator: Oscillator;
 
-  constructor(recorder: RecorderInterface) {
+  public constructor(recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 

@@ -50,15 +50,15 @@ import {tokens} from './tokens/ta.js';
  * 0EH LSB MSB ................... Line number
  */
 export class TaBasicTokenizer {
-  static getName() {
+  public static getName() {
     return 'ta';
   }
 
-  static getExtension() {
+  public static getExtension() {
     return 'bas';
   }
 
-  static tokenize(str: string) {
+  public static tokenize(str: string) {
     const offset = 0x6001;
     const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, tokens, str);
 

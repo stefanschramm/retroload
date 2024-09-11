@@ -30,7 +30,7 @@ const baseTypes: PatternDefinition[] = [
  * In contrast there also exist length-based dialects (Atari 800).
  */
 export class PointerBasedSourceTokenizer {
-  static tokenize(loadAddress: number, tokenMap: RawTokenDefinition[], str: string) {
+  public static tokenize(loadAddress: number, tokenMap: RawTokenDefinition[], str: string) {
     const lines = str.trim().split('\n');
     const nonEmptyLines = lines.filter((l) => l.trim() !== '');
     // longest tokens first so that they will match first
@@ -69,11 +69,12 @@ function escapeRegex(string: string) {
 }
 
 class LineTokenizer {
-  l: string;
-  pos: number;
-  tokens: Token[];
-  types: PatternDefinition[];
-  constructor(sortedTokenMap: RawTokenDefinition[], line: string) {
+  private readonly l: string;
+  private pos: number;
+  private readonly tokens: Token[];
+  private readonly types: PatternDefinition[];
+
+  public constructor(sortedTokenMap: RawTokenDefinition[], line: string) {
     this.l = line;
     this.pos = 0;
     this.tokens = [];
@@ -92,7 +93,7 @@ class LineTokenizer {
     ];
   }
 
-  tokenize(): Token[] {
+  public tokenize(): Token[] {
     while (this.hasTokensLeft()) {
       this.tokens.push(this.getNextToken());
     }
@@ -100,11 +101,11 @@ class LineTokenizer {
     return this.tokens;
   }
 
-  hasTokensLeft() {
+  public hasTokensLeft() {
     return this.pos < this.l.length;
   }
 
-  getNextToken(): Token {
+  public getNextToken(): Token {
     const s = this.l.slice(this.pos);
     for (const [regexp, action, ...mappedValue] of this.types) {
       const matched = (regexp as RegExp).exec(s);

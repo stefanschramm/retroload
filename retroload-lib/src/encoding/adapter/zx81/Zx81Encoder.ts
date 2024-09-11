@@ -12,7 +12,7 @@ const bitPause = 1.3; // ms
 export class Zx81Encoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  constructor(recorder: RecorderInterface) {
+  public constructor(recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 

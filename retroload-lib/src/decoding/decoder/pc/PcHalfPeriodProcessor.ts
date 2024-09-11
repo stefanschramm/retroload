@@ -15,11 +15,12 @@ const minIntroSyncPeriods = 200;
 
 export class PcHalfPeriodProcessor {
   private readonly syncFinder: SyncFinder;
-  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+
+  public constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
     this.syncFinder = new SyncFinder(this.halfPeriodProvider, fSync, minIntroSyncPeriods);
   }
 
-  * blocks(): Generator<PcBlockDecodingResult> {
+  public * blocks(): Generator<PcBlockDecodingResult> {
     let keepGoing = true;
     do {
       try {
@@ -130,12 +131,12 @@ export class PcHalfPeriodProcessor {
 }
 
 export class PcBlockDecodingResult extends BlockDecodingResult {
-  constructor(
+  public constructor(
     data: BufferAccess,
     status: BlockDecodingResultStatus,
     begin: Position,
     end: Position,
-    readonly hadIntro: boolean,
+    public readonly hadIntro: boolean,
   ) {
     super(data, status, begin, end);
   }

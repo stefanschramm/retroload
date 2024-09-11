@@ -9,7 +9,7 @@ export class PcBlockProcessor {
   private readonly hpp: PcHalfPeriodProcessor;
   private blocks: PcBlockDecodingResult[] = [];
 
-  constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
+  public constructor(private readonly halfPeriodProvider: HalfPeriodProvider) {
     this.hpp = new PcHalfPeriodProcessor(this.halfPeriodProvider);
   }
 

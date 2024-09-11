@@ -8,27 +8,29 @@ const dataMap: Record<SampleValue, number> = {
   [SampleValue.Zero]: 0x80,
 };
 
+const bitsPerSample = 8;
+const channels = 1;
+
 export class WaveRecorder implements RecorderInterface {
-  data: number[] = [];
-  sampleRate = 44100;
-  bitsPerSample = 8;
-  channels = 1;
+  public sampleRate = 44100;
+
+  private readonly data: number[] = [];
   private readonly annotationCollector = new AnnotationCollector();
 
-  pushSample(value: SampleValue) {
+  public pushSample(value: SampleValue) {
     const mappedValue = dataMap[value];
     this.data.push(mappedValue);
   }
 
-  getBa(): BufferAccess {
+  public getBa(): BufferAccess {
     const format = 1; // pcm
     const formatChunkSize = 16;
 
     const headerSize = 4 + 8 + formatChunkSize + 8;
     const chunkSize = headerSize + this.data.length;
 
-    const byteRate = this.sampleRate * this.channels * Math.floor(this.bitsPerSample / 8);
-    const blockAlign = this.channels * Math.floor(this.bitsPerSample / 8);
+    const byteRate = this.sampleRate * channels * Math.floor(bitsPerSample / 8);
+    const blockAlign = channels * Math.floor(bitsPerSample / 8);
 
     const ba = BufferAccess.create(chunkSize + 8);
 
@@ -41,11 +43,11 @@ export class WaveRecorder implements RecorderInterface {
     ba.writeAsciiString('fmt ');
     ba.writeUint32Le(formatChunkSize);
     ba.writeUint16Le(format);
-    ba.writeUint16Le(this.channels);
+    ba.writeUint16Le(channels);
     ba.writeUint32Le(this.sampleRate);
     ba.writeUint32Le(byteRate);
     ba.writeUint16Le(blockAlign);
-    ba.writeUint16Le(this.bitsPerSample);
+    ba.writeUint16Le(bitsPerSample);
 
     // Data section
     ba.writeAsciiString('data');
@@ -56,19 +58,19 @@ export class WaveRecorder implements RecorderInterface {
     return ba;
   }
 
-  getRawBuffer() {
+  public getRawBuffer() {
     return new Uint8Array(this.data);
   }
 
-  beginAnnotation(label: string): void {
+  public beginAnnotation(label: string): void {
     this.annotationCollector.beginAnnotation(label, {samples: this.data.length, seconds: this.data.length / this.sampleRate});
   }
 
-  endAnnotation(): void {
+  public endAnnotation(): void {
     this.annotationCollector.endAnnotation({samples: this.data.length, seconds: this.data.length / this.sampleRate});
   }
 
-  getAnnotations(): Annotation[] {
+  public getAnnotations(): Annotation[] {
     return this.annotationCollector.getAnnotations();
   }
 }

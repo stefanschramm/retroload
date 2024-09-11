@@ -32,7 +32,7 @@ export class C64Encoder implements ByteRecorder {
   private readonly clockCycles;
   private readonly oscillator: Oscillator;
 
-  constructor(
+  public constructor(
     private readonly recorder: RecorderInterface,
     private readonly shortpilot = false,
     machineType = C64MachineType.c64pal,
@@ -117,7 +117,7 @@ export class C64Encoder implements ByteRecorder {
     }
   }
 
-  recordBit(value: number): void {
+  public recordBit(value: number): void {
     if (value) {
       this.recordPulse(pulseMedium);
       this.recordPulse(pulseShort);
@@ -127,7 +127,7 @@ export class C64Encoder implements ByteRecorder {
     }
   }
 
-  recordByte(byte: number): void {
+  public recordByte(byte: number): void {
     this.recordNewDataMarker();
     let checkBit = 1;
     for (let i = 0; i < 8; i += 1) {

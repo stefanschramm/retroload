@@ -5,18 +5,19 @@ import * as fs from 'fs';
  * Used for debugging to convert .prg files to .tap for testing in emulator
  */
 export class C64TapWriter extends C64Encoder {
-  pulses: number[] = [];
-  override begin() {
+  private pulses: number[] = [];
+
+  public override begin() {
     this.pulses = [];
     super.begin();
   }
 
-  override recordPulse(value: number) {
+  public override recordPulse(value: number) {
     super.recordPulse(value);
     this.pulses.push(value / 8);
   }
 
-  override end() {
+  public override end() {
     super.end();
 
     const lengthBuffer = new ArrayBuffer(4);

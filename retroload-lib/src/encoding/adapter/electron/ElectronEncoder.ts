@@ -14,7 +14,7 @@ export class ElectronEncoder implements ByteRecorder {
   private fBase = 1200;
   private readonly oscillator: Oscillator;
 
-  constructor(private readonly recorder: RecorderInterface) {
+  public constructor(private readonly recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 

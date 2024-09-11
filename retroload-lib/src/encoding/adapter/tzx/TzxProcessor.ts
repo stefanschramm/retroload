@@ -17,10 +17,10 @@ const tzxHeaderLength = 0x0a;
  * - TSX (MSX / Kansas City Standard): https://github.com/nataliapc/makeTSX/wiki/Tutorial-How-to-generate-TSX-files
  */
 export class TzxProcessor {
-  constructor(private readonly encoder: TzxEncoder) {
+  public constructor(private readonly encoder: TzxEncoder) {
   }
 
-  processTzx(ba: BufferAccess) {
+  public processTzx(ba: BufferAccess) {
     // TODO: get version offset: 0x08 length: 2
     let i = tzxHeaderLength;
     this.encoder.begin();
@@ -32,7 +32,7 @@ export class TzxProcessor {
     this.encoder.end();
   }
 
-  processBlock(blockId: number, blockBa: BufferAccess) {
+  private processBlock(blockId: number, blockBa: BufferAccess) {
     // Block recording methods return the block size in input file (excluding ID byte)
     Logger.debug(`TZX Block id: ${hex8(blockId)}`);
     switch (blockId) {

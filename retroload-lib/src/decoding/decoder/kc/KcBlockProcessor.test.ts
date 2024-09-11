@@ -114,11 +114,11 @@ describe('KcBlockProcessor', () => {
 });
 
 class KcBlockProviderMock implements KcBlockProvider {
-  constructor(
+  public constructor(
     private readonly blockDecodingResults: BlockDecodingResult[],
   ) {}
 
-  * blocks(): Generator<BlockDecodingResult> {
+  public * blocks(): Generator<BlockDecodingResult> {
     for (const bdr of this.blockDecodingResults) {
       yield bdr;
     }

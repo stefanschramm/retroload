@@ -16,27 +16,28 @@ export class InputDataError extends UsageError {
 }
 
 export class FormatAutodetectionFailedError extends UsageError {
-  constructor() {
+  public constructor() {
     super('Unable to autodetect input file format. Please specify format manually.');
   }
 }
 
 export class FormatNotFoundError extends UsageError {
-  constructor(format: string) {
+  public constructor(format: string) {
     super(`Specified format "${format}" not found.`);
   }
 }
 
 export class MissingOptionsError extends UsageError {
-  constructor(missingOptions: PublicOptionDefinition[]) {
+  public constructor(missingOptions: PublicOptionDefinition[]) {
     const optionList = missingOptions.map((o) => o.name);
     super(`The following options are required: ${optionList.join(', ')}`);
   }
 }
 
 export class InvalidArgumentError extends UsageError {
-  optionName: string;
-  constructor(optionName: string, message: string) {
+  public readonly optionName: string;
+
+  public constructor(optionName: string, message: string) {
     super(message);
     this.optionName = optionName;
   }

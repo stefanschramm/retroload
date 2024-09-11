@@ -7,7 +7,7 @@ export class Oscillator {
    */
   private phase = true;
 
-  constructor(protected readonly recorder: RecorderInterface) {
+  public constructor(protected readonly recorder: RecorderInterface) {
   }
 
   public begin(): void {

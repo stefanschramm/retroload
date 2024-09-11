@@ -9,7 +9,8 @@ const maxIntraFileBlockGap = 1;
 
 export class Z1013BlockProcessor {
   private blocks: BlockDecodingResult[] = [];
-  constructor(
+
+  public constructor(
     private readonly blockProvider: Z1013BlockProvider,
   ) {}
 

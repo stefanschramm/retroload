@@ -3,7 +3,7 @@ import {type PlayerWrapper} from './PlayerWrapper.js';
 import {playerExists, spawnPlayer} from './Utils.js';
 
 export class AplayWrapper implements PlayerWrapper {
-  static async create(sampleRate: number, bitDepth: number, channels: number): Promise<AplayWrapper | undefined> {
+  public static async create(sampleRate: number, bitDepth: number, channels: number): Promise<AplayWrapper | undefined> {
     if (bitDepth !== 8) {
       return undefined;
     }
@@ -20,7 +20,7 @@ export class AplayWrapper implements PlayerWrapper {
   ) {
   }
 
-  async play(buffer: Uint8Array) {
+  public async play(buffer: Uint8Array) {
     Logger.info('Playing via aplay...');
     return spawnPlayer(buffer, 'aplay', ['-r', this.sampleRate.toString(10), '-f', 'U8', '-c', this.channels.toString(10)]);
   }

@@ -9,21 +9,21 @@ const dataMap = {
 };
 
 export class PcmRecorder implements RecorderInterface {
-  audioContext: AudioContext;
-  data: number[] = [];
-  sampleRate = 44100;
+  public sampleRate = 44100;
+  private readonly audioContext: AudioContext;
+  private readonly data: number[] = [];
   private readonly annotationCollector = new AnnotationCollector();
 
-  constructor(audioContext: any) {
+  public constructor(audioContext: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     this.audioContext = audioContext;
   }
 
-  pushSample(value: SampleValue) {
+  public pushSample(value: SampleValue) {
     this.data.push(dataMap[value]);
   }
 
-  getAudioContextBuffer(): AudioBuffer {
+  public getAudioContextBuffer(): AudioBuffer {
     if (this.data.length === 0) {
       throw new InternalError('No data recorded!');
     }
@@ -34,15 +34,15 @@ export class PcmRecorder implements RecorderInterface {
     return buffer;
   }
 
-  beginAnnotation(label: string): void {
+  public beginAnnotation(label: string): void {
     this.annotationCollector.beginAnnotation(label, {samples: this.data.length, seconds: this.data.length / this.sampleRate});
   }
 
-  endAnnotation(): void {
+  public endAnnotation(): void {
     this.annotationCollector.endAnnotation({samples: this.data.length, seconds: this.data.length / this.sampleRate});
   }
 
-  getAnnotations(): Annotation[] {
+  public getAnnotations(): Annotation[] {
     return this.annotationCollector.getAnnotations();
   }
 }
