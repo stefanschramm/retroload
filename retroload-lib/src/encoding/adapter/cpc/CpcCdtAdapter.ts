@@ -1,9 +1,9 @@
-import {CpcTzxEncoder} from './CpcTzxEncoder.js';
 import {TzxProcessor} from '../tzx/TzxProcessor.js';
 import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {TzxEncoder} from '../TzxEncoder.js';
 
 const definition: AdapterDefinition = {
   name: 'CPC .CDT-File',
@@ -24,7 +24,7 @@ function identify(filename: string, ba: BufferAccess) {
 }
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
-  const e = new CpcTzxEncoder(recorder);
+  const e = TzxEncoder.createForCpc(recorder);
   const tzxProcessor = new TzxProcessor(e);
   tzxProcessor.processTzx(ba);
 }

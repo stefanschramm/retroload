@@ -1,4 +1,7 @@
-import {AbstractEncoder} from '../AbstractEncoder.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {recordBytes, type ByteRecorder} from '../ByteRecorder.js';
+import {Oscillator} from '../Oscillator.js';
 
 // const fBase = 1200;
 
@@ -7,28 +10,45 @@ import {AbstractEncoder} from '../AbstractEncoder.js';
  *
  * https://beebwiki.mdfs.net/Acorn_cassette_format
  */
-export class ElectronEncoder extends AbstractEncoder {
+export class ElectronEncoder implements ByteRecorder {
   private fBase = 1200;
+  private readonly oscillator: Oscillator;
 
-  recordPilot(length: number) {
+  constructor(private readonly recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(recorder);
+  }
+
+  public recordPilot(length: number): void {
     this.recordCarrier(this.fBase * 2 * length);
   }
 
-  override end() {
-    this.recordSilence(this.recorder.sampleRate / 2);
+  public begin(): void {
+    this.oscillator.begin();
   }
 
-  recordCarrier(oscillations: number) {
+  public end(): void {
+    this.oscillator.recordSilence(this.recorder.sampleRate / 2);
+  }
+
+  public recordSilenceMs(lengthMs: number): void {
+    this.oscillator.recordSilenceMs(lengthMs);
+  }
+
+  public recordCarrier(oscillations: number): void {
     // UEF Chunk &0111 - carrier tone
-    this.recordOscillations(this.fBase * 2, oscillations);
+    this.oscillator.recordOscillations(this.fBase * 2, oscillations);
   }
 
-  recordGap(length: number) {
+  public recordGap(length: number): void {
     // UEF Chunk &0112 - integer gap
-    this.recordSilenceMs(1000 / (2 * length * this.fBase));
+    this.oscillator.recordSilenceMs(1000 / (2 * length * this.fBase));
   }
 
-  override recordByte(byte: number, dataBits = 8, parity: ParitySetting = 'N', stopBits = 1) {
+  public recordBytes(data: BufferAccess): void {
+    recordBytes(this, data);
+  }
+
+  public recordByte(byte: number, dataBits = 8, parity: ParitySetting = 'N', stopBits = 1): void {
     this.recordBit(0); // start bit
 
     // LSB first
@@ -52,15 +72,15 @@ export class ElectronEncoder extends AbstractEncoder {
     }
   }
 
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordOscillations(this.fBase * 2, 2);
+      this.oscillator.recordOscillations(this.fBase * 2, 2);
     } else {
-      this.recordOscillations(this.fBase, 1);
+      this.oscillator.recordOscillations(this.fBase, 1);
     }
   }
 
-  setBaseFrequency(f: number) {
+  public setBaseFrequency(f: number): void {
     this.fBase = f;
   }
 }

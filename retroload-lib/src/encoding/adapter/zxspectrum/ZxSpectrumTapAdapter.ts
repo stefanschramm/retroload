@@ -1,8 +1,8 @@
-import {ZxSpectrumTzxEncoder} from './ZxSpectrumTzxEncoder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {TzxEncoder} from '../TzxEncoder.js';
 
 /**
  * Adapter for ZX Spectrum .TAP files
@@ -26,7 +26,7 @@ function identify(filename: string, _ba: BufferAccess) {
 }
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
-  const e = new ZxSpectrumTzxEncoder(recorder);
+  const e = TzxEncoder.createForZxSpectrum(recorder);
   e.begin();
   let i = 0;
   while (i < ba.length()) {

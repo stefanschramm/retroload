@@ -1,22 +1,43 @@
-import {AbstractEncoder} from '../AbstractEncoder.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {recordByteMsbFirst, recordBytes, type ByteRecorder} from '../ByteRecorder.js';
+import {Oscillator} from '../Oscillator.js';
 
 const fPulse = 3000;
-const bitPause = 0.0013; // s
+const bitPause = 1.3; // ms
 
 /**
  * Encoder for Sinclair ZX81
  */
-export class Zx81Encoder extends AbstractEncoder {
-  override recordByte(byte: number) {
-    this.recordByteMsbFirst(byte);
+export class Zx81Encoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
+
+  constructor(recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(recorder);
   }
 
-  recordBit(value: number) {
+  public begin(): void {
+    this.oscillator.begin();
+  }
+
+  public end(): void {
+    this.oscillator.end();
+  }
+
+  public recordBytes(data: BufferAccess): void {
+    recordBytes(this, data);
+  }
+
+  public recordByte(byte: number): void {
+    recordByteMsbFirst(this, byte);
+  }
+
+  public recordBit(value: number): void {
     if (value) {
-      this.recordOscillations(fPulse, 9);
+      this.oscillator.recordOscillations(fPulse, 9);
     } else {
-      this.recordOscillations(fPulse, 4);
+      this.oscillator.recordOscillations(fPulse, 4);
     }
-    this.recordSilence(this.recorder.sampleRate * bitPause);
+    this.oscillator.recordSilenceMs(bitPause);
   }
 }

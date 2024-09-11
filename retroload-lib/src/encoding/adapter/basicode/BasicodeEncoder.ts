@@ -2,7 +2,8 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {hex8} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {AbstractEncoder} from '../AbstractEncoder.js';
+import {recordByteLsbFirst, type ByteRecorder} from '../ByteRecorder.js';
+import {Oscillator} from '../Oscillator.js';
 
 const fZero = 1200;
 const fOne = 2400;
@@ -19,23 +20,29 @@ const etx = 0x03;
  * - http://www.kc85emu.de/scans/rfe0190/Basicode.htm
  * - https://github.com/robhagemans/basicode/blob/master/BASICODE.rst
  */
-export class BasicodeEncoder extends AbstractEncoder {
+export class BasicodeEncoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
+
   constructor(
-    recorder: RecorderInterface,
+    private readonly recorder: RecorderInterface,
     private readonly shortpilot = false,
   ) {
-    super(recorder);
+    this.oscillator = new Oscillator(recorder);
   }
 
-  override end() {
-    this.recordSilence(this.recorder.sampleRate / 2);
+  public begin(): void {
+    this.oscillator.begin();
   }
 
-  public recordBasicProgram(ba: BufferAccess) {
+  public end(): void {
+    this.oscillator.recordSilence(this.recorder.sampleRate / 2);
+  }
+
+  public recordBasicProgram(ba: BufferAccess): void {
     this.record(ba, stx);
   }
 
-  public recordBasicData(ba: BufferAccess) {
+  public recordBasicData(ba: BufferAccess): void {
     for (const chunkBa of ba.chunksPadded(1024, sth)) {
       this.recorder.beginAnnotation('Chunk');
       this.record(chunkBa, sth);
@@ -43,23 +50,23 @@ export class BasicodeEncoder extends AbstractEncoder {
     }
   }
 
-  override recordByte(byte: number) {
+  public recordByte(byte: number): void {
     this.recordBit(0);
-    super.recordByte(0x80 | byte);
+    recordByteLsbFirst(this, 0x80 | byte);
     this.recordBit(1);
     this.recordBit(1);
   }
 
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordOscillations(fOne, 2);
+      this.oscillator.recordOscillations(fOne, 2);
     } else {
-      this.recordOscillations(fZero, 1);
+      this.oscillator.recordOscillations(fZero, 1);
     }
   }
 
-  private record(ba: BufferAccess, startMarker: number) {
-    this.recordOscillations(fOne, fOne * (this.shortpilot ? 3 : 5));
+  private record(ba: BufferAccess, startMarker: number): void {
+    this.oscillator.recordOscillations(fOne, fOne * (this.shortpilot ? 3 : 5));
 
     let checksum = 0;
 
@@ -82,6 +89,6 @@ export class BasicodeEncoder extends AbstractEncoder {
     Logger.debug(`Checksum: ${hex8(checksum)}`);
     this.recordByte(checksum);
 
-    this.recordOscillations(fOne, fOne); // 1 s
+    this.oscillator.recordOscillations(fOne, fOne); // 1 s
   }
 }

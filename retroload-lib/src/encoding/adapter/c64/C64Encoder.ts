@@ -1,8 +1,9 @@
-import {AbstractEncoder} from '../AbstractEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface, SampleValue} from '../../recorder/RecorderInterface.js';
 import {C64MachineType} from './C64Options.js';
+import {recordBytes, type ByteRecorder} from '../ByteRecorder.js';
+import {Oscillator} from '../Oscillator.js';
 
 const clockCycleMap: Record<C64MachineType, number> = {
   c64pal: 985248,
@@ -27,19 +28,28 @@ const pulseLong = 8 * 0x56;
  * https://www.c64-wiki.com/wiki/Datassette_Encoding
  * 64 intern (Angerhausen, Brückmann, Englisch, Gerits), 4th edition, p. 120 - 122
  */
-export class C64Encoder extends AbstractEncoder {
+export class C64Encoder implements ByteRecorder {
   private readonly clockCycles;
+  private readonly oscillator: Oscillator;
 
   constructor(
-    recorder: RecorderInterface,
+    private readonly recorder: RecorderInterface,
     private readonly shortpilot = false,
     machineType = C64MachineType.c64pal,
   ) {
-    super(recorder);
     this.clockCycles = clockCycleMap[machineType];
+    this.oscillator = new Oscillator(this.recorder);
   }
 
-  public recordPulse(pulseLength: number) {
+  public begin(): void {
+    this.oscillator.begin();
+  }
+
+  public end(): void {
+    this.oscillator.end();
+  }
+
+  public recordPulse(pulseLength: number): void {
     // Note: The .tap file adapter uses recordPulse directly.
     const samples = Math.ceil((0.5 * this.recorder.sampleRate * pulseLength) / this.clockCycles);
     for (const value of [SampleValue.High, SampleValue.Low]) {
@@ -49,16 +59,16 @@ export class C64Encoder extends AbstractEncoder {
     }
   }
 
-  public recordBasic(startAddress: number, filename: string, dataBa: BufferAccess) {
+  public recordBasic(startAddress: number, filename: string, dataBa: BufferAccess): void {
     // TODO: test
     this.recordBasicOrPrg(fileTypeBasic, startAddress, filename, dataBa);
   }
 
-  public recordPrg(startAddress: number, filename: string, dataBa: BufferAccess) {
+  public recordPrg(startAddress: number, filename: string, dataBa: BufferAccess): void {
     this.recordBasicOrPrg(fileTypePrg, startAddress, filename, dataBa);
   }
 
-  public recordData(filenameBuffer: string, dataBa: BufferAccess) {
+  public recordData(filenameBuffer: string, dataBa: BufferAccess): void {
     const headerBa = BufferAccess.create(192);
     headerBa.writeUint8(fileTypeSeqFileHeader); // 1 byte: file type: seq
     headerBa.writeUint16Le(0xa000); // 2 bytes: start address (unused)
@@ -107,7 +117,7 @@ export class C64Encoder extends AbstractEncoder {
     }
   }
 
-  override recordBit(value: number) {
+  recordBit(value: number): void {
     if (value) {
       this.recordPulse(pulseMedium);
       this.recordPulse(pulseShort);
@@ -117,7 +127,7 @@ export class C64Encoder extends AbstractEncoder {
     }
   }
 
-  override recordByte(byte: number) {
+  recordByte(byte: number): void {
     this.recordNewDataMarker();
     let checkBit = 1;
     for (let i = 0; i < 8; i += 1) {
@@ -128,33 +138,33 @@ export class C64Encoder extends AbstractEncoder {
     this.recordBit(checkBit);
   }
 
-  private recordNewDataMarker() {
+  private recordNewDataMarker(): void {
     this.recordPulse(pulseLong);
     this.recordPulse(pulseMedium);
   }
 
-  private recordEndOfDataMarker() {
+  private recordEndOfDataMarker(): void {
     this.recordPulse(pulseLong);
     this.recordPulse(pulseShort);
   }
 
-  private recordPilot(pulses: number) {
+  private recordPilot(pulses: number): void {
     for (let i = 0; i < pulses; i++) {
       this.recordPulse(pulseShort);
     }
   }
 
-  private recordSyncChain() {
+  private recordSyncChain(): void {
     const syncChain = new Uint8Array([0x89, 0x88, 0x87, 0x86, 0x85, 0x84, 0x83, 0x82, 0x81]);
-    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
+    recordBytes(this, BufferAccess.createFromUint8Array(syncChain));
   }
 
-  private recordSyncChainRepeated() {
+  private recordSyncChainRepeated(): void {
     const syncChain = new Uint8Array([0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01]);
-    this.recordBytes(BufferAccess.createFromUint8Array(syncChain));
+    recordBytes(this, BufferAccess.createFromUint8Array(syncChain));
   }
 
-  private recordDataWithCheckByte(dataBa: BufferAccess) {
+  private recordDataWithCheckByte(dataBa: BufferAccess): void {
     let checkByte = 0;
     for (const byte of dataBa.bytes()) {
       checkByte ^= byte;
@@ -163,7 +173,7 @@ export class C64Encoder extends AbstractEncoder {
     this.recordByte(checkByte);
   }
 
-  private recordBasicOrPrg(fileType: number, startAddress: number, filename: string, dataBa: BufferAccess) {
+  private recordBasicOrPrg(fileType: number, startAddress: number, filename: string, dataBa: BufferAccess): void {
     const headerBa = BufferAccess.create(192);
     headerBa.writeUint8(fileType); // 1 byte: file type: prg or basic file
     headerBa.writeUint16Le(startAddress); // 2 bytes: start address

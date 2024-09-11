@@ -1,6 +1,8 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {AbstractEncoder} from '../AbstractEncoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {type ByteRecorder, recordByteMsbFirst, recordBytes} from '../ByteRecorder.js';
+import {Oscillator} from '../Oscillator.js';
 
 const fZero = 600;
 const fOne = 1200;
@@ -12,49 +14,63 @@ const fOne = 1200;
  * SAVEMA MO5 Documentation technique - MO5 Lecteuer-enregistreur de programmes / Programmrekorder / Program Recorder
  * http://dcmoto.free.fr/documentation/moniteur-mo5-casst/moniteur-mo5-casst_src.txt
  */
-export class Mo5Encoder extends AbstractEncoder {
-  recordStartBlock(ba: BufferAccess) {
+export class Mo5Encoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
+
+  constructor(private readonly recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(recorder);
+  }
+
+  public begin(): void {
+    this.oscillator.begin();
+  }
+
+  public end(): void {
+    this.oscillator.end();
+  }
+
+  public recordStartBlock(ba: BufferAccess): void {
     Logger.debug(ba.asHexDump());
     this.recorder.beginAnnotation('Start block');
     this.recordPilot(1);
-    this.recordBytes(ba);
+    recordBytes(this, ba);
     this.recordPilot(2);
     this.recorder.endAnnotation();
   }
 
-  recordDataBlock(ba: BufferAccess) {
+  public recordDataBlock(ba: BufferAccess): void {
     Logger.debug(ba.asHexDump());
     this.recorder.beginAnnotation('Data block');
     this.recordPilot(0.2);
-    this.recordBytes(ba);
+    recordBytes(this, ba);
     this.recorder.endAnnotation();
   }
 
-  recordEndBlock(ba: BufferAccess) {
+  public recordEndBlock(ba: BufferAccess): void {
     Logger.debug(ba.asHexDump());
     this.recorder.beginAnnotation('End block');
-    this.recordBytes(ba);
+    recordBytes(this, ba);
     this.recordPilot(1.5);
     this.recorder.endAnnotation();
   }
 
-  override recordByte(byte: number) {
-    this.recordByteMsbFirst(byte);
+  public recordByte(byte: number): void {
+    recordByteMsbFirst(this, byte);
   }
 
   /**
    * @param length length in seconds
    */
-  recordPilot(length: number) {
-    this.recordOscillations(fZero, length * fZero);
+  public recordPilot(length: number): void {
+    this.oscillator.recordOscillations(fZero, length * fZero);
   }
 
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordHalfOscillation(fOne);
-      this.recordHalfOscillation(fOne);
+      this.oscillator.recordHalfOscillation(fOne);
+      this.oscillator.recordHalfOscillation(fOne);
     } else {
-      this.recordHalfOscillation(fZero);
+      this.oscillator.recordHalfOscillation(fZero);
     }
   }
 }

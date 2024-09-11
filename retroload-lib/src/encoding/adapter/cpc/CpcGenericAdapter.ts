@@ -1,4 +1,3 @@
-import {CpcTzxEncoder} from './CpcTzxEncoder.js';
 import {entryOption, loadOption, nameOption, type OptionContainer} from '../../Options.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
@@ -6,6 +5,7 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
 import {calculateCrc16Ccitt, hex8} from '../../../common/Utils.js';
+import {TzxEncoder} from '../TzxEncoder.js';
 
 /**
  * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
@@ -45,7 +45,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   const load = options.getArgument(loadOption) ?? 0x0000;
   const entry = options.getArgument(entryOption) ?? 0x0000;
 
-  const e = new CpcTzxEncoder(recorder);
+  const e = TzxEncoder.createForCpc(recorder);
 
   const chunks = ba.chunks(dataBytesPerDataBlock);
 
@@ -77,7 +77,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     // Remaining bytes 28..63 stay unallocated. Rest of header segment is padded with zeros.
 
     const headerRecordBa = createHeaderRecord(headerBa);
-    e.recordDataBlock(headerRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x000a});
+    e.recordDataBlock(headerRecordBa, {...e.standardSpeedRecordOptions, pauseLengthMs: 0x000a});
 
     recorder.endAnnotation(); // end of header
 
@@ -86,7 +86,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     recorder.beginAnnotation('Data');
 
     const dataRecordBa = createDataRecord(chunk);
-    e.recordDataBlock(dataRecordBa, {...e.getStandardSpeedRecordOptions(), pauseLengthMs: 0x09c4});
+    e.recordDataBlock(dataRecordBa, {...e.standardSpeedRecordOptions, pauseLengthMs: 0x09c4});
 
     recorder.endAnnotation(); // end of data
 

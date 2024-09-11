@@ -1,6 +1,8 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {AbstractEncoder} from '../AbstractEncoder.js';
 import {calculateChecksum8} from '../../../common/Utils.js';
+import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {Oscillator} from '../Oscillator.js';
 
 const fShort = 2000;
 const fLong = 1000;
@@ -16,48 +18,52 @@ const syncEndLength = 2; // s
  *
  * Format description: Bedienungsanleitung LC 80, p. 24-25
  */
-export class Lc80Encoder extends AbstractEncoder {
-  override begin() {
-    super.begin();
-    this.recordSeconds(fSyncIntro, syncIntroLength);
+export class Lc80Encoder implements ByteRecorder {
+  private readonly oscillator: Oscillator;
+
+  constructor(recorder: RecorderInterface) {
+    this.oscillator = new Oscillator(recorder);
   }
 
-  recordHeader(fileNumber: number, startAddress: number, endAddress: number) {
+  public begin(): void {
+    this.oscillator.begin();
+    this.oscillator.recordSeconds(fSyncIntro, syncIntroLength);
+  }
+
+  public recordHeader(fileNumber: number, startAddress: number, endAddress: number): void {
     // The "file name" gets written to the tape in reverse order.
     // So it's rather a little-endian file number than a name.
     const headerBa = BufferAccess.create(6);
     headerBa.writeUint16Le(fileNumber);
     headerBa.writeUint16Le(startAddress);
     headerBa.writeUint16Le(endAddress);
-    this.recordBytes(headerBa);
+    recordBytes(this, headerBa);
   }
 
-  recordData(data: BufferAccess) {
+  public recordData(data: BufferAccess): void {
     this.recordByte(calculateChecksum8(data));
-    this.recordSeconds(fSyncMid, syncMidLength);
-    for (const byte of data.bytes()) {
-      this.recordByte(byte);
-    }
+    this.oscillator.recordSeconds(fSyncMid, syncMidLength);
+    recordBytes(this, data);
   }
 
-  override end() {
-    this.recordSeconds(fSyncEnd, syncEndLength);
-    super.end();
+  public end(): void {
+    this.oscillator.recordSeconds(fSyncEnd, syncEndLength);
+    this.oscillator.end();
   }
 
-  override recordByte(byte: number) {
+  public recordByte(byte: number): void {
     this.recordBit(0);
-    super.recordByte(byte);
+    recordByteLsbFirst(this, byte);
     this.recordBit(1);
   }
 
-  recordBit(value: number) {
+  public recordBit(value: number): void {
     if (value) {
-      this.recordOscillations(fShort, 6);
-      this.recordOscillations(fLong, 6);
+      this.oscillator.recordOscillations(fShort, 6);
+      this.oscillator.recordOscillations(fLong, 6);
     } else {
-      this.recordOscillations(fShort, 12);
-      this.recordOscillations(fLong, 3);
+      this.oscillator.recordOscillations(fShort, 12);
+      this.oscillator.recordOscillations(fLong, 3);
     }
   }
 }

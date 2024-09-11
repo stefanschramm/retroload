@@ -1,5 +1,5 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type KansasCityLikeConfiguration, type AbstractTzxEncoder} from '../AbstractTzxEncoder.js';
+import {type KansasCityLikeConfiguration, type TzxEncoder} from '../TzxEncoder.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {hex8} from '../../../common/Utils.js';
@@ -17,7 +17,7 @@ const tzxHeaderLength = 0x0a;
  * - TSX (MSX / Kansas City Standard): https://github.com/nataliapc/makeTSX/wiki/Tutorial-How-to-generate-TSX-files
  */
 export class TzxProcessor {
-  constructor(private readonly encoder: AbstractTzxEncoder) {
+  constructor(private readonly encoder: TzxEncoder) {
   }
 
   processTzx(ba: BufferAccess) {
@@ -85,7 +85,7 @@ export class TzxProcessor {
     const blockDataBa = ba.slice(blockHeaderLength, dataLength);
 
     this.encoder.recordDataBlock(blockDataBa, {
-      ...this.encoder.getStandardSpeedRecordOptions(),
+      ...this.encoder.standardSpeedRecordOptions,
       pauseLengthMs: ba.getUint16Le(0x00),
       pilotPulses: blockDataBa.getUint8(0) < 128 ? 8063 : 3223,
     });
