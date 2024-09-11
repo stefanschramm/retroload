@@ -8,11 +8,10 @@ const dataMap: Record<SampleValue, number> = {
   [SampleValue.Zero]: 0x80,
 };
 
-const bitsPerSample = 8;
-const channels = 1;
-
 export class WaveRecorder implements RecorderInterface {
   public sampleRate = 44100;
+  public bitsPerSample = 8;
+  public channels = 1;
 
   private readonly data: number[] = [];
   private readonly annotationCollector = new AnnotationCollector();
@@ -29,8 +28,8 @@ export class WaveRecorder implements RecorderInterface {
     const headerSize = 4 + 8 + formatChunkSize + 8;
     const chunkSize = headerSize + this.data.length;
 
-    const byteRate = this.sampleRate * channels * Math.floor(bitsPerSample / 8);
-    const blockAlign = channels * Math.floor(bitsPerSample / 8);
+    const byteRate = this.sampleRate * this.channels * Math.floor(this.bitsPerSample / 8);
+    const blockAlign = this.channels * Math.floor(this.bitsPerSample / 8);
 
     const ba = BufferAccess.create(chunkSize + 8);
 
@@ -43,11 +42,11 @@ export class WaveRecorder implements RecorderInterface {
     ba.writeAsciiString('fmt ');
     ba.writeUint32Le(formatChunkSize);
     ba.writeUint16Le(format);
-    ba.writeUint16Le(channels);
+    ba.writeUint16Le(this.channels);
     ba.writeUint32Le(this.sampleRate);
     ba.writeUint32Le(byteRate);
     ba.writeUint16Le(blockAlign);
-    ba.writeUint16Le(bitsPerSample);
+    ba.writeUint16Le(this.bitsPerSample);
 
     // Data section
     ba.writeAsciiString('data');
