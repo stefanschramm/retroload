@@ -1,5 +1,6 @@
 import {BufferAccess} from '../common/BufferAccess.js';
 import {PointerBasedSourceTokenizer} from './PointerBasedTokenizer.js';
+import {type TokenizerDefinition} from './TokenizerDefinition.js';
 import {tokens} from './tokens/ta.js';
 
 /**
@@ -49,22 +50,20 @@ import {tokens} from './tokens/ta.js';
  * 0DH LSB MSB ................... Pointer
  * 0EH LSB MSB ................... Line number
  */
-export class TaBasicTokenizer {
-  public static getName() {
-    return 'ta';
-  }
 
-  public static getExtension() {
-    return 'bas';
-  }
+const definition: TokenizerDefinition = {
+  name: 'ta',
+  extension: 'bas',
+  tokenize,
+};
+export default definition;
 
-  public static tokenize(str: string) {
-    const offset = 0x6001;
-    const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, tokens, str);
+function tokenize(str: string): BufferAccess {
+  const offset = 0x6001;
+  const lineDataBa = PointerBasedSourceTokenizer.tokenize(offset, tokens, str);
 
-    const taBasBa = BufferAccess.create(lineDataBa.length() + 10); // it wants to have 10 x 0x00 at the end
-    taBasBa.writeBa(lineDataBa);
+  const taBasBa = BufferAccess.create(lineDataBa.length() + 10); // it wants to have 10 x 0x00 at the end
+  taBasBa.writeBa(lineDataBa);
 
-    return taBasBa;
-  }
+  return taBasBa;
 }

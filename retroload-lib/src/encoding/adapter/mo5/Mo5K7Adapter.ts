@@ -4,7 +4,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type OptionContainer} from '../../Options.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
 /**
@@ -23,14 +23,14 @@ export default definition;
 // By definition it should be 16, but many images have more and some less.
 const fileHeader = [0x01, 0x01, 0x01, 0x01];
 
-function identify(filename: string, ba: BufferAccess) {
+function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.k7/i).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   const e = new Mo5Encoder(recorder);
   e.begin();
   let i = 0;

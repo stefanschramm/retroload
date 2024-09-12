@@ -1,7 +1,7 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 
 /**
@@ -18,14 +18,14 @@ const definition: AdapterDefinition = {
 };
 export default definition;
 
-function identify(filename: string, _ba: BufferAccess) {
+function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.tap/i).exec(filename) !== null,
     header: undefined,
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   const e = TzxEncoder.createForZxSpectrum(recorder);
   e.begin();
   let i = 0;

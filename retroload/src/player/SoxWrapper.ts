@@ -20,7 +20,7 @@ export class SoxWrapper implements PlayerWrapper {
   ) {
   }
 
-  public async play(buffer: Uint8Array) {
+  public async play(buffer: Uint8Array): Promise<unknown> {
     Logger.info('Playing via sox play...');
     return spawnPlayer(buffer, 'play', ['-t', 'raw', '-r', this.sampleRate.toString(10), '-e', 'unsigned', '-b', '8', '-c', this.channels.toString(10), '-']);
   }

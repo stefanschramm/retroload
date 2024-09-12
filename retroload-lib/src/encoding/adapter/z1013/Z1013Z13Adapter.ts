@@ -1,6 +1,6 @@
 import Z1013GenericAdapter from './Z1013GenericAdapter.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for Z 1013 .Z13 files (raw data)
@@ -13,7 +13,7 @@ const definition: AdapterDefinition = {
 };
 export default definition;
 
-function identify(filename: string, _ba: BufferAccess) {
+function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.z13$/i).exec(filename) !== null,
     header: undefined, // no specific header

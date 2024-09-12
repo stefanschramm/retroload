@@ -1,15 +1,18 @@
+import {type BufferAccess} from '../common/BufferAccess.js';
 import {PointerBasedSourceTokenizer} from './PointerBasedTokenizer.js';
+import {type TokenizerDefinition} from './TokenizerDefinition.js';
 import {tokens} from './tokens/msx.js';
 
-export class MsxBasicTokenizer {
-  public static getExtension() {
-    return 'bas';
-  }
+const definition: TokenizerDefinition = {
+  name: 'msx',
+  extension: 'bas',
+  tokenize,
+};
+export default definition;
 
-  public static tokenize(str: string) {
-    // TODO: untested
-    const offset = 0x8000;
+function tokenize(str: string): BufferAccess {
+  // TODO: untested
+  const offset = 0x8000;
 
-    return PointerBasedSourceTokenizer.tokenize(offset, tokens, str);
-  }
+  return PointerBasedSourceTokenizer.tokenize(offset, tokens, str);
 }

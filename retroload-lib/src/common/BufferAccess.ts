@@ -39,15 +39,15 @@ export class BufferAccess {
     this.ui8a = new Uint8Array(buffer, offset, length ?? buffer.byteLength);
   }
 
-  public length() {
+  public length(): number {
     return this.view.byteLength;
   }
 
-  public rewind() {
+  public rewind(): void {
     this.cursor = 0;
   }
 
-  public asUint8Array() {
+  public asUint8Array(): Uint8Array {
     return this.ui8a;
   }
 
@@ -165,85 +165,85 @@ export class BufferAccess {
     return lines.join('\n');
   }
 
-  public asAsciiString() {
+  public asAsciiString(): string {
     return (new TextDecoder()).decode(this.ui8a);
   }
 
-  public setUint8(offset: number, i: number) {
+  public setUint8(offset: number, i: number): void {
     this.view.setInt8(offset, i);
   }
 
-  public writeUint8(i: number) {
+  public writeUint8(i: number): void {
     this.view.setInt8(this.cursor, i);
     this.cursor += 1;
   }
 
-  public getUint8(offset: number) {
+  public getUint8(offset: number): number {
     return this.view.getUint8(offset);
   }
 
-  public setUint16Le(offset: number, i: number) {
+  public setUint16Le(offset: number, i: number): void {
     this.view.setInt16(offset, i, true);
   }
 
-  public writeUint16Le(i: number) {
+  public writeUint16Le(i: number): void {
     this.view.setInt16(this.cursor, i, true);
     this.cursor += 2;
   }
 
-  public getUint16Le(offset: number) {
+  public getUint16Le(offset: number): number {
     return this.view.getUint16(offset, true);
   }
 
-  public setUint16Be(offset: number, i: number) {
+  public setUint16Be(offset: number, i: number): void {
     this.view.setInt16(offset, i, false);
   }
 
-  public writeUint16Be(i: number) {
+  public writeUint16Be(i: number): void {
     this.view.setInt16(this.cursor, i, false);
     this.cursor += 2;
   }
 
-  public getUint16Be(offset: number) {
+  public getUint16Be(offset: number): number {
     return this.view.getUint16(offset, false);
   }
 
-  public setUint32Le(offset: number, i: number) {
+  public setUint32Le(offset: number, i: number): void {
     this.view.setInt32(offset, i, true);
   }
 
-  public writeUint32Le(i: number) {
+  public writeUint32Le(i: number): void {
     this.view.setInt32(this.cursor, i, true);
     this.cursor += 4;
   }
 
-  public getUint32Le(offset: number) {
+  public getUint32Le(offset: number): number {
     return this.view.getUint32(offset, true);
   }
 
-  public setUint32Be(offset: number, i: number) {
+  public setUint32Be(offset: number, i: number): void {
     this.view.setInt32(offset, i, false);
   }
 
-  public writeUint32Be(i: number) {
+  public writeUint32Be(i: number): void {
     this.view.setInt32(this.cursor, i, false);
     this.cursor += 4;
   }
 
-  public getFloat32Le(offset: number) {
+  public getFloat32Le(offset: number): number {
     return this.view.getFloat32(offset, true);
   }
 
-  public setFloat32Le(offset: number, f: number) {
+  public setFloat32Le(offset: number, f: number): void {
     this.view.setFloat32(offset, f, true);
   }
 
-  public writeFloat32Le(f: number) {
+  public writeFloat32Le(f: number): void {
     this.view.setFloat32(this.cursor, f, true);
     this.cursor += 4;
   }
 
-  public setAsciiString(offset: number, string: string, paddingLength = 0, paddingCharCode = 0) {
+  public setAsciiString(offset: number, string: string, paddingLength = 0, paddingCharCode = 0): void {
     for (let i = 0; i < string.length; i++) {
       this.view.setUint8(offset + i, string.charCodeAt(i));
     }
@@ -252,7 +252,7 @@ export class BufferAccess {
     }
   }
 
-  public writeAsciiString(string: string, paddingLength = 0, paddingCharCode = 0) {
+  public writeAsciiString(string: string, paddingLength = 0, paddingCharCode = 0): void {
     this.setAsciiString(this.cursor, string, paddingLength, paddingCharCode);
     this.cursor += Math.max(string.length, paddingLength);
   }
@@ -260,11 +260,11 @@ export class BufferAccess {
   /**
    * Copy the content of the passed BufferAccess into offset
    */
-  public setBa(offset: number, sourceBa: BufferAccess) {
+  public setBa(offset: number, sourceBa: BufferAccess): void {
     this.ui8a.set(sourceBa.asUint8Array(), offset);
   }
 
-  public writeBa(sourceBa: BufferAccess) {
+  public writeBa(sourceBa: BufferAccess): void {
     this.setBa(this.cursor, sourceBa);
     this.cursor += sourceBa.length();
   }
@@ -272,7 +272,7 @@ export class BufferAccess {
   /**
    * If needle is an empty string, true will be returned
    */
-  public containsDataAt(offset: number, needle: string | number[]) {
+  public containsDataAt(offset: number, needle: string | number[]): boolean {
     const isString = typeof needle === 'string';
     for (let i = 0; i < needle.length; i++) {
       if (offset + i >= this.view.byteLength) {

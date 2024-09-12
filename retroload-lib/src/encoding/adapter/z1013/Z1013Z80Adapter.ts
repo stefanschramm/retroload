@@ -3,7 +3,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FlagOptionDefinition, type OptionContainer} from '../../Options.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 import {hex16, hex8} from '../../../common/Utils.js';
 
 const z80noHeadersave: FlagOptionDefinition = {
@@ -28,14 +28,14 @@ export default definition;
 
 const headerLength = 0x20;
 
-function identify(filename: string, ba: BufferAccess) {
+function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.z80$/i).exec(filename) !== null,
     header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const header = ba.slice(0, headerLength);
   const data = ba.slice(headerLength);
   const loadAddress = header.getUint16Le(0x00);

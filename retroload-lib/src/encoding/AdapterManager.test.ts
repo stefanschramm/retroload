@@ -46,7 +46,7 @@ function getTestLabel(example: ExampleDefinition): string {
   return `${example.dir}/${example.file}, options: ${JSON.stringify(example.options)}`;
 }
 
-function encodeAndHash(file: string, options: OptionValues) {
+function encodeAndHash(file: string, options: OptionValues): string | false {
   const recorder = new WaveRecorder();
   const buffer = fs.readFileSync(file);
   const ba = BufferAccess.createFromNodeBuffer(buffer);
@@ -58,6 +58,6 @@ function encodeAndHash(file: string, options: OptionValues) {
   return hash(recorder.getBa());
 }
 
-function hash(ba: BufferAccess) {
+function hash(ba: BufferAccess): string {
   return crypto.createHash('md5').update(ba.asUint8Array()).digest('hex');
 }

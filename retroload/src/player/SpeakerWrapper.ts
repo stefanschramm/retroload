@@ -31,7 +31,7 @@ export class SpeakerWrapper implements PlayerWrapper {
     private readonly speaker: Speaker,
   ) {}
 
-  public async play(buffer: Uint8Array) {
+  public async play(buffer: Uint8Array): Promise<unknown> {
     return new Promise((resolve) => {
       Logger.info('Playing via speaker library...');
       const s = new stream.PassThrough();

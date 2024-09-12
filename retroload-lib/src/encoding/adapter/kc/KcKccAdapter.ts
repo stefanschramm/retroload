@@ -4,7 +4,7 @@ import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {kcFirstBlockOption} from './KcOptions.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for KC .KCC files
@@ -20,7 +20,7 @@ const definition: AdapterDefinition = {
 };
 export default definition;
 
-function identify(filename: string, _ba: BufferAccess) {
+function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.kcc$/i).exec(filename) !== null,
     header: undefined, // no specific header
@@ -29,7 +29,7 @@ function identify(filename: string, _ba: BufferAccess) {
 
 const fileBlockSize = 128;
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const firstBlockNumber = options.getArgument(kcFirstBlockOption);
 
   if (ba.length() % fileBlockSize !== 0) {

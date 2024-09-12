@@ -3,7 +3,7 @@ import {type OptionContainer, nameOption} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for ZX81 .P files
@@ -19,14 +19,14 @@ export default definition;
 
 const defaultName = ' ';
 
-function identify(filename: string, _ba: BufferAccess) {
+function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.p$/i).exec(filename) !== null,
     header: undefined, // no specific header
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const name = options.getArgument(nameOption);
   const e = new Zx81Encoder(recorder);
   e.begin();

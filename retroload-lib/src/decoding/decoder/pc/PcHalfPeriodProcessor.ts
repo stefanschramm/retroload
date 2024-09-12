@@ -62,7 +62,7 @@ export class PcHalfPeriodProcessor {
     } while (true);
   }
 
-  private findSync() {
+  private findSync(): void {
     if (!(this.syncFinder.findSync())) {
       throw new EndOfInput();
     }

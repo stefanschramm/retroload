@@ -1,4 +1,4 @@
-import {unidentifiable} from '../AdapterDefinition.js';
+import {type FormatIdentification, unidentifiable} from '../AdapterDefinition.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
@@ -20,11 +20,11 @@ export default definition;
 
 const blockSize = 64;
 
-function identify(_filename: string, _ba: BufferAccess) {
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   if (ba.length() < 2 * blockSize) {
     throw new InputDataError(`FIAD files need to be of a size at least ${2 * blockSize} bytes.`);
   }

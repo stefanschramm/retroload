@@ -15,7 +15,7 @@ export class CustomHelp extends Help {
     const itemIndentWidth = 2;
     const itemSeparatorWidth = 2; // between term and description
 
-    function formatItem(term: string, description: string) {
+    function formatItem(term: string, description: string): string {
       if (description) {
         const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
         return helper.wrap(fullText, helpWidth - itemIndentWidth, termWidth + itemSeparatorWidth);
@@ -23,7 +23,7 @@ export class CustomHelp extends Help {
       return term;
     }
 
-    function formatList(textArray: string[]) {
+    function formatList(textArray: string[]): string {
       return textArray.join('\n').replace(/^/gm, ' '.repeat(itemIndentWidth));
     }
 

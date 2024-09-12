@@ -54,7 +54,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const type = options.getArgument(c64typeOption);
   const loadAddress = options.getArgument(loadOption);
   const name = options.getArgument(nameOption);
@@ -85,7 +85,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   e.end();
 }
 
-function checkLoadAddress(loadAddress: number | undefined) {
+function checkLoadAddress(loadAddress: number | undefined): void {
   if (loadAddress === undefined) {
     throw new InvalidArgumentError(loadOption.name, `Load address (argument "${loadOption.name}") must be set for this data type.`);
   }

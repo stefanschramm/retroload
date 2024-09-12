@@ -27,7 +27,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const fileNumber = parseInt(options.getArgument(nameOption), 16);
   if (isNaN(fileNumber) || fileNumber < 0 || fileNumber > 0xffff) {
     throw new InvalidArgumentError('name', 'Option name is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 0001');

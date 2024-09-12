@@ -11,7 +11,7 @@ export function playerExists(command: string, args: string[], regexp: RegExp): b
   return Boolean(regexp.exec(result.stdout.toString()));
 }
 
-export async function spawnPlayer(buffer: Uint8Array, command: string, args: string[]) {
+export async function spawnPlayer(buffer: Uint8Array, command: string, args: string[]): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const proc = spawn(command, args);
     proc.on('error', (e) => {

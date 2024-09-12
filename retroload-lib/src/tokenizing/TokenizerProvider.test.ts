@@ -6,22 +6,10 @@ const fixturesDir = fixturesBaseDir + '/tokenizing/fixtures';
 const fixtures = ['for'];
 
 describe.each(tokenizers.map((t) => [t.name, t]))('%s', (_name, t) => {
-  test('provides name', () => {
-    expect(typeof t.getName()).toBe('string');
-  });
-
-  test('provides extension', () => {
-    expect(typeof t.getExtension()).toBe('string');
-  });
-
-  test('provides tokenize function', () => {
-    expect(typeof t.tokenize).toBe('function');
-  });
-
   test.each(fixtures)('Example code: %s.txt', (fixture) => {
     const source = fs.readFileSync(`${fixturesDir}/${fixture}.txt`).toString();
     const tokenized = t.tokenize(source);
-    const expected = fs.readFileSync(`${fixturesDir}/${t.getName()}/${fixture}.${t.getExtension()}`);
+    const expected = fs.readFileSync(`${fixturesDir}/${t.name}/${fixture}.${t.extension}`);
     expect(uInt8ArrayEqual(new Uint8Array(expected), tokenized.asUint8Array())).toBe(true);
   });
 });

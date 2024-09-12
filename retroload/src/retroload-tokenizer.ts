@@ -2,9 +2,9 @@
 
 import fs from 'fs';
 import {Command} from 'commander';
-import {BasicTokenizers} from 'retroload-lib';
+import {BasicTokenizers, type TokenizerDefinition} from 'retroload-lib';
 
-function main() {
+function main(): void {
   const program = (new Command())
     .name('retroload-tokenizer')
     .description('Convert plain text BASIC files into tokenized BASIC files for loading.')
@@ -18,17 +18,17 @@ function main() {
 
   const tokenizer = getTokenizerByDialectName(dialect);
 
-  const outfile = typeof options['outfile'] === 'string' ? options['outfile'] : `${infile}.${tokenizer.getExtension()}`;
+  const outfile = typeof options['outfile'] === 'string' ? options['outfile'] : `${infile}.${tokenizer.extension}`;
 
   const destinationBa = tokenizer.tokenize(fs.readFileSync(infile).toString());
   fs.writeFileSync(outfile, destinationBa.asUint8Array());
 }
 
-function getTokenizerByDialectName(name: string) {
-  const result = BasicTokenizers.filter((t) => t.getName() === name);
+function getTokenizerByDialectName(name: string): TokenizerDefinition {
+  const result = BasicTokenizers.filter((t) => t.name === name);
 
   if (result.length === 0) {
-    const avaliableDialectNames = BasicTokenizers.map((t) => t.getName());
+    const avaliableDialectNames = BasicTokenizers.map((t) => t.name);
     console.error(`Tokenizer for BASIC dialect "${name}" not found. Available dialects: ${avaliableDialectNames.join(', ')}`);
     process.exit(1);
   }

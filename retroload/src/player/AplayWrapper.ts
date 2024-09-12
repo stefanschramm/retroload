@@ -20,7 +20,7 @@ export class AplayWrapper implements PlayerWrapper {
   ) {
   }
 
-  public async play(buffer: Uint8Array) {
+  public async play(buffer: Uint8Array): Promise<unknown> {
     Logger.info('Playing via aplay...');
     return spawnPlayer(buffer, 'aplay', ['-r', this.sampleRate.toString(10), '-f', 'U8', '-c', this.channels.toString(10)]);
   }

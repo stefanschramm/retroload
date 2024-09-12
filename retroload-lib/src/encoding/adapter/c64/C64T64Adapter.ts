@@ -2,7 +2,7 @@ import {C64Encoder} from './C64Encoder.js';
 import {shortpilotOption, type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {c64TapfileHeader} from './C64TapAdapter.js';
 
@@ -23,14 +23,14 @@ export default definition;
 // Usually 'C64 tape image file' or 'C64S tape file' but might be different
 const fileHeader = 'C64';
 
-function identify(filename: string, ba: BufferAccess) {
+function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.t64$/i).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader) && !ba.containsDataAt(0, c64TapfileHeader) && !ba.containsDataAt(0, 'C64 CARTRIDGE'),
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const e = new C64Encoder(
     recorder,
     options.isFlagSet(shortpilotOption),

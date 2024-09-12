@@ -56,7 +56,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const filename = options.getArgument(nameOption);
   if (filename.length > maxFileNameLength) {
     throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
@@ -94,7 +94,7 @@ function createBlock(blockType: number, blockDataBa: BufferAccess): BufferAccess
   return blockBa;
 }
 
-function calculateChecksum(data: BufferAccess) {
+function calculateChecksum(data: BufferAccess): number {
   let sum = 0;
   for (const byte of data.bytes()) {
     sum += byte;

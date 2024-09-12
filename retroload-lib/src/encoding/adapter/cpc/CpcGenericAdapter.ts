@@ -36,7 +36,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const filename = options.getArgument(nameOption);
   if (filename.length > maxFileNameLength) {
     throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
@@ -95,7 +95,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   e.end();
 }
 
-function createHeaderRecord(headerBa: BufferAccess) {
+function createHeaderRecord(headerBa: BufferAccess): BufferAccess {
   if (headerBa.length() !== dataBytesPerSegment) {
     throw new InternalError(`Header record size must be exactly ${dataBytesPerSegment} bytes (padded with zeros).`);
   }
@@ -109,7 +109,7 @@ function createHeaderRecord(headerBa: BufferAccess) {
   return headerRecordBa;
 }
 
-function createDataRecord(dataBa: BufferAccess) {
+function createDataRecord(dataBa: BufferAccess): BufferAccess {
   if (dataBa.length() > dataBytesPerDataBlock) {
     throw new InternalError(`Data record size cannot exceed ${dataBytesPerDataBlock} bytes.`);
   }

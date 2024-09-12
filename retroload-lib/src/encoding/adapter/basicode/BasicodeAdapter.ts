@@ -31,7 +31,7 @@ function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const e = new BasicodeEncoder(recorder, options.isFlagSet(shortpilotOption));
   e.begin();
   if (options.isFlagSet(basicodeDataOption)) {

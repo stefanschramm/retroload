@@ -2,7 +2,7 @@ import {MsxEncoder} from './MsxEncoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer, loadOption, nameOption, entryOption} from '../../Options.js';
-import {unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
 import {msxTypeOption, msxfastOption} from './MsxOptions.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
 import {MsxType, maxNameLength, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
@@ -26,11 +26,11 @@ const definition: AdapterDefinition = {
 };
 export default definition;
 
-function identify(_filename: string, _ba: BufferAccess) {
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const loadAddress = options.getArgument(loadOption);
   const entryAddress = options.getArgument(loadOption);
   const name = options.getArgument(nameOption);
@@ -70,7 +70,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   e.end();
 }
 
-function recordBinary(e: MsxEncoder, ba: BufferAccess, loadAddress: number | undefined, entryAddress: number | undefined) {
+function recordBinary(e: MsxEncoder, ba: BufferAccess, loadAddress: number | undefined, entryAddress: number | undefined): void {
   if (loadAddress === undefined) {
     throw new InvalidArgumentError(loadOption.name, 'Option load must be set for this data type.');
   }
@@ -85,14 +85,14 @@ function recordBinary(e: MsxEncoder, ba: BufferAccess, loadAddress: number | und
   e.recordBytes(ba);
 }
 
-function recordBasic(e: MsxEncoder, ba: BufferAccess) {
+function recordBasic(e: MsxEncoder, ba: BufferAccess): void {
   for (const chunkBa of ba.chunksPadded(256, 0x00)) {
     e.recordHeader(false);
     e.recordBytes(chunkBa);
   }
 }
 
-function recordAscii(e: MsxEncoder, ba: BufferAccess) {
+function recordAscii(e: MsxEncoder, ba: BufferAccess): void {
   for (const chunkBa of ba.chunksPadded(256, 0x1a)) {
     e.recordHeader(false);
     e.recordBytes(chunkBa);

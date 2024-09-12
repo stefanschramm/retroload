@@ -3,7 +3,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer} from '../../Options.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 import {msxfastOption} from './MsxOptions.js';
 import {MsxType, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
 import {hex16} from '../../../common/Utils.js';
@@ -33,7 +33,7 @@ const typeHeaders = {
   ascii: Array(typeHeaderLength).fill(typeHeaderMap[MsxType.ascii]),
 };
 
-function determineType(dataBa: BufferAccess, offset: number) {
+function determineType(dataBa: BufferAccess, offset: number): string | undefined {
   for (const [type, header] of Object.entries(typeHeaders)) {
     if (dataBa.containsDataAt(offset, header)) {
       return type;
@@ -43,14 +43,14 @@ function determineType(dataBa: BufferAccess, offset: number) {
   return undefined; // unknown
 }
 
-function identify(filename: string, ba: BufferAccess) {
+function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.cas$/i).exec(filename) !== null,
     header: ba.containsDataAt(0, blockHeader),
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const e = new MsxEncoder(
     recorder,
     options.isFlagSet(shortpilotOption),

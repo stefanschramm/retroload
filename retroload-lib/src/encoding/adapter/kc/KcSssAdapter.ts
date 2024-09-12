@@ -3,7 +3,7 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {nameOption, type OptionContainer} from '../../Options.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for KC .SSS (BASIC) files
@@ -21,14 +21,14 @@ const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;
 const maxFileNameLength = 8;
 
-function identify(filename: string, _ba: BufferAccess) {
+function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.sss$/i).exec(filename) !== null,
     header: undefined, // no specific header
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
   const filename = options.getArgument(nameOption);
   if (filename.length > maxFileNameLength) {

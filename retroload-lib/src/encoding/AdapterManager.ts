@@ -24,7 +24,7 @@ export const formatOption: ArgumentOptionDefinition<string | undefined> = {
   enum: [...new Set(providedAdapters.map((a) => a.internalName))],
 };
 
-export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, optionValues: OptionValues = {}) {
+export function encode(recorder: RecorderInterface, filename: string, dataBa: BufferAccess, optionValues: OptionValues = {}): boolean {
   const optionContainer = new OptionContainer(optionValues);
   const format = optionContainer.getArgument(formatOption);
   let filteredAdapters = providedAdapters;
@@ -39,12 +39,12 @@ export function encode(recorder: RecorderInterface, filename: string, dataBa: Bu
   return encodeWithAdapter(recorder, adapter, dataBa, optionValues);
 }
 
-export function encodeWith(recorder: RecorderInterface, adapterDefinition: PublicAdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}) {
+export function encodeWith(recorder: RecorderInterface, adapterDefinition: PublicAdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}): boolean {
   const adapter = providedAdapters.filter((a) => a.internalName === adapterDefinition.internalName)[0];
   return encodeWithAdapter(recorder, adapter, dataBa, optionValues);
 }
 
-function encodeWithAdapter(recorder: RecorderInterface, adapter: AdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}) {
+function encodeWithAdapter(recorder: RecorderInterface, adapter: AdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}): boolean {
   const optionContainer = new OptionContainer(optionValues);
   const requiredOptions = adapter.options.filter((o) => o.type !== 'bool' && o.required);
   const missingOptions = requiredOptions.filter((o) => optionValues[o.name] === undefined);
@@ -96,7 +96,7 @@ export function getAllOptions(): PublicOptionDefinition[] {
   return options;
 }
 
-function autodetectAdapter(adapters: AdapterDefinition[], filename: string, ba: BufferAccess) {
+function autodetectAdapter(adapters: AdapterDefinition[], filename: string, ba: BufferAccess): AdapterDefinition {
   const rankedAdapters = getRankedAdapters(adapters, filename, ba);
 
   if (rankedAdapters.length > 1 && rankedAdapters[0].score > rankedAdapters[1].score) {
@@ -106,7 +106,7 @@ function autodetectAdapter(adapters: AdapterDefinition[], filename: string, ba: 
   throw new FormatAutodetectionFailedError();
 }
 
-function mapBoolishToScore(value: boolean | undefined, score: number) {
+function mapBoolishToScore(value: boolean | undefined, score: number): number {
   if (value === true) {
     return score;
   }
@@ -117,7 +117,12 @@ function mapBoolishToScore(value: boolean | undefined, score: number) {
   return 0;
 }
 
-function getRankedAdapters(adapters: AdapterDefinition[], filename: string, ba: BufferAccess) {
+type RankedAdapter = {
+  adapter: AdapterDefinition;
+  score: number;
+};
+
+function getRankedAdapters(adapters: AdapterDefinition[], filename: string, ba: BufferAccess): RankedAdapter[] {
   const adapterIdentifications = adapters.map((adapter) => {
     const identifiation = adapter.identify(filename, ba);
     const score = mapBoolishToScore(identifiation.header, 20) + mapBoolishToScore(identifiation.filename, 10);

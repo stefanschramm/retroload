@@ -94,7 +94,7 @@ export class Z1013Encoder implements ByteRecorder {
   }
 }
 
-function calculateChecksum(ba: BufferAccess) {
+function calculateChecksum(ba: BufferAccess): number {
   let checkSum = 0;
   for (let i = 0; i < ba.length(); i += 2) {
     const word = ba.getUint16Le(i);

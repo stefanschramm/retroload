@@ -34,7 +34,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const name = options.getArgument(nameOption);
   const nameComponents = name.split('.');
   if (nameComponents.length > 2) {

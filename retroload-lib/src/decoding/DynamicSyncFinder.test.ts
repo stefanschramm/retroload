@@ -17,7 +17,7 @@ describe('DynamicSyncFinder', () => {
   });
 });
 
-function runTest(minHalfPeriods: number, maxRelativeDeviation: number, expectedResult: number | undefined, expectedPosition: number | undefined) {
+function runTest(minHalfPeriods: number, maxRelativeDeviation: number, expectedResult: number | undefined, expectedPosition: number | undefined): void {
   const hpp = new DummyHalfPeriodProvider();
   const result = (new DynamicSyncFinder(hpp, minHalfPeriods, maxRelativeDeviation)).findSync();
   if (expectedPosition === undefined) {
