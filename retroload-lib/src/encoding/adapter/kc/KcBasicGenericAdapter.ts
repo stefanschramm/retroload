@@ -1,4 +1,4 @@
-import {unidentifiable} from '../AdapterDefinition.js';
+import {type FormatIdentification, unidentifiable} from '../AdapterDefinition.js';
 import {KcEncoder} from './KcEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type ArgumentOptionDefinition, nameOption, type OptionContainer, type FlagOptionDefinition} from '../../Options.js';
@@ -70,11 +70,11 @@ const typeMap = {
   ascii: 0xd5,
 };
 
-function identify(_filename: string, _ba: BufferAccess) {
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   // Note: The file name is case-sensitive (there is a difference between CLOAD "EXAMPLE" and CLOAD "example").
   const filename = options.getArgument(nameOption);
   if (filename.length > maxFileNameLength) {

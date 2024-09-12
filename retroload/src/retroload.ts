@@ -21,7 +21,7 @@ main()
     Logger.error(err as string);
   });
 
-async function main() {
+async function main(): Promise<void> {
   const formatNames = AdapterManager.getAllAdapters().map((a) => a.internalName);
   formatNames.sort();
   const program = (new CustomCommand(AdapterManager.getAllAdapters()))
@@ -83,7 +83,7 @@ async function main() {
   }
 }
 
-function getCommanderFlagsString(optionDefinition: PublicOptionDefinition) {
+function getCommanderFlagsString(optionDefinition: PublicOptionDefinition): string {
   return optionDefinition.type !== 'text' || optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
 }
 
@@ -112,7 +112,7 @@ async function getPlayerWrapper(recorder: WaveRecorder): Promise<PlayerWrapper> 
   process.exit(1);
 }
 
-function printAnnotations(annotations: Annotation[], depth = 0) {
+function printAnnotations(annotations: Annotation[], depth = 0): void {
   for (const annotation of annotations) {
     const indentation = '  '.repeat(depth);
     const range = annotation.end === undefined

@@ -16,7 +16,7 @@ export class WaveRecorder implements RecorderInterface {
   private readonly data: number[] = [];
   private readonly annotationCollector = new AnnotationCollector();
 
-  public pushSample(value: SampleValue) {
+  public pushSample(value: SampleValue): void {
     const mappedValue = dataMap[value];
     this.data.push(mappedValue);
   }
@@ -57,7 +57,7 @@ export class WaveRecorder implements RecorderInterface {
     return ba;
   }
 
-  public getRawBuffer() {
+  public getRawBuffer(): Uint8Array {
     return new Uint8Array(this.data);
   }
 

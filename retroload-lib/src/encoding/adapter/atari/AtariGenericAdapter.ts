@@ -28,7 +28,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   const e = new AtariEncoder(recorder);
   e.setDefaultBaudrate();
   const chunks = ba.chunks(dataBytesPerBlock);
@@ -65,7 +65,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
   recorder.endAnnotation();
 }
 
-function calculateChecksum(ba: BufferAccess) {
+function calculateChecksum(ba: BufferAccess): number {
   // 8 bit checksum with carry being added
   let sum = 0;
   for (const byte of ba.bytes()) {

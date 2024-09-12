@@ -22,6 +22,6 @@ export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
   },
 };
 
-function isHexNumber(str: string) {
+function isHexNumber(str: string): boolean {
   return /^[A-Fa-f0-9]+$/.exec(str) !== null;
 }

@@ -12,7 +12,7 @@ export class AnnotationCollector {
   private readonly annotationStack: Annotation[] = [];
   private readonly annotations: Annotation[] = [];
 
-  public beginAnnotation(label: string, position: Position) {
+  public beginAnnotation(label: string, position: Position): void {
     const parentAnnotation = this.getParentAnnotation();
     if (parentAnnotation !== undefined && (position.samples < parentAnnotation.begin.samples || position.seconds < parentAnnotation.begin.seconds)) {
       throw new InternalError('Begin of pushed annotation is before parent annotation.');
@@ -24,7 +24,7 @@ export class AnnotationCollector {
     this.annotationStack.push({label, begin: position, annotations: []});
   }
 
-  public endAnnotation(position: Position) {
+  public endAnnotation(position: Position): void {
     const annotation = this.annotationStack.pop();
     if (annotation === undefined) {
       throw new InternalError('Unable to end annotation. No annotation has been opened.');

@@ -44,7 +44,7 @@ export class PcBlockProcessor {
 /**
  * http://fileformats.archiveteam.org/wiki/IBM_PC_data_cassette
  */
-function analyzeBlock(bdr: PcBlockDecodingResult) {
+function analyzeBlock(bdr: PcBlockDecodingResult): void {
   const {data} = bdr;
   if (bdr.hadIntro && data.getUint8(0) === 0xa5) {
     const fileName = data.slice(1, 8).asAsciiString().trimEnd();

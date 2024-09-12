@@ -30,7 +30,7 @@ const baseTypes: PatternDefinition[] = [
  * In contrast there also exist length-based dialects (Atari 800).
  */
 export class PointerBasedSourceTokenizer {
-  public static tokenize(loadAddress: number, tokenMap: RawTokenDefinition[], str: string) {
+  public static tokenize(loadAddress: number, tokenMap: RawTokenDefinition[], str: string): BufferAccess {
     const lines = str.trim().split('\n');
     const nonEmptyLines = lines.filter((l) => l.trim() !== '');
     // longest tokens first so that they will match first
@@ -63,7 +63,7 @@ export class PointerBasedSourceTokenizer {
   }
 }
 
-function escapeRegex(string: string) {
+function escapeRegex(string: string): string {
   // https://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
   return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
 }
@@ -101,7 +101,7 @@ class LineTokenizer {
     return this.tokens;
   }
 
-  public hasTokensLeft() {
+  public hasTokensLeft(): boolean {
     return this.pos < this.l.length;
   }
 
@@ -138,7 +138,7 @@ function determineTokenByteLength(token: Token): number {
   }
 }
 
-function applyAction(token: Token, lineBa: BufferAccess) {
+function applyAction(token: Token, lineBa: BufferAccess): void {
   switch (token.action) {
     case 'COPY':
       lineBa.writeAsciiString(token.value as string);

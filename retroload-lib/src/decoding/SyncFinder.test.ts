@@ -21,7 +21,7 @@ describe('SyncFinder', () => {
   });
 });
 
-function runTest(frequenceRange: FrequencyRange, minHalfPeriods: number, expectedPosition: number | undefined) {
+function runTest(frequenceRange: FrequencyRange, minHalfPeriods: number, expectedPosition: number | undefined): void {
   const hpp = new DummyHalfPeriodProvider();
   const result = (new SyncFinder(hpp, frequenceRange, minHalfPeriods)).findSync();
   if (expectedPosition === undefined) {

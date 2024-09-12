@@ -18,3 +18,4 @@ export * as DecoderManager from './decoding/DecoderManager.js';
 
 // Tokenization
 export {tokenizers as BasicTokenizers} from './tokenizing/TokenizerProvider.js';
+export {type TokenizerDefinition} from './tokenizing/TokenizerDefinition.js';

@@ -20,7 +20,7 @@ export class TzxProcessor {
   public constructor(private readonly encoder: TzxEncoder) {
   }
 
-  public processTzx(ba: BufferAccess) {
+  public processTzx(ba: BufferAccess): void {
     // TODO: get version offset: 0x08 length: 2
     let i = tzxHeaderLength;
     this.encoder.begin();
@@ -32,7 +32,7 @@ export class TzxProcessor {
     this.encoder.end();
   }
 
-  private processBlock(blockId: number, blockBa: BufferAccess) {
+  private processBlock(blockId: number, blockBa: BufferAccess): number {
     // Block recording methods return the block size in input file (excluding ID byte)
     Logger.debug(`TZX Block id: ${hex8(blockId)}`);
     switch (blockId) {
@@ -78,7 +78,7 @@ export class TzxProcessor {
     }
   }
 
-  private processStandardSpeedDataBlock(ba: BufferAccess) {
+  private processStandardSpeedDataBlock(ba: BufferAccess): number {
     // ID 0x10
     const blockHeaderLength = 0x04;
     const dataLength = ba.getUint16Le(0x02);
@@ -93,7 +93,7 @@ export class TzxProcessor {
     return blockHeaderLength + dataLength;
   }
 
-  private processTurboSpeedDataBlock(ba: BufferAccess) {
+  private processTurboSpeedDataBlock(ba: BufferAccess): number {
     // ID 0x11
     const blockHeaderLength = 0x12;
     const dataLength = ba.getUint8(0x0f) + ba.getUint8(0x10) * 2 ** 8 + ba.getUint8(0x11) * 2 ** 16;
@@ -113,7 +113,7 @@ export class TzxProcessor {
     return blockHeaderLength + dataLength;
   }
 
-  private processPureToneBlock(ba: BufferAccess) {
+  private processPureToneBlock(ba: BufferAccess): number {
     // ID 0x12
     const pulseLength = ba.getUint16Le(0);
     const numberOfPulses = ba.getUint16Le(2);
@@ -122,7 +122,7 @@ export class TzxProcessor {
     return 4;
   }
 
-  private processPulseSequenceBlock(ba: BufferAccess) {
+  private processPulseSequenceBlock(ba: BufferAccess): number {
     // ID 0x13
     const numberOfPulses = ba.getUint8(0);
     for (let i = 0; i < numberOfPulses; i++) {
@@ -133,7 +133,7 @@ export class TzxProcessor {
     return 1 + 2 * numberOfPulses;
   }
 
-  private processPureDataBlock(ba: BufferAccess) {
+  private processPureDataBlock(ba: BufferAccess): number {
     // ID 0x14
     const blockHeaderLength = 0x0a;
     const dataLength = ba.getUint8(0x07) + ba.getUint8(0x08) * 2 ** 8 + ba.getUint8(0x09) * 2 ** 16;
@@ -149,7 +149,7 @@ export class TzxProcessor {
     return blockHeaderLength + dataLength;
   }
 
-  private processPauseBlock(ba: BufferAccess) {
+  private processPauseBlock(ba: BufferAccess): number {
     // ID 0x20
     const length = ba.getUint16Le(0);
     this.encoder.recordSilenceMs(length);
@@ -157,7 +157,7 @@ export class TzxProcessor {
     return 2;
   }
 
-  private processGroupStartBlock(ba: BufferAccess) {
+  private processGroupStartBlock(ba: BufferAccess): number {
     // ID 0x21
     const length = ba.getUint8(0x00);
     const groupName = ba.slice(1, length).asAsciiString();
@@ -166,14 +166,14 @@ export class TzxProcessor {
     return 1 + length;
   }
 
-  private processGroupEndBlock(_ba: BufferAccess) {
+  private processGroupEndBlock(_ba: BufferAccess): number {
     // ID 0x22
     Logger.info('TZX Group end.');
 
     return 0;
   }
 
-  private processTextDescriptionBlock(ba: BufferAccess) {
+  private processTextDescriptionBlock(ba: BufferAccess): number {
     // ID 0x30
     const length = ba.getUint8(0);
     const textDescription = ba.slice(1, length).asAsciiString();
@@ -182,7 +182,7 @@ export class TzxProcessor {
     return 1 + length;
   }
 
-  private processMessageBlock(ba: BufferAccess) {
+  private processMessageBlock(ba: BufferAccess): number {
     // ID 0x31
     const messageDuration = ba.getUint8(0);
     const messageLength = ba.getUint8(1);
@@ -192,7 +192,7 @@ export class TzxProcessor {
     return 2 + messageLength;
   }
 
-  private processArchiveInfoBlock(ba: BufferAccess) {
+  private processArchiveInfoBlock(ba: BufferAccess): number {
     // ID 0x32
     const length = ba.getUint16Le(0);
     const archiveInfoData = ba.slice(0x02, length);
@@ -203,7 +203,7 @@ export class TzxProcessor {
     return 2 + length;
   }
 
-  private processHardwareTypeBlock(ba: BufferAccess) {
+  private processHardwareTypeBlock(ba: BufferAccess): number {
     // ID 0x33
     // For now just ignore block
     const entries = ba.getUint8(0);
@@ -211,7 +211,7 @@ export class TzxProcessor {
     return 1 + entries * 3;
   }
 
-  private processCustomInfoBlock(ba: BufferAccess) {
+  private processCustomInfoBlock(ba: BufferAccess): number {
     // ID 0x35
     // Note: The TZX tech specs says CHAR[10]	as length for the ident string, but it's actually CHAR[0x10]
     const identificationString = ba.slice(0, 0x10).asAsciiString();
@@ -228,7 +228,7 @@ export class TzxProcessor {
    *
    * https://github.com/nataliapc/makeTSX/wiki/Tutorial-How-to-generate-TSX-files#14-the-new-4b-block
    */
-  private processKansasCityLikeBlock(ba: BufferAccess) {
+  private processKansasCityLikeBlock(ba: BufferAccess): number {
     // ID 0x4b
     const length = ba.getUint32Le(0x00);
 
@@ -264,7 +264,7 @@ export class TzxProcessor {
     return 4 + length;
   }
 
-  private processGlueBlock(_ba: BufferAccess) {
+  private processGlueBlock(_ba: BufferAccess): number {
     // ID 0x5a
     // Just ignore
     return 9;
@@ -279,7 +279,7 @@ export class TzxProcessor {
    * bytes). This should enable programs that can only handle older
    * versions to skip that block.
    */
-  private processUnknownBlock(ba: BufferAccess) {
+  private processUnknownBlock(ba: BufferAccess): number {
     const length = ba.getUint32Le(0x00);
     const data = ba.slice(1, length);
     Logger.debug(data.asHexDump());

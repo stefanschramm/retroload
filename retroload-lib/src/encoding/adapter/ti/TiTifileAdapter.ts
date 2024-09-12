@@ -3,7 +3,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for TI-99/4A .TIFILE files
@@ -23,14 +23,14 @@ const fileHeader = '\x07TIFILES';
 const sectorSize = 0x100;
 const blockSize = 64;
 
-function identify(filename: string, ba: BufferAccess) {
+function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.(tifile|tfi)/i).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   const sectorCount = ba.getUint16Be(0x08);
   const flags = ba.getUint8(0x0a);
   const recordsPerSector = ba.getUint8(0x0b);

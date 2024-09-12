@@ -4,7 +4,7 @@ import {inflate} from 'pako';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 import {UefProcessor} from './UefProcessor.js';
 
 /**
@@ -24,14 +24,14 @@ export default definition;
 const fileHeader = 'UEF File!\x00';
 const compressedFileHeader = '\x1f\x8b';
 
-function identify(filename: string, ba: BufferAccess) {
+function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.uef/i).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader) || ba.containsDataAt(0, compressedFileHeader),
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   const uefBa = uncompressIfRequired(ba);
 
   if (!uefBa.containsDataAt(0, fileHeader)) {
@@ -46,7 +46,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionC
   uefProcessor.processUef(uefBa);
 }
 
-function uncompressIfRequired(ba: BufferAccess) {
+function uncompressIfRequired(ba: BufferAccess): BufferAccess {
   return ba.containsDataAt(0, compressedFileHeader) ? BufferAccess.createFromUint8Array(inflate(ba.asUint8Array())) : ba;
 }
 

@@ -2,7 +2,7 @@ import {shortpilotOption, type OptionContainer, nameOption} from '../../Options.
 import {C64Encoder} from './C64Encoder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 
@@ -20,14 +20,14 @@ const definition: AdapterDefinition = {
 };
 export default definition;
 
-function identify(filename: string, _ba: BufferAccess) {
+function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.prg$/i).exec(filename) !== null,
     header: undefined, // no specific header
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const name = options.getArgument(nameOption);
   if (name.length > 16) {
     throw new InvalidArgumentError(nameOption.name, 'Option name is expected to be a string of 16 characters maximum. Example: HELLOWORLD');

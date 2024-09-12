@@ -1,7 +1,7 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type ArgumentOptionDefinition, nameOption, type OptionContainer, loadOption} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
 import {calculateChecksum8Xor} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {TzxEncoder} from '../TzxEncoder.js';
@@ -40,11 +40,11 @@ const typeNumberArray = 1;
 const typeCharArray = 2;
 const typeBinary = 3;
 
-function identify(_filename: string, _ba: BufferAccess) {
+function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const name = options.getArgument(nameOption);
   const type = options.getArgument(typeOption);
 

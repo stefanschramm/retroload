@@ -10,7 +10,7 @@ main()
     Logger.error(err as string);
   });
 
-async function main() {
+async function main(): Promise<void> {
   // TODO / Nice to haves:
   // - CSW as additional input format
   // - kcsss (and many others) as additional output format

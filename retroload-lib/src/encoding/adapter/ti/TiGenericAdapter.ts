@@ -25,7 +25,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   if (ba.length() % blockSize !== 0) {
     Logger.info(`Length of data is not a multiple of ${blockSize} bytes. Last block will be padded with 0.`);
   }

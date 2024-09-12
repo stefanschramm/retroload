@@ -38,7 +38,7 @@ export class MsxEncoder implements ByteRecorder {
     this.oscillator.end();
   }
 
-  public recordHeader(long: boolean) {
+  public recordHeader(long: boolean): void {
     this.oscillator.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
     long = this.shortpilot ? false : long; // use short pulse if shortpilot option is set
     const pulses = long ? pulsesLongHeader : pulsesShortHeader;

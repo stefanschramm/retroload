@@ -11,7 +11,7 @@ test('StreamingSampleToHalfPeriodConverter', () => {
   runTest(new StreamingSampleToHalfPeriodConverter(new SampleProviderMock()));
 });
 
-function runTest(hpp: HalfPeriodProvider) {
+function runTest(hpp: HalfPeriodProvider): void {
   expect(hpp.getPosition().samples).toBe(0);
   expect(hpp.getPosition().seconds).toBe(0);
   expect(hpp.getNext()).toBe(11025);

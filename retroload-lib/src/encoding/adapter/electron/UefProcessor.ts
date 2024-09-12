@@ -19,7 +19,7 @@ export class UefProcessor {
     this.e = new ElectronEncoder(this.r);
   }
 
-  public processUef(uefBa: BufferAccess) {
+  public processUef(uefBa: BufferAccess): void {
     this.e.begin();
     let chunkOffset = 12;
     while (chunkOffset < uefBa.length()) {

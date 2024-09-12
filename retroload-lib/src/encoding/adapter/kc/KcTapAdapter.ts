@@ -4,7 +4,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {InputDataError} from '../../../common/Exceptions.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for KC .TAP files
@@ -23,14 +23,14 @@ const fileHeaderLength = 16;
 const blockSize = 128;
 const fileBlockSize = 1 + blockSize; // 1 byte block number
 
-function identify(filename: string, ba: BufferAccess) {
+function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
     filename: (/^.*\.tap$/i).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   const dataBa = ba.slice(fileHeaderLength);
 
   if (dataBa.length() === 0) {

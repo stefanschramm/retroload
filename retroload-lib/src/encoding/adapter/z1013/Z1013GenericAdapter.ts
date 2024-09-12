@@ -21,7 +21,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer) {
+function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
   const e = new Z1013Encoder(recorder);
   e.begin();
   e.recordData(ba);
