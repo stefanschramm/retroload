@@ -52,6 +52,23 @@ export function calculateCrc16Ccitt(ba: BufferAccess): number {
   return crc ^ 0xffff; // The negation is not part of the actual CRC16-CCITT code.
 }
 
+/**
+ * https://stackoverflow.com/a/75806068
+ * 
+ * Used by Acorn Electron
+ */
+export function calculateCrc16Xmodem(ba: BufferAccess): number {
+  let crc = 0;
+  let t = 0;
+  for (const byte of ba.bytes()) {
+    t = (crc >> 8) ^ byte;
+    t ^= t >> 4;
+    crc = (crc << 8) ^ (t << 12) ^ (t << 5) ^ t;
+    crc &= 0xffff;
+  }
+  return crc;
+}
+
 export function hex8(value: number): string {
   return `0x${value.toString(16).padStart(2, '0')}`;
 }

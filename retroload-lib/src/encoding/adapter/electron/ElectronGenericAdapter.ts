@@ -6,7 +6,7 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
 import {type AdapterDefinition} from '../AdapterDefinition.js';
-import {hex8} from '../../../common/Utils.js';
+import {calculateCrc16Xmodem, hex8} from '../../../common/Utils.js';
 
 const definition: AdapterDefinition = {
   name: 'Acorn Electron (Generic data)',
@@ -65,9 +65,9 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     const blockBa = BufferAccess.create(blockSize);
     blockBa.writeUint8(0x2a); // sync byte
     blockBa.writeBa(blockHeaderBa);
-    blockBa.writeUint16Be(calculateCrc(blockHeaderBa));
+    blockBa.writeUint16Be(calculateCrc16Xmodem(blockHeaderBa));
     blockBa.writeBa(blockDataBa);
-    blockBa.writeUint16Be(calculateCrc(blockDataBa));
+    blockBa.writeUint16Be(calculateCrc16Xmodem(blockDataBa));
 
     Logger.debug(`Block ${hex8(block)}`);
     Logger.debug(blockBa.asHexDump());
@@ -80,19 +80,4 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
 
   e.recordPilot(shortpilot ? 1.5 : 5.3);
   e.end();
-}
-
-/**
- * https://stackoverflow.com/a/75806068
- */
-function calculateCrc(ba: BufferAccess): number {
-  let crc = 0;
-  let t = 0;
-  for (const byte of ba.bytes()) {
-    t = (crc >> 8) ^ byte;
-    t ^= t >> 4;
-    crc = (crc << 8) ^ (t << 12) ^ (t << 5) ^ t;
-    crc &= 0xffff;
-  }
-  return crc;
 }
