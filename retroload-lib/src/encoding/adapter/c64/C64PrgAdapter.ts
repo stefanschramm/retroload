@@ -2,7 +2,7 @@ import {shortpilotOption, type OptionContainer, nameOption} from '../../Options.
 import {C64Encoder} from './C64Encoder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 
@@ -11,9 +11,9 @@ import {InvalidArgumentError} from '../../../common/Exceptions.js';
  *
  * http://fileformats.archiveteam.org/wiki/Commodore_64_binary_executable
  */
-const definition: AdapterDefinition = {
-  name: 'C64 .PRG-File',
-  internalName: 'c64prg',
+const definition: InternalAdapterDefinition = {
+  label: 'C64 .PRG-File',
+  name: 'c64prg',
   options: [shortpilotOption, c64machineOption, nameOption],
   identify,
   encode,

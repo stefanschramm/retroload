@@ -1,7 +1,7 @@
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type ArgumentOptionDefinition, nameOption, type OptionContainer, loadOption} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, unidentifiable, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {calculateChecksum8Xor} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {TzxEncoder} from '../TzxEncoder.js';
@@ -22,9 +22,9 @@ const typeOption: ArgumentOptionDefinition<number> = {
  *
  * https://faqwiki.zxnet.co.uk/wiki/Spectrum_tape_interface
  */
-const definition: AdapterDefinition = {
-  name: 'ZX Spectrum (Generic data)',
-  internalName: 'zxspectrumgeneric',
+const definition: InternalAdapterDefinition = {
+  label: 'ZX Spectrum (Generic data)',
+  name: 'zxspectrumgeneric',
   options: [
     nameOption,
     typeOption,

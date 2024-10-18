@@ -4,7 +4,7 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type ArgumentOptionDefinition, nameOption, type OptionContainer, type FlagOptionDefinition} from '../../Options.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 enum KcBasicType {
   program = 'program',
@@ -48,9 +48,9 @@ const kcBasicProtectedOption: FlagOptionDefinition = {
 /**
  * https://hc-ddr.hucki.net/wiki/doku.php/z9001/kassettenformate
  */
-const definition: AdapterDefinition = {
-  name: 'KC (Generic BASIC data)',
-  internalName: 'kcbasic',
+const definition: InternalAdapterDefinition = {
+  label: 'KC (Generic BASIC data)',
+  name: 'kcbasic',
   options: [
     nameOption,
     kcBasicTypeOption,

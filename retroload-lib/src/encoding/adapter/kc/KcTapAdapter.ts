@@ -4,14 +4,14 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {InputDataError} from '../../../common/Exceptions.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for KC .TAP files
  */
-const definition: AdapterDefinition = {
-  name: 'KC .TAP-File',
-  internalName: 'kctap',
+const definition: InternalAdapterDefinition = {
+  label: 'KC .TAP-File',
+  name: 'kctap',
   options: [],
   identify,
   encode,

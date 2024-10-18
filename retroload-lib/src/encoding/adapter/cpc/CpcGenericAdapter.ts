@@ -3,16 +3,16 @@ import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {calculateCrc16Ccitt, hex8} from '../../../common/Utils.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 
 /**
  * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
  */
-const definition: AdapterDefinition = {
-  name: 'CPC (Generic data)',
-  internalName: 'cpcgeneric',
+const definition: InternalAdapterDefinition = {
+  label: 'CPC (Generic data)',
+  name: 'cpcgeneric',
   options: [
     nameOption,
     loadOption,

@@ -4,7 +4,7 @@ import {inflate} from 'pako';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {UefProcessor} from './UefProcessor.js';
 
 /**
@@ -12,9 +12,9 @@ import {UefProcessor} from './UefProcessor.js';
  *
  * http://electrem.emuunlim.com/UEFSpecs.html
  */
-const definition: AdapterDefinition = {
-  name: 'Acorn Electron .UEF-File',
-  internalName: 'uef',
+const definition: InternalAdapterDefinition = {
+  label: 'Acorn Electron .UEF-File',
+  name: 'uef',
   options: [],
   identify,
   encode,

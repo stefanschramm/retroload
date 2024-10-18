@@ -2,7 +2,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer, type FlagOptionDefinition} from '../../Options.js';
 import {BasicodeEncoder} from './BasicodeEncoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type AdapterDefinition, type FormatIdentification} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition, type FormatIdentification} from '../AdapterDefinition.js';
 
 const basicodeDataOption: FlagOptionDefinition = {
   name: 'basicodedata',
@@ -12,9 +12,9 @@ const basicodeDataOption: FlagOptionDefinition = {
   common: false,
 };
 
-const definition: AdapterDefinition = {
-  name: 'BASICODE (ASCII plain text)',
-  internalName: 'basicode',
+const definition: InternalAdapterDefinition = {
+  label: 'BASICODE (ASCII plain text)',
+  name: 'basicode',
   options: [
     shortpilotOption,
     basicodeDataOption,

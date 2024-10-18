@@ -55,9 +55,9 @@ export type ArgumentOptionDefinition<T> = PublicArgumentOptionDefinition & {
   parse: (value: string) => T;
 };
 
-export type PublicOptionDefinition = OptionDefinition | PublicArgumentOptionDefinition;
+export type OptionDefinition = InternalOptionDefinition | PublicArgumentOptionDefinition;
 
-export type OptionDefinition = FlagOptionDefinition | ArgumentOptionDefinition<any>;
+export type InternalOptionDefinition = FlagOptionDefinition | ArgumentOptionDefinition<any>;
 
 export type OptionValues = Record<string, string | boolean>;
 

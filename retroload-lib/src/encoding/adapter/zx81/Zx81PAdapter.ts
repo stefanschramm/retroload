@@ -3,14 +3,14 @@ import {type OptionContainer, nameOption} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for ZX81 .P files
  */
-const definition: AdapterDefinition = {
-  name: 'ZX81 .P-File',
-  internalName: 'zx81p',
+const definition: InternalAdapterDefinition = {
+  label: 'ZX81 .P-File',
+  name: 'zx81p',
   options: [nameOption],
   identify,
   encode,

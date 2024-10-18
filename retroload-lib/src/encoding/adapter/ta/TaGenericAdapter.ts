@@ -4,14 +4,14 @@ import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for generic data for TA alphatronic PC
  */
-const definition: AdapterDefinition = {
-  name: 'TA alphatronic PC (BASIC/Generic data)',
-  internalName: 'tageneric',
+const definition: InternalAdapterDefinition = {
+  label: 'TA alphatronic PC (BASIC/Generic data)',
+  name: 'tageneric',
   options: [nameOption],
   identify,
   encode,

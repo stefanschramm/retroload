@@ -1,15 +1,15 @@
 
 import {type BufferAccess} from '../../common/BufferAccess.js';
-import {type OptionContainer, type PublicOptionDefinition} from '../Options.js';
+import {type OptionContainer, type OptionDefinition} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
-export type PublicAdapterDefinition = {
+export type AdapterDefinition = {
+  readonly label: string;
   readonly name: string;
-  readonly internalName: string;
-  readonly options: PublicOptionDefinition[];
+  readonly options: OptionDefinition[];
 };
 
-export type AdapterDefinition = PublicAdapterDefinition & {
+export type InternalAdapterDefinition = AdapterDefinition & {
   readonly identify: (filename: string, ba: BufferAccess) => FormatIdentification;
   readonly encode: (recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer) => void;
 };

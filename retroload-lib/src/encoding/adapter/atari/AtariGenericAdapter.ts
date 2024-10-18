@@ -3,12 +3,12 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
-const definition: AdapterDefinition = {
-  name: 'Atari (Generic data)',
-  internalName: 'atarigeneric',
+const definition: InternalAdapterDefinition = {
+  label: 'Atari (Generic data)',
+  name: 'atarigeneric',
   options: [],
   identify,
   encode,

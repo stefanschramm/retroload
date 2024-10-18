@@ -8,30 +8,21 @@ const dataMap = {
   [SampleValue.Zero]: 0.0,
 };
 
-export class PcmRecorder implements RecorderInterface {
+export class FloatRecorder implements RecorderInterface {
   public sampleRate = 44100;
-  private readonly audioContext: AudioContext;
   private readonly data: number[] = [];
   private readonly annotationCollector = new AnnotationCollector();
-
-  public constructor(audioContext: any) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    this.audioContext = audioContext;
-  }
 
   public pushSample(value: SampleValue): void {
     this.data.push(dataMap[value]);
   }
 
-  public getAudioContextBuffer(): AudioBuffer {
+  public getFloat32Array(): Float32Array {
     if (this.data.length === 0) {
       throw new InternalError('No data recorded!');
     }
 
-    const buffer = this.audioContext.createBuffer(1, this.data.length, this.sampleRate);
-    buffer.copyToChannel(new Float32Array(this.data), 0, 0);
-
-    return buffer;
+    return new Float32Array(this.data);
   }
 
   public beginAnnotation(label: string): void {

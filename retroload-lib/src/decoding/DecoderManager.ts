@@ -1,19 +1,19 @@
-import {type BufferAccess} from '../common/BufferAccess.js';
+import {BufferAccess} from '../common/BufferAccess.js';
 import {InternalError, UsageError} from '../common/Exceptions.js';
 import {type Position} from '../common/Positioning.js';
 import {type SampleProvider} from './sample_provider/SampleProvider.js';
 import {WaveFileSampleProvider} from './sample_provider/WaveFileSampleProvider.js';
-import DecoderProvider from './decoder/DecoderProvider.js';
+import Decoders from './decoder/Decoders.js';
 
-export function decodeWav(ba: BufferAccess, format: string, settings: DecoderSettings): Generator <OutputFile> {
+export function decodeWav(data: Uint8Array, format: string, settings: DecoderSettings): Generator <OutputFile> {
   const decoder = getDecoder(format);
-  const reader = new WaveFileSampleProvider(ba, settings.skip, settings.channel);
+  const reader = new WaveFileSampleProvider(BufferAccess.createFromUint8Array(data), settings.skip, settings.channel);
 
   return decoder.decode(reader, settings);
 }
 
-function getDecoder(format: string): DecoderDefinition {
-  const availableDecoders = DecoderProvider.filter((c) => c.format === format);
+function getDecoder(format: string): InternalDecoderDefinition {
+  const availableDecoders = Decoders.filter((c) => c.format === format);
   if (availableDecoders.length === 0) {
     throw new UsageError(`No decoder for output format "${format}" found.`);
   }
@@ -25,11 +25,14 @@ function getDecoder(format: string): DecoderDefinition {
 }
 
 export function getAllDecoders(): DecoderDefinition[] {
-  return DecoderProvider;
+  return Decoders;
 }
 
 export type DecoderDefinition = {
   format: string;
+};
+
+export type InternalDecoderDefinition = DecoderDefinition & {
   decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile>;
 };
 

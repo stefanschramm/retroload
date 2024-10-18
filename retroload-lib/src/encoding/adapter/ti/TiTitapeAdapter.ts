@@ -4,7 +4,7 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for TI-99/4A .TITape files
@@ -12,9 +12,9 @@ import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefin
  * A .TITape archive can contain several files. They will be appended one after another.
  * When playing, it's probably required to press pause in between the individual files.
  */
-const definition: AdapterDefinition = {
-  name: 'TI-99/4A .TITape-File',
-  internalName: 'titape',
+const definition: InternalAdapterDefinition = {
+  label: 'TI-99/4A .TITape-File',
+  name: 'titape',
   options: [],
   identify,
   encode,

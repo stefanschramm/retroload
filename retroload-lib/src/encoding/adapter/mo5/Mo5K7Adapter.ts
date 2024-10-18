@@ -4,15 +4,15 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type OptionContainer} from '../../Options.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
 /**
  * Adapter for MO5 .K7 files
  */
-const definition: AdapterDefinition = {
-  name: 'MO5 .K7-File',
-  internalName: 'k7',
+const definition: InternalAdapterDefinition = {
+  label: 'MO5 .K7-File',
+  name: 'k7',
   options: [],
   identify,
   encode,

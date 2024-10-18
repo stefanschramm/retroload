@@ -2,12 +2,12 @@ import {TzxProcessor} from '../tzx/TzxProcessor.js';
 import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 
-const definition: AdapterDefinition = {
-  name: 'CPC .CDT-File',
-  internalName: 'cdt',
+const definition: InternalAdapterDefinition = {
+  label: 'CPC .CDT-File',
+  name: 'cdt',
   options: [],
   identify,
   encode,

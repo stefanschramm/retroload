@@ -3,7 +3,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FlagOptionDefinition, type OptionContainer} from '../../Options.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex16, hex8} from '../../../common/Utils.js';
 
 const z80noHeadersave: FlagOptionDefinition = {
@@ -17,9 +17,9 @@ const z80noHeadersave: FlagOptionDefinition = {
 /**
  * Adapter for Z 1013 .Z80 files (Headersave)
  */
-const definition: AdapterDefinition = {
-  name: 'Z 1013 .Z80-File (Headersave)',
-  internalName: 'z80',
+const definition: InternalAdapterDefinition = {
+  label: 'Z 1013 .Z80-File (Headersave)',
+  name: 'z80',
   options: [z80noHeadersave],
   identify,
   encode,

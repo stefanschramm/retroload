@@ -4,16 +4,16 @@ import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {kcFirstBlockOption} from './KcOptions.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for KC .KCC files
  *
  * KCC files contain the tape header block and file data without block numbers and checksums.
  */
-const definition: AdapterDefinition = {
-  name: 'KC .KCC-File',
-  internalName: 'kcc',
+const definition: InternalAdapterDefinition = {
+  label: 'KC .KCC-File',
+  name: 'kcc',
   options: [kcFirstBlockOption],
   identify,
   encode,

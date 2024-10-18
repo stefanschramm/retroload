@@ -1,21 +1,18 @@
 // General
 export {Logger} from './common/logging/Logger.js';
-export * as Exception from './common/Exceptions.js';
-export {BufferAccess} from './common/BufferAccess.js';
+export * as Exception from './common/Exceptions.js'; // TODO: Narrow down?
 export {formatPosition, type Position} from './common/Positioning.js';
 export {version} from './version.js';
-export {type Annotation} from './encoding/recorder/Annotations.js';
 
 // Encoding
-export {PcmRecorder} from './encoding/recorder/PcmRecorder.js';
-export {WaveRecorder} from './encoding/recorder/WaveRecorder.js';
-export * as AdapterManager from './encoding/AdapterManager.js';
-export {type PublicOptionDefinition} from './encoding/Options.js';
-export {type PublicAdapterDefinition} from './encoding/adapter/AdapterDefinition.js';
+export {type Annotation} from './encoding/recorder/Annotations.js';
+export {type OptionDefinition} from './encoding/Options.js';
+export {type AdapterDefinition} from './encoding/adapter/AdapterDefinition.js';
+export {identify, getEncodingAdapters, getAllEncodingOptions, encodeUint8, encodeUint8Wav, type EncodingResult} from './encoding/AdapterManager.js';
 
-// Decoding
-export * as DecoderManager from './decoding/DecoderManager.js';
+// Decoding - EXPERIMENTAL
+export {decodeWav, getAllDecoders, type DecoderSettings} from './decoding/DecoderManager.js';
 
-// Tokenization
+// BASIC Tokenization - EXPERIMENTAL
 export {tokenizers as BasicTokenizers} from './tokenizing/TokenizerProvider.js';
 export {type TokenizerDefinition} from './tokenizing/TokenizerDefinition.js';

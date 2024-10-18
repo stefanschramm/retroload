@@ -3,14 +3,14 @@ import {Z1013Encoder} from './Z1013Encoder.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for generic data for Z 1013
  */
-const definition: AdapterDefinition = {
-  name: 'Z 1013 (Generic data)',
-  internalName: 'z1013generic',
+const definition: InternalAdapterDefinition = {
+  label: 'Z 1013 (Generic data)',
+  name: 'z1013generic',
   options: [],
   identify,
   encode,

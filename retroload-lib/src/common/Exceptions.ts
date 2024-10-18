@@ -1,4 +1,4 @@
-import {type PublicOptionDefinition} from '../encoding/Options';
+import {type OptionDefinition} from '../encoding/Options';
 
 /**
  * Error that is usually caused by invalid usage
@@ -15,12 +15,6 @@ export class InternalError extends Error {
 export class InputDataError extends UsageError {
 }
 
-export class FormatAutodetectionFailedError extends UsageError {
-  public constructor() {
-    super('Unable to autodetect input file format. Please specify format manually.');
-  }
-}
-
 export class FormatNotFoundError extends UsageError {
   public constructor(format: string) {
     super(`Specified format "${format}" not found.`);
@@ -28,7 +22,7 @@ export class FormatNotFoundError extends UsageError {
 }
 
 export class MissingOptionsError extends UsageError {
-  public constructor(missingOptions: PublicOptionDefinition[]) {
+  public constructor(missingOptions: OptionDefinition[]) {
     const optionList = missingOptions.map((o) => o.name);
     super(`The following options are required: ${optionList.join(', ')}`);
   }

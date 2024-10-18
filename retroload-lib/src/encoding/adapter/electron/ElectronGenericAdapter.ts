@@ -5,12 +5,12 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
-const definition: AdapterDefinition = {
-  name: 'Acorn Electron (Generic data)',
-  internalName: 'electrongeneric',
+const definition: InternalAdapterDefinition = {
+  label: 'Acorn Electron (Generic data)',
+  name: 'electrongeneric',
   options: [
     nameOption, // 1 - 10 characters
     loadOption,

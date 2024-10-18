@@ -2,7 +2,7 @@ import {MsxEncoder} from './MsxEncoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer, loadOption, nameOption, entryOption} from '../../Options.js';
-import {type FormatIdentification, unidentifiable, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, unidentifiable, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {msxTypeOption, msxfastOption} from './MsxOptions.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
 import {MsxType, maxNameLength, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
@@ -10,9 +10,9 @@ import {MsxType, maxNameLength, typeHeaderLength, typeHeaderMap} from './MsxDefi
 /**
  * Adapter for generic data for MSX
  */
-const definition: AdapterDefinition = {
-  name: 'MSX (Generic binary)',
-  internalName: 'msxgeneric',
+const definition: InternalAdapterDefinition = {
+  label: 'MSX (Generic binary)',
+  name: 'msxgeneric',
   options: [
     loadOption,
     nameOption,

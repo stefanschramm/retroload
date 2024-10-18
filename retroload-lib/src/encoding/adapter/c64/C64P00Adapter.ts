@@ -2,7 +2,7 @@ import {shortpilotOption, type OptionContainer} from '../../Options.js';
 import {C64Encoder} from './C64Encoder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 
 /**
@@ -10,9 +10,9 @@ import {c64machineOption} from './C64Options.js';
  *
  * http://unusedino.de/ec64/technical/formats/pc64.html
  */
-const definition: AdapterDefinition = {
-  name: 'C64 .P00-File',
-  internalName: 'c64p00',
+const definition: InternalAdapterDefinition = {
+  label: 'C64 .P00-File',
+  name: 'c64p00',
   options: [shortpilotOption, c64machineOption],
   identify,
   encode,

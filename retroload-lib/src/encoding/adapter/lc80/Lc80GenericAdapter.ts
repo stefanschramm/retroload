@@ -4,16 +4,16 @@ import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex16} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
 
 /**
  * Adapter for generic data for LC 80
  */
-const definition: AdapterDefinition = {
-  name: 'LC80 (Generic data)',
-  internalName: 'lc80generic',
+const definition: InternalAdapterDefinition = {
+  label: 'LC80 (Generic data)',
+  name: 'lc80generic',
   options: [
     nameOption,
     loadOption,
