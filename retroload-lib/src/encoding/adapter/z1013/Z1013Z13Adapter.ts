@@ -1,11 +1,11 @@
 import Z1013GenericAdapter from './Z1013GenericAdapter.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for Z 1013 .Z13 files (raw data)
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   ...Z1013GenericAdapter,
   name: 'Z 1013 .Z13-File',
   internalName: 'z13',

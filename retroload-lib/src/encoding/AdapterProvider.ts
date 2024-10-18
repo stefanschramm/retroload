@@ -1,4 +1,4 @@
-import {type AdapterDefinition} from './adapter/AdapterDefinition.js';
+import {type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
 import AtariCasAdapter from './adapter/atari/AtariCasAdapter.js';
 import AtariGenericAdapter from './adapter/atari/AtariGenericAdapter.js';
 import BasicodeAdapter from './adapter/basicode/BasicodeAdapter.js';
@@ -35,7 +35,7 @@ import ZxSpectrumGenericAdapter from './adapter/zxspectrum/ZxSpectrumGenericAdap
 import ZxSpectrumTapAdapter from './adapter/zxspectrum/ZxSpectrumTapAdapter.js';
 import ZxSpectrumTzxAdapter from './adapter/zxspectrum/ZxSpectrumTzxAdapter.js';
 
-export const adapters: AdapterDefinition[] = [
+export const adapters: InternalAdapterDefinition[] = [
   AtariCasAdapter,
   AtariGenericAdapter,
   BasicodeAdapter,

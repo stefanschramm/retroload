@@ -1,10 +1,10 @@
 import {Help} from 'commander';
 import {type CustomCommand} from './CustomCommand.js';
-import {type PublicOptionDefinition, type PublicAdapterDefinition} from 'retroload-lib/dist/cjs/index.js';
+import {type AdapterDefinition, type OptionDefinition} from 'retroload-lib';
 
 export class CustomHelp extends Help {
   public constructor(
-    private readonly adapters: PublicAdapterDefinition[],
+    private readonly adapters: AdapterDefinition[],
   ) {
     super();
   }
@@ -31,9 +31,9 @@ export class CustomHelp extends Help {
 
     const adaptersSorted = this.adapters.sort((a, b) => a.name.localeCompare(b.name));
 
-    const adapterList = adaptersSorted.map((adapter: PublicAdapterDefinition) => {
+    const adapterList = adaptersSorted.map((adapter: AdapterDefinition) => {
       const adapterOptionsSorted = adapter.options.sort((a, b) => a.name.localeCompare(b.name));
-      const adapterOptions = adapterOptionsSorted.map((option: PublicOptionDefinition) => formatItem(`  --${option.name}`, `${option.description}`));
+      const adapterOptions = adapterOptionsSorted.map((option: OptionDefinition) => formatItem(`  --${option.name}`, `${option.description}`));
       let adapterDetails = formatItem(`${adapter.name} (${adapter.internalName})`, '');
       if (adapterOptions.length > 0) {
         adapterDetails += '\n' + adapterOptions.join('\n');

@@ -3,12 +3,12 @@ import {BufferAccess} from '../../../common/BufferAccess.js';
 import {nameOption, type OptionContainer} from '../../Options.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for KC .SSS (BASIC) files
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'KC .SSS-File',
   internalName: 'sss',
   options: [nameOption],

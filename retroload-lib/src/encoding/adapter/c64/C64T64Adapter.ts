@@ -2,7 +2,7 @@ import {C64Encoder} from './C64Encoder.js';
 import {shortpilotOption, type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {c64TapfileHeader} from './C64TapAdapter.js';
 
@@ -11,7 +11,7 @@ import {c64TapfileHeader} from './C64TapAdapter.js';
  *
  * http://unusedino.de/ec64/technical/formats/t64.html
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'C64 .T64-File',
   internalName: 't64',
   options: [shortpilotOption, c64machineOption],

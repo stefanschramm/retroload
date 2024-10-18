@@ -1,5 +1,4 @@
 import {
-  FormatAutodetectionFailedError,
   FormatNotFoundError,
   InternalError,
   InvalidArgumentError,
@@ -17,11 +16,6 @@ describe('Instantiation of exceptions', () => {
   test('InternalError', () => {
     const e = new InternalError('Example');
     expect(e).toBeInstanceOf(InternalError);
-  });
-
-  test('FormatAutodetectionFailedError', () => {
-    const e = new FormatAutodetectionFailedError();
-    expect(e).toBeInstanceOf(FormatAutodetectionFailedError);
   });
 
   test('FormatNotFoundError', () => {

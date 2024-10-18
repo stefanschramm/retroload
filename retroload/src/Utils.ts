@@ -1,18 +1,23 @@
 import fs from 'fs';
-import {BufferAccess} from 'retroload-lib';
 
-export function readFile(path: string): BufferAccess {
+export function readFile(path: string): Uint8Array {
   try {
-    return BufferAccess.createFromNodeBuffer(fs.readFileSync(path));
+    const buffer = fs.readFileSync(path);
+    const arrayBuffer = buffer.buffer.slice(
+      buffer.byteOffset,
+      buffer.byteOffset + buffer.byteLength,
+    );
+
+    return new Uint8Array(arrayBuffer, 0, buffer.byteLength);
   } catch {
     console.error(`Error: Unable to read ${path}.`);
     process.exit(1);
   }
 }
 
-export function writeFile(path: string, data: BufferAccess): void {
+export function writeFile(path: string, data: Uint8Array): void {
   try {
-    fs.writeFileSync(path, data.asUint8Array());
+    fs.writeFileSync(path, data);
   } catch {
     console.error(`Error: Unable to write output file ${path}`);
     process.exit(1);

@@ -3,7 +3,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {shortpilotOption, type OptionContainer} from '../../Options.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {msxfastOption} from './MsxOptions.js';
 import {MsxType, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
 import {hex16} from '../../../common/Utils.js';
@@ -13,7 +13,7 @@ import {hex16} from '../../../common/Utils.js';
  *
  * https://www.msx.org/wiki/Emulation_related_file_formats#.CAS
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'MSX .CAS-File',
   internalName: 'msxcas',
   options: [

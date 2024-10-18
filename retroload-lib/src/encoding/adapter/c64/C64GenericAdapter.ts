@@ -4,7 +4,7 @@ import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 
 enum C64Type {
@@ -35,7 +35,7 @@ const c64typeOption: ArgumentOptionDefinition<C64Type> = {
   },
 };
 
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'C64 (Generic data)',
   internalName: 'c64generic',
   options: [

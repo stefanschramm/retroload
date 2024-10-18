@@ -5,7 +5,7 @@ import {KcEncoder} from './KcEncoder.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {kcFirstBlockOption} from './KcOptions.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Generic adapter for KC data
@@ -14,7 +14,7 @@ import {type AdapterDefinition} from '../AdapterDefinition.js';
  * [2] KC 85/3 Systemhandbuch, p. 82 - 83
  * [3] KC 85/4 Systemhandbuch, p. 93 - 95
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'KC (Generic)',
   internalName: 'kcgeneric',
   options: [

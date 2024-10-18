@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import {formatPosition, Logger, version as libVersion, DecoderManager} from 'retroload-lib';
+import {formatPosition, Logger, version as libVersion, decodeWav, getAllDecoders, type DecoderSettings} from 'retroload-lib';
 import {Command, type OptionValues} from 'commander';
 import {version as cliVersion} from './version.js';
 import {readFile, writeFile} from './Utils.js';
@@ -45,31 +45,31 @@ async function main(): Promise<void> {
   }
   const outPathPrefix = typeof options['o'] === 'string' ? options['o'] : './';
   const decoderSettings = getDecoderSettings(options);
-  const ba = readFile(infile);
+  const data = readFile(infile);
 
   Logger.debug(`Output format: ${outputFormat}`);
   Logger.debug(`Settings: ${JSON.stringify(decoderSettings)}`);
   Logger.debug(`Processing ${infile}...`);
 
   let i = 0;
-  for (const file of DecoderManager.decodeWav(ba, outputFormat, decoderSettings)) {
+  for (const file of decodeWav(data, outputFormat, decoderSettings)) {
     const extension = typeof options['extension'] === 'string' ? options['extension'] : file.proposedExtension;
     const fallbackName = `${i}.${extension}`;
     const proposedName = file.proposedName === undefined ? fallbackName : `${file.proposedName}.${extension}`;
     const fileName = options['proposedName'] ? proposedName : fallbackName;
     Logger.info(`Writing file: ${fileName} (${file.data.length()} bytes, position in input: ${formatPosition(file.begin)} - ${formatPosition(file.end)})`);
     Logger.debug(file.data.asHexDump());
-    writeFile(`${outPathPrefix}${fileName}`, file.data);
+    writeFile(`${outPathPrefix}${fileName}`, file.data.asUint8Array());
     i++;
   }
   Logger.info(`Dumped ${i} file(s).`);
 }
 
 function getDecoderList(): string {
-  return DecoderManager.getAllDecoders().map((c) => c.format).join(', ');
+  return getAllDecoders().map((c) => c.format).join(', ');
 }
 
-function getDecoderSettings(options: OptionValues): DecoderManager.DecoderSettings {
+function getDecoderSettings(options: OptionValues): DecoderSettings {
   if (typeof options['onError'] !== 'string') {
     Logger.error('error: invalid value for argument \'on-error\'');
     process.exit(1);

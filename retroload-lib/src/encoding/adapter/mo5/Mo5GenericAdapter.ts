@@ -4,7 +4,7 @@ import {nameOption, type ArgumentOptionDefinition, type OptionContainer} from '.
 import {Mo5Encoder} from './Mo5Encoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 const fileTypeBasic = 0x00; // other types: 1 == data, 2 == binary
 const fileModeBinary = 0x00; // other modes: 0xff == text
@@ -34,7 +34,7 @@ const modeOption: ArgumentOptionDefinition<number> = {
 /**
  * Adapter for generic data for MO5
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'MO5 (Generic data)',
   internalName: 'mo5generic',
   options: [

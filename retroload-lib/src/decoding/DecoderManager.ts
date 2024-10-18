@@ -1,13 +1,13 @@
-import {type BufferAccess} from '../common/BufferAccess.js';
+import {BufferAccess} from '../common/BufferAccess.js';
 import {InternalError, UsageError} from '../common/Exceptions.js';
 import {type Position} from '../common/Positioning.js';
 import {type SampleProvider} from './sample_provider/SampleProvider.js';
 import {WaveFileSampleProvider} from './sample_provider/WaveFileSampleProvider.js';
 import DecoderProvider from './decoder/DecoderProvider.js';
 
-export function decodeWav(ba: BufferAccess, format: string, settings: DecoderSettings): Generator <OutputFile> {
+export function decodeWav(data: Uint8Array, format: string, settings: DecoderSettings): Generator <OutputFile> {
   const decoder = getDecoder(format);
-  const reader = new WaveFileSampleProvider(ba, settings.skip, settings.channel);
+  const reader = new WaveFileSampleProvider(BufferAccess.createFromUint8Array(data), settings.skip, settings.channel);
 
   return decoder.decode(reader, settings);
 }

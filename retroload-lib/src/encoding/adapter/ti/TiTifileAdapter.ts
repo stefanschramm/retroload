@@ -3,14 +3,14 @@ import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for TI-99/4A .TIFILE files
  *
  * https://www.ninerpedia.org/wiki/TIFILES_format
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'TI-99/4A .TIFILE-File',
   internalName: 'tifile',
   options: [],

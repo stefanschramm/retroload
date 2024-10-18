@@ -3,7 +3,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {hex8} from '../../../common/Utils.js';
 
@@ -12,7 +12,7 @@ import {hex8} from '../../../common/Utils.js';
  *
  * https://www.c64-wiki.com/wiki/TAP
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'C64 .TAP-File',
   internalName: 'c64tap',
   options: [c64machineOption],

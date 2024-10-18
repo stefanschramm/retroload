@@ -4,12 +4,12 @@ import {type OptionContainer} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
-import {type AdapterDefinition} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for TI-99/4A .FIAD files
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'TI-99/4A .FIAD-File',
   internalName: 'fiad',
   options: [],

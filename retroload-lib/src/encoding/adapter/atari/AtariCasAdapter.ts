@@ -4,7 +4,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
-import {type AdapterDefinition, type FormatIdentification} from '../AdapterDefinition.js';
+import {type InternalAdapterDefinition, type FormatIdentification} from '../AdapterDefinition.js';
 
 const fileHeader = 'FUJI';
 
@@ -13,7 +13,7 @@ const fileHeader = 'FUJI';
  *
  * https://a8cas.sourceforge.net/format-cas.html
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'Atari .CAS-File',
   internalName: 'ataricas',
   options: [],

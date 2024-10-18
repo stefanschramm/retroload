@@ -2,7 +2,6 @@ import * as AdapterManager from './AdapterManager.js';
 import {Logger} from '../common/logging/Logger.js';
 import {NullLoggerHandler} from '../common/logging/NullLoggerHandler.js';
 import {type OptionValues} from './Options.js';
-import {WaveRecorder} from './recorder/WaveRecorder.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import {BufferAccess} from '../common/BufferAccess.js';
@@ -12,12 +11,12 @@ import examples, {type ExampleDefinition, getLocalPath} from '../Examples.js';
 Logger.setHandler(new NullLoggerHandler());
 
 test('getAllAdapters returns non-empty list', () => {
-  expect(AdapterManager.getAllAdapters().length).toBeGreaterThan(0);
+  expect(AdapterManager.getEncodingAdapters().length).toBeGreaterThan(0);
   // Actual plausibility test of individual adapters is done in AdapterProvider test
 });
 
 test('getAllOptions returns options that have at least name, label, description and type set', () => {
-  const options = AdapterManager.getAllOptions();
+  const options = AdapterManager.getAllEncodingOptions();
   expect(options.length).toBeGreaterThan(0);
   for (const o of options) {
     expect(typeof o.name).toBe('string');
@@ -29,7 +28,7 @@ test('getAllOptions returns options that have at least name, label, description 
 });
 
 test('identify returns undefined for unknown formats', () => {
-  expect(AdapterManager.identify('example.xyz', BufferAccess.create(128))).toEqual(undefined);
+  expect(AdapterManager.identify(BufferAccess.create(128).asUint8Array(), 'example.xyz')).toEqual(undefined);
 });
 
 describe('Encoding pipeline returns correct hashes', () => {
@@ -47,17 +46,25 @@ function getTestLabel(example: ExampleDefinition): string {
 }
 
 function encodeAndHash(file: string, options: OptionValues): string | false {
-  const recorder = new WaveRecorder();
+  // const recorder = new WaveRecorder();
   const buffer = fs.readFileSync(file);
-  const ba = BufferAccess.createFromNodeBuffer(buffer);
-  if (!AdapterManager.encode(recorder, file, ba, options)) {
-    Logger.error('Unable to decode ' + file);
+  const data = BufferAccess.createFromNodeBuffer(buffer).asUint8Array();
+
+  let adapterIdentifier: string | undefined;
+  if (typeof options['format'] === 'string' && options['format'] !== undefined) {
+    adapterIdentifier = options['format'];
+  } else {
+    adapterIdentifier = AdapterManager.identify(data, file);
+  }
+  if (adapterIdentifier === undefined) {
+    Logger.error('Unable to identify ' + file);
     return false;
   }
+  const result = AdapterManager.encodeUint8Wav(adapterIdentifier, data, options);
 
-  return hash(recorder.getBa());
+  return hash(result.data);
 }
 
-function hash(ba: BufferAccess): string {
-  return crypto.createHash('md5').update(ba.asUint8Array()).digest('hex');
+function hash(data: Uint8Array): string {
+  return crypto.createHash('md5').update(data).digest('hex');
 }

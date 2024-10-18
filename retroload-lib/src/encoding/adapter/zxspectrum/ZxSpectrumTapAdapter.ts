@@ -1,7 +1,7 @@
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type AdapterDefinition} from '../AdapterDefinition.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 
 /**
@@ -9,7 +9,7 @@ import {TzxEncoder} from '../TzxEncoder.js';
  *
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
-const definition: AdapterDefinition = {
+const definition: InternalAdapterDefinition = {
   name: 'ZX Spectrum .TAP-File',
   internalName: 'zxspectrumtap',
   options: [],
