@@ -44,25 +44,41 @@ async function main(): Promise<void> {
   const options = program.opts();
   const infile = program.args[0];
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
-  let format = typeof options['f'] === 'string' ? options['f'] : undefined;
+  const shouldPlay = outfile === undefined;
+  const format = typeof options['f'] === 'string' ? options['f'] : undefined;
   Logger.setVerbosity(parseInt(typeof options['loglevel'] === 'string' ? options['loglevel'] : '1', 10));
   const data = readFile(infile);
 
   Logger.debug(`Processing ${infile}...`);
 
-  let result: EncodingResult<Uint8Array>;
   try {
-    if (format === undefined) {
-      format = identify(data, infile);
-      if (format === undefined) {
-        Logger.error(`Unable to identify ${infile}. Please specify format.`);
-        process.exit(1);
-      }
+    const adapterName = format ?? identify(data, infile);
+    if (adapterName === undefined) {
+      Logger.error(`Unable to identify ${infile}. Please specify format.`);
+      process.exit(1);
     }
-    if (undefined === outfile) {
-      result = encodeUint8(format, data, options);
+
+    let result: EncodingResult<Uint8Array>;
+
+    if (shouldPlay) {
+      result = encodeUint8(adapterName, data, options);
     } else {
-      result = encodeUint8Wav(format, data, options);
+      result = encodeUint8Wav(adapterName, data, options);
+    }
+
+    if (options['annotations']) {
+      printAnnotations(result.annotations);
+    }
+
+    if (shouldPlay) {
+      const playerWrapper = await getPlayerWrapper();
+      await playerWrapper.play(result.data);
+      Logger.info('Finished.');
+      process.exit(0);
+    } else {
+      // save
+      writeFile(outfile, result.data);
+      process.exit(0);
     }
   } catch (e) {
     if (e instanceof Exception.UsageError) {
@@ -71,22 +87,6 @@ async function main(): Promise<void> {
     } else {
       throw e; // show full stack trace for unexpected errors
     }
-  }
-
-  if (options['annotations']) {
-    printAnnotations(result.annotations);
-  }
-
-  if (undefined === outfile) {
-    // play
-    const playerWrapper = await getPlayerWrapper();
-    await playerWrapper.play(result.data);
-    Logger.info('Finished.');
-    process.exit(0);
-  } else {
-    // save
-    writeFile(outfile, result.data);
-    process.exit(0);
   }
 }
 
