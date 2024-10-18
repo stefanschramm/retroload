@@ -10,8 +10,8 @@ import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
  * Adapter for generic data for TA alphatronic PC
  */
 const definition: InternalAdapterDefinition = {
-  name: 'TA alphatronic PC (BASIC/Generic data)',
-  internalName: 'tageneric',
+  label: 'TA alphatronic PC (BASIC/Generic data)',
+  name: 'tageneric',
   options: [nameOption],
   identify,
   encode,

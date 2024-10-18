@@ -7,8 +7,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
  */
 const definition: InternalAdapterDefinition = {
   ...Z1013GenericAdapter,
-  name: 'Z 1013 .Z13-File',
-  internalName: 'z13',
+  label: 'Z 1013 .Z13-File',
+  name: 'z13',
   identify,
 };
 export default definition;

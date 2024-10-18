@@ -6,8 +6,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
 import {TzxEncoder} from '../TzxEncoder.js';
 
 const definition: InternalAdapterDefinition = {
-  name: 'CPC .CDT-File',
-  internalName: 'cdt',
+  label: 'CPC .CDT-File',
+  name: 'cdt',
   options: [],
   identify,
   encode,

@@ -11,8 +11,8 @@ import {TzxEncoder} from '../TzxEncoder.js';
  * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
  */
 const definition: InternalAdapterDefinition = {
-  name: 'CPC (Generic data)',
-  internalName: 'cpcgeneric',
+  label: 'CPC (Generic data)',
+  name: 'cpcgeneric',
   options: [
     nameOption,
     loadOption,

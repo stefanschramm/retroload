@@ -4,7 +4,7 @@ import {
   MissingOptionsError,
 } from '../common/Exceptions.js';
 import {BufferAccess} from '../common/BufferAccess.js';
-import {adapters, adapters as providedAdapters} from './AdapterProvider.js';
+import Adapters from './AdapterProvider.js';
 import {Logger} from '../common/logging/Logger.js';
 import {OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
 import {type RecorderInterface} from './recorder/RecorderInterface.js';
@@ -23,7 +23,7 @@ export const formatOption: ArgumentOptionDefinition<string | undefined> = {
   argument: 'format',
   required: false,
   parse: (v) => v === '' ? undefined : v,
-  enum: [...new Set(providedAdapters.map((a) => a.internalName))],
+  enum: [...new Set(Adapters.map((a) => a.name))],
 };
 
 // Public API functions
@@ -32,7 +32,7 @@ export const formatOption: ArgumentOptionDefinition<string | undefined> = {
  * Get all encoding adapter definitions
  */
 export function getEncodingAdapters(): AdapterDefinition[] {
-  return providedAdapters;
+  return Adapters;
 }
 
 /**
@@ -41,7 +41,7 @@ export function getEncodingAdapters(): AdapterDefinition[] {
 export function getAllEncodingOptions(): OptionDefinition[] {
   const options: OptionDefinition[] = [];
   const optionKeys: string[] = [];
-  for (const adapter of providedAdapters) {
+  for (const adapter of Adapters) {
     for (const option of adapter.options) {
       if (optionKeys.includes(option.name)) {
         if (option.common) {
@@ -60,13 +60,13 @@ export function getAllEncodingOptions(): OptionDefinition[] {
 /**
  * Try to identify tape archive file by its data and filename
  *
- * @returns adapter identifier on success, otherwise undefined
+ * @returns adapter name on success, otherwise undefined
  */
 export function identify(data: Uint8Array, filename: string): string | undefined {
-  const rankedAdapters = getRankedAdapters(adapters, filename, BufferAccess.createFromUint8Array(data));
+  const rankedAdapters = getRankedAdapters(Adapters, filename, BufferAccess.createFromUint8Array(data));
 
   if (rankedAdapters.length > 1 && rankedAdapters[0].score > rankedAdapters[1].score) {
-    return rankedAdapters[0].adapter.internalName;
+    return rankedAdapters[0].adapter.name;
   }
 
   return undefined;
@@ -83,9 +83,9 @@ export type EncodingResult<T> = {
 /**
  * Encode a tape archive file as unsigned 8 bit samples (1 channel, 44100 Hz sample rate)
  */
-export function encodeUint8(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Uint8Array> {
+export function encodeUint8(adapterName: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Uint8Array> {
   const recorder = new WaveRecorder();
-  encodeWithAdapter(recorder, getAdapterByIdentifier(adapterIdentifier), BufferAccess.createFromUint8Array(data), optionValues);
+  encodeWithAdapter(recorder, getAdapterByName(adapterName), BufferAccess.createFromUint8Array(data), optionValues);
 
   return {
     data: recorder.getRawBuffer(),
@@ -96,9 +96,9 @@ export function encodeUint8(adapterIdentifier: string, data: Uint8Array, optionV
 /**
  * Encode a tape archive file as WAV file (1 channel, 8 bit unsigned, 44100 Hz sample rate)
  */
-export function encodeUint8Wav(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Uint8Array> {
+export function encodeUint8Wav(adapterName: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Uint8Array> {
   const recorder = new WaveRecorder();
-  encodeWithAdapter(recorder, getAdapterByIdentifier(adapterIdentifier), BufferAccess.createFromUint8Array(data), optionValues);
+  encodeWithAdapter(recorder, getAdapterByName(adapterName), BufferAccess.createFromUint8Array(data), optionValues);
 
   return {
     data: recorder.getBa().asUint8Array(),
@@ -109,9 +109,9 @@ export function encodeUint8Wav(adapterIdentifier: string, data: Uint8Array, opti
 /**
  * Encode a tape archive file as 32 bit floating point samples (1 channel, 44100 Hz sample rate)
  */
-export function encodeFloat(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Float32Array> {
+export function encodeFloat(adapterName: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Float32Array> {
   const recorder = new FloatRecorder();
-  encodeWithAdapter(recorder, getAdapterByIdentifier(adapterIdentifier), BufferAccess.createFromUint8Array(data), optionValues);
+  encodeWithAdapter(recorder, getAdapterByName(adapterName), BufferAccess.createFromUint8Array(data), optionValues);
 
   return {
     data: recorder.getFloat32Array(),
@@ -121,8 +121,8 @@ export function encodeFloat(adapterIdentifier: string, data: Uint8Array, optionV
 
 // Internal functions
 
-function getAdapterByIdentifier(adapterIdentifier: string): InternalAdapterDefinition {
-  const foundAdapters = adapters.filter((a) => a.internalName === adapterIdentifier);
+function getAdapterByName(name: string): InternalAdapterDefinition {
+  const foundAdapters = Adapters.filter((a) => a.name === name);
   if (foundAdapters.length !== 1) {
     throw new FormatNotFoundError('Adapter not found');
   }
@@ -138,7 +138,7 @@ function encodeWithAdapter(recorder: RecorderInterface, adapter: InternalAdapter
     throw new MissingOptionsError(missingOptions);
   }
 
-  Logger.info(`Format: ${adapter.name} (${adapter.internalName})`);
+  Logger.info(`Format: ${adapter.label} (${adapter.name})`);
 
   adapter.encode(recorder, dataBa, optionContainer);
 

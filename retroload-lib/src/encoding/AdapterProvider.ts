@@ -35,7 +35,7 @@ import ZxSpectrumGenericAdapter from './adapter/zxspectrum/ZxSpectrumGenericAdap
 import ZxSpectrumTapAdapter from './adapter/zxspectrum/ZxSpectrumTapAdapter.js';
 import ZxSpectrumTzxAdapter from './adapter/zxspectrum/ZxSpectrumTzxAdapter.js';
 
-export const adapters: InternalAdapterDefinition[] = [
+const adapters: InternalAdapterDefinition[] = [
   AtariCasAdapter,
   AtariGenericAdapter,
   BasicodeAdapter,
@@ -72,3 +72,4 @@ export const adapters: InternalAdapterDefinition[] = [
   ZxSpectrumTapAdapter,
   ZxSpectrumTzxAdapter,
 ];
+export default adapters;

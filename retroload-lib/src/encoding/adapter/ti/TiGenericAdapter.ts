@@ -11,8 +11,8 @@ import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
  * Adapter for generic data for TI-99/4A
  */
 const definition: InternalAdapterDefinition = {
-  name: 'TI-99/4A (Generic)',
-  internalName: 'tigeneric',
+  label: 'TI-99/4A (Generic)',
+  name: 'tigeneric',
   options: [],
   identify,
   encode,

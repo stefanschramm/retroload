@@ -9,8 +9,8 @@ import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
  * Adapter for generic data for Z 1013
  */
 const definition: InternalAdapterDefinition = {
-  name: 'Z 1013 (Generic data)',
-  internalName: 'z1013generic',
+  label: 'Z 1013 (Generic data)',
+  name: 'z1013generic',
   options: [],
   identify,
   encode,

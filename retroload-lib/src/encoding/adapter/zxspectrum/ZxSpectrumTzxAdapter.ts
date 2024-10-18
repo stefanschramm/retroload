@@ -9,8 +9,8 @@ import {TzxEncoder} from '../TzxEncoder.js';
  * Adapter for ZX Spectrum .TZX files
  */
 const definition: InternalAdapterDefinition = {
-  name: 'ZX Spectrum .TZX-File',
-  internalName: 'zxspectrumtzx',
+  label: 'ZX Spectrum .TZX-File',
+  name: 'zxspectrumtzx',
   options: [],
   identify,
   encode,

@@ -9,8 +9,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
  * Adapter for KC .SSS (BASIC) files
  */
 const definition: InternalAdapterDefinition = {
-  name: 'KC .SSS-File',
-  internalName: 'sss',
+  label: 'KC .SSS-File',
+  name: 'sss',
   options: [nameOption],
   identify,
   encode,

@@ -13,8 +13,8 @@ import {hex8} from '../../../common/Utils.js';
  * https://www.c64-wiki.com/wiki/TAP
  */
 const definition: InternalAdapterDefinition = {
-  name: 'C64 .TAP-File',
-  internalName: 'c64tap',
+  label: 'C64 .TAP-File',
+  name: 'c64tap',
   options: [c64machineOption],
   identify,
   encode,

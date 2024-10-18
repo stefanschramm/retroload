@@ -13,8 +13,8 @@ const basicodeDataOption: FlagOptionDefinition = {
 };
 
 const definition: InternalAdapterDefinition = {
-  name: 'BASICODE (ASCII plain text)',
-  internalName: 'basicode',
+  label: 'BASICODE (ASCII plain text)',
+  name: 'basicode',
   options: [
     shortpilotOption,
     basicodeDataOption,

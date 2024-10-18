@@ -7,8 +7,8 @@ import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
 const definition: InternalAdapterDefinition = {
-  name: 'Atari (Generic data)',
-  internalName: 'atarigeneric',
+  label: 'Atari (Generic data)',
+  name: 'atarigeneric',
   options: [],
   identify,
   encode,

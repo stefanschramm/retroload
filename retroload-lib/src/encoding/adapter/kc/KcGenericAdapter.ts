@@ -15,8 +15,8 @@ import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
  * [3] KC 85/4 Systemhandbuch, p. 93 - 95
  */
 const definition: InternalAdapterDefinition = {
-  name: 'KC (Generic)',
-  internalName: 'kcgeneric',
+  label: 'KC (Generic)',
+  name: 'kcgeneric',
   options: [
     nameOption,
     loadOption,

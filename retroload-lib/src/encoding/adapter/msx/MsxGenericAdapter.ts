@@ -11,8 +11,8 @@ import {MsxType, maxNameLength, typeHeaderLength, typeHeaderMap} from './MsxDefi
  * Adapter for generic data for MSX
  */
 const definition: InternalAdapterDefinition = {
-  name: 'MSX (Generic binary)',
-  internalName: 'msxgeneric',
+  label: 'MSX (Generic binary)',
+  name: 'msxgeneric',
   options: [
     loadOption,
     nameOption,

@@ -6,8 +6,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
 import {TzxEncoder} from '../TzxEncoder.js';
 
 const definition: InternalAdapterDefinition = {
-  name: 'MSX .TSX-File',
-  internalName: 'tsx',
+  label: 'MSX .TSX-File',
+  name: 'tsx',
   options: [],
   identify,
   encode,

@@ -14,8 +14,8 @@ import {hex16} from '../../../common/Utils.js';
  * https://www.msx.org/wiki/Emulation_related_file_formats#.CAS
  */
 const definition: InternalAdapterDefinition = {
-  name: 'MSX .CAS-File',
-  internalName: 'msxcas',
+  label: 'MSX .CAS-File',
+  name: 'msxcas',
   options: [
     shortpilotOption,
     msxfastOption,

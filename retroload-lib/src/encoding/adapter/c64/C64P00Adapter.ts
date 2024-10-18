@@ -11,8 +11,8 @@ import {c64machineOption} from './C64Options.js';
  * http://unusedino.de/ec64/technical/formats/pc64.html
  */
 const definition: InternalAdapterDefinition = {
-  name: 'C64 .P00-File',
-  internalName: 'c64p00',
+  label: 'C64 .P00-File',
+  name: 'c64p00',
   options: [shortpilotOption, c64machineOption],
   identify,
   encode,

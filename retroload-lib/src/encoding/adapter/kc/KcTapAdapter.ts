@@ -10,8 +10,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
  * Adapter for KC .TAP files
  */
 const definition: InternalAdapterDefinition = {
-  name: 'KC .TAP-File',
-  internalName: 'kctap',
+  label: 'KC .TAP-File',
+  name: 'kctap',
   options: [],
   identify,
   encode,

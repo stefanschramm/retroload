@@ -11,8 +11,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
  * https://www.ninerpedia.org/wiki/TIFILES_format
  */
 const definition: InternalAdapterDefinition = {
-  name: 'TI-99/4A .TIFILE-File',
-  internalName: 'tifile',
+  label: 'TI-99/4A .TIFILE-File',
+  name: 'tifile',
   options: [],
   identify,
   encode,

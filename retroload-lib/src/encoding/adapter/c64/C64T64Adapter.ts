@@ -12,8 +12,8 @@ import {c64TapfileHeader} from './C64TapAdapter.js';
  * http://unusedino.de/ec64/technical/formats/t64.html
  */
 const definition: InternalAdapterDefinition = {
-  name: 'C64 .T64-File',
-  internalName: 't64',
+  label: 'C64 .T64-File',
+  name: 't64',
   options: [shortpilotOption, c64machineOption],
   identify,
   encode,

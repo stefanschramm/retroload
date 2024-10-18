@@ -36,8 +36,8 @@ const c64typeOption: ArgumentOptionDefinition<C64Type> = {
 };
 
 const definition: InternalAdapterDefinition = {
-  name: 'C64 (Generic data)',
-  internalName: 'c64generic',
+  label: 'C64 (Generic data)',
+  name: 'c64generic',
   options: [
     shortpilotOption,
     c64typeOption,

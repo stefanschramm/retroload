@@ -22,8 +22,6 @@ main()
   });
 
 async function main(): Promise<void> {
-  const formatNames = getEncodingAdapters().map((a) => a.internalName);
-  formatNames.sort();
   const program = (new CustomCommand(getEncodingAdapters()))
     .name('retroload')
     .description('Play tape archive files of historical computers for loading them on real devices or convert them to WAVE files.')

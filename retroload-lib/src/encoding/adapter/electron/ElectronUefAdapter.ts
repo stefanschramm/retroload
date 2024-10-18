@@ -13,8 +13,8 @@ import {UefProcessor} from './UefProcessor.js';
  * http://electrem.emuunlim.com/UEFSpecs.html
  */
 const definition: InternalAdapterDefinition = {
-  name: 'Acorn Electron .UEF-File',
-  internalName: 'uef',
+  label: 'Acorn Electron .UEF-File',
+  name: 'uef',
   options: [],
   identify,
   encode,

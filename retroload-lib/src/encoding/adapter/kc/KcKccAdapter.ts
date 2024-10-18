@@ -12,8 +12,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
  * KCC files contain the tape header block and file data without block numbers and checksums.
  */
 const definition: InternalAdapterDefinition = {
-  name: 'KC .KCC-File',
-  internalName: 'kcc',
+  label: 'KC .KCC-File',
+  name: 'kcc',
   options: [kcFirstBlockOption],
   identify,
   encode,

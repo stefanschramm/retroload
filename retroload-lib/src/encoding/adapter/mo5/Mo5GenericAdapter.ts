@@ -35,8 +35,8 @@ const modeOption: ArgumentOptionDefinition<number> = {
  * Adapter for generic data for MO5
  */
 const definition: InternalAdapterDefinition = {
-  name: 'MO5 (Generic data)',
-  internalName: 'mo5generic',
+  label: 'MO5 (Generic data)',
+  name: 'mo5generic',
   options: [
     nameOption,
     typeOption,

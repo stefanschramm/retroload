@@ -23,8 +23,8 @@ const typeOption: ArgumentOptionDefinition<number> = {
  * https://faqwiki.zxnet.co.uk/wiki/Spectrum_tape_interface
  */
 const definition: InternalAdapterDefinition = {
-  name: 'ZX Spectrum (Generic data)',
-  internalName: 'zxspectrumgeneric',
+  label: 'ZX Spectrum (Generic data)',
+  name: 'zxspectrumgeneric',
   options: [
     nameOption,
     typeOption,

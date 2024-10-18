@@ -12,8 +12,8 @@ import {InvalidArgumentError} from '../../../common/Exceptions.js';
  * http://fileformats.archiveteam.org/wiki/Commodore_64_binary_executable
  */
 const definition: InternalAdapterDefinition = {
-  name: 'C64 .PRG-File',
-  internalName: 'c64prg',
+  label: 'C64 .PRG-File',
+  name: 'c64prg',
   options: [shortpilotOption, c64machineOption, nameOption],
   identify,
   encode,

@@ -9,8 +9,8 @@ import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
 const definition: InternalAdapterDefinition = {
-  name: 'Acorn Electron (Generic data)',
-  internalName: 'electrongeneric',
+  label: 'Acorn Electron (Generic data)',
+  name: 'electrongeneric',
   options: [
     nameOption, // 1 - 10 characters
     loadOption,

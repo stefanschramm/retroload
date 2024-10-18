@@ -9,8 +9,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
  * Adapter for ZX81 .P files
  */
 const definition: InternalAdapterDefinition = {
-  name: 'ZX81 .P-File',
-  internalName: 'zx81p',
+  label: 'ZX81 .P-File',
+  name: 'zx81p',
   options: [nameOption],
   identify,
   encode,

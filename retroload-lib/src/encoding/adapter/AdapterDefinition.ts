@@ -4,8 +4,8 @@ import {type OptionContainer, type OptionDefinition} from '../Options.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 export type AdapterDefinition = {
+  readonly label: string;
   readonly name: string;
-  readonly internalName: string;
   readonly options: OptionDefinition[];
 };
 

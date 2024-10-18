@@ -13,8 +13,8 @@ import {type FormatIdentification, type InternalAdapterDefinition} from '../Adap
  * When playing, it's probably required to press pause in between the individual files.
  */
 const definition: InternalAdapterDefinition = {
-  name: 'TI-99/4A .TITape-File',
-  internalName: 'titape',
+  label: 'TI-99/4A .TITape-File',
+  name: 'titape',
   options: [],
   identify,
   encode,

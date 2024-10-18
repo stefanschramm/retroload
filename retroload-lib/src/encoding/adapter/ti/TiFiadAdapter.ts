@@ -10,8 +10,8 @@ import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
  * Adapter for TI-99/4A .FIAD files
  */
 const definition: InternalAdapterDefinition = {
-  name: 'TI-99/4A .FIAD-File',
-  internalName: 'fiad',
+  label: 'TI-99/4A .FIAD-File',
+  name: 'fiad',
   options: [],
   identify,
   encode,

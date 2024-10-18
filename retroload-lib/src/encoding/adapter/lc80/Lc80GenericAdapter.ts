@@ -12,8 +12,8 @@ import {Logger} from '../../../common/logging/Logger.js';
  * Adapter for generic data for LC 80
  */
 const definition: InternalAdapterDefinition = {
-  name: 'LC80 (Generic data)',
-  internalName: 'lc80generic',
+  label: 'LC80 (Generic data)',
+  name: 'lc80generic',
   options: [
     nameOption,
     loadOption,

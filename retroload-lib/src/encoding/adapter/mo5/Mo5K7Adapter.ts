@@ -11,8 +11,8 @@ import {hex8} from '../../../common/Utils.js';
  * Adapter for MO5 .K7 files
  */
 const definition: InternalAdapterDefinition = {
-  name: 'MO5 .K7-File',
-  internalName: 'k7',
+  label: 'MO5 .K7-File',
+  name: 'k7',
   options: [],
   identify,
   encode,
