@@ -4,11 +4,11 @@ import {LowPassFilter} from '../../sample_provider/LowPassFilter.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type DecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
+import {type InternalDecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
 import {KcBlockProcessor} from './KcBlockProcessor.js';
 import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 
-const definition: DecoderDefinition = {
+const definition: InternalDecoderDefinition = {
   format: 'kctap',
   decode,
 };
