@@ -24,7 +24,11 @@
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
   "homepage": "https://retroload.com/",
-  "repository": "github:stefanschramm/retroload",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefanschramm/retroload.git",
+    "directory": "retroload"
+  },
   "license": "AGPL-3.0-only",
   "type": "module",
   "main": "dist/esm/retroload.js",
@@ -37,9 +41,9 @@
     "updateVersion": "genversion --es6 -s src/version.ts"
   },
   "bin": {
-    "retroload": "./dist/esm/retroload.js",
-    "retroload-tokenizer": "./dist/esm/retroload-tokenizer.js",
-    "retroload-decode": "./dist/esm/retroload-decode.js"
+    "retroload": "dist/esm/retroload.js",
+    "retroload-tokenizer": "dist/esm/retroload-tokenizer.js",
+    "retroload-decode": "dist/esm/retroload-decode.js"
   },
   "dependencies": {
     "commander": "^11.1.0",

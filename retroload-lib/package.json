@@ -5,7 +5,11 @@
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
   "homepage": "https://retroload.com/",
-  "repository": "github:stefanschramm/retroload",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefanschramm/retroload.git",
+    "directory": "retroload-lib"
+  },
   "license": "AGPL-3.0-only",
   "type": "module",
   "exports": {
