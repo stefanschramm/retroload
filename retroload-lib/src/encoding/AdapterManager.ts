@@ -12,6 +12,7 @@ import {type ArgumentOptionDefinition} from './Options.js';
 import {type AdapterDefinition, type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
 import {type Annotation} from './recorder/Annotations.js';
 import {WaveRecorder} from './recorder/WaveRecorder.js';
+import {FloatRecorder} from './recorder/FloatRecorder.js';
 
 export const formatOption: ArgumentOptionDefinition<string | undefined> = {
   name: 'format',
@@ -74,15 +75,15 @@ export function identify(data: Uint8Array, filename: string): string | undefined
 /**
  * Holds the result of encode functions
  */
-export type EncodingResult = {
-  data: Uint8Array;
+export type EncodingResult<T> = {
+  data: T;
   annotations: Annotation[];
 };
 
 /**
- * Encode a tape archive file using the specified adapter as raw samples (1 channel, 8 bit unsigned, 44100 Hz sample rate)
+ * Encode a tape archive file as unsigned 8 bit samples (1 channel, 44100 Hz sample rate)
  */
-export function encodeUint8(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult {
+export function encodeUint8(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Uint8Array> {
   const recorder = new WaveRecorder();
   encodeWithAdapter(recorder, getAdapterByIdentifier(adapterIdentifier), BufferAccess.createFromUint8Array(data), optionValues);
 
@@ -93,9 +94,9 @@ export function encodeUint8(adapterIdentifier: string, data: Uint8Array, optionV
 }
 
 /**
- * Encode a tape archive file using the specified adapter as WAV file (1 channel, 8 bit unsigned, 44100 Hz sample rate)
+ * Encode a tape archive file as WAV file (1 channel, 8 bit unsigned, 44100 Hz sample rate)
  */
-export function encodeUint8Wav(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult {
+export function encodeUint8Wav(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Uint8Array> {
   const recorder = new WaveRecorder();
   encodeWithAdapter(recorder, getAdapterByIdentifier(adapterIdentifier), BufferAccess.createFromUint8Array(data), optionValues);
 
@@ -105,8 +106,18 @@ export function encodeUint8Wav(adapterIdentifier: string, data: Uint8Array, opti
   };
 }
 
-// TODO:
-// export function encodeFloat(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult {
+/**
+ * Encode a tape archive file as 32 bit floating point samples (1 channel, 44100 Hz sample rate)
+ */
+export function encodeFloat(adapterIdentifier: string, data: Uint8Array, optionValues: OptionValues): EncodingResult<Float32Array> {
+  const recorder = new FloatRecorder();
+  encodeWithAdapter(recorder, getAdapterByIdentifier(adapterIdentifier), BufferAccess.createFromUint8Array(data), optionValues);
+
+  return {
+    data: recorder.getFloat32Array(),
+    annotations: recorder.getAnnotations(),
+  };
+}
 
 // Internal functions
 

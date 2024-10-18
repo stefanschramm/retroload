@@ -52,7 +52,7 @@ async function main(): Promise<void> {
 
   Logger.debug(`Processing ${infile}...`);
 
-  let result: EncodingResult;
+  let result: EncodingResult<Uint8Array>;
   try {
     if (format === undefined) {
       format = identify(data, infile);
