@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.all,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.strict,
   stylisticTs.configs['all-flat'],
   {
     plugins: {
@@ -21,6 +21,9 @@ export default tseslint.config(
       '@stylistic/ts/quote-props': 'off',
       '@stylistic/ts/quotes': ['error', 'single'],
       '@stylistic/ts/space-before-function-paren': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'error',
+      '@typescript-eslint/explicit-member-accessibility': 'error',
+      '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
