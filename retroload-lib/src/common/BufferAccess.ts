@@ -6,6 +6,7 @@
  * and increment it.
  */
 export class BufferAccess {
+
   /**
    * Create new buffer of length bytes and return an BufferAccess object referencing the new buffer.
    */

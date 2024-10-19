@@ -45,14 +45,17 @@ export type OutputFile = {
 };
 
 export type DecoderSettings = {
+
   /**
    * What to do when errors occur
    */
   onError: ErrorHandlingType;
+
   /**
    * Number of samples to skip in input
    */
   skip: number;
+
   /**
    * Channel to get samples from
    */

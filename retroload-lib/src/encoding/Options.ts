@@ -4,18 +4,22 @@ import {InternalError, InvalidArgumentError} from '../common/Exceptions.js';
  * Properties common to all OptionDefinitions
  */
 type BaseOption = {
+
   /**
    * Internal name of option and name in CLI
    */
   name: string;
+
   /**
    * Field label in GUI implementations
    */
   label: string;
+
   /**
    * Description displayed in --help of CLI and in GUI implementations
    */
   description: string;
+
   /**
    * Wether the option is used by several adapters
    */
@@ -34,14 +38,17 @@ export type FlagOptionDefinition = BaseOption & {
  */
 export type PublicArgumentOptionDefinition = BaseOption & {
   type: 'text';
+
   /**
    * List of possible values for options of 'text' type. Will render as dropdown in GUI implementations.
    */
   enum?: string[];
+
   /**
    * Name of the argument (displayed in --help of CLI and possibly as placeholder in GUI implementations)
    */
   argument?: string;
+
   /**
    * Wether the option is required for the adapter
    */
@@ -49,6 +56,7 @@ export type PublicArgumentOptionDefinition = BaseOption & {
 };
 
 export type ArgumentOptionDefinition<T> = PublicArgumentOptionDefinition & {
+
   /**
    * Function that validates and parses the option. Can throw exceptions on parsing errors. Will receive empty string if option was not set.
    */

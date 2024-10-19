@@ -43,6 +43,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   if (fileName.length > maxFileNameLength) {
     throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
   }
+
   /**
    * As possible file types (extensions), [2] mentions:
    * COM - machine program,

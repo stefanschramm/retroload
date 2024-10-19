@@ -430,23 +430,28 @@ const examples: ExampleDefinition[] = [
 export default examples;
 
 export type ExampleDefinition = {
+
   /**
    * Subdirectory in formats directory.
    */
   dir: string;
+
   /**
    * File name
    */
   file: string;
   options: OptionValues;
+
   /**
    * Hash (MD5) of the resulting WAVE file (44100 Hz, 8 Bit) that has successfully been loaded (retroload -l 0 -o /dev/stdout ... | md5sum).
    */
   hash: string;
+
   /**
    * Instructions how to load the example.
    */
   instructions: string;
+
   /**
    * When and on which device the example has successfully been tested.
    */
