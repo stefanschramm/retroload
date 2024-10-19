@@ -1,12 +1,12 @@
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
+import {type FrequencyRange, avg, bitByFrequency} from '../../Frequency.js';
+import {type Position, formatPosition} from '../../../common/Positioning.js';
+import {calculateCrc16Ccitt, hex16} from '../../../common/Utils.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
-import {type Position, formatPosition} from '../../../common/Positioning.js';
-import {type FrequencyRange, bitByFrequency, avg} from '../../Frequency.js';
-import {calculateCrc16Ccitt, hex16} from '../../../common/Utils.js';
 import {SyncFinder} from '../../SyncFinder.js';
-import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 
 const fZero: FrequencyRange = [1600, 2400]; // 2000 Hz
 const fOne: FrequencyRange = [800, 1200]; // 1000 Hz

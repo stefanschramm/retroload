@@ -1,10 +1,10 @@
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {Mo5Encoder} from './Mo5Encoder.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {InputDataError} from '../../../common/Exceptions.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type OptionContainer} from '../../Options.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {InputDataError} from '../../../common/Exceptions.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {Mo5Encoder} from './Mo5Encoder.js';
+import {type OptionContainer} from '../../Options.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {hex8} from '../../../common/Utils.js';
 
 /**
@@ -25,7 +25,7 @@ const fileHeader = [0x01, 0x01, 0x01, 0x01];
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.k7/i).exec(filename) !== null,
+    filename: (/^.*\.k7/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }

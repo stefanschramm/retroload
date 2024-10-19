@@ -1,12 +1,11 @@
-import {Lc80Encoder} from './Lc80Encoder.js';
-import {loadOption, nameOption, type OptionContainer} from '../../Options.js';
-import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
+import {type OptionContainer, loadOption, nameOption} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
-import {hex16} from '../../../common/Utils.js';
+import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {Lc80Encoder} from './Lc80Encoder.js';
 import {Logger} from '../../../common/logging/Logger.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {hex16} from '../../../common/Utils.js';
 
 /**
  * Adapter for generic data for LC 80

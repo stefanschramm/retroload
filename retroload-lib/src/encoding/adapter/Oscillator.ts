@@ -1,4 +1,4 @@
-import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type RecorderInterface, SampleValue} from '../recorder/RecorderInterface.js';
 
 export class Oscillator {
   /**

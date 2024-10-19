@@ -1,13 +1,13 @@
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
+import {type FrequencyRange, avg, bitByFrequency, isNot} from '../../Frequency.js';
+import {calculateChecksum8, hex8} from '../../../common/Utils.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {calculateChecksum8, hex8} from '../../../common/Utils.js';
-import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
-import {formatPosition} from '../../../common/Positioning.js';
-import {type FrequencyRange, isNot, avg, bitByFrequency} from '../../Frequency.js';
-import {SyncFinder} from '../../SyncFinder.js';
 import {type KcBlockProvider} from './KcBlockProvider.js';
-import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {SyncFinder} from '../../SyncFinder.js';
+import {formatPosition} from '../../../common/Positioning.js';
 
 const fOne: FrequencyRange = [770, 1300];
 const fDelimiter: FrequencyRange = [500, 670];

@@ -1,5 +1,5 @@
-import {C64Encoder} from '../adapter/c64/C64Encoder.js';
 import * as fs from 'fs';
+import {C64Encoder} from '../adapter/c64/C64Encoder.js';
 
 /**
  * Used for debugging to convert .prg files to .tap for testing in emulator

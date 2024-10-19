@@ -1,8 +1,8 @@
-import {BufferAccess} from '../../../common/BufferAccess.js';
-import {Logger} from '../../../common/logging/Logger.js';
+import {type ByteRecorder, recordBytes} from '../ByteRecorder.js';
 import {type RecorderInterface, SampleValue} from '../../recorder/RecorderInterface.js';
+import {BufferAccess} from '../../../common/BufferAccess.js';
 import {C64MachineType} from './C64Options.js';
-import {recordBytes, type ByteRecorder} from '../ByteRecorder.js';
+import {Logger} from '../../../common/logging/Logger.js';
 import {Oscillator} from '../Oscillator.js';
 
 const clockCycleMap: Record<C64MachineType, number> = {

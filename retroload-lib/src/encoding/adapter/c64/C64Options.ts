@@ -1,5 +1,5 @@
-import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type ArgumentOptionDefinition} from '../../Options.js';
+import {InvalidArgumentError} from '../../../common/Exceptions.js';
 
 export enum C64MachineType {
   c64pal = 'c64pal',

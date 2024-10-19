@@ -1,7 +1,7 @@
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 
 /**
@@ -20,7 +20,7 @@ export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.tap/i).exec(filename) !== null,
+    filename: (/^.*\.tap/iu).exec(filename) !== null,
     header: undefined,
   };
 }

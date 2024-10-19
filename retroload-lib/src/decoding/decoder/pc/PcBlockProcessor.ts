@@ -1,9 +1,9 @@
-import {hex16, hex8} from '../../../common/Utils.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
-import {allBlocksSuccessful} from '../BlockDecodingResult.js';
 import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 import {type PcBlockDecodingResult, PcHalfPeriodProcessor} from './PcHalfPeriodProcessor.js';
+import {hex16, hex8} from '../../../common/Utils.js';
+import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {allBlocksSuccessful} from '../BlockDecodingResult.js';
 
 export class PcBlockProcessor {
   private readonly hpp: PcHalfPeriodProcessor;

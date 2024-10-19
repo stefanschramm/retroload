@@ -1,13 +1,13 @@
-import {BufferAccess} from '../../../common/BufferAccess.js';
-import {formatPosition} from '../../../common/Positioning.js';
-import {calculateChecksum16Le} from '../../../common/Utils.js';
-import {Logger} from '../../../common/logging/Logger.js';
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
 import {type FrequencyRange, bitByFrequency, oscillationIs} from '../../Frequency.js';
-import {SyncFinder} from '../../SyncFinder.js';
+import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
-import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {SyncFinder} from '../../SyncFinder.js';
 import {type Z1013BlockProvider} from './Z1013BlockProvider.js';
+import {calculateChecksum16Le} from '../../../common/Utils.js';
+import {formatPosition} from '../../../common/Positioning.js';
 
 const fOne: FrequencyRange = [1000, 1500];
 const fZero: FrequencyRange = [2200, 2800];

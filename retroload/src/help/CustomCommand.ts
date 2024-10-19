@@ -1,6 +1,6 @@
 import {Command, type Help} from 'commander';
-import {CustomHelp} from './CustomHelp.js';
 import {type AdapterDefinition} from 'retroload-lib';
+import {CustomHelp} from './CustomHelp.js';
 
 export class CustomCommand extends Command {
   public constructor(

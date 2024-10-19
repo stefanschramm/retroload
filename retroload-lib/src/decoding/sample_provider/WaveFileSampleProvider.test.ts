@@ -1,6 +1,6 @@
 import {BufferAccess} from '../../common/BufferAccess.js';
-import {WaveFileSampleProvider} from './WaveFileSampleProvider.js';
 import {InputDataError} from '../../common/Exceptions.js';
+import {WaveFileSampleProvider} from './WaveFileSampleProvider.js';
 
 // 35 samples, 8 bit PCM, 1 channel, 44100 Hz sample rate, padded with one 0 byte, maximum amplitude square wave
 //
@@ -54,6 +54,7 @@ describe('WaveFileSampleProvider', () => {
   });
 
   test('throws exception if skip argument exceeds sample count', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let exception: any;
     try {
       // eslint-disable-next-line no-new

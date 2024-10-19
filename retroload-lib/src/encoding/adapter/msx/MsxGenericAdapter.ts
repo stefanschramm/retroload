@@ -1,11 +1,11 @@
-import {MsxEncoder} from './MsxEncoder.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {BufferAccess} from '../../../common/BufferAccess.js';
-import {shortpilotOption, type OptionContainer, loadOption, nameOption, entryOption} from '../../Options.js';
-import {type FormatIdentification, unidentifiable, type InternalAdapterDefinition} from '../AdapterDefinition.js';
-import {msxTypeOption, msxfastOption} from './MsxOptions.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
 import {MsxType, maxNameLength, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
+import {type OptionContainer, entryOption, loadOption, nameOption, shortpilotOption} from '../../Options.js';
+import {msxTypeOption, msxfastOption} from './MsxOptions.js';
+import {BufferAccess} from '../../../common/BufferAccess.js';
+import {MsxEncoder} from './MsxEncoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 /**
  * Adapter for generic data for MSX

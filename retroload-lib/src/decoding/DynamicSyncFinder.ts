@@ -1,6 +1,6 @@
-import {formatPosition} from '../common/Positioning.js';
-import {Logger} from '../common/logging/Logger.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
+import {Logger} from '../common/logging/Logger.js';
+import {formatPosition} from '../common/Positioning.js';
 
 const debug = true;
 

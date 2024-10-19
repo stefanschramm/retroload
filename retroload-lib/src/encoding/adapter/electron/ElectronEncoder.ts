@@ -1,7 +1,7 @@
+import {type ByteRecorder, recordBytes} from '../ByteRecorder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {recordBytes, type ByteRecorder} from '../ByteRecorder.js';
 import {Oscillator} from '../Oscillator.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 // const fBase = 1200;
 

@@ -1,11 +1,10 @@
-import {InputDataError} from '../../../common/Exceptions.js';
-import {type OptionContainer} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {InputDataError} from '../../../common/Exceptions.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for generic data for TI-99/4A

@@ -1,18 +1,13 @@
-import {
-  FormatNotFoundError,
-  InternalError,
-  MissingOptionsError,
-} from '../common/Exceptions.js';
-import {BufferAccess} from '../common/BufferAccess.js';
-import Adapters from './AdapterProvider.js';
-import {Logger} from '../common/logging/Logger.js';
-import {OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
-import {type RecorderInterface} from './recorder/RecorderInterface.js';
-import {type ArgumentOptionDefinition} from './Options.js';
 import {type AdapterDefinition, type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
+import {type ArgumentOptionDefinition, OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
+import {FormatNotFoundError, InternalError, MissingOptionsError} from '../common/Exceptions.js';
+import Adapters from './AdapterProvider.js';
 import {type Annotation} from './recorder/Annotations.js';
-import {WaveRecorder} from './recorder/WaveRecorder.js';
+import {BufferAccess} from '../common/BufferAccess.js';
 import {FloatRecorder} from './recorder/FloatRecorder.js';
+import {Logger} from '../common/logging/Logger.js';
+import {type RecorderInterface} from './recorder/RecorderInterface.js';
+import {WaveRecorder} from './recorder/WaveRecorder.js';
 
 export const formatOption: ArgumentOptionDefinition<string | undefined> = {
   name: 'format',

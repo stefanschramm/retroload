@@ -1,5 +1,5 @@
-import {type Position} from '../../common/Positioning.js';
 import {type BlockDecodingResult} from './BlockDecodingResult.js';
+import {type Position} from '../../common/Positioning.js';
 
 export class FileDecodingResult {
   public constructor(

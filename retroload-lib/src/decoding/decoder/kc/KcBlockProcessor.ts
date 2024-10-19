@@ -1,10 +1,10 @@
-import {hex8} from '../../../common/Utils.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {DecodingError} from '../../DecoderExceptions.js';
-import {formatPosition, type Position} from '../../../common/Positioning.js';
-import {type KcBlockProvider} from './KcBlockProvider.js';
-import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 import {type BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
+import {type Position, formatPosition} from '../../../common/Positioning.js';
+import {DecodingError} from '../../DecoderExceptions.js';
+import {type KcBlockProvider} from './KcBlockProvider.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {hex8} from '../../../common/Utils.js';
 
 /**
  * Minimal expected gap between files in seconds (from end of previous block to begin of next block)
@@ -45,7 +45,7 @@ export class KcBlockProcessor {
       if (this.blockBelongsToNextFile(blockNumber, decodingResult.begin)) {
         yield this.finishFile();
       }
-      this.errorOccured = this.errorOccured || errorInCurrentBlock;
+      this.errorOccured ||= errorInCurrentBlock;
       this.blocks.push(decodingResult);
       this.previousBlockNumber = blockNumber;
       this.previousBlockEnd = decodingResult.end;

@@ -1,5 +1,5 @@
-import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type KansasCityLikeConfiguration, type TzxEncoder} from '../TzxEncoder.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {hex8} from '../../../common/Utils.js';

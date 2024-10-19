@@ -1,7 +1,7 @@
+import {type DecoderSettings, type InternalDecoderDefinition, type OutputFile} from '../../DecoderManager.js';
+import {type FileDecodingResult, FileDecodingResultStatus, Lc80HalfPeriodProcessor} from './Lc80HalfPeriodProcessor.js';
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type InternalDecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
-import {type FileDecodingResult, FileDecodingResultStatus, Lc80HalfPeriodProcessor} from './Lc80HalfPeriodProcessor.js';
 
 const definition: InternalDecoderDefinition = {
   format: 'lc80generic',

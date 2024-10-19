@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
-import {formatPosition, Logger, version as libVersion, decodeWav, getAllDecoders, type DecoderSettings} from 'retroload-lib';
 import {Command, type OptionValues} from 'commander';
-import {version as cliVersion} from './version.js';
+import {type DecoderSettings, Logger, decodeWav, formatPosition, getAllDecoders, version as libVersion} from 'retroload-lib';
 import {readFile, writeFile} from './Utils.js';
+import {version as cliVersion} from './version.js';
 
 main()
   .catch((err) => {
     Logger.error(err as string);
   });
 
+// eslint-disable-next-line require-await
 async function main(): Promise<void> {
   // TODO / Nice to haves:
   // - CSW as additional input format

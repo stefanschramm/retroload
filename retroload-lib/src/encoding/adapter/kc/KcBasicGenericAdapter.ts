@@ -1,10 +1,9 @@
-import {type FormatIdentification, unidentifiable} from '../AdapterDefinition.js';
-import {KcEncoder} from './KcEncoder.js';
+import {type ArgumentOptionDefinition, type FlagOptionDefinition, type OptionContainer, nameOption} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {type ArgumentOptionDefinition, nameOption, type OptionContainer, type FlagOptionDefinition} from '../../Options.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {KcEncoder} from './KcEncoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 enum KcBasicType {
   program = 'program',

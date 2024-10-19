@@ -1,13 +1,13 @@
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
+import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
+import {type FrequencyRange, avg, bitByFrequency, is, isNot} from '../../Frequency.js';
+import {calculateChecksum8Xor, hex8} from '../../../common/Utils.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
+import {DynamicSyncFinder} from '../../DynamicSyncFinder.js';
 import {type HalfPeriodProvider} from '../../half_period_provider/HalfPeriodProvider.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {BlockStartNotFound, DecodingError, EndOfInput} from '../../DecoderExceptions.js';
 import {formatPosition} from '../../../common/Positioning.js';
-import {type FrequencyRange, is, avg, bitByFrequency, isNot} from '../../Frequency.js';
-import {calculateChecksum8Xor, hex8} from '../../../common/Utils.js';
-import {FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
-import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
-import {DynamicSyncFinder} from '../../DynamicSyncFinder.js';
 
 const fSyncIntro: FrequencyRange = [680, 930]; // 770 Hz
 // const fSyncEndFirstHalf: FrequencyRange = [1700, 2100]; // 2000 Hz

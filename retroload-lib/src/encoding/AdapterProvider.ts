@@ -1,4 +1,3 @@
-import {type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
 import AtariCasAdapter from './adapter/atari/AtariCasAdapter.js';
 import AtariGenericAdapter from './adapter/atari/AtariGenericAdapter.js';
 import BasicodeAdapter from './adapter/basicode/BasicodeAdapter.js';
@@ -11,6 +10,7 @@ import CpcCdtAdapter from './adapter/cpc/CpcCdtAdapter.js';
 import CpcGenericAdapter from './adapter/cpc/CpcGenericAdapter.js';
 import ElectronGenericAdapter from './adapter/electron/ElectronGenericAdapter.js';
 import ElectronUefAdapter from './adapter/electron/ElectronUefAdapter.js';
+import {type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
 import KcBasicGenericAdapter from './adapter/kc/KcBasicGenericAdapter.js';
 import KcGenericAdapter from './adapter/kc/KcGenericAdapter.js';
 import KcKccAdapter from './adapter/kc/KcKccAdapter.js';

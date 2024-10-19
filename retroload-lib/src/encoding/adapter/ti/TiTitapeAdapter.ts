@@ -1,10 +1,10 @@
-import {InputDataError} from '../../../common/Exceptions.js';
-import {type OptionContainer} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {InputDataError} from '../../../common/Exceptions.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for TI-99/4A .TITape files
@@ -23,7 +23,7 @@ export default definition;
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.titape$/i).exec(filename) !== null,
+    filename: (/^.*\.titape$/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, 'TI-TAPE'),
   };
 }

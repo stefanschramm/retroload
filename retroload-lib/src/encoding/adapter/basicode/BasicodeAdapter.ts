@@ -1,8 +1,8 @@
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {shortpilotOption, type OptionContainer, type FlagOptionDefinition} from '../../Options.js';
+import {type FlagOptionDefinition, type OptionContainer, shortpilotOption} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {BasicodeEncoder} from './BasicodeEncoder.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type InternalAdapterDefinition, type FormatIdentification} from '../AdapterDefinition.js';
 
 const basicodeDataOption: FlagOptionDefinition = {
   name: 'basicodedata',
@@ -26,7 +26,7 @@ export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.(bc2|asc|bc|bas)$/i).exec(filename) !== null,
+    filename: (/^.*\.(?:bc2|asc|bc|bas)$/iu).exec(filename) !== null,
     header: undefined,
   };
 }

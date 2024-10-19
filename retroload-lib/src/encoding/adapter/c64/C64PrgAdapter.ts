@@ -1,10 +1,10 @@
-import {shortpilotOption, type OptionContainer, nameOption} from '../../Options.js';
-import {C64Encoder} from './C64Encoder.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
-import {c64machineOption} from './C64Options.js';
+import {type OptionContainer, nameOption, shortpilotOption} from '../../Options.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {C64Encoder} from './C64Encoder.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {c64machineOption} from './C64Options.js';
 
 /**
  * Adapter for C64 .PRG files
@@ -22,7 +22,7 @@ export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.prg$/i).exec(filename) !== null,
+    filename: (/^.*\.prg$/iu).exec(filename) !== null,
     header: undefined, // no specific header
   };
 }

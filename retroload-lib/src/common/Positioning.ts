@@ -9,9 +9,9 @@ export function formatPosition(p: Position): string {
 
 function secondsToTimestamp(totalSeconds: number): string {
   const hours = Math.floor(totalSeconds / 3600).toString(10).padStart(2, '0');
-  totalSeconds %= 3600;
-  const minutes = Math.floor(totalSeconds / 60).toString(10).padStart(2, '0');
-  const seconds = (totalSeconds % 60).toFixed(4).padStart(7, '0');
+  const secondsRest = totalSeconds % 3600;
+  const minutes = Math.floor(secondsRest / 60).toString(10).padStart(2, '0');
+  const seconds = (secondsRest % 60).toFixed(4).padStart(7, '0');
 
   return `${hours}:${minutes}:${seconds}`;
 }

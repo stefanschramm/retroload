@@ -1,9 +1,9 @@
-import {KcEncoder} from './KcEncoder.js';
-import {BufferAccess} from '../../../common/BufferAccess.js';
-import {nameOption, type OptionContainer} from '../../Options.js';
-import {InvalidArgumentError} from '../../../common/Exceptions.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {type OptionContainer, nameOption} from '../../Options.js';
+import {BufferAccess} from '../../../common/BufferAccess.js';
+import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {KcEncoder} from './KcEncoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 /**
  * Adapter for KC .SSS (BASIC) files
@@ -23,7 +23,7 @@ const maxFileNameLength = 8;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.sss$/i).exec(filename) !== null,
+    filename: (/^.*\.sss$/iu).exec(filename) !== null,
     header: undefined, // no specific header
   };
 }

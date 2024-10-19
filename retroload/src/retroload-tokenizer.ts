@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
-import {Command} from 'commander';
 import {BasicTokenizers, type TokenizerDefinition} from 'retroload-lib';
+import {Command} from 'commander';
+import fs from 'fs';
 
 function main(): void {
   const program = (new Command())
@@ -29,6 +29,7 @@ function getTokenizerByDialectName(name: string): TokenizerDefinition {
 
   if (result.length === 0) {
     const avaliableDialectNames = BasicTokenizers.map((t) => t.name);
+    // eslint-disable-next-line no-console
     console.error(`Tokenizer for BASIC dialect "${name}" not found. Available dialects: ${avaliableDialectNames.join(', ')}`);
     process.exit(1);
   }

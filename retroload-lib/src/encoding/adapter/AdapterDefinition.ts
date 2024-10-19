@@ -1,6 +1,6 @@
 
-import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type OptionContainer, type OptionDefinition} from '../Options.js';
+import {type BufferAccess} from '../../common/BufferAccess.js';
 import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 export type AdapterDefinition = {

@@ -1,5 +1,5 @@
-import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type ArgumentOptionDefinition} from '../../Options.js';
+import {InvalidArgumentError} from '../../../common/Exceptions.js';
 
 export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
   name: 'firstblock',
@@ -23,5 +23,6 @@ export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
 };
 
 function isHexNumber(str: string): boolean {
+  // eslint-disable-next-line require-unicode-regexp
   return /^[A-Fa-f0-9]+$/.exec(str) !== null;
 }

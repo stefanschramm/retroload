@@ -1,9 +1,9 @@
+import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {hex16} from '../../../common/Utils.js';
-import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {Oscillator} from '../Oscillator.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {hex16} from '../../../common/Utils.js';
 
 const blockDataSize = 32;
 const fOne = 1280;

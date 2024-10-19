@@ -1,10 +1,10 @@
+import {type ByteRecorder, recordByteMsbFirst, recordBytes} from '../ByteRecorder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {InputDataError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {calculateChecksum8} from '../../../common/Utils.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {Oscillator} from '../Oscillator.js';
-import {type ByteRecorder, recordByteMsbFirst, recordBytes} from '../ByteRecorder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {calculateChecksum8} from '../../../common/Utils.js';
 
 const fZero = 689.5;
 const fOne = 1379;

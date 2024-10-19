@@ -1,9 +1,9 @@
-import {TzxProcessor} from '../tzx/TzxProcessor.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
-import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TzxEncoder} from '../TzxEncoder.js';
+import {TzxProcessor} from '../tzx/TzxProcessor.js';
 
 /**
  * Adapter for ZX Spectrum .TZX files
@@ -21,7 +21,7 @@ const fileHeader = 'ZXTape!\x1a';
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.tzx/i).exec(filename) !== null,
+    filename: (/^.*\.tzx/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }

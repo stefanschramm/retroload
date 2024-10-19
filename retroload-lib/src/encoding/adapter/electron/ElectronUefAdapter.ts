@@ -1,11 +1,11 @@
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {inflate} from 'pako';
 import {InputDataError} from '../../../common/Exceptions.js';
+import {Logger} from '../../../common/logging/Logger.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {UefProcessor} from './UefProcessor.js';
+import {inflate} from 'pako';
 
 /**
  * Adapter for Acorn Electron .UEF files
@@ -26,7 +26,7 @@ const compressedFileHeader = '\x1f\x8b';
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.uef/i).exec(filename) !== null,
+    filename: (/^.*\.uef/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader) || ba.containsDataAt(0, compressedFileHeader),
   };
 }

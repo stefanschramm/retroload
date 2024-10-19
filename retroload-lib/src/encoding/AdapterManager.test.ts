@@ -1,11 +1,11 @@
 import * as AdapterManager from './AdapterManager.js';
+import * as crypto from 'crypto';
+import * as fs from 'fs';
+import examples, {type ExampleDefinition, getLocalPath} from '../Examples.js';
+import {BufferAccess} from '../common/BufferAccess.js';
 import {Logger} from '../common/logging/Logger.js';
 import {NullLoggerHandler} from '../common/logging/NullLoggerHandler.js';
 import {type OptionValues} from './Options.js';
-import * as crypto from 'crypto';
-import * as fs from 'fs';
-import {BufferAccess} from '../common/BufferAccess.js';
-import examples, {type ExampleDefinition, getLocalPath} from '../Examples.js';
 
 // Disable log output for more readable test output
 Logger.setHandler(new NullLoggerHandler());
@@ -35,8 +35,8 @@ describe('Encoding pipeline returns correct hashes', () => {
   it.each(examples.map((e) => ({label: getTestLabel(e), definition: e})))(
     'example $label',
     (example) => {
-      const hash = encodeAndHash(getLocalPath(example.definition), example.definition.options);
-      expect(hash).toBe(example.definition.hash);
+      const actualHash = encodeAndHash(getLocalPath(example.definition), example.definition.options);
+      expect(actualHash).toBe(example.definition.hash);
     },
   );
 });
@@ -57,7 +57,7 @@ function encodeAndHash(file: string, options: OptionValues): string | false {
     adapterIdentifier = AdapterManager.identify(data, file);
   }
   if (adapterIdentifier === undefined) {
-    Logger.error('Unable to identify ' + file);
+    Logger.error(`Unable to identify ${file}`);
     return false;
   }
   const result = AdapterManager.encodeUint8Wav(adapterIdentifier, data, options);

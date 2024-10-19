@@ -57,7 +57,7 @@ export type ArgumentOptionDefinition<T> = PublicArgumentOptionDefinition & {
 
 export type OptionDefinition = InternalOptionDefinition | PublicArgumentOptionDefinition;
 
-export type InternalOptionDefinition = FlagOptionDefinition | ArgumentOptionDefinition<any>;
+export type InternalOptionDefinition = FlagOptionDefinition | ArgumentOptionDefinition<string | number | undefined>;
 
 export type OptionValues = Record<string, string | boolean>;
 
@@ -158,5 +158,6 @@ export const entryOption: ArgumentOptionDefinition<number | undefined> = {
 };
 
 function isHexNumber(str: string): boolean {
+  // eslint-disable-next-line require-unicode-regexp
   return /^[A-Fa-f0-9]+$/.exec(str) !== null;
 }

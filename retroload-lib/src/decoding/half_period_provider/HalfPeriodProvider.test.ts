@@ -1,7 +1,7 @@
-import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 import {AveragingSampleToHalfPeriodConverter} from './AveragingSampleToHalfPeriodConverter.js';
-import {StreamingSampleToHalfPeriodConverter} from './StreamingSampleToHalfPeriodConverter.js';
+import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 import {SampleProviderMock} from '../../test/mocks/SampleProviderMock.js';
+import {StreamingSampleToHalfPeriodConverter} from './StreamingSampleToHalfPeriodConverter.js';
 
 test('AveragingSampleToHalfPeriodConverter', () => {
   runTest(new AveragingSampleToHalfPeriodConverter(new SampleProviderMock()));

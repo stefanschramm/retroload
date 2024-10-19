@@ -1,12 +1,12 @@
+import {type DecoderSettings, type InternalDecoderDefinition, type OutputFile} from '../../DecoderManager.js';
+import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
+import {KcBlockProcessor} from './KcBlockProcessor.js';
 import {KcHalfPeriodProcessor} from './KcHalfPeriodProcessor.js';
-import {LowPassFilter} from '../../sample_provider/LowPassFilter.js';
 import {Logger} from '../../../common/logging/Logger.js';
+import {LowPassFilter} from '../../sample_provider/LowPassFilter.js';
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type InternalDecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
-import {KcBlockProcessor} from './KcBlockProcessor.js';
-import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 
 const definition: InternalDecoderDefinition = {
   format: 'kctap',
@@ -15,10 +15,10 @@ const definition: InternalDecoderDefinition = {
 export default definition;
 
 function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
-  sampleProvider = new LowPassFilter(sampleProvider, 11025);
+  const filteredSampleProvider = new LowPassFilter(sampleProvider, 11025);
   // high pass filtering doesn't seem to improve decoding (or is the implementation buggy?) :/
-  // sampleProvider = new HighPassFilter(sampleProvider, 25);
-  const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
+  // filteredSampleProvider = new HighPassFilter(filteredSampleProvider, 25);
+  const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(filteredSampleProvider);
   const hpp = new KcHalfPeriodProcessor(streamingHalfPeriodProvider);
   const blockProcessor = new KcBlockProcessor(hpp, settings.onError === 'stop');
 
@@ -48,5 +48,6 @@ function bufferAccessListToOutputFile(fdr: FileDecodingResult): OutputFile {
 }
 
 function restrictCharacters(value: string): string {
+  // eslint-disable-next-line require-unicode-regexp
   return value.replace(/[^A-Za-z0-9_.,]/g, '_');
 }
