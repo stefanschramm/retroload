@@ -1,11 +1,12 @@
-import {formatPosition} from '../common/Positioning.js';
-import {Logger} from '../common/logging/Logger.js';
-import {isNot, type FrequencyRange, is} from './Frequency.js';
+import {type FrequencyRange, is, isNot} from './Frequency.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
+import {Logger} from '../common/logging/Logger.js';
+import {formatPosition} from '../common/Positioning.js';
 
 const debug = true;
 
 export class SyncFinder {
+
   /**
    * @param fSync accepted frequency range for sync half periods
    * @param minHalfPeriods minimal number of half periods so search for

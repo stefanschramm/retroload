@@ -1,9 +1,8 @@
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {Z1013Encoder} from './Z1013Encoder.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {Z1013Encoder} from './Z1013Encoder.js';
 
 /**
  * Adapter for generic data for Z 1013

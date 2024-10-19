@@ -1,10 +1,10 @@
+import {type ArgumentOptionDefinition, type OptionContainer, loadOption, nameOption} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {type ArgumentOptionDefinition, nameOption, type OptionContainer, loadOption} from '../../Options.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, unidentifiable, type InternalAdapterDefinition} from '../AdapterDefinition.js';
-import {calculateChecksum8Xor} from '../../../common/Utils.js';
 import {Logger} from '../../../common/logging/Logger.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TzxEncoder} from '../TzxEncoder.js';
+import {calculateChecksum8Xor} from '../../../common/Utils.js';
 
 const typeOption: ArgumentOptionDefinition<number> = {
   name: 'zxtype',

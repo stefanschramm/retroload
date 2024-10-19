@@ -1,6 +1,7 @@
-import {SampleValue, type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {type RecorderInterface, SampleValue} from '../recorder/RecorderInterface.js';
 
 export class Oscillator {
+
   /**
    * this.phase determines whether the next half oscillation is positive.
    * It's modified only when recording half oscillations.

@@ -1,6 +1,6 @@
-import {type Position} from '../common/Positioning.js';
 import {DynamicSyncFinder} from './DynamicSyncFinder.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
+import {type Position} from '../common/Positioning.js';
 
 describe('DynamicSyncFinder', () => {
   test('exact match at begin', () => {

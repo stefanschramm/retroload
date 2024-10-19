@@ -1,8 +1,8 @@
+import {type ByteRecorder, recordByteMsbFirst, recordBytes} from '../ByteRecorder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type ByteRecorder, recordByteMsbFirst, recordBytes} from '../ByteRecorder.js';
 import {Oscillator} from '../Oscillator.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 const fZero = 600;
 const fOne = 1200;

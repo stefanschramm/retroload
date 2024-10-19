@@ -1,10 +1,9 @@
-import {C64Encoder} from './C64Encoder.js';
-import {loadOption, nameOption, shortpilotOption, type ArgumentOptionDefinition, type OptionContainer} from '../../Options.js';
+import {type ArgumentOptionDefinition, type OptionContainer, loadOption, nameOption, shortpilotOption} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {C64Encoder} from './C64Encoder.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 
 enum C64Type {

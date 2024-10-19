@@ -1,6 +1,6 @@
+import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {DecodingError} from '../../DecoderExceptions.js';
-import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
 import {FileDecodingResultStatus} from '../FileDecodingResult.js';
 import {KcBlockProcessor} from './KcBlockProcessor.js';
 import {type KcBlockProvider} from './KcBlockProvider.js';
@@ -81,11 +81,11 @@ describe('KcBlockProcessor', () => {
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
     ]);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let catched: any;
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       const files = [...(new KcBlockProcessor(blockProvider, true)).files()];
+      expect(files.length).toBe(0); // should not be reached
     } catch (e) {
       catched = e;
     }
@@ -100,11 +100,11 @@ describe('KcBlockProcessor', () => {
       blockDecodingResult(0xff, BlockDecodingResultStatus.Complete),
     ]);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let catched: any;
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       const files = [...(new KcBlockProcessor(blockProvider, true)).files()];
+      expect(files.length).toBe(0); // should not be reached
     } catch (e) {
       catched = e;
     }

@@ -1,6 +1,6 @@
-import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type ArgumentOptionDefinition, type FlagOptionDefinition} from '../../Options.js';
-import {MsxType, msxTypeList, type MsxTypeStrings} from './MsxDefinitions.js';
+import {MsxType, type MsxTypeStrings, msxTypeList} from './MsxDefinitions.js';
+import {InvalidArgumentError} from '../../../common/Exceptions.js';
 
 export const msxfastOption: FlagOptionDefinition = {
   name: 'msxfast',

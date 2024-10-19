@@ -1,9 +1,9 @@
-import {BufferAccess} from '../common/BufferAccess.js';
 import {InternalError, UsageError} from '../common/Exceptions.js';
+import {BufferAccess} from '../common/BufferAccess.js';
+import Decoders from './decoder/Decoders.js';
 import {type Position} from '../common/Positioning.js';
 import {type SampleProvider} from './sample_provider/SampleProvider.js';
 import {WaveFileSampleProvider} from './sample_provider/WaveFileSampleProvider.js';
-import Decoders from './decoder/Decoders.js';
 
 export function decodeWav(data: Uint8Array, format: string, settings: DecoderSettings): Generator <OutputFile> {
   const decoder = getDecoder(format);
@@ -45,14 +45,17 @@ export type OutputFile = {
 };
 
 export type DecoderSettings = {
+
   /**
    * What to do when errors occur
    */
   onError: ErrorHandlingType;
+
   /**
    * Number of samples to skip in input
    */
   skip: number;
+
   /**
    * Channel to get samples from
    */

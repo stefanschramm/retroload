@@ -1,9 +1,9 @@
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {C64Encoder} from './C64Encoder.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type OptionContainer} from '../../Options.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {c64machineOption} from './C64Options.js';
 import {hex8} from '../../../common/Utils.js';
 
@@ -26,7 +26,7 @@ const defaultLongPulse = 2048;
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.tap$/i).exec(filename) !== null,
+    filename: (/^.*\.tap$/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, c64TapfileHeader),
   };
 }

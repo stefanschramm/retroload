@@ -1,7 +1,7 @@
-import {type Position} from '../common/Positioning.js';
 import {type FrequencyRange} from './Frequency.js';
-import {SyncFinder} from './SyncFinder.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
+import {type Position} from '../common/Positioning.js';
+import {SyncFinder} from './SyncFinder.js';
 
 describe('SyncFinder', () => {
   test('match longer than min length', () => {

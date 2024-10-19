@@ -1,10 +1,10 @@
-import {C64Encoder} from './C64Encoder.js';
-import {shortpilotOption, type OptionContainer} from '../../Options.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
-import {c64machineOption} from './C64Options.js';
+import {type OptionContainer, shortpilotOption} from '../../Options.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {C64Encoder} from './C64Encoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {c64TapfileHeader} from './C64TapAdapter.js';
+import {c64machineOption} from './C64Options.js';
 
 /**
  * Adapter for C64 .T64 files
@@ -25,7 +25,7 @@ const fileHeader = 'C64';
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.t64$/i).exec(filename) !== null,
+    filename: (/^.*\.t64$/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader) && !ba.containsDataAt(0, c64TapfileHeader) && !ba.containsDataAt(0, 'C64 CARTRIDGE'),
   };
 }

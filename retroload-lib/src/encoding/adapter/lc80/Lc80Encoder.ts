@@ -1,8 +1,8 @@
-import {BufferAccess} from '../../../common/BufferAccess.js';
-import {calculateChecksum8} from '../../../common/Utils.js';
 import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Oscillator} from '../Oscillator.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {calculateChecksum8} from '../../../common/Utils.js';
 
 const fShort = 2000;
 const fLong = 1000;

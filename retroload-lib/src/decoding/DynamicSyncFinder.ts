@@ -1,10 +1,11 @@
-import {formatPosition} from '../common/Positioning.js';
-import {Logger} from '../common/logging/Logger.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
+import {Logger} from '../common/logging/Logger.js';
+import {formatPosition} from '../common/Positioning.js';
 
 const debug = true;
 
 export class DynamicSyncFinder {
+
   /**
    * @param minHalfPeriods minimal number of half periods so search for
    * @param maxRelativeDeviation maximum allowed relative deviation of frequency within sync

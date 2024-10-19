@@ -1,10 +1,9 @@
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
+import {type OptionContainer, nameOption} from '../../Options.js';
 import {TaEncoder, maxFileNameLength} from './TaEncoder.js';
-import {nameOption, type OptionContainer} from '../../Options.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for generic data for TA alphatronic PC

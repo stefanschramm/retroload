@@ -1,5 +1,5 @@
-import {type InternalDecoderDefinition} from '../DecoderManager.js';
 import Apple2GenericDecoder from './apple2/Apple2GenericDecoder.js';
+import {type InternalDecoderDefinition} from '../DecoderManager.js';
 import KcTapDecoder from './kc/KcTapDecoder.js';
 import Lc80GenericDecoder from './lc80/Lc80GenericDecoder.js';
 import PcGenericDecoder from './pc/PcGenericDecoder.js';

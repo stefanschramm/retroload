@@ -1,10 +1,10 @@
-import {AtariEncoder} from './AtariEncoder.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {InputDataError, InternalError} from '../../../common/Exceptions.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {AtariEncoder} from './AtariEncoder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {Logger} from '../../../common/logging/Logger.js';
 import {type OptionContainer} from '../../Options.js';
-import {type InternalAdapterDefinition, type FormatIdentification} from '../AdapterDefinition.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 const fileHeader = 'FUJI';
 
@@ -24,7 +24,7 @@ export default definition;
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.cas/i).exec(filename) !== null,
+    filename: (/^.*\.cas/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }

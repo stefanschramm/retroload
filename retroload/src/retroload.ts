@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-import {Exception, Logger, version as libVersion, type Annotation, formatPosition, getEncodingAdapters, getAllEncodingOptions, encodeUint8Wav, identify, type EncodingResult, encodeUint8, type OptionDefinition} from 'retroload-lib';
+import {type Annotation, type EncodingResult, Exception, Logger, type OptionDefinition, encodeUint8, encodeUint8Wav, formatPosition, getAllEncodingOptions, getEncodingAdapters, identify, version as libVersion} from 'retroload-lib';
+import {readFile, writeFile} from './Utils.js';
+import {AplayWrapper} from './player/AplayWrapper.js';
+import {CustomCommand} from './help/CustomCommand.js';
 import {Option} from 'commander';
 import {type PlayerWrapper} from './player/PlayerWrapper.js';
-import {SpeakerWrapper} from './player/SpeakerWrapper.js';
-import {AplayWrapper} from './player/AplayWrapper.js';
 import {SoxWrapper} from './player/SoxWrapper.js';
+import {SpeakerWrapper} from './player/SpeakerWrapper.js';
 import {version as cliVersion} from './version.js';
-import {readFile, writeFile} from './Utils.js';
-import {CustomCommand} from './help/CustomCommand.js';
 
 const playerWrapperPriority = [
   SpeakerWrapper,
@@ -94,6 +94,7 @@ function getCommanderFlagsString(optionDefinition: OptionDefinition): string {
   return optionDefinition.type !== 'text' || optionDefinition.argument === undefined ? `--${optionDefinition.name}` : `--${optionDefinition.name} <${optionDefinition.argument}>`;
 }
 
+// eslint-disable-next-line consistent-return
 async function getPlayerWrapper(): Promise<PlayerWrapper> {
   for (const wrapper of playerWrapperPriority) {
     // eslint-disable-next-line no-await-in-loop

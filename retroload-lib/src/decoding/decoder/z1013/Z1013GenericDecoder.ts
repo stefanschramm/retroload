@@ -1,8 +1,8 @@
-import {BufferAccess} from '../../../common/BufferAccess.js';
-import {type DecoderSettings, type OutputFile, type InternalDecoderDefinition} from '../../DecoderManager.js';
-import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
+import {type DecoderSettings, type InternalDecoderDefinition, type OutputFile} from '../../DecoderManager.js';
 import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
+import {BufferAccess} from '../../../common/BufferAccess.js';
+import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
+import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
 import {Z1013BlockProcessor} from './Z1013BlockProcessor.js';
 import {Z1013HalfPeriodProcessor} from './Z1013HalfPeriodProcessor.js';
 

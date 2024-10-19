@@ -1,10 +1,10 @@
-import {Z1013Encoder} from './Z1013Encoder.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FlagOptionDefinition, type OptionContainer} from '../../Options.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex16, hex8} from '../../../common/Utils.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {Z1013Encoder} from './Z1013Encoder.js';
 
 const z80noHeadersave: FlagOptionDefinition = {
   name: 'noheadersave',
@@ -30,7 +30,7 @@ const headerLength = 0x20;
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.z80$/i).exec(filename) !== null,
+    filename: (/^.*\.z80$/iu).exec(filename) !== null,
     header: ba.containsDataAt(0x0d, [0xd3, 0xd3, 0xd3]),
   };
 }

@@ -1,6 +1,6 @@
-import {Help} from 'commander';
-import {type CustomCommand} from './CustomCommand.js';
 import {type AdapterDefinition, type OptionDefinition} from 'retroload-lib';
+import {type CustomCommand} from './CustomCommand.js';
+import {Help} from 'commander';
 
 export class CustomHelp extends Help {
   public constructor(
@@ -24,7 +24,7 @@ export class CustomHelp extends Help {
     }
 
     function formatList(textArray: string[]): string {
-      return textArray.join('\n').replace(/^/gm, ' '.repeat(itemIndentWidth));
+      return textArray.join('\n').replace(/^/gmu, ' '.repeat(itemIndentWidth));
     }
 
     let output = super.formatHelp(cmd, helper);
@@ -36,13 +36,13 @@ export class CustomHelp extends Help {
       const adapterOptions = adapterOptionsSorted.map((option: OptionDefinition) => formatItem(`  --${option.name}`, `${option.description}`));
       let adapterDetails = formatItem(`${adapter.label} (${adapter.name})`, '');
       if (adapterOptions.length > 0) {
-        adapterDetails += '\n' + adapterOptions.join('\n');
+        adapterDetails += `\n${adapterOptions.join('\n')}`;
       }
       adapterDetails += '\n';
       return adapterDetails;
     });
     if (adapterList.length > 0) {
-      output = output + '\nSupported formats and their specific options:\n\n' + formatList(adapterList) + '\n';
+      output = `${output}\nSupported formats and their specific options:\n\n${formatList(adapterList)}\n`;
     }
 
     return output;

@@ -1,9 +1,9 @@
-import {TzxProcessor} from '../tzx/TzxProcessor.js';
-import {type OptionContainer} from '../../Options.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {type OptionContainer} from '../../Options.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TzxEncoder} from '../TzxEncoder.js';
+import {TzxProcessor} from '../tzx/TzxProcessor.js';
 
 const definition: InternalAdapterDefinition = {
   label: 'CPC .CDT-File',
@@ -18,7 +18,7 @@ const fileHeader = 'ZXTape!\x1a';
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.cdt/i).exec(filename) !== null,
+    filename: (/^.*\.cdt/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }

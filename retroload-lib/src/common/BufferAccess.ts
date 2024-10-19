@@ -6,6 +6,7 @@
  * and increment it.
  */
 export class BufferAccess {
+
   /**
    * Create new buffer of length bytes and return an BufferAccess object referencing the new buffer.
    */
@@ -137,6 +138,7 @@ export class BufferAccess {
   }
 
   public asHexDump(): string {
+    // eslint-disable-next-line require-unicode-regexp
     const printableCharsRegexp = /[^ -~]+$/g;
     const bytesPerRow = 16;
     const rows = Math.ceil(this.view.byteLength / bytesPerRow);
@@ -147,19 +149,19 @@ export class BufferAccess {
       let firstOctet = '';
       for (let i = 0; i < 8 && i < remaining; i++) {
         const byte = this.view.getUint8(row * bytesPerRow + i);
-        firstOctet += byte.toString(16).padStart(2, '0') + ' ';
+        firstOctet += `${byte.toString(16).padStart(2, '0')  } `;
       }
       let secondOctet = '';
       for (let i = 8; i < 16 && i < remaining; i++) {
         const byte = this.view.getUint8(row * bytesPerRow + i);
-        secondOctet += byte.toString(16).padStart(2, '0') + ' ';
+        secondOctet += `${byte.toString(16).padStart(2, '0')  } `;
       }
       let ascii = '';
       for (let i = 0; i < 16 && i < remaining; i++) {
         const byte = this.view.getUint8(row * bytesPerRow + i);
         ascii += String.fromCharCode(byte).replace(printableCharsRegexp, '.');
       }
-      lines.push(offset + '  ' + firstOctet.padEnd(24, ' ') + ' ' + secondOctet.padEnd(24, ' ') + ' |' + ascii + '|');
+      lines.push(`${offset  }  ${  firstOctet.padEnd(24, ' ')  } ${  secondOctet.padEnd(24, ' ')  } |${  ascii  }|`);
     }
 
     return lines.join('\n');

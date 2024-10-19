@@ -1,9 +1,8 @@
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {AtariEncoder} from './AtariEncoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
 const definition: InternalAdapterDefinition = {

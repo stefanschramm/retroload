@@ -1,8 +1,8 @@
+import {fixturesBaseDir} from '../test/Fixtures.js';
 import fs from 'fs';
 import {tokenizers} from './TokenizerProvider.js';
-import {fixturesBaseDir} from '../test/Fixtures.js';
 
-const fixturesDir = fixturesBaseDir + '/tokenizing/fixtures';
+const fixturesDir = `${fixturesBaseDir}/tokenizing/fixtures`;
 const fixtures = ['for'];
 
 describe.each(tokenizers.map((t) => [t.name, t]))('%s', (_name, t) => {

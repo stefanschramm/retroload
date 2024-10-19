@@ -1,5 +1,5 @@
-import {BufferAccess} from './BufferAccess.js';
 import {calculateChecksum8, hex16, hex8} from './Utils.js';
+import {BufferAccess} from './BufferAccess.js';
 
 describe('Utils', () => {
   test('calculateChecksum8', () => {

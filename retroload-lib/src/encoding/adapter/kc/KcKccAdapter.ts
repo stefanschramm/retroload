@@ -1,10 +1,10 @@
-import {KcEncoder} from './KcEncoder.js';
-import {InputDataError} from '../../../common/Exceptions.js';
-import {type OptionContainer} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {InputDataError} from '../../../common/Exceptions.js';
+import {KcEncoder} from './KcEncoder.js';
+import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {kcFirstBlockOption} from './KcOptions.js';
-import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for KC .KCC files
@@ -22,7 +22,7 @@ export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.kcc$/i).exec(filename) !== null,
+    filename: (/^.*\.kcc$/iu).exec(filename) !== null,
     header: undefined, // no specific header
   };
 }

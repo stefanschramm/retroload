@@ -1,5 +1,5 @@
-import {InternalError} from '../../common/Exceptions.js';
 import {AnnotationCollector} from './Annotations.js';
+import {InternalError} from '../../common/Exceptions.js';
 
 test('Collects annotations', () => {
   // Example annotations:
@@ -38,6 +38,7 @@ test('Collects annotations', () => {
 });
 
 test('Throws exception on invalid encapsulation', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let exception: any;
   try {
     const collector = new AnnotationCollector();
@@ -50,6 +51,7 @@ test('Throws exception on invalid encapsulation', () => {
 });
 
 test('Throws exception when end is before begin', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let exception: any;
   try {
     const collector = new AnnotationCollector();
@@ -62,6 +64,7 @@ test('Throws exception when end is before begin', () => {
 });
 
 test('Throws exception when begin is before end of previous annotation in same level', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let exception: any;
   try {
     const collector = new AnnotationCollector();
@@ -75,6 +78,7 @@ test('Throws exception when begin is before end of previous annotation in same l
 });
 
 test('Throws exception when trying to close unopened annotation', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let exception: any;
   try {
     const collector = new AnnotationCollector();

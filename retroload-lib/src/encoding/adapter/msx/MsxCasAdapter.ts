@@ -1,12 +1,12 @@
-import {MsxEncoder} from './MsxEncoder.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {shortpilotOption, type OptionContainer} from '../../Options.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
-import {msxfastOption} from './MsxOptions.js';
 import {MsxType, typeHeaderLength, typeHeaderMap} from './MsxDefinitions.js';
+import {type OptionContainer, shortpilotOption} from '../../Options.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {MsxEncoder} from './MsxEncoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {hex16} from '../../../common/Utils.js';
+import {msxfastOption} from './MsxOptions.js';
 
 /**
  * Adapter for MSX .CAS files
@@ -45,7 +45,7 @@ function determineType(dataBa: BufferAccess, offset: number): string | undefined
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.cas$/i).exec(filename) !== null,
+    filename: (/^.*\.cas$/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, blockHeader),
   };
 }

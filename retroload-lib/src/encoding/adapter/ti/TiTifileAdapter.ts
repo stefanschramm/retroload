@@ -1,9 +1,9 @@
-import {type OptionContainer} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {Logger} from '../../../common/logging/Logger.js';
+import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TiEncoder} from './TiEncoder.js';
-import {Logger} from '../../../common/logging/Logger.js';
-import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Adapter for TI-99/4A .TIFILE files
@@ -25,7 +25,7 @@ const blockSize = 64;
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.(tifile|tfi)/i).exec(filename) !== null,
+    filename: (/^.*\.(?:tifile|tfi)/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }

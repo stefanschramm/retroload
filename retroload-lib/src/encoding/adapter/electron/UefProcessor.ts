@@ -1,8 +1,8 @@
-import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {hex16, hex8} from '../../../common/Utils.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {ElectronEncoder} from './ElectronEncoder.js';
 import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {ElectronEncoder} from './ElectronEncoder.js';
 
 const targetMachines = [
   'BBC Model A', // 0
@@ -138,7 +138,7 @@ export class UefProcessor {
     const targetMachine = chunkBa.getUint8(0);
     const targetMachineName = targetMachines[targetMachine >> 4];
     const keyConfig = targetMachine & 0x0f;
-    Logger.info(`Target machine: ${targetMachine}` + (targetMachine === undefined ? '' : ` (${targetMachineName}) Keyboard configuration: ${keyConfig}`));
+    Logger.info(`Target machine: ${targetMachine}${targetMachine === undefined ? '' : ` (${targetMachineName}) Keyboard configuration: ${keyConfig}`}`);
   }
 
   private processImplicitTapeDataChunk(chunkBa: BufferAccess): void {

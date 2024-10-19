@@ -1,9 +1,9 @@
-import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
-import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type InternalDecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
-import {PcBlockProcessor} from './PcBlockProcessor.js';
+import {type DecoderSettings, type InternalDecoderDefinition, type OutputFile} from '../../DecoderManager.js';
 import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
+import {PcBlockProcessor} from './PcBlockProcessor.js';
+import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
+import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
 
 const definition: InternalDecoderDefinition = {
   format: 'pcgeneric',

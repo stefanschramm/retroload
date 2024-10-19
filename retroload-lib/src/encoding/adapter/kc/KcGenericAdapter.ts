@@ -1,11 +1,10 @@
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
+import {type OptionContainer, entryOption, loadOption, nameOption} from '../../Options.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
-import {entryOption, loadOption, nameOption, type OptionContainer} from '../../Options.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {KcEncoder} from './KcEncoder.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {KcEncoder} from './KcEncoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {kcFirstBlockOption} from './KcOptions.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 
 /**
  * Generic adapter for KC data
@@ -44,6 +43,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   if (fileName.length > maxFileNameLength) {
     throw new InvalidArgumentError('name', `Maximum length of filename (${maxFileNameLength}) exceeded.`);
   }
+
   /**
    * As possible file types (extensions), [2] mentions:
    * COM - machine program,

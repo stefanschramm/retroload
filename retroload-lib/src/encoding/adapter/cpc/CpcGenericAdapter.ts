@@ -1,10 +1,9 @@
-import {entryOption, loadOption, nameOption, type OptionContainer} from '../../Options.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {InternalError, InvalidArgumentError} from '../../../common/Exceptions.js';
+import {type OptionContainer, entryOption, loadOption, nameOption} from '../../Options.js';
+import {calculateCrc16Ccitt, hex8} from '../../../common/Utils.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
-import {calculateCrc16Ccitt, hex8} from '../../../common/Utils.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 
 /**

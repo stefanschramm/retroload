@@ -1,7 +1,7 @@
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {Oscillator} from '../Oscillator.js';
 import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {Oscillator} from '../Oscillator.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 const fZero = 1200;
 const fOne = 2400;
@@ -40,8 +40,8 @@ export class MsxEncoder implements ByteRecorder {
 
   public recordHeader(long: boolean): void {
     this.oscillator.recordSilence(this.recorder.sampleRate * (long ? secondsLongSilence : secondsShortSilence));
-    long = this.shortpilot ? false : long; // use short pulse if shortpilot option is set
-    const pulses = long ? pulsesLongHeader : pulsesShortHeader;
+    const useLongPulse = this.shortpilot ? false : long; // use short pulse if shortpilot option is set
+    const pulses = useLongPulse ? pulsesLongHeader : pulsesShortHeader;
     this.oscillator.recordOscillations(fOne * this.baudrateFactor, pulses);
   }
 

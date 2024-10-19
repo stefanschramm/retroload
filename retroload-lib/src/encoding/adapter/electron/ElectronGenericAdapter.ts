@@ -1,11 +1,10 @@
-import {nameOption, loadOption, entryOption, shortpilotOption, type OptionContainer} from '../../Options.js';
-import {InvalidArgumentError} from '../../../common/Exceptions.js';
-import {ElectronEncoder} from './ElectronEncoder.js';
-import {Logger} from '../../../common/logging/Logger.js';
+import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
+import {type OptionContainer, entryOption, loadOption, nameOption, shortpilotOption} from '../../Options.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
+import {ElectronEncoder} from './ElectronEncoder.js';
+import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {unidentifiable, type FormatIdentification} from '../AdapterDefinition.js';
-import {type InternalAdapterDefinition} from '../AdapterDefinition.js';
 import {hex8} from '../../../common/Utils.js';
 
 const definition: InternalAdapterDefinition = {
@@ -72,7 +71,8 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     Logger.debug(`Block ${hex8(block)}`);
     Logger.debug(blockBa.asHexDump());
 
-    e.recordPilot(isFirstBlock ? (shortpilot ? 1.5 : 5.1) : 0.9);
+    const firstBlockPilotLength = shortpilot ? 1.5 : 5.1;
+    e.recordPilot(isFirstBlock ? firstBlockPilotLength : 0.9);
     e.recordBytes(blockBa);
 
     recorder.endAnnotation();
@@ -87,7 +87,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
  */
 function calculateCrc(ba: BufferAccess): number {
   let crc = 0;
-  let t = 0;
+  let t;
   for (const byte of ba.bytes()) {
     t = (crc >> 8) ^ byte;
     t ^= t >> 4;

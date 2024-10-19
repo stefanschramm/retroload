@@ -1,7 +1,7 @@
+import {type ByteRecorder, recordByteMsbFirst, recordBytes} from '../ByteRecorder.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
-import {recordByteMsbFirst, recordBytes, type ByteRecorder} from '../ByteRecorder.js';
 import {Oscillator} from '../Oscillator.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 const fPulse = 3000;
 const bitPause = 1.3; // ms

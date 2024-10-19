@@ -1,8 +1,8 @@
-import {shortpilotOption, type OptionContainer} from '../../Options.js';
-import {C64Encoder} from './C64Encoder.js';
-import {type BufferAccess} from '../../../common/BufferAccess.js';
-import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {type FormatIdentification, type InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {type OptionContainer, shortpilotOption} from '../../Options.js';
+import {type BufferAccess} from '../../../common/BufferAccess.js';
+import {C64Encoder} from './C64Encoder.js';
+import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {c64machineOption} from './C64Options.js';
 
 /**
@@ -24,7 +24,7 @@ const fileHeader = 'C64File';
 // We support p00 only, not multiple parts (p01, ...)
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.p00$/i).exec(filename) !== null,
+    filename: (/^.*\.p00$/iu).exec(filename) !== null,
     header: ba.containsDataAt(0, fileHeader),
   };
 }

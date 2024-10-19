@@ -1,7 +1,7 @@
-import {Logger} from '../../common/logging/Logger.js';
 import {type BufferAccess} from '../../common/BufferAccess.js';
-import {type RecorderInterface} from '../recorder/RecorderInterface.js';
+import {Logger} from '../../common/logging/Logger.js';
 import {Oscillator} from './Oscillator.js';
+import {type RecorderInterface} from '../recorder/RecorderInterface.js';
 
 const fCpu = 3500000;
 

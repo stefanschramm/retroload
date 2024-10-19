@@ -1,8 +1,8 @@
+import {type DecoderSettings, type InternalDecoderDefinition, type OutputFile} from '../../DecoderManager.js';
+import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
+import {Apple2HalfPeriodProcessor} from './Apple2HalfPeriodProcessor.js';
 import {type SampleProvider} from '../../sample_provider/SampleProvider.js';
 import {StreamingSampleToHalfPeriodConverter} from '../../half_period_provider/StreamingSampleToHalfPeriodConverter.js';
-import {type InternalDecoderDefinition, type DecoderSettings, type OutputFile} from '../../DecoderManager.js';
-import {Apple2HalfPeriodProcessor} from './Apple2HalfPeriodProcessor.js';
-import {type FileDecodingResult, FileDecodingResultStatus} from '../FileDecodingResult.js';
 
 const definition: InternalDecoderDefinition = {
   format: 'apple2generic',

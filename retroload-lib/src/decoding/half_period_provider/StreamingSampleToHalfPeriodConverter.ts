@@ -1,6 +1,6 @@
+import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 import {type Position} from '../../common/Positioning.js';
 import {type SampleProvider} from '../sample_provider/SampleProvider.js';
-import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 
 export class StreamingSampleToHalfPeriodConverter implements HalfPeriodProvider {
   private readonly sampleRate: number;

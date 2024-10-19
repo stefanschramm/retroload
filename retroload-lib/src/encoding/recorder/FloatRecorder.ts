@@ -1,6 +1,6 @@
+import {type Annotation, AnnotationCollector} from './Annotations.js';
+import {type RecorderInterface, SampleValue} from './RecorderInterface.js';
 import {InternalError} from '../../common/Exceptions.js';
-import {AnnotationCollector, type Annotation} from './Annotations.js';
-import {SampleValue, type RecorderInterface} from './RecorderInterface.js';
 
 const dataMap = {
   [SampleValue.High]: 1.0,
