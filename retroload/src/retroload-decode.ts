@@ -6,11 +6,11 @@ import {readFile, writeFile} from './Utils.js';
 import {version as cliVersion} from './version.js';
 
 main()
-  .catch((err) => {
+  .catch((err: unknown) => {
     Logger.error(err as string);
   });
 
-// eslint-disable-next-line require-await
+// eslint-disable-next-line @typescript-eslint/require-await
 async function main(): Promise<void> {
   // TODO / Nice to haves:
   // - CSW as additional input format

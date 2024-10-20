@@ -33,7 +33,7 @@ export class CustomHelp extends Help {
 
     const adapterList = adaptersSorted.map((adapter: AdapterDefinition) => {
       const adapterOptionsSorted = adapter.options.sort((a, b) => a.name.localeCompare(b.name));
-      const adapterOptions = adapterOptionsSorted.map((option: OptionDefinition) => formatItem(`  --${option.name}`, `${option.description}`));
+      const adapterOptions = adapterOptionsSorted.map((option: OptionDefinition) => formatItem(`  --${option.name}`, option.description));
       let adapterDetails = formatItem(`${adapter.label} (${adapter.name})`, '');
       if (adapterOptions.length > 0) {
         adapterDetails += `\n${adapterOptions.join('\n')}`;

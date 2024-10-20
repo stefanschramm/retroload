@@ -141,6 +141,7 @@ test('chunk with zero chunk size throws error', () => {
     ba.chunks(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(e.message).toBe('Illegal chunk size.');
     caughtException = true;
   }

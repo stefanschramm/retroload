@@ -6,12 +6,18 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.all,
-  ...tseslint.configs.strict,
+  ...tseslint.configs.strictTypeChecked,
   stylisticTs.configs['all-flat'],
   {
     plugins: {
       '@stylistic/ts': stylisticTs,
-    },  
+    },
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     'rules': {
       '@stylistic/ts/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/ts/indent': ['error', 2],
@@ -24,6 +30,7 @@ export default tseslint.config(
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/explicit-member-accessibility': 'error',
       '@typescript-eslint/no-extraneous-class': 'off',
+      '@typescript-eslint/no-unnecessary-condition': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -31,6 +38,7 @@ export default tseslint.config(
           'argsIgnorePattern': '^_',
         },
       ],
+      '@typescript-eslint/restrict-template-expressions': ['error', {allowNumber: true}],
       'capitalized-comments': 'off',
       'class-methods-use-this': 'off',
       'dot-notation': 'off',

@@ -17,7 +17,7 @@ const playerWrapperPriority = [
 ];
 
 main()
-  .catch((err) => {
+  .catch((err: unknown) => {
     Logger.error(err as string);
   });
 

@@ -9,6 +9,7 @@ export class Logger {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static setHandler(h: any): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     handler = h;
   }
 

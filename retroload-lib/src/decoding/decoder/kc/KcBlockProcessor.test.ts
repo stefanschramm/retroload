@@ -90,6 +90,7 @@ describe('KcBlockProcessor', () => {
       catched = e;
     }
     expect(catched).toBeInstanceOf(DecodingError);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(catched.message).toBe('Stopping.');
   });
 
@@ -109,6 +110,7 @@ describe('KcBlockProcessor', () => {
       catched = e;
     }
     expect(catched).toBeInstanceOf(DecodingError);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     expect(catched.message).toBe('Stopping.');
   });
 });

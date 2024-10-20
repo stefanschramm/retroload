@@ -3,7 +3,7 @@ import {Logger} from 'retroload-lib';
 import {type PlayerWrapper} from './PlayerWrapper.js';
 
 export class AplayWrapper implements PlayerWrapper {
-  // eslint-disable-next-line require-await
+  // eslint-disable-next-line @typescript-eslint/require-await
   public static async create(sampleRate: number, bitDepth: number, channels: number): Promise<AplayWrapper | undefined> {
     if (bitDepth !== 8) {
       return undefined;
@@ -21,7 +21,6 @@ export class AplayWrapper implements PlayerWrapper {
   ) {
   }
 
-  // eslint-disable-next-line require-await
   public async play(buffer: Uint8Array): Promise<unknown> {
     Logger.info('Playing via aplay...');
     return spawnPlayer(buffer, 'aplay', ['-r', this.sampleRate.toString(10), '-f', 'U8', '-c', this.channels.toString(10)]);

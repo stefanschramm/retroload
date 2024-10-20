@@ -11,7 +11,6 @@ export function playerExists(command: string, args: string[], regexp: RegExp): b
   return Boolean(regexp.exec(result.stdout.toString()));
 }
 
-// eslint-disable-next-line require-await
 export async function spawnPlayer(buffer: Uint8Array, command: string, args: string[]): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const proc = spawn(command, args);
