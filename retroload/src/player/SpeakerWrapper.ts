@@ -13,6 +13,7 @@ export class SpeakerWrapper implements PlayerWrapper {
     try {
       // Dynamically try to load speaker module.
       // This way it doesn't need to be an actual dependency.
+      // @ts-expect-error Ignore missing module because it's just a loose dependency
       const DynamicSpeakerImport = (await import('speaker')).default;
       return new SpeakerWrapper(new DynamicSpeakerImport({channels, bitDepth, sampleRate}));
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
