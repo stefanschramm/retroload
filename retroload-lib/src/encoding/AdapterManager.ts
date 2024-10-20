@@ -1,6 +1,6 @@
 import {type AdapterDefinition, type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
-import {type ArgumentOptionDefinition, OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
 import {FormatNotFoundError, InternalError, MissingOptionsError} from '../common/Exceptions.js';
+import {OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
 import Adapters from './AdapterProvider.js';
 import {type Annotation} from './recorder/Annotations.js';
 import {BufferAccess} from '../common/BufferAccess.js';
@@ -8,18 +8,6 @@ import {FloatRecorder} from './recorder/FloatRecorder.js';
 import {Logger} from '../common/logging/Logger.js';
 import {type RecorderInterface} from './recorder/RecorderInterface.js';
 import {WaveRecorder} from './recorder/WaveRecorder.js';
-
-export const formatOption: ArgumentOptionDefinition<string | undefined> = {
-  name: 'format',
-  label: 'Format',
-  description: 'Format of input file (required when automatic format detection by content and filename fails)',
-  common: false,
-  type: 'text',
-  argument: 'format',
-  required: false,
-  parse: (v) => v === '' ? undefined : v,
-  enum: [...new Set(Adapters.map((a) => a.name))],
-};
 
 // Public API functions
 
