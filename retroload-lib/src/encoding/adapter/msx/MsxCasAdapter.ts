@@ -13,7 +13,7 @@ import {msxfastOption} from './MsxOptions.js';
  *
  * https://www.msx.org/wiki/Emulation_related_file_formats#.CAS
  */
-const definition: InternalAdapterDefinition = {
+export const MsxCasAdapter: InternalAdapterDefinition = {
   label: 'MSX .CAS-File',
   name: 'msxcas',
   options: [
@@ -23,7 +23,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 const blockHeader = [0x1f, 0xa6, 0xde, 0xba, 0xcc, 0x13, 0x7d, 0x74];
 

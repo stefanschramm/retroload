@@ -10,7 +10,7 @@ import {hex16} from '../../../common/Utils.js';
 /**
  * Adapter for generic data for LC 80
  */
-const definition: InternalAdapterDefinition = {
+export const Lc80GenericAdapter: InternalAdapterDefinition = {
   label: 'LC80 (Generic data)',
   name: 'lc80generic',
   options: [
@@ -20,7 +20,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;

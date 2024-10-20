@@ -13,7 +13,7 @@ import {kcFirstBlockOption} from './KcOptions.js';
  * [2] KC 85/3 Systemhandbuch, p. 82 - 83
  * [3] KC 85/4 Systemhandbuch, p. 93 - 95
  */
-const definition: InternalAdapterDefinition = {
+export const KcGenericAdapter: InternalAdapterDefinition = {
   label: 'KC (Generic)',
   name: 'kcgeneric',
   options: [
@@ -25,7 +25,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 const maxFileNameLength = 8;
 

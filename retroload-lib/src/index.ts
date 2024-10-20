@@ -14,5 +14,5 @@ export {identify, getEncodingAdapters, getAllEncodingOptions, encodeUint8, encod
 export {decodeWav, getAllDecoders, type DecoderSettings} from './decoding/DecoderManager.js';
 
 // BASIC Tokenization - EXPERIMENTAL
-export {tokenizers as BasicTokenizers} from './tokenizing/TokenizerProvider.js';
+export {default as BasicTokenizers} from './tokenizing/Tokenizers.js';
 export {type TokenizerDefinition} from './tokenizing/TokenizerDefinition.js';

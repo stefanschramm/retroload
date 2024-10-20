@@ -33,7 +33,7 @@ const modeOption: ArgumentOptionDefinition<number> = {
 /**
  * Adapter for generic data for MO5
  */
-const definition: InternalAdapterDefinition = {
+export const Mo5GenericAdapter: InternalAdapterDefinition = {
   label: 'MO5 (Generic data)',
   name: 'mo5generic',
   options: [
@@ -44,7 +44,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 const maxFileNameLength = 11;
 const blockTypeStart = 0x00;

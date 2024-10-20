@@ -5,14 +5,13 @@ import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {hex8} from '../../../common/Utils.js';
 
-const definition: InternalAdapterDefinition = {
+export const AtariGenericAdapter: InternalAdapterDefinition = {
   label: 'Atari (Generic data)',
   name: 'atarigeneric',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const markerByte = 0x55;
 const blockTypeFull = 0xfc;

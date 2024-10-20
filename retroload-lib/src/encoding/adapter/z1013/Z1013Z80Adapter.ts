@@ -17,14 +17,13 @@ const z80noHeadersave: FlagOptionDefinition = {
 /**
  * Adapter for Z 1013 .Z80 files (Headersave)
  */
-const definition: InternalAdapterDefinition = {
+export const Z1013Z80Adapter: InternalAdapterDefinition = {
   label: 'Z 1013 .Z80-File (Headersave)',
   name: 'z80',
   options: [z80noHeadersave],
   identify,
   encode,
 };
-export default definition;
 
 const headerLength = 0x20;
 

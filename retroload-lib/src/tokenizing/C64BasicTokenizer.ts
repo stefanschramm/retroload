@@ -3,12 +3,11 @@ import {PointerBasedSourceTokenizer} from './PointerBasedTokenizer.js';
 import {type TokenizerDefinition} from './TokenizerDefinition.js';
 import {tokens} from './tokens/c64.js';
 
-const definition: TokenizerDefinition = {
+export const C64BasicTokenizer: TokenizerDefinition = {
   name: 'c64',
   extension: 'prg',
   tokenize,
 };
-export default definition;
 
 function tokenize(str: string): BufferAccess {
   // TODO: Offer option to convert to PETSCII

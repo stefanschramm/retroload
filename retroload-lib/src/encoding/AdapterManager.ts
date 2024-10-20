@@ -1,7 +1,7 @@
 import {type AdapterDefinition, type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
 import {FormatNotFoundError, InternalError, MissingOptionsError} from '../common/Exceptions.js';
 import {OptionContainer, type OptionDefinition, type OptionValues} from './Options.js';
-import Adapters from './AdapterProvider.js';
+import Adapters from './Adapters.js';
 import {type Annotation} from './recorder/Annotations.js';
 import {BufferAccess} from '../common/BufferAccess.js';
 import {FloatRecorder} from './recorder/FloatRecorder.js';

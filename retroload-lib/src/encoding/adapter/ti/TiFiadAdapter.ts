@@ -8,14 +8,13 @@ import {TiEncoder} from './TiEncoder.js';
 /**
  * Adapter for TI-99/4A .FIAD files
  */
-const definition: InternalAdapterDefinition = {
+export const TiFiadAdapter: InternalAdapterDefinition = {
   label: 'TI-99/4A .FIAD-File',
   name: 'fiad',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const blockSize = 64;
 

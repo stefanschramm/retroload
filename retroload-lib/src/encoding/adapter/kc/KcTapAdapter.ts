@@ -9,14 +9,13 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 /**
  * Adapter for KC .TAP files
  */
-const definition: InternalAdapterDefinition = {
+export const KcTapAdapter: InternalAdapterDefinition = {
   label: 'KC .TAP-File',
   name: 'kctap',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const fileHeader = '\xc3KC-TAPE by AF.';
 const fileHeaderLength = 16;

@@ -12,14 +12,13 @@ import {hex8} from '../../../common/Utils.js';
  *
  * https://www.c64-wiki.com/wiki/TAP
  */
-const definition: InternalAdapterDefinition = {
+export const C64TapAdapter: InternalAdapterDefinition = {
   label: 'C64 .TAP-File',
   name: 'c64tap',
   options: [c64machineOption],
   identify,
   encode,
 };
-export default definition;
 
 export const c64TapfileHeader = 'C64-TAPE-RAW';
 const defaultLongPulse = 2048;

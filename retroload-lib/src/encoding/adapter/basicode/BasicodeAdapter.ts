@@ -12,7 +12,7 @@ const basicodeDataOption: FlagOptionDefinition = {
   common: false,
 };
 
-const definition: InternalAdapterDefinition = {
+export const BasicodeAdapter: InternalAdapterDefinition = {
   label: 'BASICODE (ASCII plain text)',
   name: 'basicode',
   options: [
@@ -22,7 +22,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {

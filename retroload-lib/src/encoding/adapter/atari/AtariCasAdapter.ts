@@ -13,14 +13,13 @@ const fileHeader = 'FUJI';
  *
  * https://a8cas.sourceforge.net/format-cas.html
  */
-const definition: InternalAdapterDefinition = {
+export const AtariCasAdapter: InternalAdapterDefinition = {
   label: 'Atari .CAS-File',
   name: 'ataricas',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {

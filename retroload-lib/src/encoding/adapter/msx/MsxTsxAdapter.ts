@@ -5,14 +5,13 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 import {TzxProcessor} from '../tzx/TzxProcessor.js';
 
-const definition: InternalAdapterDefinition = {
+export const MsxTsxAdapter: InternalAdapterDefinition = {
   label: 'MSX .TSX-File',
   name: 'tsx',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const fileHeader = 'ZXTape!\x1a';
 

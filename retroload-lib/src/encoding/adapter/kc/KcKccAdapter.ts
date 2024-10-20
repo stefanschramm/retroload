@@ -11,14 +11,13 @@ import {kcFirstBlockOption} from './KcOptions.js';
  *
  * KCC files contain the tape header block and file data without block numbers and checksums.
  */
-const definition: InternalAdapterDefinition = {
+export const KcKccAdapter: InternalAdapterDefinition = {
   label: 'KC .KCC-File',
   name: 'kcc',
   options: [kcFirstBlockOption],
   identify,
   encode,
 };
-export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {

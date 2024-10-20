@@ -51,12 +51,11 @@ import {tokens} from './tokens/ta.js';
  * 0EH LSB MSB ................... Line number
  */
 
-const definition: TokenizerDefinition = {
+export const TaBasicTokenizer: TokenizerDefinition = {
   name: 'ta',
   extension: 'bas',
   tokenize,
 };
-export default definition;
 
 function tokenize(str: string): BufferAccess {
   const offset = 0x6001;

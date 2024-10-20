@@ -47,7 +47,7 @@ const kcBasicProtectedOption: FlagOptionDefinition = {
 /**
  * https://hc-ddr.hucki.net/wiki/doku.php/z9001/kassettenformate
  */
-const definition: InternalAdapterDefinition = {
+export const KcBasicGenericAdapter: InternalAdapterDefinition = {
   label: 'KC (Generic BASIC data)',
   name: 'kcbasic',
   options: [
@@ -58,7 +58,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;

@@ -9,14 +9,13 @@ import {TzxEncoder} from '../TzxEncoder.js';
  *
  * https://sinclair.wiki.zxnet.co.uk/wiki/TAP_format
  */
-const definition: InternalAdapterDefinition = {
+export const ZxSpectrumTapAdapter: InternalAdapterDefinition = {
   label: 'ZX Spectrum .TAP-File',
   name: 'zxspectrumtap',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {

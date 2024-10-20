@@ -1,6 +1,6 @@
 import {fixturesBaseDir} from '../test/Fixtures.js';
 import fs from 'fs';
-import {tokenizers} from './TokenizerProvider.js';
+import tokenizers from './Tokenizers.js';
 
 const fixturesDir = `${fixturesBaseDir}/tokenizing/fixtures`;
 const fixtures = ['for'];

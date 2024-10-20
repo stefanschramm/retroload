@@ -12,14 +12,13 @@ import {TiEncoder} from './TiEncoder.js';
  * A .TITape archive can contain several files. They will be appended one after another.
  * When playing, it's probably required to press pause in between the individual files.
  */
-const definition: InternalAdapterDefinition = {
+export const TiTitapeAdapter: InternalAdapterDefinition = {
   label: 'TI-99/4A .TITape-File',
   name: 'titape',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 function identify(filename: string, ba: BufferAccess): FormatIdentification {
   return {

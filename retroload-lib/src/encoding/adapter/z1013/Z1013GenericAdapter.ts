@@ -7,14 +7,13 @@ import {Z1013Encoder} from './Z1013Encoder.js';
 /**
  * Adapter for generic data for Z 1013
  */
-const definition: InternalAdapterDefinition = {
+export const Z1013GenericAdapter: InternalAdapterDefinition = {
   label: 'Z 1013 (Generic data)',
   name: 'z1013generic',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;

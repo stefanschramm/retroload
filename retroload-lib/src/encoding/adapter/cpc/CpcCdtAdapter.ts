@@ -5,14 +5,13 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {TzxEncoder} from '../TzxEncoder.js';
 import {TzxProcessor} from '../tzx/TzxProcessor.js';
 
-const definition: InternalAdapterDefinition = {
+export const CpcCdtAdapter: InternalAdapterDefinition = {
   label: 'CPC .CDT-File',
   name: 'cdt',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const fileHeader = 'ZXTape!\x1a';
 

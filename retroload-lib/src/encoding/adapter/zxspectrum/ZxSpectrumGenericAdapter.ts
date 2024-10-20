@@ -22,7 +22,7 @@ const typeOption: ArgumentOptionDefinition<number> = {
  *
  * https://faqwiki.zxnet.co.uk/wiki/Spectrum_tape_interface
  */
-const definition: InternalAdapterDefinition = {
+export const ZxSpectrumGenericAdapter: InternalAdapterDefinition = {
   label: 'ZX Spectrum (Generic data)',
   name: 'zxspectrumgeneric',
   options: [
@@ -33,7 +33,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 const typeProgram = 0;
 const typeNumberArray = 1;

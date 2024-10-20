@@ -8,14 +8,13 @@ import {Zx81Encoder} from './Zx81Encoder.js';
 /**
  * Adapter for ZX81 .P files
  */
-const definition: InternalAdapterDefinition = {
+export const Zx81PAdapter: InternalAdapterDefinition = {
   label: 'ZX81 .P-File',
   name: 'zx81p',
   options: [nameOption],
   identify,
   encode,
 };
-export default definition;
 
 const defaultName = ' ';
 

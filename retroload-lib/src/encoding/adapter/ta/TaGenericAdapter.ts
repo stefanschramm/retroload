@@ -8,14 +8,13 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 /**
  * Adapter for generic data for TA alphatronic PC
  */
-const definition: InternalAdapterDefinition = {
+export const TaGenericAdapter: InternalAdapterDefinition = {
   label: 'TA alphatronic PC (BASIC/Generic data)',
   name: 'tageneric',
   options: [nameOption],
   identify,
   encode,
 };
-export default definition;
 
 function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;

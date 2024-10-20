@@ -12,14 +12,13 @@ import {inflate} from 'pako';
  *
  * http://electrem.emuunlim.com/UEFSpecs.html
  */
-const definition: InternalAdapterDefinition = {
+export const ElectronUefAdapter: InternalAdapterDefinition = {
   label: 'Acorn Electron .UEF-File',
   name: 'uef',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const fileHeader = 'UEF File!\x00';
 const compressedFileHeader = '\x1f\x8b';

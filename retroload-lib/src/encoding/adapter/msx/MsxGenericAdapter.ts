@@ -10,7 +10,7 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 /**
  * Adapter for generic data for MSX
  */
-const definition: InternalAdapterDefinition = {
+export const MsxGenericAdapter: InternalAdapterDefinition = {
   label: 'MSX (Generic binary)',
   name: 'msxgeneric',
   options: [
@@ -24,7 +24,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;

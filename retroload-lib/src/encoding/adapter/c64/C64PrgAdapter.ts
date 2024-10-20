@@ -11,14 +11,13 @@ import {c64machineOption} from './C64Options.js';
  *
  * http://fileformats.archiveteam.org/wiki/Commodore_64_binary_executable
  */
-const definition: InternalAdapterDefinition = {
+export const C64PrgAdapter: InternalAdapterDefinition = {
   label: 'C64 .PRG-File',
   name: 'c64prg',
   options: [shortpilotOption, c64machineOption, nameOption],
   identify,
   encode,
 };
-export default definition;
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {

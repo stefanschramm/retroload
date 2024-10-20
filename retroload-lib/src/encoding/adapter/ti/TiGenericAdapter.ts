@@ -9,14 +9,13 @@ import {TiEncoder} from './TiEncoder.js';
 /**
  * Adapter for generic data for TI-99/4A
  */
-const definition: InternalAdapterDefinition = {
+export const TiGenericAdapter: InternalAdapterDefinition = {
   label: 'TI-99/4A (Generic)',
   name: 'tigeneric',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const blockSize = 64;
 

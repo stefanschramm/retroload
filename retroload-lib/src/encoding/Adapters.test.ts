@@ -1,4 +1,4 @@
-import Adapters from './AdapterProvider.js';
+import Adapters from './Adapters.js';
 import {BufferAccess} from '../common/BufferAccess.js';
 
 test('Adapter provider lists adapters', () => {

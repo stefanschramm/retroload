@@ -8,14 +8,13 @@ import {TzxProcessor} from '../tzx/TzxProcessor.js';
 /**
  * Adapter for ZX Spectrum .TZX files
  */
-const definition: InternalAdapterDefinition = {
+export const ZxSpectrumTzxAdapter: InternalAdapterDefinition = {
   label: 'ZX Spectrum .TZX-File',
   name: 'zxspectrumtzx',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const fileHeader = 'ZXTape!\x1a';
 

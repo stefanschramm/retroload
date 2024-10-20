@@ -7,7 +7,7 @@ import {Logger} from '../../../common/logging/Logger.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {hex8} from '../../../common/Utils.js';
 
-const definition: InternalAdapterDefinition = {
+export const ElectronGenericAdapter: InternalAdapterDefinition = {
   label: 'Acorn Electron (Generic data)',
   name: 'electrongeneric',
   options: [
@@ -19,7 +19,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 const maxFileNameLength = 10;
 const maxBlockSize = 256;

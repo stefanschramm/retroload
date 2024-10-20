@@ -8,14 +8,13 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 /**
  * Adapter for KC .SSS (BASIC) files
  */
-const definition: InternalAdapterDefinition = {
+export const KcSssAdapter: InternalAdapterDefinition = {
   label: 'KC .SSS-File',
   name: 'sss',
   options: [nameOption],
   identify,
   encode,
 };
-export default definition;
 
 const headerSize = 3 + 8; // basic header + filename
 const blockSize = 128;

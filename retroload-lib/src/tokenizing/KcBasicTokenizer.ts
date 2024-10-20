@@ -3,12 +3,11 @@ import {PointerBasedSourceTokenizer} from './PointerBasedTokenizer.js';
 import {type TokenizerDefinition} from './TokenizerDefinition.js';
 import {tokens} from './tokens/kc852.js';
 
-const definition: TokenizerDefinition = {
+export const KcBasicTokenizer: TokenizerDefinition = {
   name: 'kc',
   extension: 'sss',
   tokenize,
 };
-export default definition;
 
 // TODO: Fix processing of REM / ! tokens (stop tokenizing, directly copy remaining line)
 function tokenize(str: string): BufferAccess {

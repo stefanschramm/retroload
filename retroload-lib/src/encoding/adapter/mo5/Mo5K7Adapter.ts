@@ -10,14 +10,13 @@ import {hex8} from '../../../common/Utils.js';
 /**
  * Adapter for MO5 .K7 files
  */
-const definition: InternalAdapterDefinition = {
+export const Mo5K7Adapter: InternalAdapterDefinition = {
   label: 'MO5 .K7-File',
   name: 'k7',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 // The number of 0x01 in the header seems to vary.
 // By definition it should be 16, but many images have more and some less.

@@ -34,7 +34,7 @@ const c64typeOption: ArgumentOptionDefinition<C64Type> = {
   },
 };
 
-const definition: InternalAdapterDefinition = {
+export const C64GenericAdapter: InternalAdapterDefinition = {
   label: 'C64 (Generic data)',
   name: 'c64generic',
   options: [
@@ -47,7 +47,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;

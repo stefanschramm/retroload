@@ -10,14 +10,13 @@ import {TiEncoder} from './TiEncoder.js';
  *
  * https://www.ninerpedia.org/wiki/TIFILES_format
  */
-const definition: InternalAdapterDefinition = {
+export const TiTifileAdapter: InternalAdapterDefinition = {
   label: 'TI-99/4A .TIFILE-File',
   name: 'tifile',
   options: [],
   identify,
   encode,
 };
-export default definition;
 
 const fileHeader = '\x07TIFILES';
 const sectorSize = 0x100;

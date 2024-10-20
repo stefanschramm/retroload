@@ -11,14 +11,13 @@ import {c64machineOption} from './C64Options.js';
  *
  * http://unusedino.de/ec64/technical/formats/t64.html
  */
-const definition: InternalAdapterDefinition = {
+export const C64T64Adapter: InternalAdapterDefinition = {
   label: 'C64 .T64-File',
   name: 't64',
   options: [shortpilotOption, c64machineOption],
   identify,
   encode,
 };
-export default definition;
 
 // Usually 'C64 tape image file' or 'C64S tape file' but might be different
 const fileHeader = 'C64';

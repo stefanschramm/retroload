@@ -9,7 +9,7 @@ import {TzxEncoder} from '../TzxEncoder.js';
 /**
  * https://www.cpcwiki.eu/imgs/5/5d/S968se08.pdf
  */
-const definition: InternalAdapterDefinition = {
+export const CpcGenericAdapter: InternalAdapterDefinition = {
   label: 'CPC (Generic data)',
   name: 'cpcgeneric',
   options: [
@@ -20,7 +20,6 @@ const definition: InternalAdapterDefinition = {
   identify,
   encode,
 };
-export default definition;
 
 const fileTypeBinary = 2;
 const dataBytesPerSegment = 256;
