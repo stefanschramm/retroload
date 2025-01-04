@@ -22,6 +22,8 @@ import {Mo5K7Adapter} from './adapter/mo5/Mo5K7Adapter.js';
 import {MsxCasAdapter} from './adapter/msx/MsxCasAdapter.js';
 import {MsxGenericAdapter} from './adapter/msx/MsxGenericAdapter.js';
 import {MsxTsxAdapter} from './adapter/msx/MsxTsxAdapter.js';
+import {SharpMzGenericAdapter} from './adapter/sharpmz/SharpMzGenericAdapter.js';
+import {SharpMzMzfAdapter} from './adapter/sharpmz/SharpMzMzfAdapter.js';
 import {TaGenericAdapter} from './adapter/ta/TaGenericAdapter.js';
 import {TiFiadAdapter} from './adapter/ti/TiFiadAdapter.js';
 import {TiGenericAdapter} from './adapter/ti/TiGenericAdapter.js';
@@ -59,6 +61,8 @@ const adapters: InternalAdapterDefinition[] = [
   MsxCasAdapter,
   MsxGenericAdapter,
   MsxTsxAdapter,
+  SharpMzGenericAdapter,
+  SharpMzMzfAdapter,
   TaGenericAdapter,
   TiFiadAdapter,
   TiGenericAdapter,

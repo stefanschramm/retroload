@@ -232,6 +232,42 @@ Run machine language program (with entry point `2700`, hexadecimal):
 
     EXEC &H2700
 
+# Sharp MZ-700
+
+Volume: 70 % (using cassette adapter side B)
+
+Load and run machine language program from monitor:
+
+    (PLAY)
+    L
+
+To load BASIC programs, a BASIC interpreter (like `1Z-013B.mzf`, `927c33ddd4ae916ca2852207abf0be64`) must be loaded first.
+
+Within BASIC, BASIC programs can be loaded and run like this:
+
+    (PLAY)
+    LOAD
+    RUN
+
+**BASICODE**
+
+There is a BASICODE implementation `S-BASIC/VERTALER BASICODE-2.**` (`s-basicode 2.mzf`, `1d9a2a3258b3233e90ae9b9529ec3f02`) that can be used to load and run BASICODE programs. It seems to be a patched version of the standard BASIC.
+
+First load the BASICODE-BASIC from the monitor:
+
+    (PLAY)
+    L
+
+Then from within BASIC the "library routines" need to be initialized using
+
+    LOAD/A
+
+and afterwards you can load and run BASICODE programs using:
+
+    (PLAY)
+    LOAD/B
+    RUN
+
 # TI-99/4A
 
 Volume: 60 % (using line cable)
