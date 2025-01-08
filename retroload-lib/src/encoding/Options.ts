@@ -153,7 +153,7 @@ export const entryOption: ArgumentOptionDefinition<number | undefined> = {
   required: false,
   type: 'text',
   parse(v) {
-    if (v === undefined) {
+    if (v === undefined || v === '') {
       return undefined;
     }
     const address = parseInt(v, 16);

@@ -42,6 +42,7 @@ const examples: ExampleDefinition[] = [
       '2023-10-31 (KC 85/4 with BASICODE-3C Andreas and Uwe Zierott, R. Wenzel 1.5; BAC854C.SSS: d48116eaeab75f01b31ba3515fd45615)',
       '2023-12-10 (C64 C with BASICODE 3 Version D-1 MvD 1988; prg: d7c0990f12499ad2c3d31539e0366712, Basicode 3 Version D-1 (DE).d64: 962b708b1f6b5ac720c25e7848f4d796',
       '2023-12-10 (MSX Philips VG-8020 with BASICODE-3 (1987)(NOS)(NL).cas: 36018c4014149a46f600381fc4c4dadf',
+      // Loads on Sharp MZ-700, but there seem to be some glitches with the example. Possibly BASICODE-2 incompatibility. '2025-01-08 (Sharp MZ-700 with S-BASIC/VERTALER BASICODE-2.**; s-basicode 2.mzf: 1d9a2a3258b3233e90ae9b9529ec3f02',
     ],
   },
   // Atari 800 XL
@@ -275,6 +276,23 @@ const examples: ExampleDefinition[] = [
     hash: 'abcc9aef0dbe1802df60c6bb05d2d09c',
     instructions: 'bload"cas:",r',
     tests: ['2023-12-10 OK (Philips VG-8020)'],
+  },
+  // Sharp MZ-700
+  {
+    dir: 'sharpmz',
+    file: 'rl.bin',
+    options: {format: 'sharpmzgeneric', shortpilot: true, name: 'RL', load: '1200', entry: '1200', sharpmznorepeat: true, sharpmztype: '1'},
+    hash: '08b882304fde8a43bc6c83b84a96d282',
+    instructions: 'L',
+    tests: ['2025-01-08 OK (Sharp MZ-700)'],
+  },
+  {
+    dir: 'sharpmz',
+    file: 'rl.mzf',
+    options: {shortpilot: true, sharpmznorepeat: true},
+    hash: '08b882304fde8a43bc6c83b84a96d282',
+    instructions: 'L',
+    tests: ['2025-01-08 OK (Sharp MZ-700)'],
   },
   // TA alphatronic PC
   {
