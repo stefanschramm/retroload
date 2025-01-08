@@ -276,6 +276,23 @@ const examples: ExampleDefinition[] = [
     instructions: 'bload"cas:",r',
     tests: ['2023-12-10 OK (Philips VG-8020)'],
   },
+  // Sharp MZ-700
+  {
+    dir: 'sharpmz',
+    file: 'rl.bin',
+    options: {format: 'sharpmzgeneric', shortpilot: true, name: 'RL', load: '1200', entry: '1200', sharpmznorepeat: true, sharpmztype: '1'},
+    hash: '08b882304fde8a43bc6c83b84a96d282',
+    instructions: 'L',
+    tests: ['2025-01-08 OK (Sharp MZ-700)'],
+  },
+  {
+    dir: 'sharpmz',
+    file: 'rl.mzf',
+    options: {shortpilot: true, sharpmznorepeat: true},
+    hash: '08b882304fde8a43bc6c83b84a96d282',
+    instructions: 'L',
+    tests: ['2025-01-08 OK (Sharp MZ-700)'],
+  },
   // TA alphatronic PC
   {
     dir: 'ta_bas',

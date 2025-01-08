@@ -1,8 +1,8 @@
 import {FormatIdentification, InternalAdapterDefinition} from '../AdapterDefinition.js';
+import {OptionContainer, shortpilotOption} from '../../Options.js';
 import {hex16, hex8} from '../../../common/Utils.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Logger} from '../../../common/logging/Logger.js';
-import {OptionContainer} from '../../Options.js';
 import {RecorderInterface} from '../../recorder/RecorderInterface.js';
 import {SharpMzEncoder} from './SharpMzEncoder.js';
 import {sharpmznorepeatOption} from './SharpMzDefinitions.js';
@@ -18,6 +18,7 @@ export const SharpMzMzfAdapter: InternalAdapterDefinition = {
   name: 'sharpmzmzf',
   options: [
     sharpmznorepeatOption,
+    shortpilotOption,
   ],
   identify,
   encode,
@@ -47,11 +48,12 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   }
 
   const doRepeat = !options.isFlagSet(sharpmznorepeatOption);
+  const shortpilot = options.isFlagSet(shortpilotOption);
 
   const e = new SharpMzEncoder(recorder);
 
   e.begin();
-  e.recordHeader(header, doRepeat);
+  e.recordHeader(header, doRepeat, shortpilot);
   e.recordData(data, doRepeat);
   e.end();
 }
