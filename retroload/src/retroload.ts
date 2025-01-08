@@ -45,7 +45,7 @@ async function main(): Promise<void> {
   const infile = program.args[0];
   const outfile = typeof options['o'] === 'string' ? options['o'] : undefined;
   const shouldPlay = outfile === undefined;
-  const format = typeof options['f'] === 'string' ? options['f'] : undefined;
+  const format = typeof options['format'] === 'string' ? options['format'] : undefined;
   Logger.setVerbosity(parseInt(typeof options['loglevel'] === 'string' ? options['loglevel'] : '1', 10));
   const data = readFile(infile);
 
