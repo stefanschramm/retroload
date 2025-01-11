@@ -15,12 +15,13 @@
     "lint": "npm run lint --ws"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "@stylistic/eslint-plugin-ts": "^2.9.0",
+    "@eslint/js": "^9.18.0",
+    "@stylistic/eslint-plugin-ts": "^2.12.1",
     "@types/eslint__js": "^8.42.3",
-    "eslint": "^9.13.0",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.10.0",
+    "@types/node": "^22.10.5",
+    "eslint": "^9.18.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.19.1",
     "vitest": "^2.1.8"
   }
 }
