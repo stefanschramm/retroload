@@ -1,6 +1,7 @@
 import * as AdapterManager from './AdapterManager.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
+import {describe, expect, it, test} from 'vitest';
 import examples, {type ExampleDefinition, getLocalPath} from '../Examples.js';
 import {BufferAccess} from '../common/BufferAccess.js';
 import {Logger} from '../common/logging/Logger.js';

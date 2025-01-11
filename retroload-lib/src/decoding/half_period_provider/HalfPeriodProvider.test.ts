@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {AveragingSampleToHalfPeriodConverter} from './AveragingSampleToHalfPeriodConverter.js';
 import {type HalfPeriodProvider} from './HalfPeriodProvider.js';
 import {SampleProviderMock} from '../../test/mocks/SampleProviderMock.js';

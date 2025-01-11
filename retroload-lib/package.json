@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "lint": "eslint src/",
-    "test": "jest",
+    "test": "vitest run",
     "test-watch": "jest --watch",
     "coverage": "jest --coverage",
     "updateVersion": "genversion --es6 -s src/version.ts"

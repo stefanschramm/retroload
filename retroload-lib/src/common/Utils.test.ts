@@ -1,4 +1,5 @@
 import {calculateChecksum8, hex16, hex8} from './Utils.js';
+import {describe, expect, test} from 'vitest';
 import {BufferAccess} from './BufferAccess.js';
 
 describe('Utils', () => {

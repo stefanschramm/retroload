@@ -1,3 +1,4 @@
+import {describe, expect, test} from 'vitest';
 import {type FrequencyRange} from './Frequency.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
 import {type Position} from '../common/Positioning.js';

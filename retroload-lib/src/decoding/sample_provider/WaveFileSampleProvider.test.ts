@@ -1,3 +1,4 @@
+import {describe, expect, test} from 'vitest';
 import {BufferAccess} from '../../common/BufferAccess.js';
 import {InputDataError} from '../../common/Exceptions.js';
 import {WaveFileSampleProvider} from './WaveFileSampleProvider.js';
