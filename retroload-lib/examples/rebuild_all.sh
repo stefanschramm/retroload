@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 FORMATS_DIR="$(dirname $(realpath $0))/formats/"
 
 if [ ! -d "$FORMATS_DIR" ] ; then
@@ -9,7 +11,9 @@ if [ ! -d "$FORMATS_DIR" ] ; then
 fi
 
 for FORMAT in "$(dirname $(realpath $0))/formats/"* ; do
+  echo "Processing $FORMAT..."
 	if [ -d "${FORMAT}" ] ; then
 		make -C "${FORMAT}" clean all
 	fi
+  echo
 done

@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:12
 RUN apt-get update && \
         apt-get -y install --no-install-recommends \
         make \
@@ -8,12 +8,14 @@ RUN apt-get update && \
         ca-certificates \
         python3 \
         python-is-python3 \
+        python3-venv \
         git \
         pip \
         build-essential \
         libsndfile1-dev \
         unzip
-RUN pip install zxtaputils tzxtools
+RUN python3 -m venv /opt/python-venv
+RUN /opt/python-venv/bin/pip install zxtaputils tzxtools
 WORKDIR /opt
 RUN wget https://www.luigidifraia.com/hosted/software/prg2tap-1.8-linux-x86_64-with-examples.tar.gz && \
         tar -zxvf prg2tap-1.8-linux-x86_64-with-examples.tar.gz && \
@@ -44,5 +46,9 @@ RUN wget "https://www.6809.org.uk/asm6809/dl/asm6809-2.12.tar.gz" -O asm6809-2.1
         cd asm6809-2.12 && \
         ./configure && \
         make install
+RUN \
+  ln -s /opt/python-venv/bin/bas2tap /usr/local/bin/bas2tap && \
+  ln -s /opt/python-venv/bin/tapify /usr/local/bin/tapify && \
+  ln -s /opt/python-venv/bin/tzxmerge /usr/local/bin/tzxmerge
 COPY /rebuild_all.sh /
 CMD [ "/rebuild_all.sh" ]
