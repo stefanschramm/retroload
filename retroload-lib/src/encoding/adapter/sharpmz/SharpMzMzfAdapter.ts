@@ -26,7 +26,7 @@ export const SharpMzMzfAdapter: InternalAdapterDefinition = {
 
 function identify(filename: string, _ba: BufferAccess): FormatIdentification {
   return {
-    filename: (/^.*\.mzf$/iu).exec(filename) !== null,
+    filename: (/^.*\.(?:mzf|mzt|m12)$/iu).exec(filename) !== null,
     header: undefined,
   };
 }
