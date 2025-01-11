@@ -1,3 +1,4 @@
+import {describe, expect, test} from 'vitest';
 import {fixturesBaseDir} from '../test/Fixtures.js';
 import fs from 'fs';
 import tokenizers from './Tokenizers.js';

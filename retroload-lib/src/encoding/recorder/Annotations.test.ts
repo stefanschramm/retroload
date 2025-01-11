@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {AnnotationCollector} from './Annotations.js';
 import {InternalError} from '../../common/Exceptions.js';
 

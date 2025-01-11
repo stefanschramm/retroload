@@ -1,3 +1,4 @@
+import {describe, expect, test} from 'vitest';
 import {DynamicSyncFinder} from './DynamicSyncFinder.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
 import {type Position} from '../common/Positioning.js';

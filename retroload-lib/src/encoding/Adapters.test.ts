@@ -1,3 +1,4 @@
+import {describe, expect, test} from 'vitest';
 import Adapters from './Adapters.js';
 import {BufferAccess} from '../common/BufferAccess.js';
 

@@ -5,6 +5,7 @@ import {
   MissingOptionsError,
   UsageError,
 } from './Exceptions.js';
+import {describe, expect, test} from 'vitest';
 import {type ArgumentOptionDefinition} from '../encoding/Options.js';
 
 describe('Instantiation of exceptions', () => {

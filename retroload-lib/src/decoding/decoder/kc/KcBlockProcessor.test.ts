@@ -1,4 +1,5 @@
 import {BlockDecodingResult, BlockDecodingResultStatus} from '../BlockDecodingResult.js';
+import {describe, expect, test} from 'vitest';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {DecodingError} from '../../DecoderExceptions.js';
 import {FileDecodingResultStatus} from '../FileDecodingResult.js';

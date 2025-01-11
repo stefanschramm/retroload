@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {BufferAccess} from './BufferAccess.js';
 
 test('length', () => {
