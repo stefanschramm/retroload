@@ -24,8 +24,8 @@
   "scripts": {
     "lint": "eslint src/",
     "test": "vitest run",
-    "test-watch": "jest --watch",
-    "coverage": "jest --coverage",
+    "test-watch": "vitest watch",
+    "coverage": "vitest run --coverage",
     "updateVersion": "genversion --es6 -s src/version.ts"
   },
   "dependencies": {
