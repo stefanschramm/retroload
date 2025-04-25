@@ -1,8 +1,8 @@
 import * as AdapterManager from './AdapterManager.js';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
+import {type InternalExampleDefinition, getExamplesInternal, getLocalPath} from '../Examples.js';
 import {describe, expect, it, test} from 'vitest';
-import examples, {type ExampleDefinition, getLocalPath} from '../Examples.js';
 import {BufferAccess} from '../common/BufferAccess.js';
 import {Logger} from '../common/logging/Logger.js';
 import {NullLoggerHandler} from '../common/logging/NullLoggerHandler.js';
@@ -33,7 +33,7 @@ test('identify returns undefined for unknown formats', () => {
 });
 
 describe('Encoding pipeline returns correct hashes', () => {
-  it.each(examples.map((e) => ({label: getTestLabel(e), definition: e})))(
+  it.each(getExamplesInternal().map((e) => ({label: getTestLabel(e), definition: e})))(
     'example $label',
     (example) => {
       const actualHash = encodeAndHash(getLocalPath(example.definition), example.definition.options);
@@ -42,8 +42,8 @@ describe('Encoding pipeline returns correct hashes', () => {
   );
 });
 
-function getTestLabel(example: ExampleDefinition): string {
-  return `${example.dir}/${example.file}, options: ${JSON.stringify(example.options)}`;
+function getTestLabel(example: InternalExampleDefinition): string {
+  return `${example.path}, options: ${JSON.stringify(example.options)}`;
 }
 
 function encodeAndHash(file: string, options: OptionValues): string | false {
