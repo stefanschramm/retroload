@@ -53,6 +53,10 @@ export class Oscillator {
     this.phase = !this.phase;
   }
 
+  public togglePhase(): void {
+    this.phase = !this.phase;
+  }
+
   public recordSeconds(frequency: number, seconds: number): void {
     this.recordOscillations(frequency, frequency * seconds);
   }

@@ -171,6 +171,19 @@ export class BufferAccess {
     return (new TextDecoder()).decode(this.ui8a);
   }
 
+  public extractZeroTerminatedString(): string {
+    let str = '';
+    for (let i = 0; i < this.length(); i++) {
+      const c = this.getUint8(i);
+      if (c === 0) {
+        break;
+      }
+      str += String.fromCharCode(c);
+    }
+
+    return str;
+  }
+
   public setUint8(offset: number, i: number): void {
     this.view.setInt8(offset, i);
   }
