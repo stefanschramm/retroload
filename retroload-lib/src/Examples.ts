@@ -300,6 +300,15 @@ const examples: InternalExampleDefinition[] = [
     tests: ['2023-12-10 OK (Philips VG-8020)'],
   },
   {
+    machine: 'Oric-1',
+    adapter: 'oricgeneric',
+    path: 'oric_generic/rl.bin',
+    options: {format: 'oricgeneric', shortpilot: true, name: 'RL', load: '1000', 'oricautostart': true},
+    hash: '5374312077083a48aff189f357403270',
+    instructions: 'cload""',
+    tests: ['2025-10-05 OK (Oric-1, issue 3 board)'],
+  },
+  {
     machine: 'Sharp MZ-700',
     adapter: 'sharpmzgeneric',
     path: 'sharpmz/rl.bin',
