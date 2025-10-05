@@ -33,6 +33,12 @@ test('asAsciiString', () => {
   expect(ba.asAsciiString()).toBe('ABC');
 });
 
+test('extractZeroTerminatedString', () => {
+  const data = new Uint8Array([0x41, 0x42, 0x43, 0x00, 0x01, 0x02, 0x03]);
+  const ba = BufferAccess.createFromUint8Array(data);
+  expect(ba.extractZeroTerminatedString()).toBe('ABC');
+});
+
 test('setUint8', () => {
   const ba = BufferAccess.create(8);
   ba.setUint8(2, 0x41);

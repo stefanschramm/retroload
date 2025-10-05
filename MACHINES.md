@@ -202,6 +202,14 @@ Then the BASICODE audio can be loaded using schema `A` ("Basicode progr >>> Basi
 The BASCODER will then exit to BASIC and the loaded program can be `run`.
 With `cmd` the menu can be entered.
 
+# Oric 1
+
+Volume: 50 % (using line cable)
+
+Load the next program (and start it, in case it's saved for autostart)
+
+    CLOAD""
+
 # TA alphatronic PC
 
     cload

@@ -63,3 +63,12 @@ export function hex16(value: number): string {
 export function hex32(value: number): string {
   return `0x${value.toString(16).padStart(8, '0')}`;
 }
+
+export function parity8Bit(byte: number): number {
+  let parity = byte;
+  parity ^= parity >> 4;
+  parity ^= parity >> 2;
+  parity ^= parity >> 1;
+
+  return parity & 1;
+}
