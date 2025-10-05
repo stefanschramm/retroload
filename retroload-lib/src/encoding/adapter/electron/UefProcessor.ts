@@ -144,7 +144,7 @@ export class UefProcessor {
   private processImplicitTapeDataChunk(chunkBa: BufferAccess): void {
     let annotation = '?';
     if (chunkBa.getUint8(0) === 0x2a) {
-      const name = extractZeroTerminatedString(chunkBa.slice(1));
+      const name = chunkBa.slice(1).extractZeroTerminatedString();
       const blockNumber = chunkBa.getUint8(name.length + 10);
       annotation = `${name} ${hex8(blockNumber)}`;
     }
@@ -215,19 +215,6 @@ export class UefProcessor {
 
 function extractString(ba: BufferAccess): string {
   return ba.slice(0, ba.length() - 1).asAsciiString(); // remove trailing \0
-}
-
-function extractZeroTerminatedString(ba: BufferAccess): string {
-  let str = '';
-  for (let i = 0; i < ba.length(); i++) {
-    const c = ba.getUint8(i);
-    if (c === 0) {
-      break;
-    }
-    str += String.fromCharCode(c);
-  }
-
-  return str;
 }
 
 /*
