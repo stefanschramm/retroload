@@ -10,7 +10,7 @@ import {RecorderInterface} from '../../recorder/RecorderInterface.js';
  * Adapter for Oric 1 .TAP files
  */
 export const OricTapAdapter: InternalAdapterDefinition = {
-  label: 'Oric 1 .TAP-File',
+  label: 'Oric .TAP-File',
   name: 'orictap',
   options: [shortpilotOption],
   identify,
