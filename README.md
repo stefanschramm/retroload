@@ -23,7 +23,7 @@ A list of available command line options can be shown using `retroload --help`.
 
 Convert an MSX tape archive into an audio file named example.wav:
 
-    retroload retroload-lib/examples/formats/msx_cas_binary/rl.cas -o example.wav
+    retroload retroload-lib/examples/formats/msx_binary/rl.cas -o example.wav
 
 retroload will try to automatically determine the input format by its content and file extension. For formats that are not automatically detected, the `--format` option needs to be specified.
 
@@ -48,7 +48,7 @@ Rebuilding all examples:
 Or enter the container to build individual examples:
 
     docker run -itv "$(pwd)/formats:/formats" retroload-examples /bin/bash
-    cd /formats/msx_cas_binary
+    cd /formats/msx_binary
     make clean
     make
     exit
