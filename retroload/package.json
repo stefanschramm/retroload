@@ -46,7 +46,7 @@
     "retroload-decode": "dist/esm/retroload-decode.js"
   },
   "dependencies": {
-    "commander": "^13.1.0",
+    "commander": "^14.0.1",
     "retroload-lib": "^0.0.24"
   },
   "devDependencies": {
