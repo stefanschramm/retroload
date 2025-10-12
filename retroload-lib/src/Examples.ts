@@ -318,6 +318,15 @@ const examples: InternalExampleDefinition[] = [
     tests: ['2025-10-05 OK (Oric-1, issue 3 board)'],
   },
   {
+    machine: 'Oric-1',
+    adapter: 'orictap',
+    path: 'oric/rl.bas.tap',
+    options: {shortpilot: true},
+    hash: 'd8113da26cc5ab46260bd67336833c9b',
+    instructions: 'cload""',
+    tests: ['2025-10-12 OK (Oric-1, issue 3 board)'],
+  },
+  {
     machine: 'Sharp MZ-700',
     adapter: 'sharpmzgeneric',
     path: 'sharpmz/rl.bin',

@@ -11,6 +11,9 @@ play: rl.bin
 %.bin.wav: %.bin
 	retroload -l 4 --shortpilot --format oricgeneric --name RL --load 1000 --oricautostart -o $@ $<
 
+%.bas.tap: %.bas.asm
+	$(65XX_ASM) -DMAKE_TAP=1 $< -o $@
+
 %.bin.tap: %.asm
 	$(65XX_ASM) -DMAKE_TAP=1 $< -o $@
 

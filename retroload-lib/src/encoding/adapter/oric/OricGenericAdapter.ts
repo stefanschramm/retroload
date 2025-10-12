@@ -52,6 +52,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   e.begin();
   e.recordHeader(
     typeBinary,
+    // TODO: Is 0x80 instead of 0xcf sufficient for autostart?
     options.isFlagSet(oricAutostartOption) ? 0xcf : 0x00,
     name,
     loadAddress,
