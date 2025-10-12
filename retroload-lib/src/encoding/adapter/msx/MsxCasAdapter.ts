@@ -62,7 +62,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
       i += blockHeader.length;
       const type = determineType(ba, i);
       const long = (['binary', 'basic', 'ascii'] as Array<string | undefined>).includes(type);
-      Logger.debug(`MsxCasAdapter - block header at\t' ${hex16(blockHeaderPosition)}\t type: ${type}`);
+      Logger.debug(`MsxCasAdapter - block header at\t ${hex16(blockHeaderPosition)}\t type: ${type}`);
       e.recordHeader(long);
     }
     e.recordByte(ba.getUint8(i));
