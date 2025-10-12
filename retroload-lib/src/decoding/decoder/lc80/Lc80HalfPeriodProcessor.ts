@@ -26,7 +26,7 @@ export class Lc80HalfPeriodProcessor {
     this.midSyncFinder = new SyncFinder(this.halfPeriodProvider, fSyncMid, minMidSyncPeriods);
   }
 
-  public * files(): Generator<FileDecodingResult> {
+  public *files(): Generator<FileDecodingResult> {
     let keepGoing = true;
     do {
       try {

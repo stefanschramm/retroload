@@ -12,7 +12,7 @@ const definition: InternalDecoderDefinition = {
 };
 export default definition;
 
-function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
+function *decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const streamingHalfPeriodProvider = new StreamingSampleToHalfPeriodConverter(sampleProvider);
   const bp = new Z1013BlockProcessor(new Z1013HalfPeriodProcessor(streamingHalfPeriodProvider));
   for (const fdr of bp.files()) {

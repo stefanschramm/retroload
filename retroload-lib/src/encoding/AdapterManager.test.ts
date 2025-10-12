@@ -52,6 +52,7 @@ function encodeAndHash(file: string, options: OptionValues): string | false {
   const data = BufferAccess.createFromNodeBuffer(buffer).asUint8Array();
 
   let adapterIdentifier: string | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (typeof options['format'] === 'string' && options['format'] !== undefined) {
     adapterIdentifier = options['format'];
   } else {

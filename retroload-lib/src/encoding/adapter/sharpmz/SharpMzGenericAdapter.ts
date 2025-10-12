@@ -19,7 +19,7 @@ const sharpmztypeOption: ArgumentOptionDefinition<number> = {
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => v === '' ? fileTypeMachineCode : parseInt(v, 16),
+  parse: (v) => (v === '' ? fileTypeMachineCode : parseInt(v, 16)),
 };
 
 /**

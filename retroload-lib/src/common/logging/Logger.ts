@@ -2,6 +2,7 @@ const defaultVerbosity = 1;
 let verbosity = defaultVerbosity;
 let handler = console;
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Logger {
   public static setVerbosity(v: number): void {
     verbosity = v;

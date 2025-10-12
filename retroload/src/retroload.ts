@@ -35,7 +35,7 @@ async function main(): Promise<void> {
     .showHelpAfterError();
   // Options defined in adapters/encoders
   const allOptions = getAllEncodingOptions();
-  allOptions.sort((a, b) => a.common && !b.common ? -1 : 0);
+  allOptions.sort((a, b) => (a.common && !b.common ? -1 : 0));
   for (const option of allOptions) {
     program.addOption(new Option(getCommanderFlagsString(option), option.description).hideHelp());
   }

@@ -58,7 +58,7 @@ export class WaveFileSampleProvider implements SampleProvider {
     }
   }
 
-  public * getSamples(): Generator<number> {
+  public *getSamples(): Generator<number> {
     const dataBa = this.ba.slice(this.dataChunkOffset + 8);
     for (let i = this.skip * this.blockAlign; i < this.dataLength; i += this.blockAlign) {
       // Get data for first channel only.

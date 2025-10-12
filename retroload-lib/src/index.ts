@@ -9,7 +9,7 @@ export {type Annotation} from './encoding/recorder/Annotations.js';
 export {type OptionDefinition} from './encoding/Options.js';
 export {type AdapterDefinition} from './encoding/adapter/AdapterDefinition.js';
 export {identify, getEncodingAdapters, getAllEncodingOptions, encodeUint8, encodeUint8Wav, encodeFloat, type EncodingResult} from './encoding/AdapterManager.js';
-export {type ExampleDefinition, getExamples}  from './Examples.js';
+export {type ExampleDefinition, getExamples} from './Examples.js';
 
 // Decoding - EXPERIMENTAL
 export {decodeWav, getAllDecoders, type DecoderSettings} from './decoding/DecoderManager.js';

@@ -25,7 +25,7 @@ export class OricEncoder implements ByteRecorder {
   ) {
     this.oscillator = new Oscillator(this.recorder);
   }
-  
+
   public begin(): void {
     this.oscillator.begin();
     // Polarity seems to be relevant - first half oscillation is expected to be low
@@ -88,7 +88,7 @@ export class OricEncoder implements ByteRecorder {
       this.oscillator.recordOscillations(fShort, 1);
     } else {
       this.oscillator.recordHalfOscillation(fShort);
-      this.oscillator.recordHalfOscillation(fLong);        
+      this.oscillator.recordHalfOscillation(fLong);
     }
   }
 }

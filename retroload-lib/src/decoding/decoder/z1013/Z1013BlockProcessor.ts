@@ -14,7 +14,7 @@ export class Z1013BlockProcessor {
     private readonly blockProvider: Z1013BlockProvider,
   ) {}
 
-  public * files(): Generator<FileDecodingResult> {
+  public *files(): Generator<FileDecodingResult> {
     for (const block of this.blockProvider.blocks()) {
       if (!this.belongsToCurrentFile(block)) {
         yield this.finishFile();

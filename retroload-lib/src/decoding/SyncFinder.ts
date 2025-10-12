@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 import {type FrequencyRange, is, isNot} from './Frequency.js';
 import {type HalfPeriodProvider} from './half_period_provider/HalfPeriodProvider.js';
 import {Logger} from '../common/logging/Logger.js';

@@ -16,7 +16,7 @@ export class LowPassFilter implements SampleProvider {
     this.maxBinSize = this.sampleRate / frequency;
   }
 
-  public * getSamples(): Generator<number> {
+  public *getSamples(): Generator<number> {
     for (const s of this.sampleProvider.getSamples()) {
       this.bin.push(s);
       this.binSum += s;

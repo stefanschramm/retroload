@@ -24,7 +24,7 @@ export class KcHalfPeriodProcessor implements KcBlockProvider {
     this.syncFinder = new SyncFinder(this.halfPeriodProvider, fOne, minIntroPeriods);
   }
 
-  public * blocks(): Generator<BlockDecodingResult> {
+  public *blocks(): Generator<BlockDecodingResult> {
     let keepGoing = true;
     do {
       try {

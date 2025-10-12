@@ -18,6 +18,7 @@ export class AveragingSampleToHalfPeriodConverter implements HalfPeriodProvider 
   }
 
   public getNext(): number | undefined {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.halfPeriods[this.cursor] === undefined) {
       return undefined;
     }

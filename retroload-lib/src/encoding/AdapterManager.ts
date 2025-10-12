@@ -116,6 +116,7 @@ function getAdapterByName(name: string): InternalAdapterDefinition {
 function encodeWithAdapter(recorder: RecorderInterface, adapter: InternalAdapterDefinition, dataBa: BufferAccess, optionValues: OptionValues = {}): boolean {
   const optionContainer = new OptionContainer(optionValues);
   const requiredOptions = adapter.options.filter((o) => o.type !== 'bool' && o.required);
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const missingOptions = requiredOptions.filter((o) => optionValues[o.name] === undefined);
   if (missingOptions.length > 0) {
     throw new MissingOptionsError(missingOptions);

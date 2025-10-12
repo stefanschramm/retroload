@@ -4,7 +4,7 @@ export class SampleProviderMock implements SampleProvider {
   public bitsPerSample = 8;
   public sampleRate = 44100;
 
-  public * getSamples(): Generator<number> {
+  public *getSamples(): Generator<number> {
     const values = [
       0,
       0,

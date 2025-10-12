@@ -8,12 +8,12 @@ const fShortPulse = 2000;
 
 /**
  * Encoder for Sharp MZ-700 and similar
- * 
+ *
  * https://original.sharpmz.org/mz-700/tapeproc.htm
  * https://original.sharpmz.org/mz-700/coremain.htm
- * 
+ *
  * Note: The "L" mark after checksums in this documentation seems not to be required.
- * 
+ *
  * Repeating the data seems to be optional: If the first recording can be loaded, the rest is ignored.
  */
 export class SharpMzEncoder implements ByteRecorder {

@@ -14,7 +14,7 @@ const definition: InternalDecoderDefinition = {
 };
 export default definition;
 
-function * decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
+function *decode(sampleProvider: SampleProvider, settings: DecoderSettings): Generator<OutputFile> {
   const filteredSampleProvider = new LowPassFilter(sampleProvider, 11025);
   // high pass filtering doesn't seem to improve decoding (or is the implementation buggy?) :/
   // filteredSampleProvider = new HighPassFilter(filteredSampleProvider, 25);

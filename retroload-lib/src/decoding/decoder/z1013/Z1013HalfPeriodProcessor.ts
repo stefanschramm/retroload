@@ -22,7 +22,7 @@ export class Z1013HalfPeriodProcessor implements Z1013BlockProvider {
     this.syncFinder = new SyncFinder(this.halfPeriodProvider, fSync, minIntroSyncPeriods);
   }
 
-  public * blocks(): Generator<BlockDecodingResult> {
+  public *blocks(): Generator<BlockDecodingResult> {
     let keepGoing = true;
     do {
       try {

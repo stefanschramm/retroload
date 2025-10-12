@@ -16,7 +16,7 @@ const typeOption: ArgumentOptionDefinition<number> = {
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => v === '' ? fileTypeBasic : parseInt(v, 16),
+  parse: (v) => (v === '' ? fileTypeBasic : parseInt(v, 16)),
 };
 
 const modeOption: ArgumentOptionDefinition<number> = {
@@ -27,7 +27,7 @@ const modeOption: ArgumentOptionDefinition<number> = {
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => v === '' ? fileModeBinary : parseInt(v, 16),
+  parse: (v) => (v === '' ? fileModeBinary : parseInt(v, 16)),
 };
 
 /**

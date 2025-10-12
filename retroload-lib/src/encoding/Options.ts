@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 import {InternalError, InvalidArgumentError} from '../common/Exceptions.js';
 
 /**
@@ -167,5 +169,5 @@ export const entryOption: ArgumentOptionDefinition<number | undefined> = {
 
 function isHexNumber(str: string): boolean {
   // eslint-disable-next-line require-unicode-regexp
-  return /^[A-Fa-f0-9]+$/.exec(str) !== null;
+  return (/^[A-Fa-f0-9]+$/).exec(str) !== null;
 }

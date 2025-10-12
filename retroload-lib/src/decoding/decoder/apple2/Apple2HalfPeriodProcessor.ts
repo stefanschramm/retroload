@@ -24,7 +24,7 @@ export class Apple2HalfPeriodProcessor {
     this.syncFinder = new DynamicSyncFinder(this.halfPeriodProvider, minIntroSyncPeriods, 0.15);
   }
 
-  public * files(): Generator<FileDecodingResult> {
+  public *files(): Generator<FileDecodingResult> {
     let keepGoing = true;
     do {
       try {

@@ -1,16 +1,16 @@
 // @ts-check
 
 import eslint from '@eslint/js';
-import stylisticTs from '@stylistic/eslint-plugin-ts';
+import stylistic from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.all,
   ...tseslint.configs.strictTypeChecked,
-  stylisticTs.configs['all-flat'],
+  stylistic.configs['all'],
   {
     plugins: {
-      '@stylistic/ts': stylisticTs,
+      '@stylistic/ts': stylistic,
     },
     languageOptions: {
       parserOptions: {
@@ -19,18 +19,26 @@ export default tseslint.config(
       },
     },
     'rules': {
-      '@stylistic/ts/comma-dangle': ['error', 'always-multiline'],
-      '@stylistic/ts/indent': ['error', 2],
-      '@stylistic/ts/lines-between-class-members': 'off',
-      '@stylistic/ts/no-extra-parens': 'off',
-      '@stylistic/ts/object-property-newline': 'off',
-      '@stylistic/ts/quote-props': 'off',
-      '@stylistic/ts/quotes': ['error', 'single'],
-      '@stylistic/ts/space-before-function-paren': 'off',
+      '@stylistic/array-element-newline': 'off',
+      '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/dot-location': ['error', 'property'],
+      '@stylistic/function-call-argument-newline': ['error', 'consistent'],
+      '@stylistic/function-paren-newline': ['error', 'consistent'],
+      '@stylistic/indent': ['error', 2],
+      '@stylistic/lines-between-class-members': 'off',
+      '@stylistic/multiline-comment-style': 'off',
+      '@stylistic/multiline-ternary': 'off',
+      '@stylistic/newline-per-chained-call': ['error', {'ignoreChainWithDepth': 3}],
+      '@stylistic/no-extra-parens': 'off',
+      '@stylistic/no-extraneous-class': 'off',
+      '@stylistic/no-unnecessary-condition': 'off',
+      '@stylistic/object-property-newline': 'off',
+      '@stylistic/padded-blocks': 'off',
+      '@stylistic/quote-props': 'off',
+      '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/space-before-function-paren': 'off',
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/explicit-member-accessibility': 'error',
-      '@typescript-eslint/no-extraneous-class': 'off',
-      '@typescript-eslint/no-unnecessary-condition': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

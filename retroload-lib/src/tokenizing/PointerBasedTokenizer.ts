@@ -29,12 +29,13 @@ const baseTypes: PatternDefinition[] = [
  * Pointer-based BASIC dialects (KC, C64, TA, MSX) have a 16 bit little-endian pointer to the next line at the beginning of each line.
  * In contrast there also exist length-based dialects (Atari 800).
  */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class PointerBasedSourceTokenizer {
   public static tokenize(loadAddress: number, tokenMap: RawTokenDefinition[], str: string): BufferAccess {
     const lines = str.trim().split('\n');
     const nonEmptyLines = lines.filter((l) => l.trim() !== '');
     // longest tokens first so that they will match first
-    const sortedTokenMap = [...tokenMap].sort((a, b) => (a[0] as string).length > (b[0] as string).length ? -1 : 1);
+    const sortedTokenMap = [...tokenMap].sort((a, b) => ((a[0] as string).length > (b[0] as string).length ? -1 : 1));
     const tokenizedLines = nonEmptyLines.map((l) => (new LineTokenizer(sortedTokenMap, l)).tokenize());
     const compiledLines: BufferAccess[] = [];
     let totalByteLength = 0;

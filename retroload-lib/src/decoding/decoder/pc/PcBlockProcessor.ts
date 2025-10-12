@@ -13,7 +13,7 @@ export class PcBlockProcessor {
     this.hpp = new PcHalfPeriodProcessor(this.halfPeriodProvider);
   }
 
-  public * files(): Generator<FileDecodingResult> {
+  public *files(): Generator<FileDecodingResult> {
     for (const blockDecodingResult of this.hpp.blocks()) {
       if (blockDecodingResult.hadIntro && this.blocks.length !== 0) {
         yield this.finishFile();

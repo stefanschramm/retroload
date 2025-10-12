@@ -14,7 +14,7 @@ const typeOption: ArgumentOptionDefinition<number> = {
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => v === '' ? typeBinary : parseInt(v, 16),
+  parse: (v) => (v === '' ? typeBinary : parseInt(v, 16)),
 };
 
 /**

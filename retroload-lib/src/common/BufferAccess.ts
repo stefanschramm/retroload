@@ -1,3 +1,6 @@
+/* eslint-disable @stylistic/template-curly-spacing */
+/* eslint-disable @stylistic/no-multi-spaces */
+
 /**
  * Provides functions for convenient reading and writing of ArrayBuffers
  *
@@ -52,7 +55,7 @@ export class BufferAccess {
     return this.ui8a;
   }
 
-  public * bytes(): Generator<number> {
+  public *bytes(): Generator<number> {
     for (let i = 0; i < this.length(); i++) {
       yield this.getUint8(i);
     }
@@ -127,6 +130,7 @@ export class BufferAccess {
     if (offset >= this.view.byteLength) {
       throw new Error('Illegal offset.');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (length !== undefined && offset + length > this.view.byteLength) {
       throw new Error('Illegal length.');
     }

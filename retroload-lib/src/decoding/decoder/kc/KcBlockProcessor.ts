@@ -23,7 +23,7 @@ export class KcBlockProcessor {
     private readonly stopOnError: boolean,
   ) {}
 
-  public * files(): Generator<FileDecodingResult> {
+  public *files(): Generator<FileDecodingResult> {
     for (const decodingResult of this.blockProvider.blocks()) {
       let errorInCurrentBlock = false;
       switch (decodingResult.status) {

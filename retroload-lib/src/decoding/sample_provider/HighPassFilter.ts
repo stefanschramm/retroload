@@ -18,7 +18,7 @@ export class HighPassFilter implements SampleProvider {
     this.offset = 1 << (sampleProvider.bitsPerSample - 1);
   }
 
-  public * getSamples(): Generator<number> {
+  public *getSamples(): Generator<number> {
     for (const s of this.sampleProvider.getSamples()) {
       this.bin.push(s);
       this.binSum += s;

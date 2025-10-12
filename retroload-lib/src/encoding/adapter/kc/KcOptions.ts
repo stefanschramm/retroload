@@ -10,6 +10,7 @@ export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
   required: false,
   type: 'text',
   parse(v) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (v === undefined || v === '') {
       return 1; // Defaults to 1 because most KCC files are for Muehlhausen KCs
     }
@@ -24,5 +25,5 @@ export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
 
 function isHexNumber(str: string): boolean {
   // eslint-disable-next-line require-unicode-regexp
-  return /^[A-Fa-f0-9]+$/.exec(str) !== null;
+  return (/^[A-Fa-f0-9]+$/).exec(str) !== null;
 }

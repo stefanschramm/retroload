@@ -121,7 +121,7 @@ class KcBlockProviderMock implements KcBlockProvider {
     private readonly blockDecodingResults: BlockDecodingResult[],
   ) {}
 
-  public * blocks(): Generator<BlockDecodingResult> {
+  public *blocks(): Generator<BlockDecodingResult> {
     for (const bdr of this.blockDecodingResults) {
       yield bdr;
     }

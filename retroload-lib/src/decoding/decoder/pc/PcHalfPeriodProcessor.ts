@@ -20,7 +20,7 @@ export class PcHalfPeriodProcessor {
     this.syncFinder = new SyncFinder(this.halfPeriodProvider, fSync, minIntroSyncPeriods);
   }
 
-  public * blocks(): Generator<PcBlockDecodingResult> {
+  public *blocks(): Generator<PcBlockDecodingResult> {
     let keepGoing = true;
     do {
       try {
@@ -39,7 +39,7 @@ export class PcHalfPeriodProcessor {
     } while (keepGoing);
   }
 
-  private * decodeRecord(): Generator<PcBlockDecodingResult> {
+  private *decodeRecord(): Generator<PcBlockDecodingResult> {
     // The very first block of a file has a sync intro.
     // Bytes of further blocks of the same file are directly following the previous blocks without any marker.
     this.findSync();
@@ -59,6 +59,7 @@ export class PcHalfPeriodProcessor {
         }
       }
       hadIntro = false;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } while (true);
   }
 
