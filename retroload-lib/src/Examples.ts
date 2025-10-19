@@ -240,7 +240,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'MSX',
     adapter: 'msxcas',
-    path: 'msx_ascii/rl.cas',
+    path: 'msx/rl.txt.cas',
     options: {},
     hash: 'c2560f08b79e0b687010cf89a90880ff',
     instructions: 'run"cas:"',
@@ -249,7 +249,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'MSX',
     adapter: 'msxcas',
-    path: 'msx_ascii/rl.cas',
+    path: 'msx/rl.txt.cas',
     options: {shortpilot: true, msxfast: true},
     hash: '346a57e55977db18c09775979c902eeb',
     instructions: 'run"cas:"',
@@ -258,7 +258,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'MSX',
     adapter: 'msxgeneric',
-    path: 'msx_ascii/rl.txt',
+    path: 'msx/rl.txt',
     options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', msxtype: 'ascii'},
     hash: '346a57e55977db18c09775979c902eeb',
     instructions: 'run"cas:"',
@@ -267,7 +267,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'MSX',
     adapter: 'msxcas',
-    path: 'msx_basic/rl.cas',
+    path: 'msx/rl.bas.cas',
     options: {shortpilot: true, msxfast: true},
     hash: '8c041198ae397d0c1fb04a6676003ff9',
     instructions: 'cload\nrun',
@@ -276,7 +276,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'MSX',
     adapter: 'msxgeneric',
-    path: 'msx_basic/rl.bas',
+    path: 'msx/rl.bas',
     options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', msxtype: 'basic'},
     hash: '8c041198ae397d0c1fb04a6676003ff9',
     instructions: 'cload\nrun',
@@ -285,7 +285,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'MSX',
     adapter: 'msxcas',
-    path: 'msx_binary/rl.cas',
+    path: 'msx/rl.bin.cas',
     options: {shortpilot: true, msxfast: true},
     hash: 'abcc9aef0dbe1802df60c6bb05d2d09c',
     instructions: 'bload"cas:",r',
@@ -294,7 +294,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'MSX',
     adapter: 'msxgeneric',
-    path: 'msx_binary/rl.bin',
+    path: 'msx/rl.bin',
     options: {format: 'msxgeneric', shortpilot: true, msxfast: true, name: 'RL', load: '8000', entry: '8000', msxtype: 'binary'},
     hash: 'abcc9aef0dbe1802df60c6bb05d2d09c',
     instructions: 'bload"cas:",r',
