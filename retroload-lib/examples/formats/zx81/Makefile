@@ -1,10 +1,10 @@
 include ../Makefile.inc
 
-all: rl.p
+all: rl.bas.p
 
 # https://sourceforge.net/p/emuscriptoria/code/HEAD/tree/desprot/ZMakeBas.c
-%.p: %.bas
+%.bas.p: %.txt
 	ZMakeBas -p -o $@ $<
 
 clean:
-	rm -f *.p
+	rm -f *.p *.wav

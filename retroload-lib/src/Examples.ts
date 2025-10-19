@@ -438,7 +438,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'ZX 81',
     adapter: 'zx81p',
-    path: 'zx81_p/rl.p',
+    path: 'zx81/rl.bas.p',
     options: {name: 'RL'},
     hash: '4d84757fcc4f8b7599d82420e9523fea',
     instructions: 'LOAD""\nRUN',
