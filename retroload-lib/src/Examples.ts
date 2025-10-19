@@ -9,7 +9,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Acorn Electron',
     adapter: 'electrongeneric',
-    path: 'electron_generic/rl.bas',
+    path: 'electron/rl.bas',
     options: {format: 'electrongeneric', name: 'RL', load: '0e00', entry: '801f', shortpilot: true},
     hash: 'e64e45d7c1f4d7fb2eaed067b05b5112',
     instructions: 'CHAIN ""',
@@ -18,7 +18,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Acorn Electron',
     adapter: 'electrongeneric',
-    path: 'electron_generic/rl.bin',
+    path: 'electron/rl.bin',
     options: {format: 'electrongeneric', name: 'RL', load: '1000', entry: '1000', shortpilot: true},
     hash: '9e22655910cec0ac1ae64066a13e913d',
     instructions: '*RUN',
@@ -27,7 +27,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Acorn Electron',
     adapter: 'uef',
-    path: 'electron_generic/rl.uef',
+    path: 'electron/rl.uef',
     options: {shortpilot: true},
     hash: 'e64e45d7c1f4d7fb2eaed067b05b5112',
     instructions: 'CHAIN ""',
