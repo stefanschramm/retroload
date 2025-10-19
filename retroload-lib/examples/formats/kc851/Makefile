@@ -1,11 +1,8 @@
 include ../Makefile.inc
 
-all: rl.tap rl.com
+all: rl.com.tap rl.com
 
-%.wav: %.tap
-	retroload -o $@ $<
-
-%.tap: %.com
+%.com.tap: %.com
 	./utils/kc851com2tap.py --recordname RL --outputfilename "$@" "$<"
 
 %.com: %.asm

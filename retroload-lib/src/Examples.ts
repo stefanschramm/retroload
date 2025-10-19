@@ -186,7 +186,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'KC 85/1',
     adapter: 'kctap',
-    path: 'kc851_tap/rl.tap',
+    path: 'kc851/rl.com.tap',
     options: {},
     hash: '117e0758f5effea2aaff8a234797ea19',
     instructions: 'RL\n<return>',
@@ -195,7 +195,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'KC 87',
     adapter: 'kcgeneric',
-    path: 'kc851_tap/rl.com',
+    path: 'kc851/rl.com',
     options: {format: 'kcgeneric', name: 'RL', load: '0300', entry: '0300', firstblock: '0'},
     hash: '117e0758f5effea2aaff8a234797ea19',
     instructions: 'RL\n<return>',
