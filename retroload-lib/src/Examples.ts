@@ -348,7 +348,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'TA alphatronic PC',
     adapter: 'tageneric',
-    path: 'ta_bas/rl.bas',
+    path: 'ta/rl.bas',
     options: {format: 'tageneric'},
     hash: '1d084c6b0dfa38930f26ad2cc3166dd0',
     instructions: 'cload\nrun',
