@@ -1,6 +1,6 @@
 {
   "name": "retroload-lib",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "Library for converting tape archive files of historical computers into sound for loading them on real devices",
   "author": "Stefan Schramm",
   "email": "mail@stefanschramm.net",
