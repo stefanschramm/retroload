@@ -222,7 +222,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'KC BASIC',
     adapter: 'kcbasic',
-    path: 'kc_basic/rl.txt',
+    path: 'kcbasic/rl.txt',
     options: {name: 'RL', format: 'kcbasic', kcbasictype: 'ascii'},
     hash: 'a971316b56ffe172a931455ce641819c',
     instructions: 'BASIC\n<return>\nLOAD#1 "RL"',
