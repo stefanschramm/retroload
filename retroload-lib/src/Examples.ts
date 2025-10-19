@@ -231,7 +231,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'LC 80',
     adapter: 'lc80generic',
-    path: 'lc80_bin/rl.bin',
+    path: 'lc80/rl.bin',
     options: {name: 'ffff', load: '2000', format: 'lc80generic'},
     hash: '6ec4e27820649e0708f095b6d05a0b19',
     instructions: '<LD>FFFF<EX>\n<RES><ADR>2000<EX>',
