@@ -357,7 +357,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Thomson MO5',
     adapter: 'mo5generic',
-    path: 'mo5_bas/rl.bas',
+    path: 'mo5/rl.bas',
     options: {format: 'mo5generic', name: 'RL      BAS'},
     hash: '7d95331ca42d2a8d3990ae2846bd8b7d',
     instructions: 'LOAD"",R',
@@ -366,7 +366,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Thomson MO5',
     adapter: 'k7',
-    path: 'mo5_bas/rl.k7',
+    path: 'mo5/rl.bas.k7',
     options: {},
     hash: '7d95331ca42d2a8d3990ae2846bd8b7d',
     instructions: 'LOAD"",R',
@@ -375,7 +375,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Thomson MO5',
     adapter: 'mo5generic',
-    path: 'mo5_bin/rl.bin',
+    path: 'mo5/rl.bin',
     options: {format: 'mo5generic', mo5type: '2', name: 'RL      BIN'},
     hash: '9e5b3220c936b54b757dbc481d5abaa9',
     instructions: 'LOADM"",,R',
