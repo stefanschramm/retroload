@@ -1,6 +1,7 @@
-FROM debian:12-slim
+FROM debian:13-slim
 RUN apt-get update && \
         apt-get -y install --no-install-recommends \
+        gcc-13 \
         make \
         z80asm \
         xa65 \
@@ -14,6 +15,8 @@ RUN apt-get update && \
         build-essential \
         libsndfile1-dev \
         unzip
+# 2cdt is incompatible with GCC 14
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
 RUN python3 -m venv /opt/python-venv
 RUN /opt/python-venv/bin/pip install zxtaputils tzxtools
 WORKDIR /opt
