@@ -21,11 +21,5 @@ all: rl.bas.tap rl.bin.tap rl.bas.tzx rl.bin.tzx rl.bas rl.bin
 %.bin: %.asm
 	$(Z80_ASM) $< -o $@
 
-%.tap.wav: %.tap
-	retroload -f zxspectrumtap -o $@ $<
-
-%.tzx.wav: %.tzx
-	retroload -o $@ $<
-
 clean:
 	rm -f *.wav *.tap *.tzx *.bin *.bas
