@@ -159,7 +159,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'C64',
     adapter: 'c64generic',
-    path: 'c64_data/rl.txt',
+    path: 'c64/rl.txt',
     options: {format: 'c64generic', c64type: 'data', name: 'RL', shortpilot: true},
     hash: 'fe571cb56a1d543088c9f3f9d36b47e4',
     instructions: '10 OPEN 1,1,0,"RL"\n20 INPUT#1,A$\n30 PRINT A$\nRUN',
