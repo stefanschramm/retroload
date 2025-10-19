@@ -204,7 +204,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'KC 85/4',
     adapter: 'kcc',
-    path: 'kc_kcc/rl.kcc',
+    path: 'kc854/rl.kcc',
     options: {},
     hash: '7c81f6a04a7745a26afaff0e55c9b901',
     instructions: 'LOAD\nRL',
@@ -222,7 +222,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'KC BASIC',
     adapter: 'kcbasic',
-    path: 'kc_basic_generic/rl.txt',
+    path: 'kc_basic/rl.txt',
     options: {name: 'RL', format: 'kcbasic', kcbasictype: 'ascii'},
     hash: 'a971316b56ffe172a931455ce641819c',
     instructions: 'BASIC\n<return>\nLOAD#1 "RL"',
