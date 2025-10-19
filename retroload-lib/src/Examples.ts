@@ -1,4 +1,5 @@
 import {type OptionValues} from './encoding/Options.js';
+import {version} from './version.js';
 
 // Default option values are not automatically used when running outside CLI and have to be specified explicitly.
 
@@ -418,7 +419,7 @@ const examples: InternalExampleDefinition[] = [
   },
   {
     machine: 'Z 1013',
-    adapter: 'z13',
+    adapter: 'z80',
     path: 'z1013/rl.z80',
     options: {noheadersave: true},
     hash: '7542dc62333365b44352986b3a278dbb',
@@ -590,5 +591,6 @@ export function getLocalPath(example: InternalExampleDefinition): string {
 }
 
 export function getUrl(example: InternalExampleDefinition): string {
-  return `https://github.com/stefanschramm/retroload/tree/main/retroload-lib/examples/formats/${example.path}`;
+  // https://github.com/stefanschramm/retroload/tree/main/retroload-lib/examples/formats/
+  return `https://raw.githubusercontent.com/stefanschramm/retroload/v${version}/retroload-lib/examples/formats/${example.path}`;
 }
