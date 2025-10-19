@@ -51,7 +51,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Atari 800 XL',
     adapter: 'ataricas',
-    path: 'atari_cas/rl.cas',
+    path: 'atari/rl.bin.cas',
     options: {},
     hash: '8d36a2a696c7e27807c4d1f058fdec34',
     instructions: 'START+POWERON\nPLAY\nANYKEY',
@@ -60,7 +60,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'Atari 800 XL',
     adapter: 'atarigeneric',
-    path: 'atari_generic/rl.atascii',
+    path: 'atari/rl.atascii',
     options: {format: 'atarigeneric'},
     hash: '9f9c3073bd22e2fddde2e00128bb7f87',
     instructions: 'ENTER "C:"',
