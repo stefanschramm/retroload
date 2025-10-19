@@ -1,10 +1,13 @@
 include ../Makefile.inc
 
-all: rl.kcc
+all: rl.kcc rl.sss
 
-%.kcc: %.asm
+%.kcc: %.kcc.asm
+	$(Z80_ASM) $< -o $@
+
+%.sss: %.sss.asm
 	$(Z80_ASM) $< -o $@
 
 clean:
-	rm -f *.kcc *.wav
+	rm -f *.kcc *.sss *.wav
 

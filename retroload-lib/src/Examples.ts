@@ -213,7 +213,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'KC 85/4',
     adapter: 'sss',
-    path: 'kc_sss/rl.sss',
+    path: 'kc854/rl.sss',
     options: {name: 'RL'},
     hash: '47de579a63d2e2c92bc0248a365a24b3',
     instructions: 'BASIC\n<return>\nCLOAD"RL"',
