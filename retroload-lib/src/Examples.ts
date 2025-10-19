@@ -384,7 +384,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'TI-99/4A',
     adapter: 'tigeneric',
-    path: 'ti_basic/rl.bin',
+    path: 'ti/rl.bin',
     options: {format: 'tigeneric'},
     hash: 'ed3e9e3e373d69e12197c389bc35627f',
     instructions: 'OLD CS1',
@@ -393,7 +393,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'TI-99/4A',
     adapter: 'fiad',
-    path: 'ti_basic/rl.fiad',
+    path: 'ti/rl.fiad',
     options: {format: 'fiad'},
     hash: 'fd7679575b06927b04bf946d1249f8c5',
     instructions: 'OLD CS1',
@@ -402,7 +402,7 @@ const examples: InternalExampleDefinition[] = [
   {
     machine: 'TI-99/4A',
     adapter: 'tifile',
-    path: 'ti_basic/rl.tifile',
+    path: 'ti/rl.tifile',
     options: {},
     hash: 'ed3e9e3e373d69e12197c389bc35627f',
     instructions: 'OLD CS1',
