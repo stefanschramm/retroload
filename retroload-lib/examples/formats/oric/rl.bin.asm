@@ -37,7 +37,7 @@ POINTER_DST = $0004 ; and next byte
 ; The Oric-1 ROM does not seem to provide officially documented routines for text output.
 ; Therefore, we copy our greeting message directly into screen memory at $bb80.
 
-.org $1000
+* = $1000
 
   ldx  #<GREETING
   ldy  #>GREETING

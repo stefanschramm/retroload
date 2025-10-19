@@ -1,6 +1,6 @@
 include ../Makefile.inc
 
-all: rl.bin
+all: rl.bin rl.bin.tap rl.bas.tap
 
 play: rl.bin
 	retroload -l 4 --shortpilot --format oricgeneric --name RL --load 1000 --oricautostart $<
@@ -8,10 +8,10 @@ play: rl.bin
 %.bas.tap: %.bas.asm
 	$(65XX_ASM) -DMAKE_TAP=1 $< -o $@
 
-%.bin.tap: %.asm
+%.bin.tap: %.bin.asm
 	$(65XX_ASM) -DMAKE_TAP=1 $< -o $@
 
-%.bin: %.asm
+%.bin: %.bin.asm
 	$(65XX_ASM) $< -o $@
 
 clean:

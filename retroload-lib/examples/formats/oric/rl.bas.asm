@@ -32,12 +32,12 @@
 ; https://www.defence-force.org/computing/oric/coding/annexe_1/index.htm
 PRINT = $ba
 
-  .org $0501
+* = $0501
 
 L10:
   .dw L20 ; pointer to begin of next statement
   .dw 10 ; line 10
-  .asc PRINT, " \"--------------------------\"", 0
+  .asc PRINT, $20, $22, "--------------------------", $22, 0
 L20:
   .dw L30
   .dw 20
@@ -45,7 +45,7 @@ L20:
 L30:
   .dw L40
   .dw 30
-  .asc PRINT, " \"RETROLOAD.COM\"", 0
+  .asc PRINT, $20, $22, "RETROLOAD.COM", $22, $0
 L40:
   .dw L50
   .dw 40
@@ -53,7 +53,7 @@ L40:
 L50:
   .dw L60
   .dw 50
-  .asc PRINT, " \"EXAMPLE FOR ORIC-1 (BASIC)\"", 0
+  .asc PRINT, $20, $22, "EXAMPLE FOR ORIC-1 (BASIC)", $22, 0
 L60:
   .dw L70
   .dw 60
@@ -61,7 +61,7 @@ L60:
 L70:
   .dw L80
   .dw 70
-  .asc PRINT, " \"LOADED AND EXECUTED!\"", 0
+  .asc PRINT, $20, $22, "LOADED AND EXECUTED!", $22, 0
 L80:
   .dw L90
   .dw 80
@@ -69,7 +69,7 @@ L80:
 L90:
   .dw L100
   .dw 90
-  .asc PRINT, " \"--------------------------\"", 0
+  .asc PRINT, $20, $22, "--------------------------", $22, 0
 L100:
   .dw END
   .dw 100
