@@ -238,6 +238,15 @@ const examples: InternalExampleDefinition[] = [
     tests: ['2023-12-15 OK (LC 80)'],
   },
   {
+    machine: 'Microprofessor MPF-1',
+    adapter: 'mpfgeneric',
+    path: 'mpf/rl.bin',
+    options: {name: 'ffff', load: '1800', format: 'mpfgeneric', shortpilot: true},
+    hash: '7ac3d68aae1c4f6ca2f07059169aa031',
+    instructions: '<TAPE RD>FFFF<GO>\n<ADR>1800<GO>',
+    tests: ['2025-10-24 OK (LC 80)'],
+  },
+  {
     machine: 'MSX',
     adapter: 'msxcas',
     path: 'msx/rl.txt.cas',

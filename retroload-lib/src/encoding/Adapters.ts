@@ -19,6 +19,7 @@ import {KcTapAdapter} from './adapter/kc/KcTapAdapter.js';
 import {Lc80GenericAdapter} from './adapter/lc80/Lc80GenericAdapter.js';
 import {Mo5GenericAdapter} from './adapter/mo5/Mo5GenericAdapter.js';
 import {Mo5K7Adapter} from './adapter/mo5/Mo5K7Adapter.js';
+import {MpfGenericAdapter} from './adapter/mpf/MpfGenericAdapter.js';
 import {MsxCasAdapter} from './adapter/msx/MsxCasAdapter.js';
 import {MsxGenericAdapter} from './adapter/msx/MsxGenericAdapter.js';
 import {MsxTsxAdapter} from './adapter/msx/MsxTsxAdapter.js';
@@ -60,6 +61,7 @@ const adapters: InternalAdapterDefinition[] = [
   Lc80GenericAdapter,
   Mo5GenericAdapter,
   Mo5K7Adapter,
+  MpfGenericAdapter,
   MsxCasAdapter,
   MsxGenericAdapter,
   MsxTsxAdapter,
