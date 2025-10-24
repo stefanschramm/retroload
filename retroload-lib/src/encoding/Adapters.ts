@@ -1,3 +1,4 @@
+import {Apple2GenericAdapter} from './adapter/apple2/Apple2GenericAdapter.js';
 import {AtariCasAdapter} from './adapter/atari/AtariCasAdapter.js';
 import {AtariGenericAdapter} from './adapter/atari/AtariGenericAdapter.js';
 import {BasicodeAdapter} from './adapter/basicode/BasicodeAdapter.js';
@@ -42,6 +43,7 @@ import {ZxSpectrumTapAdapter} from './adapter/zxspectrum/ZxSpectrumTapAdapter.js
 import {ZxSpectrumTzxAdapter} from './adapter/zxspectrum/ZxSpectrumTzxAdapter.js';
 
 const adapters: InternalAdapterDefinition[] = [
+  Apple2GenericAdapter,
   AtariCasAdapter,
   AtariGenericAdapter,
   BasicodeAdapter,

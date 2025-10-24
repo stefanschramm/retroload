@@ -27,6 +27,12 @@ Load and run a binary program (uses load and entry location from tape header):
 
     *RUN
 
+# Apple II
+
+Load 8 bytes to address 0x800:
+
+    0800.0808R
+
 # Atari 800 XL
 
     (Start)+(Power on)
