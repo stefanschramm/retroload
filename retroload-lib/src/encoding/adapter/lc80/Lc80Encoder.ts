@@ -8,6 +8,7 @@ const fShort = 2000;
 const fLong = 1000;
 const fSyncIntro = 1000;
 const syncIntroLength = 4; // s
+const syncIntroLengthShort = 1; // s
 const fSyncMid = 2000;
 const syncMidLength = 2; // s
 const fSyncEnd = 2000;
@@ -21,13 +22,16 @@ const syncEndLength = 2; // s
 export class Lc80Encoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
 
-  public constructor(recorder: RecorderInterface) {
+  public constructor(
+    recorder: RecorderInterface,
+    private readonly shortpilot: boolean,
+  ) {
     this.oscillator = new Oscillator(recorder);
   }
 
   public begin(): void {
     this.oscillator.begin();
-    this.oscillator.recordSeconds(fSyncIntro, syncIntroLength);
+    this.oscillator.recordSeconds(fSyncIntro, this.shortpilot ? syncIntroLengthShort : syncIntroLength);
   }
 
   public recordHeader(fileNumber: number, startAddress: number, endAddress: number): void {

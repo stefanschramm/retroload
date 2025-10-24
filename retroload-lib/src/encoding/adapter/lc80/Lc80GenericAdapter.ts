@@ -1,5 +1,5 @@
 import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
-import {type OptionContainer, loadOption, nameOption} from '../../Options.js';
+import {type OptionContainer, loadOption, nameOption, shortpilotOption} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {Lc80Encoder} from './Lc80Encoder.js';
@@ -16,6 +16,7 @@ export const Lc80GenericAdapter: InternalAdapterDefinition = {
   options: [
     nameOption,
     loadOption,
+    shortpilotOption,
   ],
   identify,
   encode,
@@ -36,7 +37,7 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
     throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
   }
 
-  const e = new Lc80Encoder(recorder);
+  const e = new Lc80Encoder(recorder, options.isFlagSet(shortpilotOption));
   e.begin();
   const endAddress = loadAddress + ba.length();
   Logger.debug(`Writing header - File number/name: ${hex16(fileNumber)}, Load address: ${hex16(loadAddress)}, End address: ${hex16(endAddress)}`);
