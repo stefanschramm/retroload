@@ -173,6 +173,19 @@ The file name consist of 4 hexadecimal digits (here `FFFF`). After loading, the 
     2000
     (EX)
 
+# Microprofessor MPF-1
+
+Volume: 90 % (using line cable)
+
+The file name consist of 4 hexadecimal digits (here `FFFF`). After loading, the program can be run by specifying the entry address (here `1800`).
+
+    <TAPE RD>
+    FFFF
+    <GO>
+    <ADR>
+    1800
+    <GO>
+
 # MSX - Philips VG 8020
 
 Volume: 40 %
