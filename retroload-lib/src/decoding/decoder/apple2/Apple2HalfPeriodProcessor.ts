@@ -79,10 +79,13 @@ export class Apple2HalfPeriodProcessor {
       throw new EndOfInput();
     }
     const dataBa = BufferAccess.createFromUint8Array(new Uint8Array(bytesRead));
+    Logger.debug(dataBa.asHexDump());
     const calculatedChecksum = calculateChecksum8Xor(dataBa, 0xff);
     const checksumCorrect = calculatedChecksum === readChecksum;
 
-    if (!checksumCorrect) {
+    if (checksumCorrect) {
+      Logger.debug(`${formatPosition(recordEnd)} Checksum: ${hex8(readChecksum)}`);
+    } else {
       Logger.error(`${formatPosition(recordEnd)} Warning: Invalid checksum! Read checksum: ${hex8(readChecksum)}, Calculated checksum: ${hex8(calculatedChecksum)}.`);
     }
 
