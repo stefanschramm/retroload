@@ -33,6 +33,10 @@ Load 8 bytes to address 0x800:
 
     0800.0808R
 
+Run binary program starting at 0x800:
+
+    0800G
+
 # Atari 800 XL
 
     (Start)+(Power on)
