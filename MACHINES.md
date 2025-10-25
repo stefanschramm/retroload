@@ -29,13 +29,22 @@ Load and run a binary program (uses load and entry location from tape header):
 
 # Apple II
 
-Load 8 bytes to address 0x800:
+## Raw memory / Machine code via monitor
+
+Load 8 bytes to address 0x0800:
 
     0800.0808R
 
-Run binary program starting at 0x800:
+Run binary program starting at 0x0800:
 
     0800G
+
+## BASIC program
+
+Load and run (after BASIC has been started):
+
+    LOAD
+    RUN
 
 # Atari 800 XL
 
