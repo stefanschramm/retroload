@@ -12,6 +12,7 @@ import {CpcGenericAdapter} from './adapter/cpc/CpcGenericAdapter.js';
 import {CswAdapter} from './adapter/csw/CswAdapter.js';
 import {ElectronGenericAdapter} from './adapter/electron/ElectronGenericAdapter.js';
 import {ElectronUefAdapter} from './adapter/electron/ElectronUefAdapter.js';
+import {Ibm5150GenericAdapter} from './adapter/ibm5150/Ibm5150GenericAdapter.js';
 import {type InternalAdapterDefinition} from './adapter/AdapterDefinition.js';
 import {KcBasicGenericAdapter} from './adapter/kc/KcBasicGenericAdapter.js';
 import {KcGenericAdapter} from './adapter/kc/KcGenericAdapter.js';
@@ -57,6 +58,7 @@ const adapters: InternalAdapterDefinition[] = [
   CswAdapter,
   ElectronGenericAdapter,
   ElectronUefAdapter,
+  Ibm5150GenericAdapter,
   KcBasicGenericAdapter,
   KcGenericAdapter,
   KcKccAdapter,
