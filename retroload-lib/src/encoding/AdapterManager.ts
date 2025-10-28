@@ -107,7 +107,7 @@ export function encodeFloat(adapterName: string, data: Uint8Array, optionValues:
 function getAdapterByName(name: string): InternalAdapterDefinition {
   const foundAdapters = Adapters.filter((a) => a.name === name);
   if (foundAdapters.length !== 1) {
-    throw new FormatNotFoundError('Adapter not found');
+    throw new FormatNotFoundError(name);
   }
 
   return foundAdapters[0];
