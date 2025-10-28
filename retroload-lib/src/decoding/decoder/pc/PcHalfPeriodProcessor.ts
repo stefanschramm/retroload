@@ -90,11 +90,13 @@ export class PcHalfPeriodProcessor {
       blockBa.writeUint8(byte);
     }
 
-    const readChecksum = blockBa.getUint16Le(0x100);
-    const calculatedChecksum = calculateCrc16Ccitt(blockBa);
+    const readChecksum = blockBa.getUint16Be(0x100);
+    const calculatedChecksum = calculateCrc16Ccitt(blockBa.slice(0, 256));
     const checksumCorrect = calculatedChecksum === readChecksum;
-    if (!checksumCorrect) {
-      Logger.error(`${formatPosition(this.halfPeriodProvider.getPosition())} Warning: Invalid checksum! Read checksum: ${hex16(readChecksum)}, Calculated checksum: ${hex16(calculatedChecksum)}.`);
+    if (checksumCorrect) {
+      Logger.debug(`${formatPosition(this.halfPeriodProvider.getPosition())} Checksum: ${hex16(readChecksum)}`);
+    } else {
+      Logger.error(`${formatPosition(this.halfPeriodProvider.getPosition())} X Warning: Invalid checksum! Read checksum: ${hex16(readChecksum)}, Calculated checksum: ${hex16(calculatedChecksum)}.`);
     }
 
     return new PcBlockDecodingResult(
