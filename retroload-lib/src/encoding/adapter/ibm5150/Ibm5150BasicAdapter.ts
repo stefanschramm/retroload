@@ -1,8 +1,8 @@
 import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {Ibm5150Encoder, blockSize} from './Ibm5150Encoder.js';
+import {type OptionContainer, nameOption} from '../../Options.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {InternalError} from '../../../common/Exceptions.js';
-import {type OptionContainer} from '../../Options.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 
 /**
@@ -13,7 +13,7 @@ import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
 export const Ibm5150BasicAdapter: InternalAdapterDefinition = {
   label: 'IBM 5150 BASIC',
   name: 'ibm5150basic',
-  options: [],
+  options: [nameOption],
   identify,
   encode,
 };
@@ -34,13 +34,15 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
   return unidentifiable;
 }
 
-function encode(recorder: RecorderInterface, ba: BufferAccess, _options: OptionContainer): void {
+function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const type = TYPE_ASCII_LISTING; // TODO: optionize
+
+  const name = options.getArgument(nameOption);
 
   const e = new Ibm5150Encoder(recorder);
 
   const header = createBasicHeader(
-    'rl',
+    name,
     type,
     type === TYPE_ASCII_LISTING ? 0x0000 : ba.length(),
     type === TYPE_ASCII_LISTING ? 0x0000 : 0x0060,

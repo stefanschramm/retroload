@@ -202,6 +202,15 @@ const examples: InternalExampleDefinition[] = [
     tests: ['2023-12-16 OK (CPC 464)'],
   },
   {
+    machine: 'IBM PC 5150',
+    adapter: 'ibm5150basic',
+    path: 'ibm5150/rl.a',
+    options: {format: 'ibm5150basic', name: 'rl'},
+    hash: '45be2fe2a6590070d6154c85720b4a54',
+    instructions: 'load "rl"\nrun',
+    tests: ['2025-10-30 OK (MAME Emulator - IBM 5150)'],
+  },
+  {
     machine: 'KC 85/1',
     adapter: 'kctap',
     path: 'kc851/rl.com.tap',
