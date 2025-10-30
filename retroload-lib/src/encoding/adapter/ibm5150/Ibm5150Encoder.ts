@@ -47,7 +47,6 @@ export class Ibm5150Encoder implements ByteRecorder {
   public recordBlock(data: BufferAccess): void {
     if (data.length() !== blockSize) {
       throw new InternalError(`Encountered block of ${data.length()} bytes. Expected was ${blockSize}.`);
-      // TODO: Tech reference says that the block is padded using the last byte of actual data.
     }
 
     const checksum = calculateCrc16Ccitt(data);
@@ -69,6 +68,9 @@ export class Ibm5150Encoder implements ByteRecorder {
     }
   }
 
+  /**
+   * Pause to insert between BASIC header block and successive data blocks
+   */
   public recordGap(): void {
     this.oscillator.recordSilenceMs(500);
   }
