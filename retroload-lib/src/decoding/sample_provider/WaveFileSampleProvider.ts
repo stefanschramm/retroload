@@ -2,6 +2,7 @@ import {type BufferAccess} from '../../common/BufferAccess.js';
 import {InputDataError} from '../../common/Exceptions.js';
 import {Logger} from '../../common/logging/Logger.js';
 import {type SampleProvider} from './SampleProvider.js';
+import {hex16} from '../../common/Utils.js';
 
 const pcmFormatTag = 0x0001;
 
@@ -30,7 +31,7 @@ export class WaveFileSampleProvider implements SampleProvider {
     this.dataChunkOffset = 0x14 + fmtHeaderLength;
     const formatTag = ba.getUint16Le(0x14);
     if (formatTag !== pcmFormatTag) {
-      throw new InputDataError('WAVE file is not in PCM format.');
+      throw new InputDataError(`WAVE file is not in PCM format. Format tag was: ${hex16(formatTag)}`);
     }
     this.channels = ba.getUint16Le(0x16);
     if (channel === undefined) {
@@ -44,7 +45,7 @@ export class WaveFileSampleProvider implements SampleProvider {
     this.sampleRate = ba.getUint32Le(0x18);
     this.bitsPerSample = ba.getUint16Le(0x22);
     this.blockAlign = this.ba.getUint16Le(0x20); // size of a frame in bytes
-    Logger.debug(`Format: PCM, Channels: ${this.channels}, Sample Rate: ${this.sampleRate}, Bits per sample: ${this.bitsPerSample}`);
+    Logger.debug(`Format: PCM, Channels: ${this.channels}, Sample Rate: ${this.sampleRate}, Bits per sample: ${this.bitsPerSample}, Block align: ${this.blockAlign}`);
     if (!ba.containsDataAt(this.dataChunkOffset, 'data')) {
       throw new InputDataError('Unable to find data block of WAVE file.');
     }
@@ -67,9 +68,11 @@ export class WaveFileSampleProvider implements SampleProvider {
           yield dataBa.getUint8(i + this.channel);
           continue;
         case 16:
-          yield dataBa.getUint16Le(i + 2 * this.channel);
+          // 16 Bit WAVE files use signed integers. We normalize it to 16 bit unsigned integers.
+          yield 2 ** 15 + dataBa.getInt16Le(i + 2 * this.channel);
           continue;
         case 32:
+          // Unclear if this works. 32 bit files seem to use format tag 0xfffe.
           yield dataBa.getUint32Le(i + 4 * this.channel);
           continue;
         default:

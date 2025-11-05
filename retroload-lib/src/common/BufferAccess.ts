@@ -214,6 +214,10 @@ export class BufferAccess {
     return this.view.getUint16(offset, true);
   }
 
+  public getInt16Le(offset: number): number {
+    return this.view.getInt16(offset, true);
+  }
+
   public setUint16Be(offset: number, i: number): void {
     this.view.setInt16(offset, i, false);
   }
