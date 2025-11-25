@@ -23,9 +23,9 @@
   ],
   "scripts": {
     "lint": "eslint src/",
-    "test": "vitest run",
-    "test-watch": "vitest watch",
-    "coverage": "vitest run --coverage",
+    "test": "vitest run src/",
+    "test-watch": "vitest watch src/",
+    "coverage": "vitest run --coverage src/",
     "updateVersion": "genversion --es6 -s src/version.ts"
   },
   "dependencies": {
