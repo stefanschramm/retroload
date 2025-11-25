@@ -242,36 +242,6 @@ Load the next program (and start it, in case it's saved for autostart)
 
     CLOAD""
 
-# TA alphatronic PC
-
-    cload
-    run
-
-# Thomson MO5
-
-Volume: 25 % (using cassette adapter side B)
-
-Load and run BASIC program:
-
-    LOAD"",R
-
-or
-
-    LOAD
-    RUN
-
-Load and run machine language program:
-
-    LOADM"",,R
-
-Load machine language program:
-
-    LOADM""
-
-Run machine language program (with entry point `2700`, hexadecimal):
-
-    EXEC &H2700
-
 # Sharp MZ-700
 
 Volume: 70 % (using cassette adapter side B)
@@ -307,6 +277,36 @@ and afterwards you can load and run BASICODE programs using:
     (PLAY)
     LOAD/B
     RUN
+
+# TA alphatronic PC
+
+    cload
+    run
+
+# Thomson MO5
+
+Volume: 25 % (using cassette adapter side B)
+
+Load and run BASIC program:
+
+    LOAD"",R
+
+or
+
+    LOAD
+    RUN
+
+Load and run machine language program:
+
+    LOADM"",,R
+
+Load machine language program:
+
+    LOADM""
+
+Run machine language program (with entry point `2700`, hexadecimal):
+
+    EXEC &H2700
 
 # TI-99/4A
 
