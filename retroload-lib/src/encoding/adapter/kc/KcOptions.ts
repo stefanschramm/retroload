@@ -1,5 +1,4 @@
-import {type ArgumentOptionDefinition} from '../../Options.js';
-import {InvalidArgumentError} from '../../../common/Exceptions.js';
+import {type ArgumentOptionDefinition, parse8BitIntegerOption} from '../../Options.js';
 
 export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
   name: 'firstblock',
@@ -9,21 +8,8 @@ export const kcFirstBlockOption: ArgumentOptionDefinition<number> = {
   common: true,
   required: false,
   type: 'text',
-  parse(v) {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (v === undefined || v === '') {
-      return 1; // Defaults to 1 because most KCC files are for Muehlhausen KCs
-    }
-    const number = parseInt(v, 16);
-    if (!isHexNumber(v) || isNaN(number) || number < 0 || number > 0xff) {
-      throw new InvalidArgumentError(this.name, `Option ${this.name} is expected to be a 8-bit number in hexadecimal representation (0 to ff). Example: 0 or 1 (usual values)`);
-    }
-
-    return number;
+  parse: function parse(v) {
+    // Defaults to 1 because most KCC files are for Muehlhausen KCs
+    return parse8BitIntegerOption(v, this.name) ?? 1;
   },
 };
-
-function isHexNumber(str: string): boolean {
-  // eslint-disable-next-line require-unicode-regexp
-  return (/^[A-Fa-f0-9]+$/).exec(str) !== null;
-}

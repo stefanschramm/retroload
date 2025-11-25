@@ -134,15 +134,7 @@ export const loadOption: ArgumentOptionDefinition<number | undefined> = {
   required: false,
   type: 'text',
   parse(v) {
-    if (v === undefined || v === '') {
-      return undefined;
-    }
-    const address = parseInt(v, 16);
-    if (!isHexNumber(v) || isNaN(address) || address < 0 || address > 0xffff) {
-      throw new InvalidArgumentError(this.name, `Option ${this.name} is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000`);
-    }
-
-    return address;
+    return parse16BitIntegerOption(v, this.name);
   },
 };
 
@@ -155,19 +147,34 @@ export const entryOption: ArgumentOptionDefinition<number | undefined> = {
   required: false,
   type: 'text',
   parse(v) {
-    if (v === undefined || v === '') {
-      return undefined;
-    }
-    const address = parseInt(v, 16);
-    if (!isHexNumber(v) || isNaN(address) || address < 0 || address > 0xffff) {
-      throw new InvalidArgumentError(this.name, `Option ${this.name} is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000`);
-    }
-
-    return address;
+    return parse16BitIntegerOption(v, this.name);
   },
 };
 
-function isHexNumber(str: string): boolean {
-  // eslint-disable-next-line require-unicode-regexp
-  return (/^[A-Fa-f0-9]+$/).exec(str) !== null;
+export function parse16BitIntegerOption(v: string | undefined, optionName: string): number | undefined {
+  if (v === undefined || v === '') {
+    return undefined;
+  }
+
+  const result = Number(v);
+
+  if (Number.isNaN(result) || result < 0 || result > 0xffff || result % 1 !== 0) {
+    throw new InvalidArgumentError(optionName, `Option "${optionName}" is expected to be a 16-bit integer in hexadecimal, decimal or binary notation. Examples: 0x0800, 2048 or 0b0000100000000000`);
+  }
+
+  return result;
+}
+
+export function parse8BitIntegerOption(v: string | undefined, optionName: string): number | undefined {
+  if (v === undefined || v === '') {
+    return undefined;
+  }
+
+  const result = Number(v);
+
+  if (Number.isNaN(result) || result < 0 || result > 0xff || result % 1 !== 0) {
+    throw new InvalidArgumentError(optionName, `Option "${optionName}" is expected to be a 8-bit integer in hexadecimal, decimal or binary notation. Examples: 0x0a, 10 or 0b00001010`);
+  }
+
+  return result;
 }

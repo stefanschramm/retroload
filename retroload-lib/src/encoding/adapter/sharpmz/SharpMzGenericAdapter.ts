@@ -1,4 +1,4 @@
-import {ArgumentOptionDefinition, OptionContainer, entryOption, loadOption, nameOption, shortpilotOption} from '../../Options.js';
+import {ArgumentOptionDefinition, OptionContainer, entryOption, loadOption, nameOption, parse8BitIntegerOption, shortpilotOption} from '../../Options.js';
 import {FormatIdentification, InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
@@ -19,7 +19,9 @@ const sharpmztypeOption: ArgumentOptionDefinition<number> = {
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => (v === '' ? fileTypeMachineCode : parseInt(v, 16)),
+  parse: function parse(v) {
+    return parse8BitIntegerOption(v, this.name) ?? fileTypeMachineCode;
+  },
 };
 
 /**

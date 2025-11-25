@@ -1,4 +1,4 @@
-import {type ArgumentOptionDefinition, type OptionContainer, nameOption} from '../../Options.js';
+import {type ArgumentOptionDefinition, type OptionContainer, nameOption, parse8BitIntegerOption} from '../../Options.js';
 import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
@@ -16,18 +16,22 @@ const typeOption: ArgumentOptionDefinition<number> = {
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => (v === '' ? fileTypeBasic : parseInt(v, 16)),
+  parse: function parse(v) {
+    return parse8BitIntegerOption(v, this.name) ?? fileTypeBasic;
+  },
 };
 
 const modeOption: ArgumentOptionDefinition<number> = {
   name: 'mo5mode',
   label: 'File mode',
-  description: 'File mode. Possible modes: 0 = binary (default), ff = text',
+  description: 'File mode. Possible modes: 0 = binary (default), 0xff = text',
   argument: 'mode',
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => (v === '' ? fileModeBinary : parseInt(v, 16)),
+  parse: function parse(v) {
+    return parse8BitIntegerOption(v, this.name) ?? fileModeBinary;
+  },
 };
 
 /**

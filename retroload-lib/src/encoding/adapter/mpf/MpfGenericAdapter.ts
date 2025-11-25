@@ -1,5 +1,5 @@
 import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
-import {type OptionContainer, loadOption, nameOption, shortpilotOption} from '../../Options.js';
+import {type OptionContainer, loadOption, nameOption, parse16BitIntegerOption, shortpilotOption} from '../../Options.js';
 import {type BufferAccess} from '../../../common/BufferAccess.js';
 import {InvalidArgumentError} from '../../../common/Exceptions.js';
 import {Logger} from '../../../common/logging/Logger.js';
@@ -27,14 +27,15 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
 }
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
-  const fileNumber = parseInt(options.getArgument(nameOption), 16);
-  if (isNaN(fileNumber) || fileNumber < 0 || fileNumber > 0xffff) {
-    throw new InvalidArgumentError('name', 'Option name is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 0001');
+  const fileNumberString = options.getArgument(nameOption);
+  const fileNumber = parse16BitIntegerOption(fileNumberString, 'name');
+  if (fileNumber === undefined) {
+    throw new InvalidArgumentError(nameOption.name, `Option ${nameOption.name} can not be undefined.`);
   }
 
   const loadAddress = options.getArgument(loadOption);
   if (loadAddress === undefined) {
-    throw new InvalidArgumentError('load', 'Option load is expected to be a 16-bit number in hexadecimal representation (0000 to ffff). Example: 2000');
+    throw new InvalidArgumentError(loadOption.name, `Option ${nameOption.name} can not be undefined.`);
   }
 
   const e = new MpfEncoder(recorder, options.isFlagSet(shortpilotOption));
