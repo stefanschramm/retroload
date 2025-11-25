@@ -1,4 +1,4 @@
-import {ArgumentOptionDefinition, type OptionContainer, nameOption} from '../../Options.js';
+import {ArgumentOptionDefinition, type OptionContainer, nameOption, parse8BitIntegerOption} from '../../Options.js';
 import {type FormatIdentification, type InternalAdapterDefinition, unidentifiable} from '../AdapterDefinition.js';
 import {Ibm5150Encoder, blockSize} from './Ibm5150Encoder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
@@ -30,7 +30,9 @@ const typeOption: ArgumentOptionDefinition<number> = {
   required: false,
   common: false,
   type: 'text',
-  parse: (v) => (v === '' ? TYPE_ASCII_LISTING : parseInt(v, 10)),
+  parse: function parse(v) {
+    return parse8BitIntegerOption(v, this.name) ?? TYPE_ASCII_LISTING;
+  },
 };
 
 /**
