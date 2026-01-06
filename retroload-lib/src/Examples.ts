@@ -220,13 +220,13 @@ const examples: InternalExampleDefinition[] = [
     tests: ['2025-11-25 OK (MAME Emulator - IBM 5150)'],
   },
   {
-    machine: 'KC 85/1',
+    machine: 'KC 87',
     adapter: 'kctap',
     path: 'kc851/rl.com.tap',
     options: {},
     hash: '117e0758f5effea2aaff8a234797ea19',
     instructions: 'RL\n<return>',
-    tests: ['2022-11-16 OK (KC 85/1)'],
+    tests: ['2022-11-16 OK (KC 85/1)', '2026-01-06 OK (KC 87)'],
   },
   {
     machine: 'KC 87',
