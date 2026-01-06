@@ -37,7 +37,7 @@ export class BufferAccess {
   private readonly view: DataView;
   private readonly ui8a: Uint8Array;
 
-  private constructor(buffer: ArrayBufferLike, offset = 0, length: (number | undefined) = undefined) {
+  private constructor(buffer: ArrayBufferLike, offset = 0, length?: number) {
     this.cursor = 0;
     this.view = new DataView(buffer, offset, length ?? buffer.byteLength);
     this.ui8a = new Uint8Array(buffer, offset, length ?? buffer.byteLength);
@@ -64,7 +64,7 @@ export class BufferAccess {
   /**
    * Return slice that references the same buffer
    */
-  public slice(offset: number, length: number | undefined = undefined): BufferAccess {
+  public slice(offset: number, length?: number): BufferAccess {
     if (offset >= this.view.byteLength) {
       throw new Error('Illegal offset.');
     }

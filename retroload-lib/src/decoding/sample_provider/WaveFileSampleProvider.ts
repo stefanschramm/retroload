@@ -18,7 +18,7 @@ export class WaveFileSampleProvider implements SampleProvider {
 
   private readonly dataChunkOffset: number;
 
-  public constructor(ba: BufferAccess, skip: number, channel: number | undefined = undefined) {
+  public constructor(ba: BufferAccess, skip: number, channel?: number) {
     this.ba = ba;
     this.skip = skip;
     if (this.skip !== 0) {
