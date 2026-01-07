@@ -21,8 +21,9 @@ RUN python3 -m venv /opt/python-venv
 RUN /opt/python-venv/bin/pip install zxtaputils tzxtools
 WORKDIR /opt
 RUN wget https://www.luigidifraia.com/hosted/software/prg2tap-1.8-linux-x86_64-with-examples.tar.gz && \
-        tar -zxvf prg2tap-1.8-linux-x86_64-with-examples.tar.gz && \
-        ln -s /opt/prg2tap-1.8-linux-x86_64-with-examples/prg2tap /usr/local/bin/prg2tap
+        mkdir prg2tap && \
+        tar -zxvf prg2tap-1.8-linux-x86_64-with-examples.tar.gz -C prg2tap && \
+        ln -s /opt/prg2tap/prg2tap /usr/local/bin/prg2tap
 RUN git clone --depth 1 https://github.com/farique1/MSX-Basic-Tokenizer.git && \
         chmod +x /opt/MSX-Basic-Tokenizer/msxbatoken.py && \
         ln -s /opt/MSX-Basic-Tokenizer/msxbatoken.py /usr/local/bin/msxbatoken.py
