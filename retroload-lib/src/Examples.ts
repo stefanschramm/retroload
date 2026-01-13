@@ -454,6 +454,15 @@ const examples: InternalExampleDefinition[] = [
     tests: ['2023-07-22 OK (TI-99/4A)'],
   },
   {
+    machine: 'TRS-80 Color Computer',
+    adapter: 'trs80cocogeneric',
+    path: 'trs80coco/rl.bin',
+    options: {format: 'trs80cocogeneric', name: 'RL', 'load': '0x3f00', entry: '0x3f00', trs80cocotype: '2'},
+    hash: '1744b5811bfefb3c4cfe62ea98d11e1b',
+    instructions: 'CLOADM\nEXEC &H3F00',
+    tests: ['2026-01-15 OK (MAME Emulator - coco)'],
+  },
+  {
     machine: 'Z 1013',
     adapter: 'z13',
     path: 'z1013/rl.z13',

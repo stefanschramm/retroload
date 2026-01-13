@@ -36,6 +36,7 @@ import {TiFiadAdapter} from './adapter/ti/TiFiadAdapter.js';
 import {TiGenericAdapter} from './adapter/ti/TiGenericAdapter.js';
 import {TiTifileAdapter} from './adapter/ti/TiTifileAdapter.js';
 import {TiTitapeAdapter} from './adapter/ti/TiTitapeAdapter.js';
+import {Trs80CoCoGenericAdapter} from './adapter/trs80coco/Trs80CoCoGenericAdapter.js';
 import {Z1013GenericAdapter} from './adapter/z1013/Z1013GenericAdapter.js';
 import {Z1013Z13Adapter} from './adapter/z1013/Z1013Z13Adapter.js';
 import {Z1013Z80Adapter} from './adapter/z1013/Z1013Z80Adapter.js';
@@ -82,6 +83,7 @@ const adapters: InternalAdapterDefinition[] = [
   TiGenericAdapter,
   TiTifileAdapter,
   TiTitapeAdapter,
+  Trs80CoCoGenericAdapter,
   Z1013GenericAdapter,
   Z1013Z13Adapter,
   Z1013Z80Adapter,

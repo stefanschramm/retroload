@@ -328,6 +328,16 @@ The loaded program can be started using
 
 If loading succeeds, but BASIC complains about an incorrect statment (and the program's `LIST`ing contains garbage), the program is likely for "TI Extended BASIC" (which is available as a cartridge) and not the integrated "TI BASIC".
 
+# TRS-80 Color Computer
+
+Load machine code programs:
+
+    CLOADM
+
+Run machine program at address 0x3f00:
+
+    EXEC &H3F00
+
 # Z 1013
 
 Volume: 40 % (using line cable)
