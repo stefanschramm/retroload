@@ -31,7 +31,7 @@ function identify(_filename: string, _ba: BufferAccess): FormatIdentification {
 
 function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionContainer): void {
   const loadAddress = options.getArgument(loadOption);
-  const entryAddress = options.getArgument(loadOption);
+  const entryAddress = options.getArgument(entryOption);
   const name = options.getArgument(nameOption);
   if (name.length > maxNameLength) {
     throw new InvalidArgumentError(nameOption.name, `Option name is expected to be a string of ${maxNameLength} characters maximum. Example: HELLO`);
