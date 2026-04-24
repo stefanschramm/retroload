@@ -2,10 +2,9 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist/esm",
-    "module": "es2020"
+    "outDir": "dist"
   },
   "references": [
-    {"path": "../retroload-lib/tsconfig.esm.json"}
+    {"path": "../retroload-lib/tsconfig.json"}
   ]
 }

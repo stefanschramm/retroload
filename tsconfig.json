@@ -1,8 +1,7 @@
 {
   "files": [],
   "references": [
-    {"path": "retroload-lib/tsconfig.cjs.json"},
-    {"path": "retroload-lib/tsconfig.esm.json"},
-    {"path": "retroload/tsconfig.esm.json"}
+    {"path": "retroload-lib/tsconfig.json"},
+    {"path": "retroload/tsconfig.json"}
   ]
 }
