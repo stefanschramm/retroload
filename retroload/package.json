@@ -31,7 +31,7 @@
   },
   "license": "AGPL-3.0-only",
   "type": "module",
-  "main": "dist/retroload.js",
+  "main": "dist/esm/retroload.js",
   "files": [
     "dist/"
   ],
@@ -41,9 +41,9 @@
     "updateVersion": "genversion --es6 -s src/version.ts"
   },
   "bin": {
-    "retroload": "dist/retroload.js",
-    "retroload-tokenizer": "dist/retroload-tokenizer.js",
-    "retroload-decode": "dist/retroload-decode.js"
+    "retroload": "dist/esm/retroload.js",
+    "retroload-tokenizer": "dist/esm/retroload-tokenizer.js",
+    "retroload-decode": "dist/esm/retroload-decode.js"
   },
   "dependencies": {
     "commander": "^14.0.3",
