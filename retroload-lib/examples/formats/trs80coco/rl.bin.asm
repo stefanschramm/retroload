@@ -11,11 +11,13 @@
 START
   leax GREETING, PCR
   bsr PRINTSTRING
+  bra START
   rts
 
 PRINTSTRING
   lda ,x+
   beq PRINTSTRING_END
+;  jsr $a282 ; CHROUT
   jsr [$a002] ; CHROUT
   bra PRINTSTRING
 PRINTSTRING_END

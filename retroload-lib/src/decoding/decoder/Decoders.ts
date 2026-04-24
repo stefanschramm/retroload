@@ -3,6 +3,7 @@ import {type InternalDecoderDefinition} from '../DecoderManager.js';
 import KcTapDecoder from './kc/KcTapDecoder.js';
 import Lc80GenericDecoder from './lc80/Lc80GenericDecoder.js';
 import PcGenericDecoder from './pc/PcGenericDecoder.js';
+import Trs80CoCoGenericDecoder from './trs80coco/Trs80CoCoGenericDecoder.js';
 import Z1013GenericDecoder from './z1013/Z1013GenericDecoder.js';
 
 const decoders: InternalDecoderDefinition[] = [
@@ -10,6 +11,7 @@ const decoders: InternalDecoderDefinition[] = [
   KcTapDecoder,
   Lc80GenericDecoder,
   PcGenericDecoder,
+  Trs80CoCoGenericDecoder,
   Z1013GenericDecoder,
 ];
 export default decoders;
