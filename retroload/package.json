@@ -37,8 +37,7 @@
   ],
   "scripts": {
     "lint": "eslint src/",
-    "test": "echo 'no tests configured for retroload'",
-    "updateVersion": "genversion --es6 -s src/version.ts"
+    "test": "echo 'no tests configured for retroload'"
   },
   "bin": {
     "retroload": "dist/retroload.js",
@@ -46,10 +45,7 @@
     "retroload-decode": "dist/retroload-decode.js"
   },
   "dependencies": {
-    "commander": "^14.0.3",
+    "commander": "^15.0.0",
     "retroload-lib": "^0.0.30"
-  },
-  "devDependencies": {
-    "genversion": "^3.2.0"
   }
 }
