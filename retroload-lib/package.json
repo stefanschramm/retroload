@@ -24,14 +24,12 @@
     "lint": "eslint src/",
     "test": "vitest run src/",
     "test-watch": "vitest watch src/",
-    "coverage": "vitest run --coverage src/",
-    "updateVersion": "genversion --es6 -s src/version.ts"
+    "coverage": "vitest run --coverage src/"
   },
   "dependencies": {
-    "pako": "^2.1.0"
+    "pako": "^3.0.1"
   },
   "devDependencies": {
-    "@types/pako": "^2.0.4",
-    "genversion": "^3.2.0"
+    "@types/pako": "^2.0.4"
   }
 }
