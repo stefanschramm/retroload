@@ -1,4 +1,4 @@
-import {type OptionDefinition} from '../encoding/Options';
+import {type OptionDefinition} from '../encoding/Options.js';
 
 /**
  * Error that is usually caused by invalid usage
