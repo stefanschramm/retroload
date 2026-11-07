@@ -1,9 +1,12 @@
-import {type ByteRecorder, recordByteLsbFirst} from '../ByteRecorder.js';
+import {type ByteRecorder, recordByteLsbFirst, recordBytes} from '../ByteRecorder.js';
 import {BufferAccess} from '../../../common/BufferAccess.js';
 import {Oscillator} from '../Oscillator.js';
 import {type RecorderInterface} from '../../recorder/RecorderInterface.js';
+import {calculateChecksum16Le} from '../../../common/Utils.js';
 
-const bitRate = 1200;
+const fOne = 600;
+const fZero = 1200;
+const fPilot = fZero / 4;
 const frameLength = 32;
 
 /**
@@ -13,15 +16,15 @@ const frameLength = 32;
  */
 export class Poly880Encoder implements ByteRecorder {
   private readonly oscillator: Oscillator;
-  private sampleRemainder = 0;
 
-  public constructor(private readonly recorder: RecorderInterface) {
+  public constructor(recorder: RecorderInterface) {
     this.oscillator = new Oscillator(recorder);
   }
 
   public begin(): void {
     this.oscillator.begin();
-    this.recordPilot(3.5);
+    // Recording pilot (3.5 s)
+    this.oscillator.recordOscillations(fPilot, fPilot * 3.5);
   }
 
   public recordData(data: BufferAccess): void {
@@ -39,44 +42,25 @@ export class Poly880Encoder implements ByteRecorder {
   }
 
   public recordBit(value: number): void {
-    this.recordHalfWave(1);
     if (value) {
-      this.oscillator.togglePhase();
+      this.oscillator.recordHalfOscillation(fOne);
+    } else {
+      this.oscillator.recordOscillations(fZero, 1);
     }
-    this.recordHalfWave(1);
   }
 
   private recordFrame(data: BufferAccess): void {
-    this.recordPilot(7);
+    const frameData = BufferAccess.create(36);
+    // Header ("reserved"; currently just 16 0-bits)
+    frameData.writeUint16Le(0x0000);
+    frameData.writeBa(data);
+    frameData.writeUint16Le(calculateChecksum16Le(frameData));
+
+    // Frame pilot
+    this.oscillator.recordOscillations(fPilot, 7);
     this.recordBit(1);
     this.recordBit(1);
 
-    for (let i = 0; i < 16; i += 1) {
-      this.recordBit(0);
-    }
-
-    for (const byte of data.bytes()) {
-      this.recordByte(byte);
-    }
-
-    let checksum = 0;
-    for (let i = 0; i < data.length(); i += 2) {
-      checksum = (checksum + data.getUint16Le(i)) & 0xffff;
-    }
-    this.recordByte(checksum & 0xff);
-    this.recordByte(checksum >>> 8);
-  }
-
-  private recordPilot(cycles: number): void {
-    for (let i = 0; i < cycles * 2; i += 1) {
-      this.recordHalfWave(4);
-    }
-  }
-
-  private recordHalfWave(halfBitCells: number): void {
-    const exactSamples = (this.recorder.sampleRate * halfBitCells) / (bitRate * 2) + this.sampleRemainder;
-    const samples = Math.floor(exactSamples);
-    this.sampleRemainder = exactSamples - samples;
-    this.oscillator.recordHalfOscillationSamples(samples);
+    recordBytes(this, frameData);
   }
 }
