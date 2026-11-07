@@ -373,6 +373,15 @@ const examples: InternalExampleDefinition[] = [
     tests: ['2025-10-12 OK (Oric-1, issue 3 board)'],
   },
   {
+    machine: 'Polycomputer 880',
+    adapter: 'poly880generic',
+    path: 'poly880/rl.bin',
+    options: {format: 'poly880generic'},
+    hash: '831a063e57ae76b33083f5b58d21beb1',
+    instructions: '<FCT> <4> 4000 <EXEC> 4038 <EXEC>\n<GO> 4000 <EXEC> <EXEC>',
+    tests: ['2026-11-07 OK (JKCEMU Emulator - Poly 880)'],
+  },
+  {
     machine: 'Sharp MZ-700',
     adapter: 'sharpmzgeneric',
     path: 'sharpmz/rl.bin',
