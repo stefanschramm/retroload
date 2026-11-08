@@ -33,27 +33,25 @@ export class MpfEncoder implements ByteRecorder {
 
   public begin(): void {
     this.oscillator.begin();
-    this.oscillator.recordSeconds(fSyncIntro, this.shortpilot ? syncIntroLengthShort : syncIntroLength);
   }
 
-  public recordHeader(fileNumber: number, startAddress: number, endAddress: number): void {
+  public recordData(fileNumber: number, startAddress: number, endAddress: number, data: BufferAccess): void {
     // The "file name" gets written to the tape in reverse order.
     // So it's rather a little-endian file number than a name.
-    const headerBa = BufferAccess.create(6);
+    const headerBa = BufferAccess.create(7);
     headerBa.writeUint16Le(fileNumber);
     headerBa.writeUint16Le(startAddress);
     headerBa.writeUint16Le(endAddress);
-    recordBytes(this, headerBa);
-  }
+    headerBa.writeUint8(calculateChecksum8(data));
 
-  public recordData(data: BufferAccess): void {
-    this.recordByte(calculateChecksum8(data));
+    this.oscillator.recordSeconds(fSyncIntro, this.shortpilot ? syncIntroLengthShort : syncIntroLength);
+    recordBytes(this, headerBa);
     this.oscillator.recordSeconds(fSyncMid, syncMidLength);
     recordBytes(this, data);
+    this.oscillator.recordSeconds(fSyncEnd, syncEndLength);
   }
 
   public end(): void {
-    this.oscillator.recordSeconds(fSyncEnd, syncEndLength);
     this.oscillator.end();
   }
 
