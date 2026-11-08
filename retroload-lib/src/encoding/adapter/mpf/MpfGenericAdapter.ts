@@ -42,7 +42,6 @@ function encode(recorder: RecorderInterface, ba: BufferAccess, options: OptionCo
   e.begin();
   const endAddress = loadAddress + ba.length() - 1;
   Logger.debug(`Writing header - File number/name: ${hex16(fileNumber)}, Load address: ${hex16(loadAddress)}, End address: ${hex16(endAddress)}`);
-  e.recordHeader(fileNumber, loadAddress, endAddress);
-  e.recordData(ba);
+  e.recordData(fileNumber, loadAddress, endAddress, ba);
   e.end();
 }
