@@ -247,6 +247,7 @@ Load the next program (and start it, in case it's saved for autostart)
 Load program to memory location 0x4000 with end address 0x4038:
 
     (FCT)
+    (4)
     4000
     (EXEC)
     4038
