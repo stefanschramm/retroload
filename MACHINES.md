@@ -242,6 +242,25 @@ Load the next program (and start it, in case it's saved for autostart)
 
     CLOAD""
 
+# Polycomputer-880
+
+Load program to memory location 0x4000 with end address 0x4038:
+
+    (FCT)
+    (4)
+    4000
+    (EXEC)
+    4038
+    (EXEC)
+    (EXEC)
+
+Run program at memory location 0x4000:
+
+    (GO)
+    4000
+    (EXEC)
+    (EXEC)
+
 # Sharp MZ-700
 
 Volume: 70 % (using cassette adapter side B)

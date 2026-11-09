@@ -29,6 +29,7 @@ import {MsxGenericAdapter} from './adapter/msx/MsxGenericAdapter.js';
 import {MsxTsxAdapter} from './adapter/msx/MsxTsxAdapter.js';
 import {OricGenericAdapter} from './adapter/oric/OricGenericAdapter.js';
 import {OricTapAdapter} from './adapter/oric/OricTapAdapter.js';
+import {Poly880GenericAdapter} from './adapter/poly880/Poly880GenericAdapter.js';
 import {SharpMzGenericAdapter} from './adapter/sharpmz/SharpMzGenericAdapter.js';
 import {SharpMzMzfAdapter} from './adapter/sharpmz/SharpMzMzfAdapter.js';
 import {TaGenericAdapter} from './adapter/ta/TaGenericAdapter.js';
@@ -77,6 +78,7 @@ const adapters: InternalAdapterDefinition[] = [
   MsxTsxAdapter,
   OricGenericAdapter,
   OricTapAdapter,
+  Poly880GenericAdapter,
   SharpMzGenericAdapter,
   SharpMzMzfAdapter,
   TaGenericAdapter,
